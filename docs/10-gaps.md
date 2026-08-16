@@ -75,7 +75,7 @@ Ate la, o Core deve rodar so com CLI + Shell.
 
 | ID | Gap |
 |---|---|
-| G-30 | Cancelamento, timeout, retry, concorrencia entre runs |
+| G-30 | Cancelamento, timeout, retry, concorrencia entre runs | **CONFIRMED** — retry configuravel por step; ver `13` |
 | G-31 | Observabilidade alem da TUI (niveis de log, correlacao) |
 | G-32 | Fronteira Runtgine ↔ Chorus (alem de “complementares”) |
 | G-33 | Workspaces / worktrees |
