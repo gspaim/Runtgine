@@ -115,7 +115,7 @@ Gaps P1 (Board/LLM) permanecem abertos.
 |---|---|---|
 | JSON canonico; YAML so na borda CLI | CONFIRMED | G-14 |
 | Capability naming `domain.action` | CONFIRMED | G-05 |
-| IDs UUID v4; schema_version semver | CONFIRMED | |
+| IDs UUID v7; schema_version semver | CONFIRMED | time-ordered; trocado de v4 na sessao |
 | Task IR v0 schema | CONFIRMED | G-01 |
 | Manifest v0 schema | CONFIRMED | G-02 |
 | Event envelope + tipos minimos | CONFIRMED | G-03/G-04 |
@@ -134,6 +134,7 @@ Gaps P1 (Board/LLM) permanecem abertos.
 
 - Queue: multi-run concorrente (nao 1 run so)
 - Persistencia: SQLite cedo (nao so memoria)
+- IDs: UUID **v7** (nao v4) — melhor localidade em SQLite / ordem temporal
 
 ### Resolvido nesta sessao
 

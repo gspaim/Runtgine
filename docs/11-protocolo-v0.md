@@ -25,7 +25,7 @@ Itens individuais marcados `CONFIRMED` nas secoes.
 
 | Campo | Formato |
 |---|---|
-| IDs (`task_id`, `run_id`, `event_id`) | UUID v4 string |
+| IDs (`task_id`, `run_id`, `event_id`) | UUID v7 string (time-ordered; RFC 9562) |
 | `schema_version` | semver string no documento (`"0.1.0"`) |
 | Nomes de capability | `domain.action` (ex.: `shell.exec`, `git.commit`) |
 
@@ -94,7 +94,7 @@ Entrada estruturada do MVP (CLI/Board). Sem Intent Engine.
 | Campo | Obrigatorio | Notas |
 |---|---|---|
 | `schema_version` | sim | |
-| `task_id` | sim | UUID; CLI pode gerar |
+| `task_id` | sim | UUID v7; CLI pode gerar |
 | `created_at` | sim | RFC3339 |
 | `source.entry_point` | sim | `cli` \| `tui` \| `board` \| `api` \| `other` |
 | `source.ref` | nao | id externo (card, file path) |
@@ -443,7 +443,7 @@ Checagens MVP:
 Marcar em `04-decisoes.md` apos revisao humana:
 
 - [x] Encoding JSON canonico + YAML so na borda CLI
-- [x] IDs UUID v4 + capability `domain.action`
+- [x] IDs UUID v7 + capability `domain.action`
 - [x] Task IR v0
 - [x] Manifest v0
 - [x] Event envelope + tipos minimos
