@@ -52,7 +52,7 @@ Complex: dominio novo, Spec+discussao, Pesquisa+arquitetura, UAT
 
 ## Fluxo no Runtgine
 
-1. Intent Engine reconhece SDP, consulta Runtime Graph
+1. Intent Engine reconhece SDD, consulta Runtime Graph
 2. Graph retorna template: fases, gates, verifier
 3. Intent Engine gera Execution Plan com auto-sizing
 4. Orchestrator executa, emitindo eventos por etapa

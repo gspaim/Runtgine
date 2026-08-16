@@ -1,7 +1,8 @@
 # Runtgine — Revisao Completa do Projeto
 
-Documento unico consolidando todas as decisoes, conceitos, arquitetura
-e estado atual do Runtgine. Para revisao e validacao.
+Documento unico consolidando decisoes, conceitos, arquitetura
+e estado atual do Runtgine. Deve espelhar `docs/`. Em conflito,
+prevalece `docs/04-decisoes.md`.
 
 ---
 
@@ -26,8 +27,8 @@ Go (CONFIRMED), Cobra (CONFIRMED), Bubble Tea (CONFIRMED),
 Wails (CONFIRMED), Canal Go Event Bus (CONFIRMED),
 JSON + JSON Schema (CONFIRMED), SQLite (CONFIRMED), slog (HYPOTHESIS).
 
-Descartadas: Rust (I/O-bound), GPUI (exige Rust), Tauri (dois runtimes),
-Electron (+100MB), Python (runtime), Node/TS (single-thread).
+REJECTED para o caminho atual: Rust (Core), GPUI, Tauri, Electron,
+Python (runtime), Node/TS (single-thread).
 
 ## 3. Fluxo Conceitual
 
@@ -35,18 +36,22 @@ Human Intent -> Intent Engine -> Task IR -> Validator ->
 Execution Plan -> Event Bus -> Orchestrator ->
 Capability Resolver -> Player Router -> Players -> Events -> Graph -> State
 
+No MVP: entrada estruturada (Task IR v0) via CLI/Board; Intent Engine NL
+fica fora do corte inicial.
+
 ## 4. Modelo Conceitual
 
 CONFIRMED: Task, Workflow, Execution Plan, Player, Capability,
-Manifest, Event, Queue, Event Bus.
+Manifest, Event, Queue, Event Bus, Entry Point != Player.
 
-HYPOTHESIS: Intent Engine, Task IR, Task Validator, Runtime Graph,
-Context Engine, Orchestrator, Player Router, Execution Policy,
-Resource Claim, Blast Radius, Background Player.
+HYPOTHESIS: Intent Engine, Task IR (v0 no MVP), Task Validator,
+Runtime Graph, Context Engine, Orchestrator, Player Router,
+Execution Policy, Resource Claim, Blast Radius, Background Player,
+Workflow Template.
 
 Distinga: Task != Workflow != Execution Plan.
 Event != Queue != Workflow. Player != Agent.
-Runtgine != Chorus (complementares).
+Entry Point != Player. Runtgine != Chorus.
 
 ## 5. Arquitetura do Core
 
@@ -56,7 +61,7 @@ Players (Registry, Capabilities, Execution)
 Policy Engine
 Runtime Graph
 
-Interfaces: CLI, TUI, Wails, API/Webhook — todas convergem
+Interfaces: CLI, TUI, Board, Wails, API/Webhook — todas convergem
 para o Public Protocol. Core e o produto. Interface e superficie.
 
 ## 6. Entry Points
@@ -68,7 +73,7 @@ Entry Point != Player.
 
 ## 7. Players
 
-Deterministic: Shell, Git, Filesystem, Docker, K8s, Terraform, Test.
+Deterministic: Shell (MVP), Git, Filesystem, Docker, K8s, Terraform, Test.
 AI: Claude, GPT, Gemini, local LLM. Human: Approval. Service: PG, HTTP.
 
 Visao: biblioteca grande de Players deterministicos.
@@ -89,26 +94,23 @@ Manifest: cada Player declara capabilities, entradas e saidas.
 
 ## 9. MVP (Fase 1)
 
-Ciclo: Board -> Import -> Tech Review -> Spec Review ->
-Repo Search -> Effort Estimation -> Difficulty ->
-Task Decomposition -> Task Router -> Context Assembly -> Players
+Corte canônico: [docs/09-mvp.md](docs/09-mvp.md).
 
-Inclui: Board Integration, Task model, pipeline de analise,
-Repo Search, Effort Estimation, Decomposition, Router,
-Context assembly, Player Registry, Event Bus, CLI.
+Inclui: Task IR v0, Validator basico, Event Bus, Player Registry,
+Shell Player, CLI, TUI minima, Board Integration, pipeline de analise
+basico, Context assembly, LLM Player(s), Decomposition, Router.
 
-Nao inclui: Shell Player, Workflow engine, Human-in-the-loop,
+Nao inclui: Intent Engine NL, Workflow engine completo, Human-in-the-loop,
 Policies, Plugin system, Wails, MCP, Event sourcing, API, NATS.
 
-Ordem de implementacao: Board -> Registry -> Event Bus ->
-Context -> LLM Player -> Pipeline -> Repo Search -> Effort ->
-Decomposition -> Router -> CLI -> Mais Players.
+Ordem: Task IR -> Registry -> Event Bus -> Validator -> Shell ->
+CLI -> TUI -> Board -> Context -> LLM pipeline -> Router.
 
 ## 10. Roadmap
 
 Fase 0: Documentacao (atual)
-Fase 1: MVP (Core Go, Event Bus, CLI, TUI)
-Fase 2: Players (Shell, Git, LLM, Test)
+Fase 1: MVP (Core Go, Event Bus, Shell, CLI, TUI, Board)
+Fase 2: Mais Players + Intent Engine / Graph conforme promocao
 Fase 3: Desktop (Wails)
 Fase 4: Infra (SQLite, policies, blast radius)
 Fase 5: Cloud (NATS, API, serverless)
@@ -116,6 +118,6 @@ Fase 6: Ecossistema (biblioteca de Players)
 
 ## 11. Status Geral
 
-12 arquivos .md, ~2100 linhas.
-Conceitos CONFIRMED: 15+. HYPOTHESIS: 11.
-Stack toda CONFIRMED. Proximo passo: prototipacao.
+Documentacao alinhada; stack CONFIRMED; MVP canônico em 09-mvp.md.
+Proximo passo: fechar Task IR v0 e iniciar Core — sem codar hypothese
+nao promovida em 04-decisoes.md.

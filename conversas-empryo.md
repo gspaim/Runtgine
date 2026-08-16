@@ -1,3 +1,8 @@
+> **HISTÓRICO — NÃO É AUTORIDADE.**  
+> Consolidação de discussões (incl. Empryo). Stack e UI neste arquivo
+> (Rust, GPUI, etc.) estão **desatualizadas**. Fonte de verdade:
+> `docs/04-decisoes.md`, `docs/09-mvp.md` e demais `docs/`.
+
 Claro. Juntando o que definimos até aqui, o **Runtgine** está ficando com uma arquitetura bem clara. E a análise do Empryo ajudou a preencher principalmente a parte de **inteligência estrutural**, sem mudar o coração event-driven que já tínhamos definido.
 
 # Runtgine — resumo das definições

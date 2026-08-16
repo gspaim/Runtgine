@@ -1,3 +1,8 @@
+> **HISTÓRICO — NÃO É AUTORIDADE.**  
+> Fonte bruta original do projeto. Stack e UI neste arquivo (Rust, GPUI, etc.)
+> estão **desatualizadas**. Fonte de verdade: `docs/04-decisoes.md`,
+> `docs/09-mvp.md` e demais `docs/`. Use apenas como contexto narrativo.
+
 Claro. E acho que vale fazer isso de um jeito **mais técnico do que um simples resumo**, porque a ideia é você entregar para outra LLM e ela conseguir entender o Runtgine sem precisar reconstruir toda a história do Chorus.
 
 O ponto mais importante é: **Runtgine não deve ser tratado simplesmente como “um framework de agentes de IA”**. A evolução que vocês fizeram é justamente para algo mais fundamental: um **runtime universal de execução e orquestração**, onde LLMs são apenas um dos possíveis participantes.
