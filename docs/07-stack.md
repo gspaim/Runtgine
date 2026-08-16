@@ -13,7 +13,7 @@ Decisoes de tecnologia para o Runtgine.
 | Event Bus | Canal Go (in-process) | CONFIRMED |
 | Serializacao | JSON + JSON Schema | CONFIRMED |
 | Store | SQLite (mattn/modernc) | CONFIRMED |
-| Logger | slog | HYPOTHESIS |
+| Logger | slog | CONFIRMED |
 
 ## Por que Go
 

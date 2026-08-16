@@ -390,12 +390,12 @@ Falha de sandbox → `validation.invalid_input` ou `runtime.player_error` com co
 
 ## 15. Stack openers (G-15, G-16, G-37)
 
-| Item | Proposta |
-|---|---|
-| Logger | `log/slog` → promover a CONFIRMED |
-| SQLite driver (quando entrar) | `modernc.org/sqlite` (pure Go, sem cgo) |
-| Go version | 1.22+ (ajustar na confirmacao) |
-| Module path | `github.com/gspaim/Runtgine` (confirmar case/path real do repo) |
+| Item | Status | Decisao |
+|---|---|---|
+| Logger | CONFIRMED | `log/slog` |
+| SQLite driver (quando entrar) | PROPOSED | `modernc.org/sqlite` (pure Go, sem cgo) |
+| Go version | PROPOSED | 1.22+ (ajustar na confirmacao) |
+| Module path | PROPOSED | `github.com/gspaim/Runtgine` (confirmar case/path real do repo) |
 
 ---
 
