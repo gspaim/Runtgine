@@ -83,15 +83,18 @@ Hotfix durante RC: PR **para `release/x.y.z`**, depois back-merge para `develop`
 ## Release estável
 
 1. CI verde na `release/x.y.z`.
-2. PR `release/x.y.z` → `main`.
-3. Após merge em `main`, tag estável:
+2. No PR `release/x.y.z` → `main`, conferir e atualizar a seção
+   **Estágio do projeto** do `README.md` para espelhar o que entra em `main`
+   (Feito / Próximo / Depois).
+3. PR `release/x.y.z` → `main`.
+4. Após merge em `main`, tag estável:
    ```bash
    git checkout main && git pull
    git tag -a vX.Y.Z -m "Runtgine vX.Y.Z"
    git push origin vX.Y.Z
    ```
-4. Back-merge `main` → `develop` para não divergir.
-5. Tag `vX.Y.Z` (sem `-rc`) gera release **não-prerelease**.
+5. Back-merge `main` → `develop` para não divergir.
+6. Tag `vX.Y.Z` (sem `-rc`) gera release **não-prerelease**.
 
 ## Semver do produto
 

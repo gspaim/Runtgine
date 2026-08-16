@@ -32,8 +32,9 @@
 ---
 
 > [!IMPORTANT]
-> O Runtgine está em fase **MVP**. Os três primeiros slices estão funcionais,
-> mas ainda não existe uma release estável. APIs e protocolos podem evoluir.
+> O Runtgine está em fase **MVP** (sem release estável). O estágio liberável
+> em `main` está em [Estágio do projeto](#estágio-do-projeto) — atualizado a
+> cada merge de release.
 
 ## Visão
 
@@ -66,28 +67,22 @@ Task → Event → Queue → Player → Result
 - uma alternativa ao MCP;
 - um sistema em que toda tarefa precisa de IA.
 
-## Estado atual
+## Estágio do projeto
 
-| Slice | Entrega | Estado |
-|---|---|:---:|
-| 1 | Core, Task IR, Validator, Event Bus, SQLite, Shell Player e CLI | ✅ |
-| 2 | Pipeline, ContextPack, LLM Players e adapter para GitHub Board | ✅ |
-| 3 | TUI **Constellation Mission Control** | ✅ |
+Visão enxuta do que já está em `main`. **Atualizar esta seção em todo PR
+`release/*` → `main`** (e em PRs para `develop` quando o estágio mudar).
 
-Funcionalidades disponíveis:
+**Agora:** MVP funcional (slices 1–3), sem release estável.
 
-- Task IR v0 em JSON, IDs UUID v7 gerados pelo runtime e dependências entre
-  steps;
-- validação estrutural e ordenação topológica antes da execução;
-- Registry e roteamento de capabilities para Players;
-- runs concorrentes, steps sequenciais, timeout, cancelamento e retry por step;
-- persistência local de runs, eventos, outputs e subtasks em SQLite;
-- Shell Player com comandos em `argv`, timeout e verificação lexical de
-  `workdir` dentro do workspace;
-- LLM Players com backends OpenAI-compatible e Anthropic;
-- pipeline de análise em seis etapas, com fallback heurístico offline;
-- ingestão e write-back básico de GitHub Issues/Projects;
-- CLI e TUI responsiva com streaming de eventos.
+| | Entrega |
+|---|---|
+| Feito | Slice 1 — Core, Task IR, Validator, Event Bus, SQLite, Shell Player, CLI |
+| Feito | Slice 2 — Pipeline, ContextPack, LLM Players, GitHub Board |
+| Feito | Slice 3 — TUI Constellation Mission Control |
+| Próximo | Fechar critérios do MVP — schema de input no Validator, IDs/`schema_version` estritos, sandbox Shell mais forte |
+| Depois | Intent Engine (NL), Runtime Graph, mais Players, policies/HITL, API HTTP, bus distribuído, desktop Wails |
+
+Detalhe do corte: [`docs/09-mvp.md`](docs/09-mvp.md). Limitações atuais abaixo.
 
 ## Começando
 
@@ -344,22 +339,6 @@ vulnerabilidade.
 - cancelamento não é coordenado entre processos independentes;
 - o Shell Player não oferece isolamento de filesystem, rede ou secrets;
 - não há garantia de estabilidade de API antes da primeira release.
-
-## Roadmap
-
-Próximas áreas previstas, ainda fora do MVP atual:
-
-- Intent Engine de linguagem natural;
-- Runtime Graph completo;
-- Context Engine e Router avançados;
-- biblioteca maior de Players determinísticos;
-- policies, approvals e human-in-the-loop;
-- API HTTP e Event Bus distribuído;
-- interface desktop Wails + Svelte.
-
-As decisões confirmadas e os gaps estão em
-[`docs/04-decisoes.md`](docs/04-decisoes.md) e
-[`docs/10-gaps.md`](docs/10-gaps.md).
 
 ## Documentação
 
