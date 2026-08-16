@@ -71,6 +71,18 @@ Ate la, o Core deve rodar so com CLI + Shell.
 
 ---
 
+## P1b — Intent Engine (pos-Core)
+
+| ID | Gap | Notas |
+|---|---|---|
+| G-50 | Papel Intent Engine | **CONFIRMED** — ver `17-intent-engine-v0.md` |
+| G-51 | API CompileIntent / SubmitIntent | **CONFIRMED** — ver `17` |
+| G-52 | Heuristicas deterministicas | **CONFIRMED** — shell \| pipeline |
+| G-53 | Caminho LLM | **CONFIRMED** — Completer + offline heuristic |
+| G-54 | CLI `runtgine intent` | **CONFIRMED** — dry-run + submit |
+
+---
+
 ## P2 — Engenharia e produto (pos-Core minimo)
 
 | ID | Gap |
@@ -124,13 +136,14 @@ Nao autoriza codigo ate promocao em `04-decisoes.md`.
 2. Promover itens aceitos em `04-decisoes.md` (HYPOTHESIS → CONFIRMED v0)
 3. Implementar Core na ordem de `09-mvp.md` / `AGENTS.md`
 4. Board/LLM (P1) — feito (`12`)
-5. Intent Engine — spec/impl em `17` (PR)
+5. Intent Engine — spec/impl em `17` — feito
 6. Revisar e confirmar [18-runtime-graph-v0.md](18-runtime-graph-v0.md) antes de codar Graph
 
 ## Criterio de “pronto para codar”
 
 **P0 protocolo v0: CONFIRMADO.**  
 **P1 Board/pipeline (G-20..G-27): CONFIRMADO.**  
+**P1b Intent Engine (G-50..G-54): CONFIRMADO.**  
 **P2 engenharia (G-30..G-38): CONFIRMADO** (G-36 DEFERRED).  
 **Runtime Graph (G-60..G-66): PROPOSED** — aguarda confirmacao humana em `04`.
 
@@ -139,7 +152,7 @@ Ordem pratica de codigo:
 2. Pipeline deterministic + LLM + Board adapter — slice 2 — feito
 3. TUI Constellation Mission Control — slice 3 — feito
 4. Validator JSON Schema + IDs estritos + sandbox Shell v0 — slice 4 — feito
-5. Intent Engine NL v0 — PR aberto
+5. Intent Engine NL v0 — slice 5 — feito
 6. Runtime Graph v0 — **somente apos CONFIRMED** (`18` → `04`)
 
 P3 (G-40+) permanece futuro. Project Memory (G-46/G-47) e esboco em

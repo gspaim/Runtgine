@@ -21,8 +21,8 @@ Human Intent -> Intent Engine -> Task IR -> Validator -> Execution Plan -> Event
 | Queue | CONFIRMED | Trabalho aguardando processamento |
 | Event Bus | CONFIRMED | Transporte de eventos |
 | Capability | CONFIRMED | O que um Player sabe fazer |
-| Intent Engine | HYPOTHESIS | Traduz intencao em Task IR |
-| Task IR | CONFIRMED (v0) | Schema em 11-protocolo-v0; Intent Engine NL ainda HYPOTHESIS |
+| Intent Engine | CONFIRMED (v0) | Traduz intencao em Task IR; ver `17` |
+| Task IR | CONFIRMED (v0) | Schema em 11-protocolo-v0; NL via Intent Engine v0 |
 | Task Validator | HYPOTHESIS | Valida antes de executar |
 | Runtime Graph | HYPOTHESIS | Memoria estrutural do sistema |
 | Context Engine | HYPOTHESIS | Monta contexto para cada Player |
@@ -74,7 +74,7 @@ Outra distincao importante:
 
 ## Intent Engine
 
-Status: HYPOTHESIS (fora do MVP Core; ver `09-mvp.md`)
+Status: CONFIRMED (v0) — ver `17-intent-engine-v0.md`
 
 O usuario pode escrever: Pega a ultima versao da API, roda os
 testes e coloca no staging. Em vez de executar diretamente,
@@ -84,14 +84,14 @@ Funciona como um compilador:
 
 Human Intent -> Intent Engine -> Task IR -> Validator -> Execution Plan
 
-No MVP, a entrada e Task IR v0 estruturado (JSON/YAML via CLI/Board) —
-schema CONFIRMED em `11-protocolo-v0.md`. Intent Engine de linguagem
-natural vem depois do Core estavel.
+No MVP inicial, a entrada tipica era Task IR v0 estruturado (JSON/YAML
+via CLI/Board). Intent Engine NL v0 (`runtgine intent`) compila texto
+para Task IR com heuristicas deterministicas e LLM opcional.
 
-O Intent Engine e uma LLM especializada em Runtgine Protocol,
-Players, Capabilities, Task Schemas, Policies e Runtime Graph.
-Ela NAO e autoridade — se inventar uma capability que nao existe,
-o Registry rejeita.
+O Intent Engine e especializado em Runtgine Protocol,
+Players, Capabilities e Task Schemas.
+Ele NAO e autoridade — se inventar uma capability que nao existe,
+o Registry/Validator rejeita.
 
 ---
 
