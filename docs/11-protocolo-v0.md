@@ -197,6 +197,8 @@ O Runner resolve `capability` → `player` via Registry. Sem replanejamento dina
 
 ## 7. Event envelope + tipos (G-03, G-04)
 
+**Status: CONFIRMED** (fechamento humano)
+
 ```json
 {
   "schema_version": "0.1.0",
