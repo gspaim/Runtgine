@@ -333,17 +333,18 @@ Relacao: Orchestrator HYPOTHESIS futuro pode absorver Runner.
 
 ## 12. Persistencia (G-13)
 
-**Proposta para MVP Core minimo (ate CLI+Shell)**
+**Status: CONFIRMED** (fechamento humano) — variante B
+
+SQLite cedo no MVP Core (nao esperar pos-Shell):
 
 | Dado | MVP Core | Notas |
 |---|---|---|
-| Eventos | Memoria (+ log stdout via slog) | Sem Event Store duravel |
-| Task/Run state | Memoria | `status` na CLI le do processo |
-| SQLite | **Adiado** ate apos Shell+CLI verdes | Alinha PRD P1; stack permanece CONFIRMED para quando entrar |
+| Runs / estado | SQLite | Tabela de runs + status |
+| Eventos | SQLite append-only | Nao e event sourcing completo; permite `status` apos restart |
+| Fila em voo | Memoria | Reconstroi o que for necessario a partir do store se o processo cair |
 
-**Alternativa B (se preferir durabilidade cedo):** SQLite so para `runs` + `events` append-only, sem pretender event sourcing completo.
-
-Default desta proposta: **Alternativa A** (memoria). Confirmar em `04-decisoes`.
+Sem pretender Event Sourcing / replay completo no v0.
+Driver: ver §15 (modernc proposto).
 
 ---
 

@@ -33,7 +33,8 @@ Task IR v0, Validator basico, Event Bus in-process, Player Registry,
 Shell Player, CLI/TUI minima, Board Integration + pipeline vertical basico
 
 P1: Intent Engine (NL), Runtime Graph, Context Engine completo,
-Player Router completo, SQLite
+Player Router completo
+(SQLite para runs/events ja no MVP Core — ver G-13 CONFIRMED)
 
 P2: Execution Policies, Resource Claims, Blast Radius, NATS, cloud
 
