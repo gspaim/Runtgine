@@ -22,6 +22,7 @@
 
 <p align="center">
   <a href="#visão">Visão</a> ·
+  <a href="#estágio-do-projeto">Estágio</a> ·
   <a href="#começando">Começando</a> ·
   <a href="#arquitetura">Arquitetura</a> ·
   <a href="#tui">TUI</a> ·
