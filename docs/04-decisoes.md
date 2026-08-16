@@ -44,7 +44,7 @@ Status: CONFIRMED | HYPOTHESIS | OPEN QUESTION | REJECTED
 | Event != Queue != Workflow | CONFIRMED | Tres conceitos distintos |
 | Entry Point != Player | CONFIRMED | Entry Point traduz sinal externo |
 | Intent Engine | HYPOTHESIS | Traduz intencao NL em Task IR |
-| Task IR | HYPOTHESIS | Representacao intermediaria (v0 no MVP) |
+| Task IR | CONFIRMED (v0) | Schema em 11-protocolo-v0; NL Intent Engine ainda HYPOTHESIS |
 | Task Validator | HYPOTHESIS | Valida antes de executar (basico no MVP) |
 | Runtime Graph | HYPOTHESIS | Memoria estrutural |
 | Context Engine | HYPOTHESIS | Monta contexto relevante |
@@ -82,7 +82,7 @@ Ver [09-mvp.md](09-mvp.md). Decisoes-chave:
 | Event | CONFIRMED | Algo aconteceu |
 | Queue | CONFIRMED | Trabalho aguardando |
 | Intent Engine | HYPOTHESIS | Traduz intencao |
-| Task IR | HYPOTHESIS | Representacao intermediaria |
+| Task IR | CONFIRMED (v0) | Schema em 11-protocolo-v0 |
 | Task Validator | HYPOTHESIS | Valida antes de executar |
 | Runtime Graph | HYPOTHESIS | Memoria estrutural |
 | Context Engine | HYPOTHESIS | Monta contexto relevante |
@@ -114,7 +114,7 @@ Nao implementar Core ate G-01..G-18 estarem confirmados ou rejeitados com altern
 | JSON canonico; YAML so na borda CLI | CONFIRMED | G-14 — sessao de fechamento |
 | Capability naming `domain.action` | CONFIRMED | G-05 — sessao de fechamento |
 | IDs UUID v4; schema_version semver | CONFIRMED | sessao de fechamento |
-| Task IR v0 schema | PROPOSED | Promover de HYPOTHESIS → CONFIRMED v0 se aceito |
+| Task IR v0 schema | CONFIRMED | G-01 — sessao de fechamento; promove corte v0 |
 | Manifest v0 schema | PROPOSED | |
 | Event envelope + tipos minimos | PROPOSED | |
 | Result/Error + Run lifecycle | PROPOSED | |

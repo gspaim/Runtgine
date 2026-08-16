@@ -54,6 +54,8 @@ Regras:
 
 ## 4. Task IR v0 (G-01)
 
+**Status: CONFIRMED** (fechamento humano)
+
 Entrada estruturada do MVP (CLI/Board). Sem Intent Engine.
 
 ### Exemplo
