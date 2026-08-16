@@ -28,5 +28,5 @@ Autoridade de decisoes: [04-decisoes.md](04-decisoes.md).
 
 Nao usar fontes historicas para decisoes de implementacao.
 
-Antes de codar o Core: confirmar propostas em `11-protocolo-v0.md`
-via checklist em `04-decisoes.md`.
+Antes de codar o Core: protocolo v0 P0 esta **CONFIRMADO**
+(`11-protocolo-v0.md` + `04-decisoes.md`). Gaps P1 (Board) ainda abertos.

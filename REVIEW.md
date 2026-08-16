@@ -119,5 +119,6 @@ Fase 6: Ecossistema (biblioteca de Players)
 ## 11. Status Geral
 
 Documentacao alinhada; stack CONFIRMED; MVP canônico em 09-mvp.md.
-Gaps inventariados em 10-gaps.md; protocolo v0 PROPOSED em 11-protocolo-v0.md.
-Proximo passo: confirmar checklist de `11` em `04-decisoes` — depois Core.
+Protocolo v0 **P0 CONFIRMADO** (11 + sessao de fechamento).
+Proximo passo: implementar Core (layout §16, ordem AGENTS/09-mvp).
+Gaps P1 Board/LLM ainda abertos.

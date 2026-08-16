@@ -57,5 +57,5 @@ Protocolo v0 (proposta): `docs/11-protocolo-v0.md` — confirmar antes de codar.
 - Nao pular o Validator (filosofia de compilador)
 - Nao construir UI rica (Wails) antes do Core + CLI/TUI funcionarem
 - Nao usar brainstorm/conversas-empryo como fonte de stack (Rust/GPUI estao REJECTED)
-- Nao implementar Core enquanto G-01..G-18 de `10-gaps.md` nao estiverem
-  confirmados ou rejeitados em `04-decisoes.md`
+- Protocolo v0 P0 esta CONFIRMED em `04-decisoes` / `11` — Core liberado
+- Nao implementar gaps P1 (Board/LLM) sem especificar contratos (G-20+)

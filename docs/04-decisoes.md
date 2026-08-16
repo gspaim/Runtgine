@@ -45,7 +45,7 @@ Status: CONFIRMED | HYPOTHESIS | OPEN QUESTION | REJECTED
 | Entry Point != Player | CONFIRMED | Entry Point traduz sinal externo |
 | Intent Engine | HYPOTHESIS | Traduz intencao NL em Task IR |
 | Task IR | CONFIRMED (v0) | Schema em 11-protocolo-v0; NL Intent Engine ainda HYPOTHESIS |
-| Task Validator | HYPOTHESIS | Valida antes de executar (basico no MVP) |
+| Task Validator | CONFIRMED (v0) | Subset MVP: capabilities, inputs, schemas; ver 11 |
 | Runtime Graph | HYPOTHESIS | Memoria estrutural |
 | Context Engine | HYPOTHESIS | Monta contexto relevante |
 | Player Router | HYPOTHESIS | Roteia por capability + custo |
@@ -56,6 +56,7 @@ Status: CONFIRMED | HYPOTHESIS | OPEN QUESTION | REJECTED
 | Runtgine + Chorus | CONFIRMED | Complementares |
 | Event Bus in-process (MVP) | CONFIRMED | Canais Go |
 | Nativo (nao Electron) | CONFIRMED | Wails |
+| Runner v0 | CONFIRMED | Orchestrator minimo do MVP |
 
 ## MVP (corte canônico)
 
@@ -102,34 +103,40 @@ Ver [09-mvp.md](09-mvp.md). Decisoes-chave:
 - Biblioteca grande de Players deterministicos (visao)
 - MVP: Core + Shell + CLI/TUI + Board (ver 09-mvp.md)
 
-## Propostas aguardando confirmacao (protocolo v0)
+## Protocolo v0 — confirmado (sessao de fechamento)
 
 Inventario: [10-gaps.md](10-gaps.md).
-Texto completo das propostas: [11-protocolo-v0.md](11-protocolo-v0.md).
+Texto completo: [11-protocolo-v0.md](11-protocolo-v0.md).
 
-Nao implementar Core ate G-01..G-18 estarem confirmados ou rejeitados com alternativa.
+**Bloco P0 CONFIRMADO.** Liberado iniciar implementacao do Core.
+Gaps P1 (Board/LLM) permanecem abertos.
 
 | Proposta | Status | Notas |
 |---|---|---|
-| JSON canonico; YAML so na borda CLI | CONFIRMED | G-14 — sessao de fechamento |
-| Capability naming `domain.action` | CONFIRMED | G-05 — sessao de fechamento |
-| IDs UUID v4; schema_version semver | CONFIRMED | sessao de fechamento |
-| Task IR v0 schema | CONFIRMED | G-01 — sessao de fechamento; promove corte v0 |
-| Manifest v0 schema | CONFIRMED | G-02 — sessao de fechamento |
-| Event envelope + tipos minimos | CONFIRMED | G-03/G-04 — sessao de fechamento |
-| Result/Error + Run lifecycle | CONFIRMED | G-08/G-09 — sessao de fechamento |
-| Runner v0 (Orchestrator minimo) | CONFIRMED | G-10 — nome Runner; Plan passthrough G-11 |
-| Queue in-memory FIFO | CONFIRMED | G-12 — multi-run concorrente no MVP (nao so 1 run) |
-| Persistencia MVP Core = SQLite cedo | CONFIRMED | G-13 variante B — runs + events append-only; sem event sourcing |
-| Core API SubmitTask/GetRun/Subscribe | CONFIRMED | G-07 — Entry Point = adapter; mesmo protocolo |
-| Shell sandbox v0 (argv, workdir, timeout) | CONFIRMED | G-06/G-18 — sessao de fechamento; allowlist opcional |
-| log/slog | CONFIRMED | G-16 — sessao de fechamento |
-| SQLite via modernc.org/sqlite | CONFIRMED | G-15 — pure Go; sem cgo |
+| JSON canonico; YAML so na borda CLI | CONFIRMED | G-14 |
+| Capability naming `domain.action` | CONFIRMED | G-05 |
+| IDs UUID v4; schema_version semver | CONFIRMED | |
+| Task IR v0 schema | CONFIRMED | G-01 |
+| Manifest v0 schema | CONFIRMED | G-02 |
+| Event envelope + tipos minimos | CONFIRMED | G-03/G-04 |
+| Result/Error + Run lifecycle | CONFIRMED | G-08/G-09 |
+| Runner v0 (Orchestrator minimo) | CONFIRMED | G-10; Plan passthrough G-11 |
+| Queue in-memory FIFO | CONFIRMED | G-12 multi-run |
+| Persistencia MVP Core = SQLite cedo | CONFIRMED | G-13 variante B |
+| Core API SubmitTask/GetRun/Subscribe | CONFIRMED | G-07 |
+| Shell sandbox v0 (argv, workdir, timeout) | CONFIRMED | G-06/G-18 |
+| log/slog | CONFIRMED | G-16 |
+| SQLite via modernc.org/sqlite | CONFIRMED | G-15 |
 | Go 1.22+; module github.com/gspaim/Runtgine | CONFIRMED | G-37 |
-| Layout `cmd/` + `internal/core|players|entrypoint` | PROPOSED | G-17 |
+| Layout `cmd/` + `internal/core|players|entrypoint` | CONFIRMED | G-17 |
 
-### Tensoes a resolver na confirmacao
+### Desvios em relacao a proposta inicial
 
-- Capability Resolver / Planner citados em `01-visao` sem conceito formal → absorver no Runner v0 ou documentar
-- Event Store vs “sem event sourcing” no MVP → memoria + logs; store duravel depois
-- Task IR / Validator / Runner: promover corte v0 a CONFIRMED apos aceite de `11`
+- Queue: multi-run concorrente (nao 1 run so)
+- Persistencia: SQLite cedo (nao so memoria)
+
+### Resolvido nesta sessao
+
+- Capability Resolver / Planner → absorvidos no Runner v0
+- Event Store no MVP → events append-only em SQLite (nao event sourcing)
+- Task IR / Validator basico / Runner v0 → CONFIRMED

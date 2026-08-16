@@ -1,11 +1,11 @@
 # 11 — Protocolo v0 (PROPOSTA)
 
-Contratos minimos para o MVP Core. **Aguardando confirmacao.**
+Contratos minimos para o MVP Core.
 
-Nao e autoridade ate os itens serem promovidos em `04-decisoes.md`.
+**Status geral: P0 CONFIRMADO** (fechamento humano). Ver checklist no fim.
+
 Inventario de gaps: [10-gaps.md](10-gaps.md).
-
-Status de cada secao: `PROPOSED`.
+Itens individuais marcados `CONFIRMED` nas secoes.
 
 ---
 
@@ -401,6 +401,8 @@ Falha de sandbox → `validation.invalid_input` ou `runtime.player_error` com co
 
 ## 16. Repo layout v0 (G-17)
 
+**Status: CONFIRMED** (fechamento humano)
+
 ```text
 cmd/runtgine/          # CLI entry
 internal/core/
@@ -440,18 +442,20 @@ Checagens MVP:
 
 Marcar em `04-decisoes.md` apos revisao humana:
 
-- [ ] Encoding JSON canonico + YAML so na borda CLI
-- [ ] Task IR v0
-- [ ] Manifest v0
-- [ ] Event envelope + tipos minimos
-- [ ] Result/Error + lifecycle
-- [ ] Runner v0 (nome e escopo)
-- [ ] Queue in-memory FIFO
-- [ ] Persistencia: memoria no MVP Core (SQLite depois) **ou** Alternativa B
-- [ ] Core API SubmitTask/GetRun/Subscribe
-- [ ] Shell sandbox v0
-- [ ] slog CONFIRMED
-- [ ] modernc para SQLite quando entrar
-- [ ] Layout de pacotes
+- [x] Encoding JSON canonico + YAML so na borda CLI
+- [x] IDs UUID v4 + capability `domain.action`
+- [x] Task IR v0
+- [x] Manifest v0
+- [x] Event envelope + tipos minimos
+- [x] Result/Error + lifecycle
+- [x] Runner v0 (nome e escopo) + Plan passthrough
+- [x] Queue in-memory FIFO (**multi-run** concorrente)
+- [x] Persistencia: SQLite cedo (runs + events append-only)
+- [x] Core API SubmitTask/GetRun/Subscribe
+- [x] Shell sandbox v0
+- [x] slog CONFIRMED
+- [x] modernc + Go 1.22+ + module path
+- [x] Layout de pacotes
 
-Quando a maioria P0 estiver confirmada → liberar implementacao do Core.
+**P0 fechado.** Proximo: implementar Core na ordem de `09-mvp` / `AGENTS.md`.
+Gaps P1 (Board/LLM) ainda abertos em `10-gaps.md`.

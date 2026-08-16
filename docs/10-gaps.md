@@ -3,8 +3,9 @@
 Inventario do que a documentacao ainda nao fecha para iniciar o Core.
 Complementa `04-decisoes.md` e `09-mvp.md`.
 
-**Status deste doc:** inventario oficial. Itens bloqueantes tem proposta
-em [11-protocolo-v0.md](11-protocolo-v0.md) (aguardando confirmacao).
+Status deste doc: inventario oficial. Itens P0 do protocolo foram
+confirmados em [11-protocolo-v0.md](11-protocolo-v0.md) / `04-decisoes.md`.
+P1+ ainda abertos.
 
 ---
 
@@ -108,5 +109,7 @@ Ate la, o Core deve rodar so com CLI + Shell.
 
 ## Criterio de “pronto para codar”
 
-Pode iniciar implementacao do Core quando G-01..G-18 estiverem
-**CONFIRMED** (ou explicitamente REJECTED com alternativa) em `04-decisoes.md`.
+**P0 do protocolo v0: CONFIRMADO** (sessao interativa; ver `04-decisoes` / `11`).
+
+Pode iniciar implementacao do Core. Board/LLM (G-20+) ainda precisam de
+especificacao antes do cenario vertical.
