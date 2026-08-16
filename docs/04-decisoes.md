@@ -116,7 +116,7 @@ Nao implementar Core ate G-01..G-18 estarem confirmados ou rejeitados com altern
 | IDs UUID v4; schema_version semver | CONFIRMED | sessao de fechamento |
 | Task IR v0 schema | CONFIRMED | G-01 — sessao de fechamento; promove corte v0 |
 | Manifest v0 schema | CONFIRMED | G-02 — sessao de fechamento |
-| Event envelope + tipos minimos | PROPOSED | |
+| Event envelope + tipos minimos | CONFIRMED | G-03/G-04 — sessao de fechamento |
 | Result/Error + Run lifecycle | PROPOSED | |
 | Runner v0 (Orchestrator minimo) | PROPOSED | Nome `Runner` no MVP |
 | Queue in-memory FIFO | PROPOSED | Sem prioridade; 1 run ativo |
