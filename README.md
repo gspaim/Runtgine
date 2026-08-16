@@ -22,6 +22,7 @@
 
 <p align="center">
   <a href="#visão">Visão</a> ·
+  <a href="#estágio-do-projeto">Estágio</a> ·
   <a href="#começando">Começando</a> ·
   <a href="#arquitetura">Arquitetura</a> ·
   <a href="#tui">TUI</a> ·
@@ -32,8 +33,9 @@
 ---
 
 > [!IMPORTANT]
-> O Runtgine está em fase **MVP**. Os três primeiros slices estão funcionais,
-> mas ainda não existe uma release estável. APIs e protocolos podem evoluir.
+> O Runtgine está em fase **MVP** (sem release estável). O estágio liberável
+> em `main` está em [Estágio do projeto](#estágio-do-projeto) — atualizado a
+> cada merge de release.
 
 ## Visão
 
@@ -66,28 +68,22 @@ Task → Event → Queue → Player → Result
 - uma alternativa ao MCP;
 - um sistema em que toda tarefa precisa de IA.
 
-## Estado atual
+## Estágio do projeto
 
-| Slice | Entrega | Estado |
-|---|---|:---:|
-| 1 | Core, Task IR, Validator, Event Bus, SQLite, Shell Player e CLI | ✅ |
-| 2 | Pipeline, ContextPack, LLM Players e adapter para GitHub Board | ✅ |
-| 3 | TUI **Constellation Mission Control** | ✅ |
+Visão enxuta do que já está em `main`. **Atualizar esta seção em todo PR
+`release/*` → `main`** (e em PRs para `develop` quando o estágio mudar).
 
-Funcionalidades disponíveis:
+**Agora:** MVP funcional (slices 1–3), sem release estável.
 
-- Task IR v0 em JSON, IDs UUID v7 gerados pelo runtime e dependências entre
-  steps;
-- validação estrutural e ordenação topológica antes da execução;
-- Registry e roteamento de capabilities para Players;
-- runs concorrentes, steps sequenciais, timeout, cancelamento e retry por step;
-- persistência local de runs, eventos, outputs e subtasks em SQLite;
-- Shell Player com comandos em `argv`, timeout e verificação lexical de
-  `workdir` dentro do workspace;
-- LLM Players com backends OpenAI-compatible e Anthropic;
-- pipeline de análise em seis etapas, com fallback heurístico offline;
-- ingestão e write-back básico de GitHub Issues/Projects;
-- CLI e TUI responsiva com streaming de eventos.
+| | Entrega |
+|---|---|
+| Feito | Slice 1 — Core, Task IR, Validator, Event Bus, SQLite, Shell Player, CLI |
+| Feito | Slice 2 — Pipeline, ContextPack, LLM Players, GitHub Board |
+| Feito | Slice 3 — TUI Constellation Mission Control |
+| Próximo | Fechar critérios do MVP — schema de input no Validator, IDs/`schema_version` estritos, sandbox Shell mais forte |
+| Depois | Intent Engine (NL), Runtime Graph, mais Players, policies/HITL, API HTTP, bus distribuído, desktop Wails |
+
+Detalhe do corte: [`docs/09-mvp.md`](docs/09-mvp.md). Limitações atuais abaixo.
 
 ## Começando
 
@@ -189,29 +185,23 @@ Use `runtgine <comando> --help` para consultar todas as flags.
 
 ## Arquitetura
 
-```mermaid
-flowchart LR
-    EP["Entry Points<br/>CLI · TUI · Board"] --> API["Core API"]
-    API --> IR["Task IR"]
-    IR --> V["Validator"]
-    V --> R["Runner + Queue"]
-    R --> B["Event Bus"]
-    R --> REG["Player Registry"]
-    REG --> P["Players<br/>Shell · Pipeline · LLM"]
-    P --> RES["Result"]
-    RES --> R
-    B --> DB[("SQLite<br/>runs · events · outputs")]
-    R --> DB
-    B --> EP
-```
+<p align="center">
+  <img src="docs/assets/runtgine-architecture.png" alt="Arquitetura do Runtgine: CLI e Board submetem Task IR ao Core; o Runner chama Players; SQLite persiste; Event Bus só observa." width="100%">
+</p>
+
+Fluxo real do MVP: **CLI/Board** montam `Task IR` e chamam `SubmitTask`. O **Validator** rejeita schema ou capability desconhecida. O **Runner** cria a `Run`, gera o **Plan** (capability → player, deterministic-first), monta o **ContextPack** por step e chama `Player.Execute`. O **Result** volta ao Runner, que grava o **SQLite** e publica no **Event Bus**. A **TUI** observa e cancela — não submete Task. O Bus não é fila de admissão.
 
 ### Modelo central
 
 | Conceito | Responsabilidade |
 |---|---|
 | `Task` | Intenção estruturada e lista de steps |
+| `Plan` | Capability → Player para esta Run |
+| `ContextPack` | Contexto montado por step antes do `Execute` |
+| `Capability` | O que o runtime roteia; não o nome do Player |
 | `Event` | Fato imutável emitido durante o lifecycle |
-| `Queue` | Ordem de admissão e controle de concorrência |
+| `Event Bus` | Pub/sub in-process para quem observa a Run |
+| `Queue` | Semáforo de concorrência no Runner (`maxConcurrentRuns`) |
 | `Player` | Executor que declara capabilities em um manifest |
 | `Result` | Saída estruturada ou erro tipado |
 | `Run` | Instância observável da execução de uma Task |
@@ -345,22 +335,6 @@ vulnerabilidade.
 - o Shell Player não oferece isolamento de filesystem, rede ou secrets;
 - não há garantia de estabilidade de API antes da primeira release.
 
-## Roadmap
-
-Próximas áreas previstas, ainda fora do MVP atual:
-
-- Intent Engine de linguagem natural;
-- Runtime Graph completo;
-- Context Engine e Router avançados;
-- biblioteca maior de Players determinísticos;
-- policies, approvals e human-in-the-loop;
-- API HTTP e Event Bus distribuído;
-- interface desktop Wails + Svelte.
-
-As decisões confirmadas e os gaps estão em
-[`docs/04-decisoes.md`](docs/04-decisoes.md) e
-[`docs/10-gaps.md`](docs/10-gaps.md).
-
 ## Documentação
 
 | Documento | Conteúdo |
@@ -378,16 +352,27 @@ As decisões confirmadas e os gaps estão em
 
 ## Contribuindo
 
-Contribuições são bem-vindas. Antes de implementar:
+Contribuições são bem-vindas (fork + PR ou branch no remoto). Antes de
+implementar:
 
 1. leia `AGENTS.md` e os documentos `01` a `06`;
 2. verifique se a decisão necessária já está registrada;
 3. mantenha o Core independente das interfaces;
 4. prefira execução determinística a chamadas LLM;
-5. abra a branch a partir de `develop` com o padrão
-   `feat/<NNN>-<slug>` (ex.: `feat/001-shell-player`) e abra o PR **para
-   `develop`** — ver [fluxo Git](docs/15-git-workflow.md);
-6. adicione testes e execute:
+5. parta de `develop` (não de `main`):
+
+```bash
+git fetch origin
+git checkout develop
+git pull
+git checkout -b feat/<NNN>-<slug>   # ex.: feat/001-shell-player
+```
+
+6. abra o PR **para `develop`**. A default branch do GitHub é `main`: no
+   compare, troque a base para `develop`. Pushes diretos a
+   `develop` / `main` / `release/*` são bloqueados; o check `test` precisa
+   passar. Ver [fluxo Git](docs/15-git-workflow.md);
+7. adicione testes e execute:
 
 ```bash
 go test ./...
