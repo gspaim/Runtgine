@@ -115,7 +115,7 @@ Nao implementar Core ate G-01..G-18 estarem confirmados ou rejeitados com altern
 | Capability naming `domain.action` | CONFIRMED | G-05 — sessao de fechamento |
 | IDs UUID v4; schema_version semver | CONFIRMED | sessao de fechamento |
 | Task IR v0 schema | CONFIRMED | G-01 — sessao de fechamento; promove corte v0 |
-| Manifest v0 schema | PROPOSED | |
+| Manifest v0 schema | CONFIRMED | G-02 — sessao de fechamento |
 | Event envelope + tipos minimos | PROPOSED | |
 | Result/Error + Run lifecycle | PROPOSED | |
 | Runner v0 (Orchestrator minimo) | PROPOSED | Nome `Runner` no MVP |

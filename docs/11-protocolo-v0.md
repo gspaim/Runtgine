@@ -144,6 +144,8 @@ O Runner resolve `capability` → `player` via Registry. Sem replanejamento dina
 
 ## 6. Player Manifest v0 (G-02)
 
+**Status: CONFIRMED** (fechamento humano)
+
 ```json
 {
   "schema_version": "0.1.0",
