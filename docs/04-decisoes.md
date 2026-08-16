@@ -150,7 +150,7 @@ Ver [13-p2.md](13-p2.md).
 |---|---|---|
 | G-30 Cancel/timeout/retry/concorrencia | CONFIRMED | Retry automatico configuravel por step (B) |
 | G-31 Observabilidade | CONFIRMED | slog + correlacao; sem OTel no MVP |
-| G-32 Runtgine ↔ Chorus | OPEN | |
+| G-32 Runtgine ↔ Chorus | CONFIRMED | Independencia total no MVP; sem acoplamento |
 | G-33 Workspaces / worktrees | OPEN | |
 | G-34 Testes | OPEN | |
 | G-35 Wails Svelte vs React | OPEN | |

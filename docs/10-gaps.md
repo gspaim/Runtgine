@@ -77,7 +77,7 @@ Ate la, o Core deve rodar so com CLI + Shell.
 |---|---|
 | G-30 | Cancelamento, timeout, retry, concorrencia entre runs | **CONFIRMED** — retry configuravel por step; ver `13` |
 | G-31 | Observabilidade alem da TUI (niveis de log, correlacao) | **CONFIRMED** — slog + SQLite; ver `13` |
-| G-32 | Fronteira Runtgine ↔ Chorus (alem de “complementares”) |
+| G-32 | Fronteira Runtgine ↔ Chorus | **CONFIRMED** — MVP independente; ver `13` |
 | G-33 | Workspaces / worktrees |
 | G-34 | Estrategia de testes (unit vs integracao) |
 | G-35 | Wails: Svelte vs React |
