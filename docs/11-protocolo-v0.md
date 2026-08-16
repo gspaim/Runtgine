@@ -350,7 +350,9 @@ Driver: ver §15 (modernc proposto).
 
 ## 13. Core API — Entry Point → Core (G-07)
 
-**Proposta:** mesmo protocolo interno; Entry Points sao adapters.
+**Status: CONFIRMED** (fechamento humano)
+
+**Mesmo protocolo interno; Entry Points sao adapters.**
 
 ```text
 SubmitTask(TaskIR) -> (run_id | ValidationError)
