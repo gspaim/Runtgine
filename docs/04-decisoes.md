@@ -142,7 +142,7 @@ Gaps P1 (Board/LLM) permanecem abertos.
 - Event Store no MVP → events append-only em SQLite (nao event sourcing)
 - Task IR / Validator basico / Runner v0 → CONFIRMED
 
-## Engenharia (P2) — em fechamento
+## Engenharia (P2) — CONFIRMADO
 
 Ver [13-p2.md](13-p2.md).
 
@@ -150,12 +150,12 @@ Ver [13-p2.md](13-p2.md).
 |---|---|---|
 | G-30 Cancel/timeout/retry/concorrencia | CONFIRMED | Retry automatico configuravel por step (B) |
 | G-31 Observabilidade | CONFIRMED | slog + correlacao; sem OTel no MVP |
-| G-32 Runtgine ↔ Chorus | CONFIRMED | Independencia total no MVP; sem acoplamento |
+| G-32 Runtgine ↔ Chorus | CONFIRMED | Independencia total no MVP |
 | G-33 Workspaces / worktrees | CONFIRMED | Um workspace_root; store em `.runtgine/` |
 | G-34 Testes | CONFIRMED | Unit + integracao + smoke; LLM mockado |
 | G-35 Wails Svelte vs React | CONFIRMED | Wails mantido; frontend Svelte |
-| G-36 NATS | DEFERRED | Interface de Bus plugavel; sem NATS no MVP |
-| G-38 Config runtime | OPEN | |
+| G-36 NATS | DEFERRED | Bus plugavel; sem NATS no MVP |
+| G-38 Config runtime | CONFIRMED | defaults < file < env < flags |
 
 ## Board / pipeline (P1) — CONFIRMADO
 

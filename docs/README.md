@@ -28,5 +28,5 @@ Autoridade de decisoes: [04-decisoes.md](04-decisoes.md).
 
 Nao usar fontes historicas para decisoes de implementacao.
 
-Antes de codar: P0 (`11`) e P1 Board (`12`) estao **CONFIRMADOS**.
-Gaps P2 (G-30+) ainda abertos em `10-gaps.md`.
+Antes de codar: P0 (`11`), P1 Board (`12`) e P2 (`13`) estao **CONFIRMADOS**
+(G-36 NATS = DEFERRED). P3 ainda futuro em `10-gaps.md`.

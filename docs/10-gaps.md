@@ -83,7 +83,7 @@ Ate la, o Core deve rodar so com CLI + Shell.
 | G-35 | Wails: Svelte vs React | **CONFIRMED** — Wails + Svelte; ver `13` |
 | G-36 | NATS / Event Bus distribuido (OPEN QUESTION) | **DEFERRED** — Bus plugavel; sem NATS no MVP; ver `13` |
 | G-37 | Modulo path Go + versao minima de Go |
-| G-38 | Config do runtime (arquivo, env, defaults) |
+| G-38 | Config do runtime (arquivo, env, defaults) | **CONFIRMED** — defaults < file < env < flags; ver `13` |
 
 ---
 
@@ -110,10 +110,11 @@ Ate la, o Core deve rodar so com CLI + Shell.
 ## Criterio de “pronto para codar”
 
 **P0 protocolo v0: CONFIRMADO.**  
-**P1 Board/pipeline (G-20..G-27): CONFIRMADO.**
+**P1 Board/pipeline (G-20..G-27): CONFIRMADO.**  
+**P2 engenharia (G-30..G-38): CONFIRMADO** (G-36 DEFERRED).
 
 Ordem pratica de codigo:
 1. Core CLI + Shell (+ SQLite) — slice 1
 2. Pipeline deterministic + LLM + Board adapter — slice 2
 
-Gaps P2 (G-30+) ainda abertos se quiser fechar antes/durante.
+P3 (G-40+) permanece futuro.
