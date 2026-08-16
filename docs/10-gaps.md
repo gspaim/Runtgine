@@ -81,7 +81,7 @@ Ate la, o Core deve rodar so com CLI + Shell.
 | G-33 | Workspaces / worktrees | **CONFIRMED** — um root + `.runtgine/`; ver `13` |
 | G-34 | Estrategia de testes (unit vs integracao) | **CONFIRMED** — ver `13` |
 | G-35 | Wails: Svelte vs React | **CONFIRMED** — Wails + Svelte; ver `13` |
-| G-36 | NATS / Event Bus distribuido (OPEN QUESTION) |
+| G-36 | NATS / Event Bus distribuido (OPEN QUESTION) | **DEFERRED** — Bus plugavel; sem NATS no MVP; ver `13` |
 | G-37 | Modulo path Go + versao minima de Go |
 | G-38 | Config do runtime (arquivo, env, defaults) |
 

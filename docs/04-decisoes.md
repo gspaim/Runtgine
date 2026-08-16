@@ -23,7 +23,7 @@ Status: CONFIRMED | HYPOTHESIS | OPEN QUESTION | REJECTED
 | JSON + JSON Schema | CONFIRMED | Protocolo e contratos |
 | SQLite (modernc.org/sqlite) | CONFIRMED | Persistencia local; pure Go |
 | log/slog | CONFIRMED | Logger padrao — sessao de fechamento |
-| NATS (futuro) | OPEN QUESTION | Event Bus distribuido |
+| NATS (futuro) | DEFERRED | Event Bus distribuido; interface plugavel no Core |
 | Rust (Core) | REJECTED | Adiado; stack atual e Go |
 | GPUI | REJECTED | Exigiria Rust; preterido por Wails |
 | Tauri | REJECTED | Preterido por Wails (dois runtimes) |
@@ -154,7 +154,7 @@ Ver [13-p2.md](13-p2.md).
 | G-33 Workspaces / worktrees | CONFIRMED | Um workspace_root; store em `.runtgine/` |
 | G-34 Testes | CONFIRMED | Unit + integracao + smoke; LLM mockado |
 | G-35 Wails Svelte vs React | CONFIRMED | Wails mantido; frontend Svelte |
-| G-36 NATS | OPEN | |
+| G-36 NATS | DEFERRED | Interface de Bus plugavel; sem NATS no MVP |
 | G-38 Config runtime | OPEN | |
 
 ## Board / pipeline (P1) — CONFIRMADO
