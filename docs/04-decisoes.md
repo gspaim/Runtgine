@@ -119,7 +119,7 @@ Nao implementar Core ate G-01..G-18 estarem confirmados ou rejeitados com altern
 | Event envelope + tipos minimos | CONFIRMED | G-03/G-04 — sessao de fechamento |
 | Result/Error + Run lifecycle | CONFIRMED | G-08/G-09 — sessao de fechamento |
 | Runner v0 (Orchestrator minimo) | CONFIRMED | G-10 — nome Runner; Plan passthrough G-11 |
-| Queue in-memory FIFO | PROPOSED | Sem prioridade; 1 run ativo |
+| Queue in-memory FIFO | CONFIRMED | G-12 — multi-run concorrente no MVP (nao so 1 run) |
 | Persistencia MVP Core = memoria | PROPOSED | SQLite apos CLI+Shell (alt. B no doc 11) |
 | Core API SubmitTask/GetRun/Subscribe | PROPOSED | Entry Point = adapter |
 | Shell sandbox v0 (argv, workdir, timeout) | PROPOSED | Policy minima sem Execution Policy completa |
