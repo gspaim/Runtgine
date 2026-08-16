@@ -141,3 +141,18 @@ Gaps P1 (Board/LLM) permanecem abertos.
 - Capability Resolver / Planner → absorvidos no Runner v0
 - Event Store no MVP → events append-only em SQLite (nao event sourcing)
 - Task IR / Validator basico / Runner v0 → CONFIRMED
+
+## Board / pipeline (P1) — em fechamento
+
+Ver [12-board-p1.md](12-board-p1.md).
+
+| Item | Status | Notas |
+|---|---|---|
+| G-20 Card → Task IR (adapter + polling) | CONFIRMED | Mapeamento titulo/body/ref; token via env |
+| G-21 Write-back no board | OPEN | |
+| G-22 Contratos por etapa | OPEN | |
+| G-23 Regras vs LLM | OPEN | |
+| G-24 Context assembly basico | OPEN | |
+| G-25 LLM Player v0 | OPEN | |
+| G-26 Task Router basico | OPEN | |
+| G-27 Subtasks | OPEN | |

@@ -57,7 +57,7 @@ Em conflito de escopo, prevalece `09-mvp.md` + `04-decisoes.md`.
 
 | ID | Gap | Notas |
 |---|---|---|
-| G-20 | Card GitHub Projects → Task IR | Auth, campos, polling interval |
+| G-20 | Card GitHub Projects → Task IR | **CONFIRMED** — ver `12-board-p1.md` |
 | G-21 | Write-back no board | Atualiza status / cria subtasks? |
 | G-22 | Contratos por etapa do pipeline | Tech Review, Spec Review, Repo Search, Effort, Difficulty, Decomposition |
 | G-23 | Fronteira regras vs LLM | Por etapa |
