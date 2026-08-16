@@ -26,6 +26,7 @@ Gaps: `docs/10-gaps.md`.
 Protocolo v0 (proposta): `docs/11-protocolo-v0.md` — confirmar antes de codar.
 Design da TUI: `docs/14-tui-design.md`.
 Git / releases: `docs/15-git-workflow.md`.
+Project Memory (esboco): `docs/16-project-memory.md` — HYPOTHESIS; nao codificar.
 Skill obrigatoria para TUI: `.cursor/skills/runtgine-tui-design/SKILL.md`.
 
 ## Ordem de trabalho

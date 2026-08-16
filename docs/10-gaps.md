@@ -95,8 +95,10 @@ Ate la, o Core deve rodar so com CLI + Shell.
 | G-41 | Biblioteca ampla de Players |
 | G-42 | Human-in-the-loop / Approvals |
 | G-43 | Resource Claims / Blast Radius |
-| G-44 | MCP integration |
+| G-44 | MCP integration — pre-requisito da Fase B de Project Memory (`16`) |
 | G-45 | API HTTP / webhooks |
+| G-46 | Project Memory (conceito + ContextPack `memory_hits`) — **HYPOTHESIS**; ver `16` |
+| G-47 | Memory Player / capabilities `memory.*` — **HYPOTHESIS**; apos G-46; ver `16` |
 
 ---
 
@@ -117,4 +119,5 @@ Ordem pratica de codigo:
 1. Core CLI + Shell (+ SQLite) — slice 1
 2. Pipeline deterministic + LLM + Board adapter — slice 2
 
-P3 (G-40+) permanece futuro.
+P3 (G-40+) permanece futuro. Project Memory (G-46/G-47) e esboco em
+`16-project-memory.md` — HYPOTHESIS; nao codificar ate promocao em `04`.
