@@ -14,7 +14,10 @@ Runtgine é um **runtime universal de execução e orquestração**: leve, orien
 go test ./...
 go build -o bin/runtgine ./cmd/runtgine
 ./bin/runtgine run examples/hello.json
+./bin/runtgine pipeline run --summary "Analyze workspace"
 ./bin/runtgine status <run_id>
+# Board (needs GITHUB_TOKEN):
+# ./bin/runtgine board poll --repo owner/name --label runtgine
 ```
 
 Store local: `workspace/.runtgine/runtgine.db`

@@ -13,8 +13,10 @@ import (
 	"github.com/gspaim/Runtgine/internal/config"
 	"github.com/gspaim/Runtgine/internal/core/api"
 	"github.com/gspaim/Runtgine/internal/core/event"
+	corepipe "github.com/gspaim/Runtgine/internal/core/pipeline"
 	"github.com/gspaim/Runtgine/internal/core/store"
 	"github.com/gspaim/Runtgine/internal/core/task"
+	"github.com/gspaim/Runtgine/internal/entrypoint/board"
 	"github.com/spf13/cobra"
 	"gopkg.in/yaml.v3"
 )
@@ -34,6 +36,8 @@ func NewRoot() *cobra.Command {
 	root.AddCommand(newRunCmd(&workspace, &verbose))
 	root.AddCommand(newStatusCmd(&workspace, &verbose))
 	root.AddCommand(newCancelCmd(&workspace, &verbose))
+	root.AddCommand(newPipelineCmd(&workspace, &verbose))
+	root.AddCommand(newBoardCmd(&workspace, &verbose))
 	return root
 }
 
@@ -180,6 +184,114 @@ func newCancelCmd(workspace *string, verbose *bool) *cobra.Command {
 			return core.CancelRun(args[0])
 		},
 	}
+}
+
+func newPipelineCmd(workspace *string, verbose *bool) *cobra.Command {
+	cmd := &cobra.Command{Use: "pipeline", Short: "Board analysis pipeline (slice 2)"}
+	var summary, notes string
+	var wait bool
+	run := &cobra.Command{
+		Use:   "run",
+		Short: "Submit the six-step pipeline Task IR for this workspace",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			if summary == "" {
+				summary = "Pipeline analysis"
+			}
+			core, err := openCore(*workspace, *verbose)
+			if err != nil {
+				return err
+			}
+			defer core.Close()
+			t, err := corepipe.NewTaskIR(summary, notes, "cli", "pipeline run")
+			if err != nil {
+				return err
+			}
+			ctx := context.Background()
+			var events <-chan event.Event
+			var unsub func()
+			if wait {
+				events, unsub = core.Subscribe(256)
+				defer unsub()
+			}
+			runID, err := core.SubmitTask(ctx, t)
+			if err != nil {
+				return err
+			}
+			fmt.Println(runID)
+			if !wait {
+				return nil
+			}
+			return waitForRun(ctx, core, runID, events)
+		},
+	}
+	run.Flags().StringVar(&summary, "summary", "", "intent.summary")
+	run.Flags().StringVar(&notes, "notes", "", "intent.notes")
+	run.Flags().BoolVar(&wait, "wait", true, "wait for completion")
+	cmd.AddCommand(run)
+	return cmd
+}
+
+func newBoardCmd(workspace *string, verbose *bool) *cobra.Command {
+	cmd := &cobra.Command{Use: "board", Short: "GitHub Projects / issues Entry Point"}
+	var (
+		repo, label, owner string
+		project            int
+		org, wait          bool
+		interval           time.Duration
+	)
+	poll := &cobra.Command{
+		Use:   "poll",
+		Short: "Poll cards, submit pipeline Task IR, write back status",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			core, err := openCore(*workspace, *verbose)
+			if err != nil {
+				return err
+			}
+			defer core.Close()
+			if core.Cfg.GitHubToken == "" {
+				return fmt.Errorf("GITHUB_TOKEN or RUNTGINE_GITHUB_TOKEN is required")
+			}
+			ad := board.NewAdapter(core, board.NewGitHub(core.Cfg.GitHubToken), slog.Default())
+			opt := board.PollOptions{
+				Repo: repo, Label: label, ProjectOwner: owner,
+				ProjectNumber: project, OwnerIsOrg: org, Wait: wait,
+			}
+			ctx := context.Background()
+			if interval <= 0 {
+				ids, err := ad.PollOnce(ctx, opt)
+				if err != nil {
+					return err
+				}
+				for _, id := range ids {
+					fmt.Println(id)
+				}
+				return nil
+			}
+			for {
+				ids, err := ad.PollOnce(ctx, opt)
+				if err != nil {
+					return err
+				}
+				for _, id := range ids {
+					fmt.Println(id)
+				}
+				select {
+				case <-ctx.Done():
+					return ctx.Err()
+				case <-time.After(interval):
+				}
+			}
+		},
+	}
+	poll.Flags().StringVar(&repo, "repo", "", "owner/name (issues mode)")
+	poll.Flags().StringVar(&label, "label", "", "filter issues by label")
+	poll.Flags().StringVar(&owner, "project-owner", "", "user/org login for Projects v2")
+	poll.Flags().IntVar(&project, "project", 0, "GitHub Project number (Projects v2)")
+	poll.Flags().BoolVar(&org, "org", false, "project-owner is an organization")
+	poll.Flags().BoolVar(&wait, "wait", true, "wait each imported card before next")
+	poll.Flags().DurationVar(&interval, "interval", 0, "repeat poll (e.g. 60s); 0 = once")
+	cmd.AddCommand(poll)
+	return cmd
 }
 
 func toJSON(path string, raw []byte) ([]byte, error) {

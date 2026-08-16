@@ -13,6 +13,8 @@ import (
 	"github.com/gspaim/Runtgine/internal/core/runner"
 	"github.com/gspaim/Runtgine/internal/core/store"
 	"github.com/gspaim/Runtgine/internal/core/task"
+	"github.com/gspaim/Runtgine/internal/players/llm"
+	pipeplayer "github.com/gspaim/Runtgine/internal/players/pipeline"
 	"github.com/gspaim/Runtgine/internal/players/shell"
 )
 
@@ -40,6 +42,18 @@ func Open(cfg config.Config, log *slog.Logger) (*Core, error) {
 		_ = st.Close()
 		return nil, err
 	}
+	completer := llm.CompleterFromConfig(
+		cfg.LLMBackend, cfg.LLMAPIKey, cfg.LLMBaseURL, cfg.LLMModel,
+		cfg.AnthropicAPIKey, cfg.AnthropicModel,
+	)
+	if err := reg.Register(pipeplayer.NewWithRefine(completer)); err != nil {
+		_ = st.Close()
+		return nil, err
+	}
+	if err := reg.Register(llm.New(completer)); err != nil {
+		_ = st.Close()
+		return nil, err
+	}
 	r := runner.New(reg, bus, st, cfg.WorkspaceRoot, cfg.LLMBackend, cfg.MaxConcurrentRuns, log)
 	return &Core{Cfg: cfg, Reg: reg, Bus: bus, Store: st, Runner: r, Log: log}, nil
 }
@@ -56,13 +70,22 @@ func (c *Core) SubmitTask(ctx context.Context, t task.Task) (string, error) {
 	return res.RunID, nil
 }
 
+type ChildRunView struct {
+	RunID  string `json:"run_id"`
+	TaskID string `json:"task_id"`
+	Status string `json:"status"`
+}
+
 type RunSnapshot struct {
-	RunID     string         `json:"run_id"`
-	TaskID    string         `json:"task_id"`
-	Status    string         `json:"status"`
-	Error     string         `json:"error,omitempty"`
-	Events    []event.Event  `json:"events"`
-	Task      json.RawMessage `json:"task,omitempty"`
+	RunID       string            `json:"run_id"`
+	TaskID      string            `json:"task_id"`
+	ParentRunID string            `json:"parent_run_id,omitempty"`
+	Status      string            `json:"status"`
+	Error       string            `json:"error,omitempty"`
+	Events      []event.Event     `json:"events"`
+	Task        json.RawMessage   `json:"task,omitempty"`
+	Subtasks    []store.Subtask   `json:"subtasks,omitempty"`
+	ChildRuns   []ChildRunView    `json:"child_runs,omitempty"`
 }
 
 func (c *Core) GetRun(ctx context.Context, runID string) (RunSnapshot, error) {
@@ -77,13 +100,22 @@ func (c *Core) GetRun(ctx context.Context, runID string) (RunSnapshot, error) {
 	if err != nil {
 		return RunSnapshot{}, err
 	}
+	subs, _ := c.Store.ListSubtasks(ctx, runID)
+	children, _ := c.Store.ListChildRuns(ctx, runID)
+	views := make([]ChildRunView, 0, len(children))
+	for _, ch := range children {
+		views = append(views, ChildRunView{RunID: ch.RunID, TaskID: ch.TaskID, Status: string(ch.Status)})
+	}
 	return RunSnapshot{
-		RunID:  run.RunID,
-		TaskID: run.TaskID,
-		Status: string(run.Status),
-		Error:  run.ErrorJSON,
-		Events: evs,
-		Task:   taskJSON,
+		RunID:       run.RunID,
+		TaskID:      run.TaskID,
+		ParentRunID: run.ParentRunID,
+		Status:      string(run.Status),
+		Error:       run.ErrorJSON,
+		Events:      evs,
+		Task:        taskJSON,
+		Subtasks:    subs,
+		ChildRuns:   views,
 	}, nil
 }
 

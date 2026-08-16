@@ -5,11 +5,14 @@ import (
 	"encoding/json"
 	"errors"
 	"log/slog"
+	"strings"
 	"sync"
 	"time"
 
+	"github.com/gspaim/Runtgine/internal/core/contextpack"
 	"github.com/gspaim/Runtgine/internal/core/event"
 	"github.com/gspaim/Runtgine/internal/core/plan"
+	corepipe "github.com/gspaim/Runtgine/internal/core/pipeline"
 	"github.com/gspaim/Runtgine/internal/core/registry"
 	"github.com/gspaim/Runtgine/internal/core/result"
 	"github.com/gspaim/Runtgine/internal/core/store"
@@ -54,6 +57,10 @@ type SubmitResult struct {
 }
 
 func (r *Runner) Submit(ctx context.Context, t task.Task) (SubmitResult, error) {
+	return r.SubmitChild(ctx, t, "")
+}
+
+func (r *Runner) SubmitChild(ctx context.Context, t task.Task, parentRunID string) (SubmitResult, error) {
 	if err := task.StructuralValidate(t); err != nil {
 		_ = r.emit("", t.TaskID, nil, event.TypeTaskRejected, map[string]any{
 			"code":    result.CodeSchema,
@@ -79,7 +86,7 @@ func (r *Runner) Submit(ctx context.Context, t task.Task) (SubmitResult, error) 
 	rid := runID.String()
 
 	taskJSON, _ := json.Marshal(t)
-	if err := r.Store.InsertRun(ctx, store.Run{RunID: rid, TaskID: t.TaskID, Status: store.StatusAccepted}, taskJSON); err != nil {
+	if err := r.Store.InsertRun(ctx, store.Run{RunID: rid, TaskID: t.TaskID, ParentRunID: parentRunID, Status: store.StatusAccepted}, taskJSON); err != nil {
 		return SubmitResult{}, result.Runtime(result.CodeInternal, err.Error(), false, nil)
 	}
 	_ = r.emit(rid, t.TaskID, nil, event.TypeTaskAccepted, map[string]any{"steps": len(t.Steps)})
@@ -138,6 +145,7 @@ func (r *Runner) execute(ctx context.Context, t task.Task, p plan.Plan) {
 		byID[s.StepID] = s
 	}
 
+	var priors []store.StepOutput
 	for _, sid := range order {
 		if ctx.Err() != nil {
 			r.cancelled(ctx, p)
@@ -167,15 +175,24 @@ func (r *Runner) execute(ctx context.Context, t task.Task, p plan.Plan) {
 				r.cancelled(ctx, p)
 				return
 			}
+			pack := contextpack.Assemble(t, s.StepID, s.Capability, priors)
+			packJSON, _ := contextpack.Marshal(pack)
 			out, lastErr = player.Execute(ctx, registry.ExecRequest{
-				Capability: s.Capability,
-				Input:      s.Input,
-				Workspace:  r.Workspace,
-				RunID:      p.RunID,
-				TaskID:     t.TaskID,
-				StepID:     s.StepID,
+				Capability:   s.Capability,
+				Input:        s.Input,
+				Workspace:    r.Workspace,
+				RunID:        p.RunID,
+				TaskID:       t.TaskID,
+				StepID:       s.StepID,
+				Context:      packJSON,
+				PriorOutputs: priors,
 			})
 			if lastErr == nil {
+				_ = r.Store.SaveStepOutput(context.Background(), p.RunID, s.StepID, s.Capability, out)
+				priors = append(priors, store.StepOutput{StepID: s.StepID, Capability: s.Capability, Output: out})
+				if s.Capability == corepipe.CapDecompose {
+					r.persistAndSpawn(t, p.RunID, out)
+				}
 				_ = r.emit(p.RunID, t.TaskID, &stepID, event.TypeStepSucceeded, map[string]any{
 					"duration_ms": time.Since(start).Milliseconds(),
 					"attempts":    attempt,
@@ -227,6 +244,87 @@ func (r *Runner) emit(runID, taskID string, stepID *string, typ string, payload 
 		_ = r.Store.AppendEvent(context.Background(), e)
 	}
 	return nil
+}
+
+func (r *Runner) persistAndSpawn(parent task.Task, parentRunID string, decomposeOut json.RawMessage) {
+	var parsed struct {
+		Subtasks []struct {
+			SubtaskID           string `json:"subtask_id"`
+			Summary             string `json:"summary"`
+			SuggestedCapability string `json:"suggested_capability"`
+			Notes               string `json:"notes"`
+		} `json:"subtasks"`
+	}
+	if err := json.Unmarshal(decomposeOut, &parsed); err != nil {
+		return
+	}
+	for _, st := range parsed.Subtasks {
+		if st.SubtaskID == "" {
+			id, err := uuid.NewV7()
+			if err != nil {
+				continue
+			}
+			st.SubtaskID = id.String()
+		}
+		rec := store.Subtask{
+			SubtaskID:           st.SubtaskID,
+			ParentRunID:         parentRunID,
+			TaskID:              parent.TaskID,
+			Summary:             st.Summary,
+			SuggestedCapability: st.SuggestedCapability,
+			Notes:               st.Notes,
+		}
+		_ = r.Store.InsertSubtask(context.Background(), rec)
+		child, ok := childTask(parent, st.Summary, st.SuggestedCapability, st.Notes)
+		if !ok {
+			continue
+		}
+		res, err := r.SubmitChild(context.Background(), child, parentRunID)
+		if err != nil {
+			r.Log.Warn("child run failed to submit", "err", err, "subtask", st.SubtaskID)
+			continue
+		}
+		_ = r.Store.SetSubtaskChildRun(context.Background(), st.SubtaskID, res.RunID)
+	}
+}
+
+func childTask(parent task.Task, summary, capName, notes string) (task.Task, bool) {
+	if capName == "" {
+		capName = "shell.exec"
+	}
+	if strings.HasPrefix(capName, "pipeline.") {
+		return task.Task{}, false
+	}
+	input := json.RawMessage(`{}`)
+	if capName == "shell.exec" {
+		msg := summary
+		if msg == "" {
+			msg = parent.Intent.Summary
+		}
+		b, _ := json.Marshal(map[string]any{
+			"command":    []string{"echo", msg},
+			"workdir":    ".",
+			"timeout_ms": 5000,
+		})
+		input = b
+	}
+	id, err := task.NewID()
+	if err != nil {
+		return task.Task{}, false
+	}
+	return task.Task{
+		SchemaVersion: task.SchemaVersion,
+		TaskID:        id,
+		CreatedAt:     time.Now().UTC(),
+		Source:        task.Source{EntryPoint: parent.Source.EntryPoint, Ref: parent.Source.Ref},
+		Intent:        task.Intent{Summary: summary, Notes: notes},
+		Steps: []task.Step{{
+			StepID:     "s1",
+			Capability: capName,
+			Input:      input,
+		}},
+		Metadata: map[string]any{"child": true},
+	}, true
 }
 
 func jsonRaw(b json.RawMessage) any {

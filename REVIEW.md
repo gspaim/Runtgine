@@ -120,5 +120,5 @@ Fase 6: Ecossistema (biblioteca de Players)
 
 Documentacao alinhada; stack CONFIRMED; MVP canônico em 09-mvp.md.
 **P0 + P1 + P2 CONFIRMADOS** (`11`, `12`, `13`; NATS DEFERRED).
-Proximo passo: implementar Core (slice 1) depois Board/pipeline (slice 2).
+Slice 1 (Core/Shell/CLI) e slice 2 (pipeline/LLM/Board) implementados.
 P3 (G-40+) futuro.

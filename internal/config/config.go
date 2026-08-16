@@ -14,8 +14,14 @@ type Config struct {
 	WorkspaceRoot     string `json:"workspace_root"`
 	LogLevel          string `json:"log_level"`
 	MaxConcurrentRuns int    `json:"max_concurrent_runs"`
-	LLMBackend        string `json:"llm_backend"` // openai-compat | anthropic (slice 2)
-	DBPath            string `json:"-"`           // derived: workspace/.runtgine/runtgine.db
+	LLMBackend        string `json:"llm_backend"` // openai-compat | anthropic
+	LLMAPIKey         string `json:"-"`
+	LLMBaseURL        string `json:"llm_base_url"`
+	LLMModel          string `json:"llm_model"`
+	AnthropicAPIKey   string `json:"-"`
+	AnthropicModel    string `json:"anthropic_model"`
+	GitHubToken       string `json:"-"`
+	DBPath            string `json:"-"`
 }
 
 func Defaults() Config {
@@ -74,6 +80,15 @@ func mergeFile(dst *Config, src Config) {
 	if src.LLMBackend != "" {
 		dst.LLMBackend = src.LLMBackend
 	}
+	if src.LLMBaseURL != "" {
+		dst.LLMBaseURL = src.LLMBaseURL
+	}
+	if src.LLMModel != "" {
+		dst.LLMModel = src.LLMModel
+	}
+	if src.AnthropicModel != "" {
+		dst.AnthropicModel = src.AnthropicModel
+	}
 	// workspace_root in file is ignored if env/flag set; allow file to set if still default cwd-only? skip for safety
 }
 
@@ -89,6 +104,33 @@ func applyEnv(cfg *Config) {
 	if v := os.Getenv("RUNTGINE_LLM_BACKEND"); v != "" {
 		cfg.LLMBackend = v
 	}
+	if v := firstEnv("RUNTGINE_LLM_API_KEY", "OPENAI_API_KEY"); v != "" {
+		cfg.LLMAPIKey = v
+	}
+	if v := os.Getenv("RUNTGINE_LLM_BASE_URL"); v != "" {
+		cfg.LLMBaseURL = v
+	}
+	if v := os.Getenv("RUNTGINE_LLM_MODEL"); v != "" {
+		cfg.LLMModel = v
+	}
+	if v := firstEnv("RUNTGINE_ANTHROPIC_API_KEY", "ANTHROPIC_API_KEY"); v != "" {
+		cfg.AnthropicAPIKey = v
+	}
+	if v := os.Getenv("RUNTGINE_ANTHROPIC_MODEL"); v != "" {
+		cfg.AnthropicModel = v
+	}
+	if v := firstEnv("RUNTGINE_GITHUB_TOKEN", "GITHUB_TOKEN"); v != "" {
+		cfg.GitHubToken = v
+	}
+}
+
+func firstEnv(keys ...string) string {
+	for _, k := range keys {
+		if v := os.Getenv(k); v != "" {
+			return v
+		}
+	}
+	return ""
 }
 
 // EnsureRuntimeDir creates workspace/.runtgine if needed.

@@ -7,6 +7,7 @@ import (
 	"sync"
 
 	"github.com/gspaim/Runtgine/internal/core/result"
+	"github.com/gspaim/Runtgine/internal/core/store"
 )
 
 type Kind string
@@ -34,12 +35,14 @@ type Capability struct {
 }
 
 type ExecRequest struct {
-	Capability string
-	Input      json.RawMessage
-	Workspace  string
-	RunID      string
-	TaskID     string
-	StepID     string
+	Capability   string
+	Input        json.RawMessage
+	Workspace    string
+	RunID        string
+	TaskID       string
+	StepID       string
+	Context      json.RawMessage
+	PriorOutputs []store.StepOutput
 }
 
 // Player executes a capability.
