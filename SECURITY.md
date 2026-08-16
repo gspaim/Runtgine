@@ -4,7 +4,15 @@ O Runtgine está em fase MVP e ainda não possui releases estáveis.
 
 ## Versões suportadas
 
-Somente o código mais recente da branch `main` recebe correções de segurança.
+| Canal | Suporte de segurança |
+|---|---|
+| Tip de `main` | Sim (código liberável) |
+| Tip de `develop` | Pré-release; correções entram via PR |
+| Tags `vX.Y.Z-rc.N` | Só até a estável correspondente |
+| Tags `vX.Y.Z` | Após a primeira estável; ver fluxo em `docs/15-git-workflow.md` |
+
+Enquanto não houver tag estável publicada, reporte contra o tip de `main`
+(ou o commit afetado).
 
 ## Relatando uma vulnerabilidade
 

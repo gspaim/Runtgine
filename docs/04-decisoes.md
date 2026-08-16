@@ -186,3 +186,18 @@ Ver [12-board-p1.md](12-board-p1.md).
 | G-25 LLM Player v0 | CONFIRMED | Interface unica; backends OpenAI-compat + Anthropic |
 | G-26 Task Router basico | CONFIRMED | Regras: capability → deterministic → default AI |
 | G-27 Subtasks | CONFIRMED | SQLite + child runs (`parent_run_id`) |
+
+## Git / release — fluxo de branches
+
+Ver [15-git-workflow.md](15-git-workflow.md).
+
+| Decisao | Status | Notas |
+|---|---|---|
+| Fluxo `feat → develop → release → main` | CONFIRMED | Integracao em `develop`; estabilizacao em `release/*`; estavel em `main` |
+| Prefixo de feature `feat/<NNN>-<slug>` | CONFIRMED | `NNN` = id da spec/issue (ex.: `feat/001-shell-player`) |
+| Outros prefixos `fix/` `docs/` `chore/` | CONFIRMED | Mesmo padrao numerico quando houver issue/spec |
+| Release candidates | CONFIRMED | Branch `release/x.y.z` + tags `vX.Y.Z-rc.N` |
+| Release estavel | CONFIRMED | Merge `release/*` → `main` + tag `vX.Y.Z`; back-merge para `develop` |
+| Semver do produto | CONFIRMED | Tags Git do binario/CLI; distinto de `schema_version` do Task IR |
+| CI em PR (test + vet) | CONFIRMED | GitHub Actions; ver `.github/workflows/` |
+| Branch protection | CONFIRMED | Recomendado em `develop`/`main`/`release/*`; configurar no GitHub |
