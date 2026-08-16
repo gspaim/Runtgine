@@ -48,6 +48,7 @@ Status: CONFIRMED | HYPOTHESIS | OPEN QUESTION | REJECTED
 | Task Validator | CONFIRMED (v0) | Subset MVP: capabilities, inputs, schemas; ver 11 |
 | Runtime Graph | HYPOTHESIS | Memoria estrutural |
 | Context Engine | HYPOTHESIS | Monta contexto relevante |
+| Project Memory | HYPOTHESIS | Memoria episodica / de projeto; ver `16` |
 | Player Router | HYPOTHESIS | Roteia por capability + custo |
 | Execution Policy | HYPOTHESIS | Regras de seguranca |
 | Resource Claim | HYPOTHESIS | Bloqueio concorrente |
@@ -87,6 +88,7 @@ Ver [09-mvp.md](09-mvp.md). Decisoes-chave:
 | Task Validator | HYPOTHESIS | Valida antes de executar |
 | Runtime Graph | HYPOTHESIS | Memoria estrutural |
 | Context Engine | HYPOTHESIS | Monta contexto relevante |
+| Project Memory | HYPOTHESIS | Memoria episodica / de projeto; ver `16` |
 
 ## Decisoes CONFIRMED (visao geral)
 
@@ -186,6 +188,26 @@ Ver [12-board-p1.md](12-board-p1.md).
 | G-25 LLM Player v0 | CONFIRMED | Interface unica; backends OpenAI-compat + Anthropic |
 | G-26 Task Router basico | CONFIRMED | Regras: capability → deterministic → default AI |
 | G-27 Subtasks | CONFIRMED | SQLite + child runs (`parent_run_id`) |
+
+## Project Memory (P3) — HYPOTHESIS
+
+Ver [16-project-memory.md](16-project-memory.md). Esboco reforçado (revisao
+conceitual); **nao autoriza codigo**. Nada abaixo e CONFIRMED.
+
+| Decisao | Status | Notas |
+|---|---|---|
+| Project Memory (episodica / de projeto) | HYPOTHESIS | Continuacao entre runs no mesmo projeto (G-46) |
+| Tres memorias: temporal / estrutural / episodica | HYPOTHESIS | Event Store ≠ Runtime Graph ≠ Project Memory |
+| Fato historico ≠ status operacional (validade) | HYPOTHESIS | Candidatos: `active`/`superseded`/`archived` ou layers operational/historical |
+| Memory ≠ Knowledge (evolucao possivel) | HYPOTHESIS | Episodio vs consolidado; sem novo subsystem agora |
+| Memory Provider → ContextPack | HYPOTHESIS | Default conceitual de acesso (AssembleContext) |
+| Integracao inicial via sidecar / MCP | HYPOTHESIS | Fases A/B experimentais; depende G-44 se MCP |
+| Extensao ContextPack (`memory_hits` + budget + hierarquia) | HYPOTHESIS | Rascunho experimental; prioridade menor que task/estado atual |
+| Memory Player (`memory.*`) | OPEN QUESTION | So se steps do Plan exigirem; ver G-47 |
+| Embutir ai-memory (Rust) no Core | REJECTED | Dominio e stack ortogonais; sidecar/Provider apenas |
+| Memoria como autoridade de execucao | REJECTED | Sugere contexto; nunca capability/policy/Validator bypass |
+| Supersession silenciosa via LLM no Core | REJECTED | Validade so com opt-in explicito |
+| RAG generico / indexar transcripts como produto | REJECTED | Compile observations; nao chat retrieval |
 
 ## Git / release — fluxo de branches
 

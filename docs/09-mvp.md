@@ -68,6 +68,7 @@ não no lugar dele.
 - Plugin system
 - Wails (desktop)
 - MCP integration
+- Project Memory / memoria cross-session (ver `16`; P3 HYPOTHESIS)
 - Event sourcing
 - API HTTP
 - NATS / Event Bus distribuído
