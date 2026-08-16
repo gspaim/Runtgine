@@ -346,6 +346,7 @@ vulnerabilidade.
 | [MVP](docs/09-mvp.md) | Escopo canônico |
 | [Gaps](docs/10-gaps.md) | Lacunas e próximos problemas |
 | [Protocolo v0](docs/11-protocolo-v0.md) | Task IR, Manifest, Events e Results |
+| [Runtime Graph](docs/18-runtime-graph-v0.md) | Proposta v0 (ainda HYPOTHESIS) |
 | [TUI Design](docs/14-tui-design.md) | Constellation Mission Control |
 | [Git workflow](docs/15-git-workflow.md) | Branches, RC e releases |
 | [Guia para LLMs](AGENTS.md) | Regras de implementação |
