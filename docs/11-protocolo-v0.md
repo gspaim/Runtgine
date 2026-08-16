@@ -26,8 +26,16 @@ Itens individuais marcados `CONFIRMED` nas secoes.
 | Campo | Formato |
 |---|---|
 | IDs (`task_id`, `run_id`, `event_id`) | UUID v7 string (time-ordered; RFC 9562) |
-| `schema_version` | semver string no documento (`"0.1.0"`) |
+| `schema_version` | exatamente `"0.1.0"` no MVP (sem fill silencioso) |
 | Nomes de capability | `domain.action` (ex.: `shell.exec`, `git.commit`) |
+
+Regras de admissão (Slice 4):
+
+- `task_id` omitido → Core/CLI gera UUID v7; se presente, deve ser UUID v7
+  valido (UUID v4/outros → `validation.schema`).
+- `created_at` omitido → Core preenche UTC; se presente, RFC3339.
+- Schema canônico: `schemas/task-ir-v0.1.0.json` (draft 2020-12).
+- Lib: `github.com/santhosh-tekuri/jsonschema/v6`.
 
 ## 3. Capability naming (G-05)
 
@@ -63,7 +71,7 @@ Entrada estruturada do MVP (CLI/Board). Sem Intent Engine.
 ```json
 {
   "schema_version": "0.1.0",
-  "task_id": "550e8400-e29b-41d4-a716-446655440000",
+  "task_id": "01900000-0000-7000-8000-000000000001",
   "created_at": "2026-08-16T02:00:00Z",
   "source": {
     "entry_point": "cli",
@@ -93,9 +101,9 @@ Entrada estruturada do MVP (CLI/Board). Sem Intent Engine.
 
 | Campo | Obrigatorio | Notas |
 |---|---|---|
-| `schema_version` | sim | |
-| `task_id` | sim | UUID v7; CLI pode gerar |
-| `created_at` | sim | RFC3339 |
+| `schema_version` | sim | exatamente `"0.1.0"` |
+| `task_id` | sim (apos admissão) | UUID v7; omitido no arquivo → Core gera |
+| `created_at` | sim (apos admissão) | RFC3339; omitido → Core preenche UTC |
 | `source.entry_point` | sim | `cli` \| `tui` \| `board` \| `api` \| `other` |
 | `source.ref` | nao | id externo (card, file path) |
 | `intent.summary` | sim | humano; nao e executavel |
@@ -378,13 +386,15 @@ Capability: `shell.exec` (schema no Manifest §6).
 | Regra | Default MVP |
 |---|---|
 | Shell | sem shell string; so `command` argv (sem `sh -c` implicito) |
-| Workdir | deve estar dentro do workspace root configurado |
-| Env | allowlist ou herda minimo; sem injecao livre de secrets do host alem do necessario |
+| Workdir | path resolvido (`EvalSymlinks`) deve estar dentro do workspace root |
+| Env | se `input.env` presente: so essas chaves; se omitido: heranca minima (`PATH`, `HOME`, `USER`, `LANG`, `LC_*`, `TZ`, `TMPDIR`/`TMP`/`TEMP`) — nunca herda `*_TOKEN`, `*_API_KEY`, `RUNTGINE_*` |
 | Timeout | obrigatorio (default 60s) |
-| Rede | nao controlada no v0 (documentar risco); deny via OS fica P2 |
-| Binarios | allowlist opcional (`go`, `git`, …) — default permissivo + warning no log |
+| Rede | nao controlada no v0 (documentar risco); deny via OS fora do slice |
+| Binarios | allowlist opcional — default permissivo + `slog.Warn` |
 
 Falha de sandbox → `validation.invalid_input` ou `runtime.player_error` com code dedicado futuro `policy.denied`.
+
+Isolamento de OS (namespaces, Landlock, deny de rede) **nao** faz parte do sandbox v0.
 
 ---
 
@@ -428,13 +438,16 @@ Core nao importa `entrypoint`. Players nao importam UI.
 
 ## 17. Validator v0
 
-Checagens MVP:
+Checagens MVP (ordem):
 
-1. JSON Schema do Task IR
-2. `steps` nao vazio; `step_id` unicos; `depends_on` aciclico e referencias validas
-3. Cada `capability` existe no Registry
-4. `input` valida contra `input_schema` da capability
-5. Regras de sandbox estaticas do Shell (workdir, argv)
+1. JSON Schema do Task IR sobre os **bytes** (antes do `encoding/json` descartar extras)
+2. Identidade: `schema_version == "0.1.0"`; `task_id` UUID v7
+3. `steps` nao vazio; `step_id` unicos; `depends_on` aciclico e referencias validas
+4. Cada `capability` existe no Registry
+5. `input` valida contra `input_schema` da capability (compilado no `Register`)
+6. Regras de sandbox estaticas do Shell (argv, workdir resolvido)
+
+Falha em qualquer passo → `task.rejected` (sem `InsertRun`).
 
 ---
 
