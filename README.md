@@ -185,28 +185,11 @@ Use `runtgine <comando> --help` para consultar todas as flags.
 
 ## Arquitetura
 
-```mermaid
-flowchart TB
-    CLI["CLI"] --> TaskIR["Task IR"]
-    Board["Board"] --> TaskIR
-    TaskIR --> API["Core API"]
-    TUI["TUI"] -->|"GetRun / Cancel"| API
-    API --> Validator
-    Validator --> Runner
-    Runner --> Plan["Execution Plan"]
-    Plan --> Ctx["ContextPack"]
-    Ctx -->|"capability"| Registry
-    Registry -->|"Execute"| Players["Players: Shell / Pipeline / LLM"]
-    Players --> Result
-    Runner --> Store[("SQLite")]
-    Result --> Store
-    Runner -.-> Bus["Event Bus"]
-    Bus -.-> TUI
-    Bus -.-> CLI
-```
+<p align="center">
+  <img src="docs/assets/runtgine-architecture.png" alt="Arquitetura do Runtgine: CLI e Board submetem Task IR ao Core; o Runner chama Players; SQLite persiste; Event Bus só observa." width="100%">
+</p>
 
-O Event Bus só publica o lifecycle da Run; não admite Task. A TUI observa
-o Bus e consulta o Core; CLI e Board é que submetem Task IR.
+Fluxo real do MVP: **CLI/Board** montam `Task IR` e chamam `SubmitTask`. O **Validator** rejeita schema ou capability desconhecida. O **Runner** cria a `Run`, gera o **Plan** (capability → player, deterministic-first), monta o **ContextPack** por step e chama `Player.Execute`. O **Result** volta ao Runner, que grava o **SQLite** e publica no **Event Bus**. A **TUI** observa e cancela — não submete Task. O Bus não é fila de admissão.
 
 ### Modelo central
 
