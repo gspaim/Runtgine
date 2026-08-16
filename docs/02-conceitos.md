@@ -84,8 +84,9 @@ Funciona como um compilador:
 
 Human Intent -> Intent Engine -> Task IR -> Validator -> Execution Plan
 
-No MVP, a entrada e Task IR v0 estruturado (JSON/YAML via CLI/Board).
-Intent Engine de linguagem natural vem depois do Core estavel.
+No MVP, a entrada e Task IR v0 estruturado (JSON/YAML via CLI/Board) —
+schema CONFIRMED em `11-protocolo-v0.md`. Intent Engine de linguagem
+natural vem depois do Core estavel.
 
 O Intent Engine e uma LLM especializada em Runtgine Protocol,
 Players, Capabilities, Task Schemas, Policies e Runtime Graph.
