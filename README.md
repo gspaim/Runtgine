@@ -53,8 +53,8 @@ Task → Event → Queue → Player → Result
 ### Princípios
 
 - **Deterministic-first:** regras, ferramentas e código antes de LLMs.
-- **Validation-first:** estrutura, dependencies e capabilities são verificadas
-  antes do run; validação completa dos schemas de input ainda está no roadmap.
+- **Validation-first:** estrutura, dependencies, capabilities e `input_schema`
+  são verificados antes do run.
 - **Protocol-first:** entradas e saídas têm contratos explícitos e versionados.
 - **Event-driven:** o lifecycle do Run gera telemetria observável e persistida.
 - **Core is the product:** CLI, TUI e Board são superfícies sobre o mesmo Core.
@@ -73,14 +73,15 @@ Task → Event → Queue → Player → Result
 Visão enxuta do que já está em `main`. **Atualizar esta seção em todo PR
 `release/*` → `main`** (e em PRs para `develop` quando o estágio mudar).
 
-**Agora:** MVP funcional (slices 1–3), sem release estável.
+**Agora:** MVP funcional (slices 1–4), sem release estável.
 
 | | Entrega |
 |---|---|
 | Feito | Slice 1 — Core, Task IR, Validator, Event Bus, SQLite, Shell Player, CLI |
 | Feito | Slice 2 — Pipeline, ContextPack, LLM Players, GitHub Board |
 | Feito | Slice 3 — TUI Constellation Mission Control |
-| Próximo | Spec Runtime Graph v0 (`docs/18`) — confirmar em `04` antes de codar; em paralelo: closeout Validator (#11) e Intent Engine (#12) |
+| Feito | Slice 4 — Validator com JSON Schema, IDs/`schema_version` estritos, sandbox Shell v0 |
+| Próximo | Spec Runtime Graph v0 (`docs/18`) — confirmar em `04` antes de codar; Intent Engine (#12) em paralelo |
 | Depois | Runtime Graph (codigo pos-CONFIRMED), mais Players, policies/HITL, API HTTP, bus distribuído, desktop Wails |
 
 Detalhe do corte: [`docs/09-mvp.md`](docs/09-mvp.md). Limitações atuais abaixo.
@@ -314,25 +315,22 @@ snapshot público de configuração da TUI.
 
 > [!WARNING]
 > O Shell Player executa programas locais com os privilégios do processo do
-> Runtgine. O MVP evita shell implícito, usa `argv`, aplica timeout e verifica
-> lexicalmente o `workdir`, mas **não é um sandbox de isolamento forte**.
-> Symlinks não são resolvidos por essa verificação. Quando `input.env` é
-> omitido, o processo filho herda o ambiente do Runtgine, inclusive eventuais
-> tokens. Não execute Tasks não confiáveis.
+> Runtgine. O MVP evita shell implícito, usa `argv`, aplica timeout, resolve
+> symlinks no `workdir` e, quando `input.env` é omitido, herda apenas um
+> ambiente mínimo (sem tokens/`RUNTGINE_*`). **Ainda não é um sandbox de
+> isolamento forte** (sem namespaces, Landlock ou deny de rede). Não execute
+> Tasks não confiáveis.
 
 Consulte a [política de segurança](SECURITY.md) antes de relatar uma
 vulnerabilidade.
 
 ## Limitações conhecidas
 
-- validação de JSON Schema dos inputs ainda não é aplicada integralmente pelo
-  Validator;
-- IDs e `schema_version` fornecidos pelo cliente ainda não são validados de
-  forma estrita;
 - steps de um mesmo Run são sequenciais; a concorrência atual ocorre entre
   Runs;
 - cancelamento não é coordenado entre processos independentes;
-- o Shell Player não oferece isolamento de filesystem, rede ou secrets;
+- o Shell Player não oferece isolamento de filesystem, rede ou secrets além da
+  herança mínima de env e do confinamento de `workdir`;
 - não há garantia de estabilidade de API antes da primeira release.
 
 ## Documentação

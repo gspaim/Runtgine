@@ -46,6 +46,15 @@ func NewID() (string, error) {
 	return id.String(), nil
 }
 
+// IsUUIDv7 reports whether s is a valid UUID version 7.
+func IsUUIDv7(s string) bool {
+	id, err := uuid.Parse(s)
+	if err != nil {
+		return false
+	}
+	return id.Version() == 7
+}
+
 func Parse(data []byte) (Task, error) {
 	var t Task
 	if err := json.Unmarshal(data, &t); err != nil {
@@ -61,9 +70,7 @@ func Parse(data []byte) (Task, error) {
 	if t.CreatedAt.IsZero() {
 		t.CreatedAt = time.Now().UTC()
 	}
-	if t.SchemaVersion == "" {
-		t.SchemaVersion = SchemaVersion
-	}
+	// schema_version is never filled silently — IdentityValidate requires "0.1.0".
 	if t.Metadata == nil {
 		t.Metadata = map[string]any{}
 	}

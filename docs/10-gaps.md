@@ -137,9 +137,10 @@ Nao autoriza codigo ate promocao em `04-decisoes.md`.
 Ordem pratica de codigo:
 1. Core CLI + Shell (+ SQLite) — slice 1 — feito
 2. Pipeline deterministic + LLM + Board adapter — slice 2 — feito
-3. TUI — slice 3 — feito
-4. Validator/sandbox closeout / Intent Engine — PRs abertos
-5. Runtime Graph v0 — **somente apos CONFIRMED** (`18` → `04`)
+3. TUI Constellation Mission Control — slice 3 — feito
+4. Validator JSON Schema + IDs estritos + sandbox Shell v0 — slice 4 — feito
+5. Intent Engine NL v0 — PR aberto
+6. Runtime Graph v0 — **somente apos CONFIRMED** (`18` → `04`)
 
 P3 (G-40+) permanece futuro. Project Memory (G-46/G-47) e esboco em
 `16-project-memory.md` — HYPOTHESIS / OPEN QUESTION; nao codificar ate
