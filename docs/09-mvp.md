@@ -101,3 +101,13 @@ Alinhada a `AGENTS.md`:
 - Subtasks distribuídas para Players corretos
 - Cada Player recebe contexto relevante (quando Context assembly existir)
 - Falha retorna erro claro na CLI/TUI
+
+## Criterio de “pronto para codar”
+
+Pode iniciar implementacao do Core quando G-01..G-18 estiverem
+**CONFIRMED** (ou explicitamente REJECTED com alternativa) em `04-decisoes.md`.
+Ver propostas em [11-protocolo-v0.md](11-protocolo-v0.md).
+
+Nota: o incluso “Board” em `09-mvp.md` permanece no MVP de produto, mas
+o **primeiro slice de codigo** e CLI + Shell sobre o protocolo v0; Board e P1
+de especificacao (G-20+).

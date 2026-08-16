@@ -1,6 +1,6 @@
 # Documentacao do Runtgine
 
-Ordem de leitura recomendada: 01 → 08, depois 09 (MVP).
+Ordem de leitura recomendada: 01 → 09, depois 10–11 (gaps e protocolo).
 Autoridade de decisoes: [04-decisoes.md](04-decisoes.md).
 
 | # | Documento | Conteudo |
@@ -15,6 +15,8 @@ Autoridade de decisoes: [04-decisoes.md](04-decisoes.md).
 | 07 | 07-stack.md | Stack tecnologica e justificativas |
 | 08 | 08-workflow-templates.md | Workflow Templates, TLC Spec-Driven |
 | 09 | 09-mvp.md | Corte canônico do MVP |
+| 10 | 10-gaps.md | Gaps e definicoes faltantes |
+| 11 | 11-protocolo-v0.md | Protocolo/schemas v0 (PROPOSTA) |
 
 ## Fontes historicas (raiz do repo)
 
@@ -25,3 +27,6 @@ Autoridade de decisoes: [04-decisoes.md](04-decisoes.md).
 | REVIEW.md | Resumo executivo; deve espelhar docs/ |
 
 Nao usar fontes historicas para decisoes de implementacao.
+
+Antes de codar o Core: confirmar propostas em `11-protocolo-v0.md`
+via checklist em `04-decisoes.md`.

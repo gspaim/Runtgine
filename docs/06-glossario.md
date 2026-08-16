@@ -20,6 +20,8 @@
 | Player Router | Seleciona o melhor Player para uma capability |
 | Queue | Trabalho aguardando processamento |
 | Resource Claim | Bloqueio concorrente de recurso |
+| Run | Tentativa de execucao de uma Task aceita (tem run_id) |
+| Runner | Orchestrator minimo do MVP; valida, planeja e despacha steps |
 | Runtime Graph | Memoria estrutural: relacoes entre Players, Resources, Tasks |
 | Task | Intencao/pedido do usuario |
 | Task IR | Representacao intermediaria validavel de uma task |
