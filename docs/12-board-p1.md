@@ -62,9 +62,23 @@ existirem). Fronteira regras vs LLM: G-23.
 
 ---
 
+## G-23 — Regras vs LLM por etapa
+
+**Status: CONFIRMED**
+
+| Capability | Implementacao MVP |
+|---|---|
+| `pipeline.repo-search` | Deterministico (walk/grep/`go list`/ripgrep) |
+| `pipeline.effort` | Heuristica (+ LLM opcional se incerto) |
+| `pipeline.difficulty` | Heuristica (effort + risks do tech-review) |
+| `pipeline.tech-review` | LLM Player |
+| `pipeline.spec-review` | LLM Player |
+| `pipeline.decompose` | Regras + LLM para refinar `subtasks[]` |
+
+---
+
 ## Em aberto (proximos)
 
-- G-23 Regras vs LLM por etapa
 - G-24 Context assembly basico
 - G-25 LLM Player v0
 - G-26 Task Router basico

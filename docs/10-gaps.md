@@ -60,7 +60,7 @@ Em conflito de escopo, prevalece `09-mvp.md` + `04-decisoes.md`.
 | G-20 | Card GitHub Projects → Task IR | **CONFIRMED** — ver `12-board-p1.md` |
 | G-21 | Write-back no board | **CONFIRMED** — status + comentario; sem criar subtasks |
 | G-22 | Contratos por etapa do pipeline | **CONFIRMED** — `pipeline.*` + steps lineares; ver `12` |
-| G-23 | Fronteira regras vs LLM | Por etapa |
+| G-23 | Fronteira regras vs LLM | **CONFIRMED** — ver tabela em `12-board-p1.md` |
 | G-24 | Context assembly basico | Campos minimos do pacote de contexto |
 | G-25 | LLM Player v0 | Interface Go, provedor, credenciais, retries |
 | G-26 | Task Router basico | Criterios do MVP vs Player Router HYPOTHESIS |
