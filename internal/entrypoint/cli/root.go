@@ -78,6 +78,9 @@ func newRunCmd(workspace *string, verbose *bool) *cobra.Command {
 			if err != nil {
 				return err
 			}
+			if err := task.ValidateDocument(jsonBytes); err != nil {
+				return err
+			}
 			t, err := task.Parse(jsonBytes)
 			if err != nil {
 				return err

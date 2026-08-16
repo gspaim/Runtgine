@@ -144,6 +144,23 @@ Gaps P1 (Board/LLM) permanecem abertos.
 - Event Store no MVP → events append-only em SQLite (nao event sourcing)
 - Task IR / Validator basico / Runner v0 → CONFIRMED
 
+## Slice 4 — fidelidade do Validator / sandbox v0
+
+Fecha o que o README listava como “próximo” apos slices 1–3: validacao
+completa do protocolo v0 e sandbox Shell honrado, sem isolamento de OS.
+
+| Decisao | Status | Notas |
+|---|---|---|
+| JSON Schema draft 2020-12 via `santhosh-tekuri/jsonschema/v6` | CONFIRMED | Schema canonico em `schemas/`; embed no Core |
+| `schema_version` estrito `"0.1.0"` | CONFIRMED | Ausente/outro → `validation.schema`; sem fill silencioso |
+| `task_id` UUID v7 | CONFIRMED | Omitido → Core gera v7; presente e nao-v7 → rejeita |
+| `created_at` | CONFIRMED | Omitido → UTC; presente → RFC3339 |
+| `input` vs `input_schema` no Validator | CONFIRMED | Antes de `Execute`; falha → `task.rejected` |
+| Shell env omitido = heranca minima | CONFIRMED | PATH/HOME/USER/LANG/LC_*/TZ/TMP*; nunca tokens/`RUNTGINE_*` |
+| Shell workdir resolve symlink | CONFIRMED | `EvalSymlinks`; path resolvido deve ficar no workspace |
+| Allowlist de binarios | CONFIRMED | Default permissivo + `slog.Warn`; sem config obrigatoria |
+| Isolamento OS / deny de rede | REJECTED (neste slice) | Continua fora do sandbox v0 (`11` §14) |
+
 ## Engenharia (P2) — CONFIRMADO
 
 Ver [13-p2.md](13-p2.md).

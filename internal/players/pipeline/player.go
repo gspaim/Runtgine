@@ -30,7 +30,7 @@ func New() *Player { return &Player{} }
 func NewWithRefine(c llm.Completer) *Player { return &Player{Refine: c} }
 
 func (p *Player) Manifest() registry.Manifest {
-	obj := json.RawMessage(`{"type":"object"}`)
+	obj := json.RawMessage(`{"type":"object","additionalProperties":false}`)
 	caps := []registry.Capability{
 		{Name: corepipe.CapRepoSearch, InputSchema: obj, OutputSchema: json.RawMessage(`{"type":"object","required":["paths","symbols"]}`)},
 		{Name: corepipe.CapEffort, InputSchema: obj, OutputSchema: json.RawMessage(`{"type":"object","required":["effort","rationale"]}`)},
