@@ -157,6 +157,19 @@ Ver [13-p2.md](13-p2.md).
 | G-36 NATS | DEFERRED | Bus plugavel; sem NATS no MVP |
 | G-38 Config runtime | CONFIRMED | defaults < file < env < flags |
 
+## TUI — Constellation Mission Control
+
+Ver [14-tui-design.md](14-tui-design.md).
+
+| Decisao | Status | Notas |
+|---|---|---|
+| Sistema visual Constellation Mission Control | CONFIRMED | Mission Control + constelacoes |
+| Bubble Tea + Lip Gloss + Bubbles | CONFIRMED | TUI moderna e responsiva |
+| Tabs Runs / Live / Board / Events / Config | CONFIRMED | Estrutura principal |
+| Tema espacial e visual, nao dominio | CONFIRMED | Manter Task/Run/Step/Event/Player |
+| TUI usa apenas APIs do Core | CONFIRMED | Nunca chama Player diretamente |
+| tuios no MVP | REJECTED | Nao e multiplexer; PTY futuro exige nova decisao |
+
 ## Board / pipeline (P1) — CONFIRMADO
 
 Ver [12-board-p1.md](12-board-p1.md).

@@ -24,6 +24,8 @@ das decisoes estarem registradas em `docs/04-decisoes.md`.
 MVP canônico: `docs/09-mvp.md`.
 Gaps: `docs/10-gaps.md`.
 Protocolo v0 (proposta): `docs/11-protocolo-v0.md` — confirmar antes de codar.
+Design da TUI: `docs/14-tui-design.md`.
+Skill obrigatoria para TUI: `.cursor/skills/runtgine-tui-design/SKILL.md`.
 
 ## Ordem de trabalho
 
@@ -59,3 +61,6 @@ Protocolo v0 (proposta): `docs/11-protocolo-v0.md` — confirmar antes de codar.
 - Nao usar brainstorm/conversas-empryo como fonte de stack (Rust/GPUI estao REJECTED)
 - Protocolo v0 P0 esta CONFIRMED em `04-decisoes` / `11` — Core liberado
 - Nao implementar gaps P1 (Board/LLM) sem especificar contratos (G-20+)
+- Ao trabalhar na TUI, seguir `docs/14-tui-design.md` e a skill
+  `.cursor/skills/runtgine-tui-design/SKILL.md`
+- Nao transformar a TUI em multiplexer nem adicionar tuios/PTY sem nova decisao
