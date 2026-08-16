@@ -8,9 +8,20 @@ Runtgine é um **runtime universal de execução e orquestração**: leve, orien
 
 ## Status do projeto
 
-**Fase 0 — Fundação (documentação).** Nenhum código ainda.
+**Slices 1–3 implementados** — Core, Pipeline/Board e TUI Constellation Mission Control.
 
-Stack principal **CONFIRMED** (Go, Cobra, Bubble Tea, Wails, Event Bus in-process, JSON Schema, SQLite). Conceitos de inteligência estrutural (Intent Engine, Runtime Graph, etc.) permanecem **HYPOTHESIS**. Ver [docs/04-decisoes.md](docs/04-decisoes.md) e [docs/09-mvp.md](docs/09-mvp.md).
+```bash
+go test ./...
+go build -o bin/runtgine ./cmd/runtgine
+./bin/runtgine run examples/hello.json
+./bin/runtgine pipeline run --summary "Analyze workspace"
+./bin/runtgine tui
+./bin/runtgine status <run_id>
+# Board (needs GITHUB_TOKEN):
+# ./bin/runtgine board poll --repo owner/name --label runtgine
+```
+
+Store local: `workspace/.runtgine/runtgine.db`
 
 ## O que é
 
@@ -30,10 +41,12 @@ Stack principal **CONFIRMED** (Go, Cobra, Bubble Tea, Wails, Event Bus in-proces
 
 ```text
 AGENTS.md            — guia para LLMs e contribuidores
-docs/                — documentação oficial (fonte de verdade)
-REVIEW.md            — resumo executivo
-brainstorm.md        — fonte histórica (não autoridade)
-conversas-empryo.md  — fonte histórica (não autoridade)
+cmd/runtgine/        — CLI
+internal/core/       — runtime (task, event, runner, store, …)
+internal/players/    — Shell, Pipeline e LLM Players
+internal/entrypoint/ — CLI, Board e TUI
+examples/            — Task IR de exemplo
+docs/                — documentação oficial
 ```
 
 ## Leitura recomendada

@@ -3,8 +3,9 @@
 Inventario do que a documentacao ainda nao fecha para iniciar o Core.
 Complementa `04-decisoes.md` e `09-mvp.md`.
 
-**Status deste doc:** inventario oficial. Itens bloqueantes tem proposta
-em [11-protocolo-v0.md](11-protocolo-v0.md) (aguardando confirmacao).
+Status deste doc: inventario oficial. Itens P0 do protocolo foram
+confirmados em [11-protocolo-v0.md](11-protocolo-v0.md) / `04-decisoes.md`.
+P1+ ainda abertos.
 
 ---
 
@@ -56,14 +57,14 @@ Em conflito de escopo, prevalece `09-mvp.md` + `04-decisoes.md`.
 
 | ID | Gap | Notas |
 |---|---|---|
-| G-20 | Card GitHub Projects → Task IR | Auth, campos, polling interval |
-| G-21 | Write-back no board | Atualiza status / cria subtasks? |
-| G-22 | Contratos por etapa do pipeline | Tech Review, Spec Review, Repo Search, Effort, Difficulty, Decomposition |
-| G-23 | Fronteira regras vs LLM | Por etapa |
-| G-24 | Context assembly basico | Campos minimos do pacote de contexto |
-| G-25 | LLM Player v0 | Interface Go, provedor, credenciais, retries |
-| G-26 | Task Router basico | Criterios do MVP vs Player Router HYPOTHESIS |
-| G-27 | Modelo de subtasks | Citado no sucesso do MVP; fora do Task model |
+| G-20 | Card GitHub Projects → Task IR | **CONFIRMED** — ver `12-board-p1.md` |
+| G-21 | Write-back no board | **CONFIRMED** — status + comentario; sem criar subtasks |
+| G-22 | Contratos por etapa do pipeline | **CONFIRMED** — `pipeline.*` + steps lineares; ver `12` |
+| G-23 | Fronteira regras vs LLM | **CONFIRMED** — ver tabela em `12-board-p1.md` |
+| G-24 | Context assembly basico | **CONFIRMED** — ContextPack v0; ver `12` |
+| G-25 | LLM Player v0 | **CONFIRMED** — OpenAI-compat + Anthropic; ver `12` |
+| G-26 | Task Router basico | **CONFIRMED** — regras deterministic-first; ver `12` |
+| G-27 | Modelo de subtasks | **CONFIRMED** — SQLite + child runs; ver `12` |
 
 Propostas detalhadas do Board ficam para um doc futuro apos confirmar `11`.
 Ate la, o Core deve rodar so com CLI + Shell.
@@ -74,15 +75,15 @@ Ate la, o Core deve rodar so com CLI + Shell.
 
 | ID | Gap |
 |---|---|
-| G-30 | Cancelamento, timeout, retry, concorrencia entre runs |
-| G-31 | Observabilidade alem da TUI (niveis de log, correlacao) |
-| G-32 | Fronteira Runtgine ↔ Chorus (alem de “complementares”) |
-| G-33 | Workspaces / worktrees |
-| G-34 | Estrategia de testes (unit vs integracao) |
-| G-35 | Wails: Svelte vs React |
-| G-36 | NATS / Event Bus distribuido (OPEN QUESTION) |
+| G-30 | Cancelamento, timeout, retry, concorrencia entre runs | **CONFIRMED** — retry configuravel por step; ver `13` |
+| G-31 | Observabilidade alem da TUI (niveis de log, correlacao) | **CONFIRMED** — slog + SQLite; ver `13` |
+| G-32 | Fronteira Runtgine ↔ Chorus | **CONFIRMED** — MVP independente; ver `13` |
+| G-33 | Workspaces / worktrees | **CONFIRMED** — um root + `.runtgine/`; ver `13` |
+| G-34 | Estrategia de testes (unit vs integracao) | **CONFIRMED** — ver `13` |
+| G-35 | Wails: Svelte vs React | **CONFIRMED** — Wails + Svelte; ver `13` |
+| G-36 | NATS / Event Bus distribuido (OPEN QUESTION) | **DEFERRED** — Bus plugavel; sem NATS no MVP; ver `13` |
 | G-37 | Modulo path Go + versao minima de Go |
-| G-38 | Config do runtime (arquivo, env, defaults) |
+| G-38 | Config do runtime (arquivo, env, defaults) | **CONFIRMED** — defaults < file < env < flags; ver `13` |
 
 ---
 
@@ -108,5 +109,12 @@ Ate la, o Core deve rodar so com CLI + Shell.
 
 ## Criterio de “pronto para codar”
 
-Pode iniciar implementacao do Core quando G-01..G-18 estiverem
-**CONFIRMED** (ou explicitamente REJECTED com alternativa) em `04-decisoes.md`.
+**P0 protocolo v0: CONFIRMADO.**  
+**P1 Board/pipeline (G-20..G-27): CONFIRMADO.**  
+**P2 engenharia (G-30..G-38): CONFIRMADO** (G-36 DEFERRED).
+
+Ordem pratica de codigo:
+1. Core CLI + Shell (+ SQLite) — slice 1
+2. Pipeline deterministic + LLM + Board adapter — slice 2
+
+P3 (G-40+) permanece futuro.

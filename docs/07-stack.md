@@ -9,11 +9,11 @@ Decisoes de tecnologia para o Runtgine.
 | Linguagem | Go | CONFIRMED |
 | CLI | Cobra | CONFIRMED |
 | TUI | Bubble Tea + Lip Gloss + Bubbles | CONFIRMED |
-| Desktop | Wails (Go + Svelte/React) | CONFIRMED |
+| Desktop | Wails (Go + Svelte) | CONFIRMED |
 | Event Bus | Canal Go (in-process) | CONFIRMED |
 | Serializacao | JSON + JSON Schema | CONFIRMED |
-| Store | SQLite (mattn/modernc) | CONFIRMED |
-| Logger | slog | HYPOTHESIS |
+| Store | SQLite (modernc.org/sqlite) | CONFIRMED |
+| Logger | slog | CONFIRMED |
 
 ## Por que Go
 
@@ -56,7 +56,7 @@ Se performance for critica: json-iterator ou protobuf.
 ## Por que SQLite
 
 Persistencia local, zero config, biblioteca embutida.
-mattn/go-sqlite3 (cgo) ou modernc.org/sqlite (pure Go).
+mattn/go-sqlite3 (cgo) foi preterido; **modernc.org/sqlite** (pure Go) e CONFIRMED.
 Se precisar de PostgreSQL/cloud: store plugavel.
 
 ## Tecnologias REJECTED (caminho atual)

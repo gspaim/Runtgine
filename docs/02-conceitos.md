@@ -22,7 +22,7 @@ Human Intent -> Intent Engine -> Task IR -> Validator -> Execution Plan -> Event
 | Event Bus | CONFIRMED | Transporte de eventos |
 | Capability | CONFIRMED | O que um Player sabe fazer |
 | Intent Engine | HYPOTHESIS | Traduz intencao em Task IR |
-| Task IR | HYPOTHESIS | Representacao intermediaria da task |
+| Task IR | CONFIRMED (v0) | Schema em 11-protocolo-v0; Intent Engine NL ainda HYPOTHESIS |
 | Task Validator | HYPOTHESIS | Valida antes de executar |
 | Runtime Graph | HYPOTHESIS | Memoria estrutural do sistema |
 | Context Engine | HYPOTHESIS | Monta contexto para cada Player |
@@ -84,8 +84,9 @@ Funciona como um compilador:
 
 Human Intent -> Intent Engine -> Task IR -> Validator -> Execution Plan
 
-No MVP, a entrada e Task IR v0 estruturado (JSON/YAML via CLI/Board).
-Intent Engine de linguagem natural vem depois do Core estavel.
+No MVP, a entrada e Task IR v0 estruturado (JSON/YAML via CLI/Board) —
+schema CONFIRMED em `11-protocolo-v0.md`. Intent Engine de linguagem
+natural vem depois do Core estavel.
 
 O Intent Engine e uma LLM especializada em Runtgine Protocol,
 Players, Capabilities, Task Schemas, Policies e Runtime Graph.

@@ -1,17 +1,17 @@
 # 11 — Protocolo v0 (PROPOSTA)
 
-Contratos minimos para o MVP Core. **Aguardando confirmacao.**
+Contratos minimos para o MVP Core.
 
-Nao e autoridade ate os itens serem promovidos em `04-decisoes.md`.
+**Status geral: P0 CONFIRMADO** (fechamento humano). Ver checklist no fim.
+
 Inventario de gaps: [10-gaps.md](10-gaps.md).
-
-Status de cada secao: `PROPOSED`.
+Itens individuais marcados `CONFIRMED` nas secoes.
 
 ---
 
 ## 1. Encoding (G-14)
 
-**Proposta**
+**Status: CONFIRMED** (fechamento humano)
 
 - Contrato canonico: **JSON** + **JSON Schema** (draft 2020-12 ou draft-07).
 - YAML na CLI e acucar: convertible → JSON antes da validacao (`runtgine run task.yaml`).
@@ -21,19 +21,17 @@ Status de cada secao: `PROPOSED`.
 
 ## 2. Identificadores e versao
 
-**Proposta**
+**Status: CONFIRMED** (fechamento humano)
 
 | Campo | Formato |
 |---|---|
-| IDs (`task_id`, `run_id`, `event_id`) | UUID v4 string |
+| IDs (`task_id`, `run_id`, `event_id`) | UUID v7 string (time-ordered; RFC 9562) |
 | `schema_version` | semver string no documento (`"0.1.0"`) |
-| Nomes de capability | `domain.action` em kebab-case invertido estilo reverse-DNS curto: `shell.exec`, `git.commit` |
-
----
+| Nomes de capability | `domain.action` (ex.: `shell.exec`, `git.commit`) |
 
 ## 3. Capability naming (G-05)
 
-**Proposta**
+**Status: CONFIRMED** (fechamento humano)
 
 ```text
 capability = <domain> "." <action>[ "." <qualifier> ]
@@ -55,6 +53,8 @@ Regras:
 ---
 
 ## 4. Task IR v0 (G-01)
+
+**Status: CONFIRMED** (fechamento humano)
 
 Entrada estruturada do MVP (CLI/Board). Sem Intent Engine.
 
@@ -94,7 +94,7 @@ Entrada estruturada do MVP (CLI/Board). Sem Intent Engine.
 | Campo | Obrigatorio | Notas |
 |---|---|---|
 | `schema_version` | sim | |
-| `task_id` | sim | UUID; CLI pode gerar |
+| `task_id` | sim | UUID v7; CLI pode gerar |
 | `created_at` | sim | RFC3339 |
 | `source.entry_point` | sim | `cli` \| `tui` \| `board` \| `api` \| `other` |
 | `source.ref` | nao | id externo (card, file path) |
@@ -117,6 +117,8 @@ Entrada estruturada do MVP (CLI/Board). Sem Intent Engine.
 ---
 
 ## 5. Execution Plan v0 (G-11)
+
+**Status: CONFIRMED** (fechamento humano) — passthrough apos validacao
 
 **Proposta:** no MVP, Plan e **quase passthrough** do Task IR apos validacao.
 
@@ -143,6 +145,8 @@ O Runner resolve `capability` → `player` via Registry. Sem replanejamento dina
 ---
 
 ## 6. Player Manifest v0 (G-02)
+
+**Status: CONFIRMED** (fechamento humano)
 
 ```json
 {
@@ -195,6 +199,8 @@ O Runner resolve `capability` → `player` via Registry. Sem replanejamento dina
 
 ## 7. Event envelope + tipos (G-03, G-04)
 
+**Status: CONFIRMED** (fechamento humano)
+
 ```json
 {
   "schema_version": "0.1.0",
@@ -229,6 +235,8 @@ Payload de `task.rejected` / `step.failed` usa o Error model (§9).
 
 ## 8. Run lifecycle (G-09)
 
+**Status: CONFIRMED** (fechamento humano)
+
 ```text
 accepted → planned → running → succeeded
                               ↘ failed
@@ -243,6 +251,8 @@ Um `run_id` por tentativa de execucao de uma task aceita.
 ---
 
 ## 9. Result / Error (G-08)
+
+**Status: CONFIRMED** (fechamento humano)
 
 ### Result (step)
 
@@ -288,7 +298,9 @@ Codigos iniciais:
 
 ## 10. Runner v0 (G-10) — Orchestrator minimo
 
-**Proposta de nome no MVP:** `Runner` (evitar confundir com Orchestrator completo HYPOTHESIS).
+**Status: CONFIRMED** (fechamento humano)
+
+**Nome no MVP:** `Runner` (evitar confundir com Orchestrator completo HYPOTHESIS).
 
 Responsabilidades v0:
 
@@ -307,34 +319,40 @@ Relacao: Orchestrator HYPOTHESIS futuro pode absorver Runner.
 
 ## 11. Queue v0 (G-12)
 
-**Proposta**
+**Status: CONFIRMED** (fechamento humano) — variante B
 
-- In-process, FIFO por `run_id` / steps prontos.
+- In-process, FIFO por steps prontos / runs.
 - Sem prioridade no MVP.
 - Sem persistencia da fila (ver §12).
-- Uma execucao ativa por processo no MVP (simples); multi-run concorrente = P2.
+- **Multiplos runs concorrentes** permitidos no MVP (limites de paralelismo
+  configuraveis depois; default razoavel no processo).
+- Steps de um mesmo run respeitam `depends_on` (ordem topologica);
+  runs distintos nao se bloqueiam entre si no v0.
 
 ---
 
 ## 12. Persistencia (G-13)
 
-**Proposta para MVP Core minimo (ate CLI+Shell)**
+**Status: CONFIRMED** (fechamento humano) — variante B
+
+SQLite cedo no MVP Core (nao esperar pos-Shell):
 
 | Dado | MVP Core | Notas |
 |---|---|---|
-| Eventos | Memoria (+ log stdout via slog) | Sem Event Store duravel |
-| Task/Run state | Memoria | `status` na CLI le do processo |
-| SQLite | **Adiado** ate apos Shell+CLI verdes | Alinha PRD P1; stack permanece CONFIRMED para quando entrar |
+| Runs / estado | SQLite | Tabela de runs + status |
+| Eventos | SQLite append-only | Nao e event sourcing completo; permite `status` apos restart |
+| Fila em voo | Memoria | Reconstroi o que for necessario a partir do store se o processo cair |
 
-**Alternativa B (se preferir durabilidade cedo):** SQLite so para `runs` + `events` append-only, sem pretender event sourcing completo.
-
-Default desta proposta: **Alternativa A** (memoria). Confirmar em `04-decisoes`.
+Sem pretender Event Sourcing / replay completo no v0.
+Driver: ver §15 (modernc proposto).
 
 ---
 
 ## 13. Core API — Entry Point → Core (G-07)
 
-**Proposta:** mesmo protocolo interno; Entry Points sao adapters.
+**Status: CONFIRMED** (fechamento humano)
+
+**Mesmo protocolo interno; Entry Points sao adapters.**
 
 ```text
 SubmitTask(TaskIR) -> (run_id | ValidationError)
@@ -351,6 +369,8 @@ CancelRun(run_id) -> error          // pode ser stub no MVP
 
 ## 14. Shell Player + policy minima (G-06, G-18)
 
+**Status: CONFIRMED** (fechamento humano)
+
 Capability: `shell.exec` (schema no Manifest §6).
 
 **Sandbox v0 (obrigatorio mesmo sem Execution Policy completa)**
@@ -362,7 +382,7 @@ Capability: `shell.exec` (schema no Manifest §6).
 | Env | allowlist ou herda minimo; sem injecao livre de secrets do host alem do necessario |
 | Timeout | obrigatorio (default 60s) |
 | Rede | nao controlada no v0 (documentar risco); deny via OS fica P2 |
-| Binarios | allowlist opcional (`go`, `git`, …) — **PROPOSED:** allowlist configuravel; default permissivo + warning no log |
+| Binarios | allowlist opcional (`go`, `git`, …) — default permissivo + warning no log |
 
 Falha de sandbox → `validation.invalid_input` ou `runtime.player_error` com code dedicado futuro `policy.denied`.
 
@@ -370,16 +390,18 @@ Falha de sandbox → `validation.invalid_input` ou `runtime.player_error` com co
 
 ## 15. Stack openers (G-15, G-16, G-37)
 
-| Item | Proposta |
-|---|---|
-| Logger | `log/slog` → promover a CONFIRMED |
-| SQLite driver (quando entrar) | `modernc.org/sqlite` (pure Go, sem cgo) |
-| Go version | 1.22+ (ajustar na confirmacao) |
-| Module path | `github.com/gspaim/Runtgine` (confirmar case/path real do repo) |
+| Item | Status | Decisao |
+|---|---|---|
+| Logger | CONFIRMED | `log/slog` |
+| SQLite driver | CONFIRMED | `modernc.org/sqlite` (pure Go, sem cgo) |
+| Go version | CONFIRMED | 1.22+ |
+| Module path | CONFIRMED | `github.com/gspaim/Runtgine` |
 
 ---
 
 ## 16. Repo layout v0 (G-17)
+
+**Status: CONFIRMED** (fechamento humano)
 
 ```text
 cmd/runtgine/          # CLI entry
@@ -420,18 +442,20 @@ Checagens MVP:
 
 Marcar em `04-decisoes.md` apos revisao humana:
 
-- [ ] Encoding JSON canonico + YAML so na borda CLI
-- [ ] Task IR v0
-- [ ] Manifest v0
-- [ ] Event envelope + tipos minimos
-- [ ] Result/Error + lifecycle
-- [ ] Runner v0 (nome e escopo)
-- [ ] Queue in-memory FIFO
-- [ ] Persistencia: memoria no MVP Core (SQLite depois) **ou** Alternativa B
-- [ ] Core API SubmitTask/GetRun/Subscribe
-- [ ] Shell sandbox v0
-- [ ] slog CONFIRMED
-- [ ] modernc para SQLite quando entrar
-- [ ] Layout de pacotes
+- [x] Encoding JSON canonico + YAML so na borda CLI
+- [x] IDs UUID v7 + capability `domain.action`
+- [x] Task IR v0
+- [x] Manifest v0
+- [x] Event envelope + tipos minimos
+- [x] Result/Error + lifecycle
+- [x] Runner v0 (nome e escopo) + Plan passthrough
+- [x] Queue in-memory FIFO (**multi-run** concorrente)
+- [x] Persistencia: SQLite cedo (runs + events append-only)
+- [x] Core API SubmitTask/GetRun/Subscribe
+- [x] Shell sandbox v0
+- [x] slog CONFIRMED
+- [x] modernc + Go 1.25+ + module path (Go atualizado pelo Charm v2 no Slice 3)
+- [x] Layout de pacotes
 
-Quando a maioria P0 estiver confirmada → liberar implementacao do Core.
+**P0 fechado.** Proximo: implementar Core na ordem de `09-mvp` / `AGENTS.md`.
+Gaps P1 (Board/LLM) ainda abertos em `10-gaps.md`.

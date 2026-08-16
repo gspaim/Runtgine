@@ -119,5 +119,6 @@ Fase 6: Ecossistema (biblioteca de Players)
 ## 11. Status Geral
 
 Documentacao alinhada; stack CONFIRMED; MVP canônico em 09-mvp.md.
-Gaps inventariados em 10-gaps.md; protocolo v0 PROPOSED em 11-protocolo-v0.md.
-Proximo passo: confirmar checklist de `11` em `04-decisoes` — depois Core.
+**P0 + P1 + P2 CONFIRMADOS** (`11`, `12`, `13`; NATS DEFERRED).
+Slice 1 (Core/Shell/CLI) e slice 2 (pipeline/LLM/Board) implementados.
+P3 (G-40+) futuro.

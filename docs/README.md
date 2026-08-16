@@ -16,7 +16,10 @@ Autoridade de decisoes: [04-decisoes.md](04-decisoes.md).
 | 08 | 08-workflow-templates.md | Workflow Templates, TLC Spec-Driven |
 | 09 | 09-mvp.md | Corte canônico do MVP |
 | 10 | 10-gaps.md | Gaps e definicoes faltantes |
-| 11 | 11-protocolo-v0.md | Protocolo/schemas v0 (PROPOSTA) |
+| 11 | 11-protocolo-v0.md | Protocolo v0 confirmado |
+| 12 | 12-board-p1.md | Board / pipeline vertical |
+| 13 | 13-p2.md | Engenharia P2 (G-30+) |
+| 14 | 14-tui-design.md | TUI Constellation Mission Control |
 
 ## Fontes historicas (raiz do repo)
 
@@ -28,5 +31,5 @@ Autoridade de decisoes: [04-decisoes.md](04-decisoes.md).
 
 Nao usar fontes historicas para decisoes de implementacao.
 
-Antes de codar o Core: confirmar propostas em `11-protocolo-v0.md`
-via checklist em `04-decisoes.md`.
+Antes de codar: P0 (`11`), P1 Board (`12`) e P2 (`13`) estao **CONFIRMADOS**
+(G-36 NATS = DEFERRED). P3 ainda futuro em `10-gaps.md`.

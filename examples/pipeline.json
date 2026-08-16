@@ -1,0 +1,16 @@
+{
+  "schema_version": "0.1.0",
+  "source": { "entry_point": "cli", "ref": "examples/pipeline.json" },
+  "intent": {
+    "summary": "Analyze this workspace with the board pipeline",
+    "notes": "Uses heuristic LLM if no API key is set"
+  },
+  "steps": [
+    { "step_id": "tech-review", "capability": "pipeline.tech-review", "input": {} },
+    { "step_id": "spec-review", "capability": "pipeline.spec-review", "input": {}, "depends_on": ["tech-review"] },
+    { "step_id": "repo-search", "capability": "pipeline.repo-search", "input": {}, "depends_on": ["spec-review"] },
+    { "step_id": "effort", "capability": "pipeline.effort", "input": {}, "depends_on": ["repo-search"] },
+    { "step_id": "difficulty", "capability": "pipeline.difficulty", "input": {}, "depends_on": ["effort"] },
+    { "step_id": "decompose", "capability": "pipeline.decompose", "input": {}, "depends_on": ["difficulty"] }
+  ]
+}
