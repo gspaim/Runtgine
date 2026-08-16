@@ -77,9 +77,25 @@ existirem). Fronteira regras vs LLM: G-23.
 
 ---
 
+## G-24 — Context assembly basico
+
+**Status: CONFIRMED**
+
+ContextPack v0 (sem Runtime Graph / Genome):
+
+- `task` — intent.summary/notes + task_id
+- `step` — step_id + capability atual
+- `prior_outputs` — outputs das etapas anteriores do mesmo run
+- `repo_hits` — paths/symbols do `pipeline.repo-search` (capados)
+- `budget` — max_chars / max_files (defaults fixos)
+
+Regras: truncamento deterministico se exceder budget; montado pelo Core
+(`AssembleContext`) antes do LLM Player; nao e Intent Engine.
+
+---
+
 ## Em aberto (proximos)
 
-- G-24 Context assembly basico
 - G-25 LLM Player v0
 - G-26 Task Router basico
 - G-27 Modelo de subtasks

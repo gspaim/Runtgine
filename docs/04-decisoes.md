@@ -152,7 +152,7 @@ Ver [12-board-p1.md](12-board-p1.md).
 | G-21 Write-back no board | CONFIRMED | Status + comentario; sem subtasks no board |
 | G-22 Contratos por etapa | CONFIRMED | capabilities `pipeline.*`; steps lineares |
 | G-23 Regras vs LLM | CONFIRMED | repo-search/effort/difficulty det.; reviews LLM |
-| G-24 Context assembly basico | OPEN | |
+| G-24 Context assembly basico | CONFIRMED | ContextPack v0; AssembleContext no Core |
 | G-25 LLM Player v0 | OPEN | |
 | G-26 Task Router basico | OPEN | |
 | G-27 Subtasks | OPEN | |
