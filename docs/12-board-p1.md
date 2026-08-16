@@ -129,6 +129,22 @@ Sem custo/latencia/policy rica no MVP.
 
 ---
 
-## Em aberto (proximos)
+## G-27 — Modelo de subtasks
 
-- G-27 Modelo de subtasks
+**Status: CONFIRMED**
+
+- Output de `pipeline.decompose`: `subtasks[]` com
+  `{ subtask_id (UUID v7), summary, suggested_capability, notes }`
+- Persistidos no SQLite ligados a `task_id` / `run_id` (fonte de verdade)
+- Execucao MVP: **child runs** com `parent_run_id` (isolamento; casa com multi-run)
+- Board: nao cria cards filhos (G-21); comentario pode citar contagem/resumo
+- CLI `status` lista subtasks / child runs
+
+---
+
+## Status P1
+
+**G-20..G-27 CONFIRMADOS.** Cenario Board/pipeline especificado o suficiente
+para implementar apos o Core CLI+Shell.
+
+Proximos gaps naturais: P2 de engenharia (`10-gaps.md` G-30+) ou comecar codigo.

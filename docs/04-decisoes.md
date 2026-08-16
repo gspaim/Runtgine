@@ -142,7 +142,7 @@ Gaps P1 (Board/LLM) permanecem abertos.
 - Event Store no MVP → events append-only em SQLite (nao event sourcing)
 - Task IR / Validator basico / Runner v0 → CONFIRMED
 
-## Board / pipeline (P1) — em fechamento
+## Board / pipeline (P1) — CONFIRMADO
 
 Ver [12-board-p1.md](12-board-p1.md).
 
@@ -155,4 +155,4 @@ Ver [12-board-p1.md](12-board-p1.md).
 | G-24 Context assembly basico | CONFIRMED | ContextPack v0; AssembleContext no Core |
 | G-25 LLM Player v0 | CONFIRMED | Interface unica; backends OpenAI-compat + Anthropic |
 | G-26 Task Router basico | CONFIRMED | Regras: capability → deterministic → default AI |
-| G-27 Subtasks | OPEN | |
+| G-27 Subtasks | CONFIRMED | SQLite + child runs (`parent_run_id`) |

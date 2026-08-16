@@ -64,7 +64,7 @@ Em conflito de escopo, prevalece `09-mvp.md` + `04-decisoes.md`.
 | G-24 | Context assembly basico | **CONFIRMED** — ContextPack v0; ver `12` |
 | G-25 | LLM Player v0 | **CONFIRMED** — OpenAI-compat + Anthropic; ver `12` |
 | G-26 | Task Router basico | **CONFIRMED** — regras deterministic-first; ver `12` |
-| G-27 | Modelo de subtasks | Citado no sucesso do MVP; fora do Task model |
+| G-27 | Modelo de subtasks | **CONFIRMED** — SQLite + child runs; ver `12` |
 
 Propostas detalhadas do Board ficam para um doc futuro apos confirmar `11`.
 Ate la, o Core deve rodar so com CLI + Shell.
@@ -109,7 +109,11 @@ Ate la, o Core deve rodar so com CLI + Shell.
 
 ## Criterio de “pronto para codar”
 
-**P0 do protocolo v0: CONFIRMADO** (sessao interativa; ver `04-decisoes` / `11`).
+**P0 protocolo v0: CONFIRMADO.**  
+**P1 Board/pipeline (G-20..G-27): CONFIRMADO.**
 
-Pode iniciar implementacao do Core. Board/LLM (G-20+) ainda precisam de
-especificacao antes do cenario vertical.
+Ordem pratica de codigo:
+1. Core CLI + Shell (+ SQLite) — slice 1
+2. Pipeline deterministic + LLM + Board adapter — slice 2
+
+Gaps P2 (G-30+) ainda abertos se quiser fechar antes/durante.
