@@ -79,7 +79,7 @@ Ate la, o Core deve rodar so com CLI + Shell.
 | G-31 | Observabilidade alem da TUI (niveis de log, correlacao) | **CONFIRMED** — slog + SQLite; ver `13` |
 | G-32 | Fronteira Runtgine ↔ Chorus | **CONFIRMED** — MVP independente; ver `13` |
 | G-33 | Workspaces / worktrees | **CONFIRMED** — um root + `.runtgine/`; ver `13` |
-| G-34 | Estrategia de testes (unit vs integracao) |
+| G-34 | Estrategia de testes (unit vs integracao) | **CONFIRMED** — ver `13` |
 | G-35 | Wails: Svelte vs React |
 | G-36 | NATS / Event Bus distribuido (OPEN QUESTION) |
 | G-37 | Modulo path Go + versao minima de Go |

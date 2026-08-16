@@ -152,7 +152,7 @@ Ver [13-p2.md](13-p2.md).
 | G-31 Observabilidade | CONFIRMED | slog + correlacao; sem OTel no MVP |
 | G-32 Runtgine ↔ Chorus | CONFIRMED | Independencia total no MVP; sem acoplamento |
 | G-33 Workspaces / worktrees | CONFIRMED | Um workspace_root; store em `.runtgine/` |
-| G-34 Testes | OPEN | |
+| G-34 Testes | CONFIRMED | Unit + integracao + smoke; LLM mockado |
 | G-35 Wails Svelte vs React | OPEN | |
 | G-36 NATS | OPEN | |
 | G-38 Config runtime | OPEN | |
