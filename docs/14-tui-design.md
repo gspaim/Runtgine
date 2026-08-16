@@ -2,7 +2,7 @@
 
 Direcionamento visual e funcional da TUI do Runtgine.
 
-**Status: CONFIRMED.**
+**Status: IMPLEMENTED (Slice 3).**
 
 ## Conceito
 
@@ -190,3 +190,16 @@ Secrets sempre mascarados.
 Antes de criar ou alterar a TUI, ler:
 
 `.cursor/skills/runtgine-tui-design/SKILL.md`
+
+## Implementacao do Slice 3
+
+- Entry Point: `internal/entrypoint/tui/`
+- Comando: `runtgine tui`
+- Stack: Charm v2 (`charm.land/bubbletea/v2`, `lipgloss/v2`, `bubbles/v2`)
+- Core APIs: `ListRuns`, `GetRun`, `ListRecentEvents`, `Subscribe`,
+  `CancelRun` e `ConfigSnapshot`
+- Config permanece read-only; o snapshot nao expoe tokens ou API keys
+- Cancelamento exige confirmacao e persiste o estado de runs orfaos de um
+  processo CLI anterior
+- Testes cobrem navegacao, resize, cinco tabs, filtro, cancelamento e
+  `NO_COLOR`

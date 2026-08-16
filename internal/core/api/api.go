@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"encoding/json"
 	"log/slog"
+	"time"
 
 	"github.com/gspaim/Runtgine/internal/config"
 	"github.com/gspaim/Runtgine/internal/core/event"
@@ -76,16 +77,39 @@ type ChildRunView struct {
 	Status string `json:"status"`
 }
 
+type RunSummary struct {
+	RunID       string    `json:"run_id"`
+	TaskID      string    `json:"task_id"`
+	ParentRunID string    `json:"parent_run_id,omitempty"`
+	Status      string    `json:"status"`
+	Summary     string    `json:"summary"`
+	Source      string    `json:"source"`
+	SourceRef   string    `json:"source_ref,omitempty"`
+	CreatedAt   time.Time `json:"created_at"`
+	UpdatedAt   time.Time `json:"updated_at"`
+}
+
+type ConfigSnapshot struct {
+	WorkspaceRoot     string `json:"workspace_root"`
+	DBPath            string `json:"db_path"`
+	LogLevel          string `json:"log_level"`
+	MaxConcurrentRuns int    `json:"max_concurrent_runs"`
+	LLMBackend        string `json:"llm_backend"`
+	LLMConnected      bool   `json:"llm_connected"`
+	GitHubConnected   bool   `json:"github_connected"`
+	Precedence        string `json:"precedence"`
+}
+
 type RunSnapshot struct {
-	RunID       string            `json:"run_id"`
-	TaskID      string            `json:"task_id"`
-	ParentRunID string            `json:"parent_run_id,omitempty"`
-	Status      string            `json:"status"`
-	Error       string            `json:"error,omitempty"`
-	Events      []event.Event     `json:"events"`
-	Task        json.RawMessage   `json:"task,omitempty"`
-	Subtasks    []store.Subtask   `json:"subtasks,omitempty"`
-	ChildRuns   []ChildRunView    `json:"child_runs,omitempty"`
+	RunID       string          `json:"run_id"`
+	TaskID      string          `json:"task_id"`
+	ParentRunID string          `json:"parent_run_id,omitempty"`
+	Status      string          `json:"status"`
+	Error       string          `json:"error,omitempty"`
+	Events      []event.Event   `json:"events"`
+	Task        json.RawMessage `json:"task,omitempty"`
+	Subtasks    []store.Subtask `json:"subtasks,omitempty"`
+	ChildRuns   []ChildRunView  `json:"child_runs,omitempty"`
 }
 
 func (c *Core) GetRun(ctx context.Context, runID string) (RunSnapshot, error) {
@@ -119,10 +143,80 @@ func (c *Core) GetRun(ctx context.Context, runID string) (RunSnapshot, error) {
 	}, nil
 }
 
+func (c *Core) ListRuns(ctx context.Context, limit int) ([]RunSummary, error) {
+	records, err := c.Store.ListRuns(ctx, limit)
+	if err != nil {
+		return nil, err
+	}
+	out := make([]RunSummary, 0, len(records))
+	for _, rec := range records {
+		var parsed task.Task
+		_ = json.Unmarshal(rec.TaskJSON, &parsed)
+		out = append(out, RunSummary{
+			RunID:       rec.RunID,
+			TaskID:      rec.TaskID,
+			ParentRunID: rec.ParentRunID,
+			Status:      string(rec.Status),
+			Summary:     parsed.Intent.Summary,
+			Source:      parsed.Source.EntryPoint,
+			SourceRef:   parsed.Source.Ref,
+			CreatedAt:   rec.CreatedAt,
+			UpdatedAt:   rec.UpdatedAt,
+		})
+	}
+	return out, nil
+}
+
+func (c *Core) ListRecentEvents(ctx context.Context, limit int) ([]event.Event, error) {
+	return c.Store.ListRecentEvents(ctx, limit)
+}
+
+func (c *Core) ConfigSnapshot() ConfigSnapshot {
+	return ConfigSnapshot{
+		WorkspaceRoot:     c.Cfg.WorkspaceRoot,
+		DBPath:            c.Cfg.DBPath,
+		LogLevel:          c.Cfg.LogLevel,
+		MaxConcurrentRuns: c.Cfg.MaxConcurrentRuns,
+		LLMBackend:        c.Cfg.LLMBackend,
+		LLMConnected:      c.Cfg.LLMAPIKey != "" || c.Cfg.AnthropicAPIKey != "",
+		GitHubConnected:   c.Cfg.GitHubToken != "",
+		Precedence:        "defaults < config.json < env < CLI flags",
+	}
+}
+
 func (c *Core) Subscribe(buffer int) (<-chan event.Event, func()) {
 	return c.Bus.Subscribe(buffer)
 }
 
 func (c *Core) CancelRun(runID string) error {
-	return c.Runner.Cancel(runID)
+	if err := c.Runner.Cancel(runID); err == nil {
+		return nil
+	}
+
+	// A prior CLI process may have left a persisted non-terminal run without
+	// an in-memory cancel function. Mark that stale run cancelled.
+	run, _, err := c.Store.GetRun(context.Background(), runID)
+	if err != nil {
+		return err
+	}
+	switch run.Status {
+	case store.StatusSucceeded, store.StatusFailed, store.StatusCancelled, store.StatusRejected:
+		return result.Runtime(result.CodeCancelled, "run is already terminal", false, nil)
+	}
+	if err := c.Store.UpdateRunStatus(
+		context.Background(), runID, store.StatusCancelled, "",
+	); err != nil {
+		return err
+	}
+	e, err := event.New(event.TypeRunCancelled, runID, run.TaskID, nil, map[string]any{
+		"reason": "cancelled from persisted state",
+	})
+	if err != nil {
+		return err
+	}
+	if err := c.Store.AppendEvent(context.Background(), e); err != nil {
+		return err
+	}
+	c.Bus.Publish(e)
+	return nil
 }

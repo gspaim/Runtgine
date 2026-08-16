@@ -454,7 +454,7 @@ Marcar em `04-decisoes.md` apos revisao humana:
 - [x] Core API SubmitTask/GetRun/Subscribe
 - [x] Shell sandbox v0
 - [x] slog CONFIRMED
-- [x] modernc + Go 1.22+ + module path
+- [x] modernc + Go 1.25+ + module path (Go atualizado pelo Charm v2 no Slice 3)
 - [x] Layout de pacotes
 
 **P0 fechado.** Proximo: implementar Core na ordem de `09-mvp` / `AGENTS.md`.

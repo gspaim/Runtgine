@@ -17,6 +17,7 @@ import (
 	"github.com/gspaim/Runtgine/internal/core/store"
 	"github.com/gspaim/Runtgine/internal/core/task"
 	"github.com/gspaim/Runtgine/internal/entrypoint/board"
+	tuientry "github.com/gspaim/Runtgine/internal/entrypoint/tui"
 	"github.com/spf13/cobra"
 	"gopkg.in/yaml.v3"
 )
@@ -38,6 +39,7 @@ func NewRoot() *cobra.Command {
 	root.AddCommand(newCancelCmd(&workspace, &verbose))
 	root.AddCommand(newPipelineCmd(&workspace, &verbose))
 	root.AddCommand(newBoardCmd(&workspace, &verbose))
+	root.AddCommand(newTUICmd(&workspace, &verbose))
 	return root
 }
 
@@ -182,6 +184,21 @@ func newCancelCmd(workspace *string, verbose *bool) *cobra.Command {
 			}
 			defer core.Close()
 			return core.CancelRun(args[0])
+		},
+	}
+}
+
+func newTUICmd(workspace *string, verbose *bool) *cobra.Command {
+	return &cobra.Command{
+		Use:   "tui",
+		Short: "Open Constellation Mission Control",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			core, err := openCore(*workspace, *verbose)
+			if err != nil {
+				return err
+			}
+			defer core.Close()
+			return tuientry.Run(core)
 		},
 	}
 }

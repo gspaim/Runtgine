@@ -9,15 +9,15 @@ import (
 	"sync"
 	"time"
 
+	"github.com/google/uuid"
 	"github.com/gspaim/Runtgine/internal/core/contextpack"
 	"github.com/gspaim/Runtgine/internal/core/event"
-	"github.com/gspaim/Runtgine/internal/core/plan"
 	corepipe "github.com/gspaim/Runtgine/internal/core/pipeline"
+	"github.com/gspaim/Runtgine/internal/core/plan"
 	"github.com/gspaim/Runtgine/internal/core/registry"
 	"github.com/gspaim/Runtgine/internal/core/result"
 	"github.com/gspaim/Runtgine/internal/core/store"
 	"github.com/gspaim/Runtgine/internal/core/task"
-	"github.com/google/uuid"
 )
 
 type Runner struct {
@@ -153,9 +153,12 @@ func (r *Runner) execute(ctx context.Context, t task.Task, p plan.Plan) {
 		}
 		s := byID[sid]
 		stepID := s.StepID
+		pack := contextpack.Assemble(t, s.StepID, s.Capability, priors)
+		packJSON, _ := contextpack.Marshal(pack)
 		_ = r.emit(p.RunID, t.TaskID, &stepID, event.TypeStepStarted, map[string]any{
-			"capability": s.Capability,
-			"player":     s.Player,
+			"capability":    s.Capability,
+			"player":        s.Player,
+			"context_bytes": len(packJSON),
 		})
 
 		player, ok := r.Reg.Get(s.Player)
@@ -175,8 +178,6 @@ func (r *Runner) execute(ctx context.Context, t task.Task, p plan.Plan) {
 				r.cancelled(ctx, p)
 				return
 			}
-			pack := contextpack.Assemble(t, s.StepID, s.Capability, priors)
-			packJSON, _ := contextpack.Marshal(pack)
 			out, lastErr = player.Execute(ctx, registry.ExecRequest{
 				Capability:   s.Capability,
 				Input:        s.Input,

@@ -24,23 +24,28 @@ const (
 )
 
 type Run struct {
-	RunID        string
-	TaskID       string
-	ParentRunID  string
-	Status       Status
-	ErrorJSON    string
-	CreatedAt    time.Time
-	UpdatedAt    time.Time
+	RunID       string
+	TaskID      string
+	ParentRunID string
+	Status      Status
+	ErrorJSON   string
+	CreatedAt   time.Time
+	UpdatedAt   time.Time
+}
+
+type RunRecord struct {
+	Run
+	TaskJSON json.RawMessage
 }
 
 type Subtask struct {
-	SubtaskID            string `json:"subtask_id"`
-	ParentRunID          string `json:"parent_run_id"`
-	TaskID               string `json:"task_id"`
-	Summary              string `json:"summary"`
-	SuggestedCapability  string `json:"suggested_capability"`
-	Notes                string `json:"notes,omitempty"`
-	ChildRunID           string `json:"child_run_id,omitempty"`
+	SubtaskID           string `json:"subtask_id"`
+	ParentRunID         string `json:"parent_run_id"`
+	TaskID              string `json:"task_id"`
+	Summary             string `json:"summary"`
+	SuggestedCapability string `json:"suggested_capability"`
+	Notes               string `json:"notes,omitempty"`
+	ChildRunID          string `json:"child_run_id,omitempty"`
 }
 
 type StepOutput struct {
@@ -155,6 +160,37 @@ FROM runs WHERE run_id=?`, runID).Scan(
 	return r, []byte(taskJSON), nil
 }
 
+func (s *Store) ListRuns(ctx context.Context, limit int) ([]RunRecord, error) {
+	if limit < 1 {
+		limit = 100
+	}
+	rows, err := s.db.QueryContext(ctx, `
+SELECT run_id, task_id, parent_run_id, status, error_json, task_json, created_at, updated_at
+FROM runs ORDER BY created_at DESC, run_id DESC LIMIT ?`, limit)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var out []RunRecord
+	for rows.Next() {
+		var rec RunRecord
+		var status, taskJSON, created, updated string
+		if err := rows.Scan(
+			&rec.RunID, &rec.TaskID, &rec.ParentRunID, &status,
+			&rec.ErrorJSON, &taskJSON, &created, &updated,
+		); err != nil {
+			return nil, err
+		}
+		rec.Status = Status(status)
+		rec.TaskJSON = json.RawMessage(taskJSON)
+		rec.CreatedAt, _ = time.Parse(time.RFC3339Nano, created)
+		rec.UpdatedAt, _ = time.Parse(time.RFC3339Nano, updated)
+		out = append(out, rec)
+	}
+	return out, rows.Err()
+}
+
 func (s *Store) AppendEvent(ctx context.Context, e event.Event) error {
 	payload, err := json.Marshal(e.Payload)
 	if err != nil {
@@ -193,6 +229,41 @@ FROM events WHERE run_id=? ORDER BY ts ASC, event_id ASC`, runID)
 		if step.Valid {
 			s := step.String
 			e.StepID = &s
+		}
+		_ = json.Unmarshal([]byte(payload), &e.Payload)
+		out = append(out, e)
+	}
+	return out, rows.Err()
+}
+
+func (s *Store) ListRecentEvents(ctx context.Context, limit int) ([]event.Event, error) {
+	if limit < 1 {
+		limit = 200
+	}
+	rows, err := s.db.QueryContext(ctx, `
+SELECT event_id, run_id, task_id, type, ts, step_id, payload_json
+FROM events ORDER BY ts DESC, event_id DESC LIMIT ?`, limit)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var out []event.Event
+	for rows.Next() {
+		var e event.Event
+		var ts string
+		var step sql.NullString
+		var payload string
+		if err := rows.Scan(
+			&e.EventID, &e.RunID, &e.TaskID, &e.Type, &ts, &step, &payload,
+		); err != nil {
+			return nil, err
+		}
+		e.SchemaVersion = event.SchemaVersion
+		e.TS, _ = time.Parse(time.RFC3339Nano, ts)
+		if step.Valid {
+			value := step.String
+			e.StepID = &value
 		}
 		_ = json.Unmarshal([]byte(payload), &e.Payload)
 		out = append(out, e)

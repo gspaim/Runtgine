@@ -8,13 +8,14 @@ Runtgine é um **runtime universal de execução e orquestração**: leve, orien
 
 ## Status do projeto
 
-**Fase 1 (slice 1) — Core mínimo em Go.** Protocolo v0 / P1 / P2 documentados e confirmados.
+**Slices 1–3 implementados** — Core, Pipeline/Board e TUI Constellation Mission Control.
 
 ```bash
 go test ./...
 go build -o bin/runtgine ./cmd/runtgine
 ./bin/runtgine run examples/hello.json
 ./bin/runtgine pipeline run --summary "Analyze workspace"
+./bin/runtgine tui
 ./bin/runtgine status <run_id>
 # Board (needs GITHUB_TOKEN):
 # ./bin/runtgine board poll --repo owner/name --label runtgine
@@ -42,8 +43,8 @@ Store local: `workspace/.runtgine/runtgine.db`
 AGENTS.md            — guia para LLMs e contribuidores
 cmd/runtgine/        — CLI
 internal/core/       — runtime (task, event, runner, store, …)
-internal/players/    — Shell (slice 1); LLM depois
-internal/entrypoint/ — CLI (TUI depois)
+internal/players/    — Shell, Pipeline e LLM Players
+internal/entrypoint/ — CLI, Board e TUI
 examples/            — Task IR de exemplo
 docs/                — documentação oficial
 ```

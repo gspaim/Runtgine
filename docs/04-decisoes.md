@@ -127,7 +127,7 @@ Gaps P1 (Board/LLM) permanecem abertos.
 | Shell sandbox v0 (argv, workdir, timeout) | CONFIRMED | G-06/G-18 |
 | log/slog | CONFIRMED | G-16 |
 | SQLite via modernc.org/sqlite | CONFIRMED | G-15 |
-| Go 1.22+; module github.com/gspaim/Runtgine | CONFIRMED | G-37 |
+| Go 1.25+; module github.com/gspaim/Runtgine | CONFIRMED | G-37; atualizado pelo Charm v2 no Slice 3 |
 | Layout `cmd/` + `internal/core|players|entrypoint` | CONFIRMED | G-17 |
 
 ### Desvios em relacao a proposta inicial
@@ -168,6 +168,8 @@ Ver [14-tui-design.md](14-tui-design.md).
 | Tabs Runs / Live / Board / Events / Config | CONFIRMED | Estrutura principal |
 | Tema espacial e visual, nao dominio | CONFIRMED | Manter Task/Run/Step/Event/Player |
 | TUI usa apenas APIs do Core | CONFIRMED | Nunca chama Player diretamente |
+| Charm stack v2 via `charm.land/*` | IMPLEMENTED | Requer Go 1.25+ |
+| Config da TUI read-only e secrets mascarados | IMPLEMENTED | Snapshot publico contem apenas estado/config nao sensivel |
 | tuios no MVP | REJECTED | Nao e multiplexer; PTY futuro exige nova decisao |
 
 ## Board / pipeline (P1) — CONFIRMADO
