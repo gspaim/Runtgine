@@ -9,6 +9,7 @@ import (
 
 	"github.com/gspaim/Runtgine/internal/config"
 	"github.com/gspaim/Runtgine/internal/core/event"
+	"github.com/gspaim/Runtgine/internal/core/graph"
 	"github.com/gspaim/Runtgine/internal/core/intent"
 	"github.com/gspaim/Runtgine/internal/core/registry"
 	"github.com/gspaim/Runtgine/internal/core/result"
@@ -28,6 +29,7 @@ type Core struct {
 	Store  *store.Store
 	Runner *runner.Runner
 	Intent *intent.Engine
+	Graph  *graph.Service
 	Log    *slog.Logger
 }
 
@@ -57,7 +59,14 @@ func Open(cfg config.Config, log *slog.Logger) (*Core, error) {
 		_ = st.Close()
 		return nil, err
 	}
+	g := graph.New(st, log)
 	r := runner.New(reg, bus, st, cfg.WorkspaceRoot, cfg.LLMBackend, cfg.MaxConcurrentRuns, log)
+	r.Graph = g
+	if err := g.RefreshFromRegistry(context.Background(), reg); err != nil {
+		if log != nil {
+			log.Warn("graph refresh failed", "err", err)
+		}
+	}
 	return &Core{
 		Cfg:    cfg,
 		Reg:    reg,
@@ -65,6 +74,7 @@ func Open(cfg config.Config, log *slog.Logger) (*Core, error) {
 		Store:  st,
 		Runner: r,
 		Intent: intent.New(completer),
+		Graph:  g,
 		Log:    log,
 	}, nil
 }
@@ -254,5 +264,29 @@ func (c *Core) CancelRun(runID string) error {
 		return err
 	}
 	c.Bus.Publish(e)
+	c.syncGraph(runID)
 	return nil
+}
+
+func (c *Core) GetGraphSnapshot(ctx context.Context) (graph.Snapshot, error) {
+	return c.Graph.Snapshot(ctx)
+}
+
+func (c *Core) RefreshGraph(ctx context.Context) error {
+	return c.Graph.RefreshFromRegistry(ctx, c.Reg)
+}
+
+func (c *Core) QueryGraphNeighbors(ctx context.Context, kind, id, edgeKind, direction string) ([]graph.Node, error) {
+	return c.Graph.QueryNeighbors(ctx, kind, id, edgeKind, direction)
+}
+
+func (c *Core) syncGraph(runID string) {
+	if c.Graph == nil || runID == "" {
+		return
+	}
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+	if err := c.Graph.SyncFromRun(ctx, runID); err != nil && c.Log != nil {
+		c.Log.Warn("graph sync failed", "run_id", runID, "err", err)
+	}
 }
