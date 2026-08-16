@@ -185,29 +185,23 @@ Use `runtgine <comando> --help` para consultar todas as flags.
 
 ## Arquitetura
 
-```mermaid
-flowchart LR
-    EP["Entry Points<br/>CLI · TUI · Board"] --> API["Core API"]
-    API --> IR["Task IR"]
-    IR --> V["Validator"]
-    V --> R["Runner + Queue"]
-    R --> B["Event Bus"]
-    R --> REG["Player Registry"]
-    REG --> P["Players<br/>Shell · Pipeline · LLM"]
-    P --> RES["Result"]
-    RES --> R
-    B --> DB[("SQLite<br/>runs · events · outputs")]
-    R --> DB
-    B --> EP
-```
+<p align="center">
+  <img src="docs/assets/runtgine-architecture.png" alt="Arquitetura do Runtgine: CLI e Board submetem Task IR ao Core; o Runner chama Players; SQLite persiste; Event Bus só observa." width="100%">
+</p>
+
+Fluxo real do MVP: **CLI/Board** montam `Task IR` e chamam `SubmitTask`. O **Validator** rejeita schema ou capability desconhecida. O **Runner** cria a `Run`, gera o **Plan** (capability → player, deterministic-first), monta o **ContextPack** por step e chama `Player.Execute`. O **Result** volta ao Runner, que grava o **SQLite** e publica no **Event Bus**. A **TUI** observa e cancela — não submete Task. O Bus não é fila de admissão.
 
 ### Modelo central
 
 | Conceito | Responsabilidade |
 |---|---|
 | `Task` | Intenção estruturada e lista de steps |
+| `Plan` | Capability → Player para esta Run |
+| `ContextPack` | Contexto montado por step antes do `Execute` |
+| `Capability` | O que o runtime roteia; não o nome do Player |
 | `Event` | Fato imutável emitido durante o lifecycle |
-| `Queue` | Ordem de admissão e controle de concorrência |
+| `Event Bus` | Pub/sub in-process para quem observa a Run |
+| `Queue` | Semáforo de concorrência no Runner (`maxConcurrentRuns`) |
 | `Player` | Executor que declara capabilities em um manifest |
 | `Result` | Saída estruturada ou erro tipado |
 | `Run` | Instância observável da execução de uma Task |
