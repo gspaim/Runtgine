@@ -41,9 +41,29 @@ Write-back minimo no MVP:
 
 ---
 
+## G-22 — Contratos por etapa do pipeline
+
+**Status: CONFIRMED**
+
+Cada etapa = 1 step com capability `pipeline.*`. Steps lineares no Task IR
+(`depends_on` encadeado). Sem Workflow engine.
+
+| Etapa | Capability | Output minimo |
+|---|---|---|
+| Technical Review | `pipeline.tech-review` | `findings[]`, `risks[]` |
+| Spec Review | `pipeline.spec-review` | `gaps[]`, `acceptance_hints[]` |
+| Repo Search | `pipeline.repo-search` | `paths[]`, `symbols[]` |
+| Effort Estimation | `pipeline.effort` | `effort` (S/M/L/XL), `rationale` |
+| Difficulty | `pipeline.difficulty` | `difficulty` (1–5), `rationale` |
+| Decomposition | `pipeline.decompose` | `subtasks[]` (`summary`, `capability` sugerida) |
+
+Adapter (G-20) monta Task IR com esses steps (ou placeholder ate Players
+existirem). Fronteira regras vs LLM: G-23.
+
+---
+
 ## Em aberto (proximos)
 
-- G-22 Contratos por etapa do pipeline
 - G-23 Regras vs LLM por etapa
 - G-24 Context assembly basico
 - G-25 LLM Player v0
