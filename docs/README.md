@@ -22,6 +22,7 @@ Autoridade de decisoes: [04-decisoes.md](04-decisoes.md).
 | 14 | 14-tui-design.md | TUI Constellation Mission Control |
 | 15 | 15-git-workflow.md | Branches, RC e releases |
 | 16 | 16-project-memory.md | Project Memory (esboco; HYPOTHESIS) |
+| 17 | 17-intent-engine-v0.md | Intent Engine NL v0 (CONFIRMED) |
 
 ## Fontes historicas (raiz do repo)
 

@@ -71,6 +71,18 @@ Ate la, o Core deve rodar so com CLI + Shell.
 
 ---
 
+## P1b — Intent Engine (pos-Core)
+
+| ID | Gap | Notas |
+|---|---|---|
+| G-50 | Papel Intent Engine | **CONFIRMED** — ver `17-intent-engine-v0.md` |
+| G-51 | API CompileIntent / SubmitIntent | **CONFIRMED** — ver `17` |
+| G-52 | Heuristicas deterministicas | **CONFIRMED** — shell \| pipeline |
+| G-53 | Caminho LLM | **CONFIRMED** — Completer + offline heuristic |
+| G-54 | CLI `runtgine intent` | **CONFIRMED** — dry-run + submit |
+
+---
+
 ## P2 — Engenharia e produto (pos-Core minimo)
 
 | ID | Gap |
@@ -113,11 +125,14 @@ Ate la, o Core deve rodar so com CLI + Shell.
 
 **P0 protocolo v0: CONFIRMADO.**  
 **P1 Board/pipeline (G-20..G-27): CONFIRMADO.**  
+**P1b Intent Engine (G-50..G-54): CONFIRMADO.**  
 **P2 engenharia (G-30..G-38): CONFIRMADO** (G-36 DEFERRED).
 
 Ordem pratica de codigo:
-1. Core CLI + Shell (+ SQLite) — slice 1
-2. Pipeline deterministic + LLM + Board adapter — slice 2
+1. Core CLI + Shell (+ SQLite) — slice 1 — feito
+2. Pipeline deterministic + LLM + Board adapter — slice 2 — feito
+3. TUI — slice 3 — feito
+4. Intent Engine NL v0 — slice 5 (este)
 
 P3 (G-40+) permanece futuro. Project Memory (G-46/G-47) e esboco em
 `16-project-memory.md` — HYPOTHESIS / OPEN QUESTION; nao codificar ate

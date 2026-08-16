@@ -73,15 +73,15 @@ Task → Event → Queue → Player → Result
 Visão enxuta do que já está em `main`. **Atualizar esta seção em todo PR
 `release/*` → `main`** (e em PRs para `develop` quando o estágio mudar).
 
-**Agora:** MVP funcional (slices 1–3), sem release estável.
+**Agora:** MVP funcional + Intent Engine v0, sem release estável.
 
 | | Entrega |
 |---|---|
 | Feito | Slice 1 — Core, Task IR, Validator, Event Bus, SQLite, Shell Player, CLI |
 | Feito | Slice 2 — Pipeline, ContextPack, LLM Players, GitHub Board |
 | Feito | Slice 3 — TUI Constellation Mission Control |
-| Próximo | Fechar critérios do MVP — schema de input no Validator, IDs/`schema_version` estritos, sandbox Shell mais forte |
-| Depois | Intent Engine (NL), Runtime Graph, mais Players, policies/HITL, API HTTP, bus distribuído, desktop Wails |
+| Feito | Slice 5 — Intent Engine NL v0 (`runtgine intent`) |
+| Próximo | Runtime Graph, mais Players, policies/HITL, API HTTP, bus distribuído, desktop Wails |
 
 Detalhe do corte: [`docs/09-mvp.md`](docs/09-mvp.md). Limitações atuais abaixo.
 
@@ -153,6 +153,7 @@ em:
 
 ```text
 runtgine run <task.json|task.yaml>  Submete uma Task IR
+runtgine intent "<nl>"              Compila NL → Task IR e submete
 runtgine status <run_id>            Exibe snapshot e eventos
 runtgine cancel <run_id>            Solicita cancelamento de um run
 runtgine pipeline run               Executa o pipeline de análise
@@ -163,6 +164,10 @@ runtgine tui                        Abre a Mission Control
 Exemplos:
 
 ```bash
+# Linguagem natural → Task IR → execução
+./bin/runtgine intent "echo hello-intent"
+./bin/runtgine intent "revisar a arquitetura do workspace" --dry-run
+
 # Pipeline determinístico + LLM quando necessário
 ./bin/runtgine pipeline run \
   --summary "Revisar arquitetura do workspace" \
@@ -348,6 +353,7 @@ vulnerabilidade.
 | [Protocolo v0](docs/11-protocolo-v0.md) | Task IR, Manifest, Events e Results |
 | [TUI Design](docs/14-tui-design.md) | Constellation Mission Control |
 | [Git workflow](docs/15-git-workflow.md) | Branches, RC e releases |
+| [Intent Engine](docs/17-intent-engine-v0.md) | NL → Task IR v0 |
 | [Guia para LLMs](AGENTS.md) | Regras de implementação |
 
 ## Contribuindo

@@ -43,8 +43,8 @@ Status: CONFIRMED | HYPOTHESIS | OPEN QUESTION | REJECTED
 | Task != Workflow != ExecPlan | CONFIRMED | Tres conceitos distintos |
 | Event != Queue != Workflow | CONFIRMED | Tres conceitos distintos |
 | Entry Point != Player | CONFIRMED | Entry Point traduz sinal externo |
-| Intent Engine | HYPOTHESIS | Traduz intencao NL em Task IR |
-| Task IR | CONFIRMED (v0) | Schema em 11-protocolo-v0; NL Intent Engine ainda HYPOTHESIS |
+| Intent Engine | CONFIRMED (v0) | NL → Task IR; ver `17-intent-engine-v0.md` |
+| Task IR | CONFIRMED (v0) | Schema em 11-protocolo-v0; NL via Intent Engine v0 |
 | Task Validator | CONFIRMED (v0) | Subset MVP: capabilities, inputs, schemas; ver 11 |
 | Runtime Graph | HYPOTHESIS | Memoria estrutural |
 | Context Engine | HYPOTHESIS | Monta contexto relevante |
@@ -69,7 +69,7 @@ Ver [09-mvp.md](09-mvp.md). Decisoes-chave:
 | CLI + TUI minimas no MVP | CONFIRMED | Superficies, nao produto |
 | Board no MVP | CONFIRMED | Primeiro Entry Point de produto |
 | Entrada estruturada (Task IR v0) no MVP | CONFIRMED | Sem depender de Intent Engine NL |
-| Intent Engine NL fora do MVP Core | CONFIRMED | Permanece HYPOTHESIS / P1 |
+| Intent Engine NL v0 (pos-Core) | CONFIRMED | Ver `17-intent-engine-v0.md`; fora do corte MVP inicial |
 | Wails fora do MVP | CONFIRMED | Fase 3 |
 | Escopo detalhado em 09-mvp.md | CONFIRMED | Prevalece sobre rascunhos |
 
@@ -83,7 +83,7 @@ Ver [09-mvp.md](09-mvp.md). Decisoes-chave:
 | Player | CONFIRMED | Entidade com capabilities |
 | Event | CONFIRMED | Algo aconteceu |
 | Queue | CONFIRMED | Trabalho aguardando |
-| Intent Engine | HYPOTHESIS | Traduz intencao |
+| Intent Engine | CONFIRMED (v0) | Traduz intencao NL → Task IR; ver `17` |
 | Task IR | CONFIRMED (v0) | Schema em 11-protocolo-v0 |
 | Task Validator | HYPOTHESIS | Valida antes de executar |
 | Runtime Graph | HYPOTHESIS | Memoria estrutural |
@@ -188,6 +188,18 @@ Ver [12-board-p1.md](12-board-p1.md).
 | G-25 LLM Player v0 | CONFIRMED | Interface unica; backends OpenAI-compat + Anthropic |
 | G-26 Task Router basico | CONFIRMED | Regras: capability → deterministic → default AI |
 | G-27 Subtasks | CONFIRMED | SQLite + child runs (`parent_run_id`) |
+
+## Intent Engine (pos-MVP Core) — CONFIRMADO v0
+
+Ver [17-intent-engine-v0.md](17-intent-engine-v0.md).
+
+| Item | Status | Notas |
+|---|---|---|
+| G-50 Papel / fronteira | CONFIRMED | Compilador NL→Task IR; nao e Player nem autoridade |
+| G-51 API CompileIntent / SubmitIntent | CONFIRMED | Core; CLI `runtgine intent` |
+| G-52 Heuristicas shell \| pipeline | CONFIRMED | Deterministic-first |
+| G-53 Caminho LLM + heuristic offline | CONFIRMED | Reusa Completer; intermediario JSON |
+| G-54 CLI `--dry-run` / `--wait` | CONFIRMED | Mesmo SubmitTask/Validator |
 
 ## Project Memory (P3) — HYPOTHESIS
 

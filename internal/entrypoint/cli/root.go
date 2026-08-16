@@ -35,6 +35,7 @@ func NewRoot() *cobra.Command {
 	root.PersistentFlags().BoolVarP(&verbose, "verbose", "v", false, "debug logging")
 
 	root.AddCommand(newRunCmd(&workspace, &verbose))
+	root.AddCommand(newIntentCmd(&workspace, &verbose))
 	root.AddCommand(newStatusCmd(&workspace, &verbose))
 	root.AddCommand(newCancelCmd(&workspace, &verbose))
 	root.AddCommand(newPipelineCmd(&workspace, &verbose))
@@ -110,6 +111,56 @@ func newRunCmd(workspace *string, verbose *bool) *cobra.Command {
 		},
 	}
 	cmd.Flags().BoolVar(&wait, "wait", true, "wait for run completion")
+	return cmd
+}
+
+func newIntentCmd(workspace *string, verbose *bool) *cobra.Command {
+	var wait, dryRun bool
+	cmd := &cobra.Command{
+		Use:   "intent <text>",
+		Short: "Compile natural language into Task IR and optionally submit",
+		Args:  cobra.MinimumNArgs(1),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			core, err := openCore(*workspace, *verbose)
+			if err != nil {
+				return err
+			}
+			defer core.Close()
+
+			text := strings.Join(args, " ")
+			ctx := context.Background()
+			if dryRun {
+				tk, method, err := core.CompileIntent(ctx, text, "cli", "intent")
+				if err != nil {
+					return err
+				}
+				fmt.Fprintf(os.Stderr, "intent_method %s\n", method)
+				enc := json.NewEncoder(os.Stdout)
+				enc.SetIndent("", "  ")
+				return enc.Encode(tk)
+			}
+
+			var unsub func()
+			var events <-chan event.Event
+			if wait {
+				events, unsub = core.Subscribe(256)
+				defer unsub()
+			}
+
+			runID, method, err := core.SubmitIntent(ctx, text, "cli", "intent")
+			if err != nil {
+				return err
+			}
+			fmt.Fprintf(os.Stderr, "intent_method %s\n", method)
+			fmt.Println(runID)
+			if !wait {
+				return nil
+			}
+			return waitForRun(ctx, core, runID, events)
+		},
+	}
+	cmd.Flags().BoolVar(&wait, "wait", true, "wait for run completion")
+	cmd.Flags().BoolVar(&dryRun, "dry-run", false, "print Task IR JSON without submitting")
 	return cmd
 }
 
