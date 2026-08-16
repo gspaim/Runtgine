@@ -112,8 +112,8 @@ Nao implementar Core ate G-01..G-18 estarem confirmados ou rejeitados com altern
 | Proposta | Status | Notas |
 |---|---|---|
 | JSON canonico; YAML so na borda CLI | CONFIRMED | G-14 — sessao de fechamento |
-| Capability naming `domain.action` | PROPOSED | G-05 |
-| IDs UUID v4; schema_version semver | PROPOSED | |
+| Capability naming `domain.action` | CONFIRMED | G-05 — sessao de fechamento |
+| IDs UUID v4; schema_version semver | CONFIRMED | sessao de fechamento |
 | Task IR v0 schema | PROPOSED | Promover de HYPOTHESIS → CONFIRMED v0 se aceito |
 | Manifest v0 schema | PROPOSED | |
 | Event envelope + tipos minimos | PROPOSED | |

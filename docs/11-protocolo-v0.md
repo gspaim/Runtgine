@@ -21,19 +21,17 @@ Status de cada secao: `PROPOSED`.
 
 ## 2. Identificadores e versao
 
-**Proposta**
+**Status: CONFIRMED** (fechamento humano)
 
 | Campo | Formato |
 |---|---|
 | IDs (`task_id`, `run_id`, `event_id`) | UUID v4 string |
 | `schema_version` | semver string no documento (`"0.1.0"`) |
-| Nomes de capability | `domain.action` em kebab-case invertido estilo reverse-DNS curto: `shell.exec`, `git.commit` |
-
----
+| Nomes de capability | `domain.action` (ex.: `shell.exec`, `git.commit`) |
 
 ## 3. Capability naming (G-05)
 
-**Proposta**
+**Status: CONFIRMED** (fechamento humano)
 
 ```text
 capability = <domain> "." <action>[ "." <qualifier> ]
