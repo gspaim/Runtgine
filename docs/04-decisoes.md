@@ -46,7 +46,7 @@ Status: CONFIRMED | HYPOTHESIS | OPEN QUESTION | REJECTED
 | Intent Engine | CONFIRMED (v0) | NL → Task IR; ver `17-intent-engine-v0.md` |
 | Task IR | CONFIRMED (v0) | Schema em 11-protocolo-v0; NL via Intent Engine v0 |
 | Task Validator | CONFIRMED (v0) | Subset MVP: capabilities, inputs, schemas; ver 11 |
-| Runtime Graph | HYPOTHESIS | Memoria estrutural |
+| Runtime Graph | HYPOTHESIS | Memoria estrutural; proposta em `18-runtime-graph-v0.md` |
 | Context Engine | HYPOTHESIS | Monta contexto relevante |
 | Project Memory | HYPOTHESIS | Memoria episodica / de projeto; ver `16` |
 | Player Router | HYPOTHESIS | Roteia por capability + custo |
@@ -86,7 +86,7 @@ Ver [09-mvp.md](09-mvp.md). Decisoes-chave:
 | Intent Engine | CONFIRMED (v0) | Traduz intencao NL → Task IR; ver `17` |
 | Task IR | CONFIRMED (v0) | Schema em 11-protocolo-v0 |
 | Task Validator | HYPOTHESIS | Valida antes de executar |
-| Runtime Graph | HYPOTHESIS | Memoria estrutural |
+| Runtime Graph | HYPOTHESIS | Memoria estrutural; proposta em `18-runtime-graph-v0.md` |
 | Context Engine | HYPOTHESIS | Monta contexto relevante |
 | Project Memory | HYPOTHESIS | Memoria episodica / de projeto; ver `16` |
 
@@ -237,6 +237,22 @@ conceitual); **nao autoriza codigo**. Nada abaixo e CONFIRMED.
 | Memoria como autoridade de execucao | REJECTED | Sugere contexto; nunca capability/policy/Validator bypass |
 | Supersession silenciosa via LLM no Core | REJECTED | Validade so com opt-in explicito |
 | RAG generico / indexar transcripts como produto | REJECTED | Compile observations; nao chat retrieval |
+
+## Runtime Graph — proposta (nao confirmada)
+
+Ver [18-runtime-graph-v0.md](18-runtime-graph-v0.md).
+
+| Item | Status | Notas |
+|---|---|---|
+| G-60 Papel / fronteiras | PROPOSED | Um graph por workspace; ≠ Event Store / Project Memory |
+| G-61 Node kinds v0 | PROPOSED | player, capability, task, run, path, symbol |
+| G-62 Edge kinds v0 | PROPOSED | provides, executed, instance_of, mentions, child_of |
+| G-63 Persistencia | PROPOSED | Mesmo SQLite do Core |
+| G-64 Core API + CLI snapshot | PROPOSED | Sem tab TUI no v0 |
+| G-65 Sync boot / SyncFromRun | PROPOSED | Best-effort; nao falha Run |
+| G-66 ContextPack / Intent | PROPOSED DEFERRED | Apos graph estavel |
+
+**Nao autoriza codigo** ate checklist de `18` marcado CONFIRMED neste arquivo.
 
 ## Git / release — fluxo de branches
 

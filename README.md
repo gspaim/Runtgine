@@ -82,7 +82,8 @@ Visão enxuta do que já está em `main`. **Atualizar esta seção em todo PR
 | Feito | Slice 3 — TUI Constellation Mission Control |
 | Feito | Slice 4 — Validator com JSON Schema, IDs/`schema_version` estritos, sandbox Shell v0 |
 | Feito | Slice 5 — Intent Engine NL v0 (`runtgine intent`) |
-| Próximo | Runtime Graph, mais Players, policies/HITL, API HTTP, bus distribuído, desktop Wails |
+| Próximo | Spec Runtime Graph v0 (`docs/18`) — confirmar em `04` antes de codar |
+| Depois | Runtime Graph (código pós-CONFIRMED), mais Players, policies/HITL, API HTTP, bus distribuído, desktop Wails |
 
 Detalhe do corte: [`docs/09-mvp.md`](docs/09-mvp.md). Limitações atuais abaixo.
 
@@ -349,6 +350,7 @@ vulnerabilidade.
 | [MVP](docs/09-mvp.md) | Escopo canônico |
 | [Gaps](docs/10-gaps.md) | Lacunas e próximos problemas |
 | [Protocolo v0](docs/11-protocolo-v0.md) | Task IR, Manifest, Events e Results |
+| [Runtime Graph](docs/18-runtime-graph-v0.md) | Proposta v0 (ainda HYPOTHESIS) |
 | [TUI Design](docs/14-tui-design.md) | Constellation Mission Control |
 | [Git workflow](docs/15-git-workflow.md) | Branches, RC e releases |
 | [Intent Engine](docs/17-intent-engine-v0.md) | NL → Task IR v0 |

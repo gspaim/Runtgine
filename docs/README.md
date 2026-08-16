@@ -23,6 +23,7 @@ Autoridade de decisoes: [04-decisoes.md](04-decisoes.md).
 | 15 | 15-git-workflow.md | Branches, RC e releases |
 | 16 | 16-project-memory.md | Project Memory (esboco; HYPOTHESIS) |
 | 17 | 17-intent-engine-v0.md | Intent Engine NL v0 (CONFIRMED) |
+| 18 | 18-runtime-graph-v0.md | Runtime Graph v0 (**PROPOSED**; nao codificar ate `04`) |
 
 ## Fontes historicas (raiz do repo)
 
@@ -34,6 +35,7 @@ Autoridade de decisoes: [04-decisoes.md](04-decisoes.md).
 
 Nao usar fontes historicas para decisoes de implementacao.
 
-Antes de codar: P0 (`11`), P1 Board (`12`) e P2 (`13`) estao **CONFIRMADOS**
-(G-36 NATS = DEFERRED). P3 ainda futuro em `10-gaps.md` (inclui Project
-Memory G-46/G-47 em `16` — HYPOTHESIS, sem codigo).
+Antes de codar: P0 (`11`), P1 Board (`12`), P1b Intent (`17`) e P2 (`13`)
+estao **CONFIRMADOS** (G-36 NATS = DEFERRED). Runtime Graph (`18`, G-60+)
+e **PROPOSED** — confirmar em `04` antes de implementar. P3 ainda futuro
+em `10-gaps.md` (inclui Project Memory G-46/G-47 em `16` — HYPOTHESIS, sem codigo).

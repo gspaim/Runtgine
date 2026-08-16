@@ -21,8 +21,8 @@ Human Intent -> Intent Engine -> Task IR -> Validator -> Execution Plan -> Event
 | Queue | CONFIRMED | Trabalho aguardando processamento |
 | Event Bus | CONFIRMED | Transporte de eventos |
 | Capability | CONFIRMED | O que um Player sabe fazer |
-| Intent Engine | HYPOTHESIS | Traduz intencao em Task IR |
-| Task IR | CONFIRMED (v0) | Schema em 11-protocolo-v0; Intent Engine NL ainda HYPOTHESIS |
+| Intent Engine | CONFIRMED (v0) | Traduz intencao em Task IR; ver `17` |
+| Task IR | CONFIRMED (v0) | Schema em 11-protocolo-v0; NL via Intent Engine v0 |
 | Task Validator | HYPOTHESIS | Valida antes de executar |
 | Runtime Graph | HYPOTHESIS | Memoria estrutural do sistema |
 | Context Engine | HYPOTHESIS | Monta contexto para cada Player |
@@ -116,7 +116,7 @@ Filosofia: deslocar erros de runtime error para compile/validation error.
 
 ## Runtime Graph
 
-Status: HYPOTHESIS
+Status: HYPOTHESIS — proposta em [18-runtime-graph-v0.md](18-runtime-graph-v0.md)
 
 Representa relacoes entre Players, Capabilities, Tasks, Workflows,
 Resources, Repositories, Symbols, Events, Runs, Artifacts e
@@ -127,6 +127,11 @@ o Runtime Graph responde O que existe e como as coisas se relacionam?.
 
 Runtime Graph = memoria estrutural
 Event Store = memoria temporal
+
+O corte v0 proposto (ainda nao CONFIRMED) limita-se a nos/arestas
+minimos em SQLite por workspace, sync best-effort apos runs, e CLI
+read-only — sem Workflow Templates, sem tab TUI e sem hits no
+ContextPack/Intent neste slice.
 
 ---
 

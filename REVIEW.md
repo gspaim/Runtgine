@@ -123,4 +123,5 @@ Documentacao alinhada; stack CONFIRMED; MVP canônico em 09-mvp.md.
 **P0 + P1 + P2 CONFIRMADOS** (`11`, `12`, `13`; NATS DEFERRED).
 **Intent Engine v0 CONFIRMADO** (`17`, G-50..G-54).
 Slices 1–4 implementados; Intent Engine NL v0 implementado.
-P3 (G-40+) futuro; Runtime Graph permanece HYPOTHESIS.
+**Runtime Graph v0: PROPOSED** em `18-runtime-graph-v0.md` (G-60+; sem codigo).
+P3 (G-40+) futuro.
