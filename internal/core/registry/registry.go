@@ -1,13 +1,16 @@
 package registry
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
+	"strings"
 	"sync"
 
 	"github.com/gspaim/Runtgine/internal/core/result"
 	"github.com/gspaim/Runtgine/internal/core/store"
+	"github.com/santhosh-tekuri/jsonschema/v6"
 )
 
 type Kind string
@@ -52,19 +55,22 @@ type Player interface {
 }
 
 type Registry struct {
-	mu      sync.RWMutex
-	players map[string]Player
-	caps    map[string][]string
-	meta    map[string]Capability
-	kinds   map[string]Kind
+	mu        sync.RWMutex
+	players   map[string]Player
+	caps      map[string][]string
+	meta      map[string]Capability
+	kinds     map[string]Kind
+	inputSch  map[string]*jsonschema.Schema
+	compilerN int
 }
 
 func New() *Registry {
 	return &Registry{
-		players: map[string]Player{},
-		caps:    map[string][]string{},
-		meta:    map[string]Capability{},
-		kinds:   map[string]Kind{},
+		players:  map[string]Player{},
+		caps:     map[string][]string{},
+		meta:     map[string]Capability{},
+		kinds:    map[string]Kind{},
+		inputSch: map[string]*jsonschema.Schema{},
 	}
 }
 
@@ -78,21 +84,76 @@ func (r *Registry) Register(p Player) error {
 	if _, ok := r.players[m.Name]; ok {
 		return fmt.Errorf("player %q already registered", m.Name)
 	}
+	compiled := map[string]*jsonschema.Schema{}
+	for _, c := range m.Capabilities {
+		sch, err := compileInputSchema(c.Name, c.InputSchema, &r.compilerN)
+		if err != nil {
+			return fmt.Errorf("player %q capability %q: %w", m.Name, c.Name, err)
+		}
+		compiled[c.Name] = sch
+	}
 	r.players[m.Name] = p
 	r.kinds[m.Name] = m.Kind
 	for _, c := range m.Capabilities {
 		r.caps[c.Name] = append(r.caps[c.Name], m.Name)
 		if _, ok := r.meta[c.Name]; !ok {
 			r.meta[c.Name] = c
+			r.inputSch[c.Name] = compiled[c.Name]
 		}
 	}
 	return nil
+}
+
+func compileInputSchema(capName string, raw json.RawMessage, seq *int) (*jsonschema.Schema, error) {
+	if len(raw) == 0 {
+		raw = json.RawMessage(`{"type":"object"}`)
+	}
+	doc, err := jsonschema.UnmarshalJSON(bytes.NewReader(raw))
+	if err != nil {
+		return nil, fmt.Errorf("input_schema: %w", err)
+	}
+	*seq++
+	url := fmt.Sprintf("https://runtgine.dev/schemas/capability/%s/%d.json", capName, *seq)
+	c := jsonschema.NewCompiler()
+	c.DefaultDraft(jsonschema.Draft2020)
+	c.AssertFormat()
+	if err := c.AddResource(url, doc); err != nil {
+		return nil, err
+	}
+	return c.Compile(url)
 }
 
 func (r *Registry) HasCapability(name string) bool {
 	r.mu.RLock()
 	defer r.mu.RUnlock()
 	return len(r.caps[name]) > 0
+}
+
+// ValidateInput checks raw step input against the capability input_schema.
+func (r *Registry) ValidateInput(capability string, input json.RawMessage) error {
+	r.mu.RLock()
+	sch := r.inputSch[capability]
+	r.mu.RUnlock()
+	if sch == nil {
+		return result.Validation(result.CodeUnknownCapability,
+			fmt.Sprintf("capability %q is not registered", capability), nil)
+	}
+	if len(input) == 0 {
+		return result.Validation(result.CodeInvalidInput, "input is required", nil)
+	}
+	inst, err := jsonschema.UnmarshalJSON(bytes.NewReader(input))
+	if err != nil {
+		return result.Validation(result.CodeInvalidInput, "invalid input json: "+err.Error(), nil)
+	}
+	if err := sch.Validate(inst); err != nil {
+		msg := strings.ReplaceAll(err.Error(), "\n", "; ")
+		if len(msg) > 512 {
+			msg = msg[:512] + "…"
+		}
+		return result.Validation(result.CodeInvalidInput,
+			fmt.Sprintf("input does not match schema for %q: %s", capability, msg), nil)
+	}
+	return nil
 }
 
 // Resolve picks a player for a capability (G-26 router rules).

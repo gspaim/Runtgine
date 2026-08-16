@@ -25,7 +25,7 @@ Chorus = protocolo/comunicacao. Sao complementares, nao sucessao.
 
 Go (CONFIRMED), Cobra (CONFIRMED), Bubble Tea (CONFIRMED),
 Wails (CONFIRMED), Canal Go Event Bus (CONFIRMED),
-JSON + JSON Schema (CONFIRMED), SQLite (CONFIRMED), slog (HYPOTHESIS).
+JSON + JSON Schema (CONFIRMED), SQLite (CONFIRMED), slog (CONFIRMED).
 
 REJECTED para o caminho atual: Rust (Core), GPUI, Tauri, Electron,
 Python (runtime), Node/TS (single-thread).
@@ -110,10 +110,10 @@ CLI -> TUI -> Board -> Context -> LLM pipeline -> Router.
 ## 10. Roadmap
 
 Fase 0: Documentacao
-Fase 1: MVP (Core Go, Event Bus, Shell, CLI, TUI, Board)
+Fase 1: MVP (Core Go, Event Bus, Shell, CLI, TUI, Board) — slices 1–4
 Fase 2: Intent Engine v0 + Runtime Graph / mais Players conforme promocao
 Fase 3: Desktop (Wails)
-Fase 4: Infra (SQLite, policies, blast radius)
+Fase 4: Infra (policies, blast radius; SQLite ja no MVP)
 Fase 5: Cloud (NATS, API, serverless)
 Fase 6: Ecossistema (biblioteca de Players)
 
@@ -122,5 +122,5 @@ Fase 6: Ecossistema (biblioteca de Players)
 Documentacao alinhada; stack CONFIRMED; MVP canônico em 09-mvp.md.
 **P0 + P1 + P2 CONFIRMADOS** (`11`, `12`, `13`; NATS DEFERRED).
 **Intent Engine v0 CONFIRMADO** (`17`, G-50..G-54).
-Slices 1–3 implementados; Intent Engine NL v0 implementado.
+Slices 1–4 implementados; Intent Engine NL v0 implementado.
 P3 (G-40+) futuro; Runtime Graph permanece HYPOTHESIS.

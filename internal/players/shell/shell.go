@@ -5,9 +5,12 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"log/slog"
+	"os"
 	"os/exec"
 	"path/filepath"
 	"strings"
+	"sync"
 	"time"
 
 	"github.com/gspaim/Runtgine/internal/core/registry"
@@ -65,10 +68,33 @@ type output struct {
 	Stderr   string `json:"stderr"`
 }
 
+var warnAllowlist sync.Once
+
+// ValidateStaticInput applies sandbox-v0 static checks (argv + workdir).
+func ValidateStaticInput(workspace string, raw json.RawMessage) error {
+	var in input
+	if err := json.Unmarshal(raw, &in); err != nil {
+		return result.Validation(result.CodeInvalidInput, "invalid shell.exec input: "+err.Error(), nil)
+	}
+	if len(in.Command) == 0 || strings.TrimSpace(in.Command[0]) == "" {
+		return result.Validation(result.CodeInvalidInput, "command must be a non-empty argv array", nil)
+	}
+	if in.Workdir == "" {
+		in.Workdir = "."
+	}
+	if _, err := ResolveWorkdir(workspace, in.Workdir); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (p *Player) Execute(ctx context.Context, req registry.ExecRequest) (json.RawMessage, error) {
 	if req.Capability != CapExec {
 		return nil, result.Validation(result.CodeUnknownCapability, "shell player cannot serve "+req.Capability, nil)
 	}
+	warnAllowlist.Do(func() {
+		slog.Default().Warn("shell.exec: binary allowlist not configured; permissive argv execution")
+	})
 	var in input
 	if err := json.Unmarshal(req.Input, &in); err != nil {
 		return nil, result.Validation(result.CodeInvalidInput, "invalid shell.exec input: "+err.Error(), nil)
@@ -84,7 +110,7 @@ func (p *Player) Execute(ctx context.Context, req registry.ExecRequest) (json.Ra
 		in.Workdir = "."
 	}
 
-	workAbs, err := resolveWorkdir(req.Workspace, in.Workdir)
+	workAbs, err := ResolveWorkdir(req.Workspace, in.Workdir)
 	if err != nil {
 		return nil, err
 	}
@@ -94,14 +120,7 @@ func (p *Player) Execute(ctx context.Context, req registry.ExecRequest) (json.Ra
 
 	cmd := exec.CommandContext(cctx, in.Command[0], in.Command[1:]...)
 	cmd.Dir = workAbs
-	if len(in.Env) > 0 {
-		// minimal env: only explicitly provided keys (plus empty base)
-		env := make([]string, 0, len(in.Env))
-		for k, v := range in.Env {
-			env = append(env, k+"="+v)
-		}
-		cmd.Env = env
-	}
+	cmd.Env = buildEnv(in.Env)
 	var stdout, stderr bytes.Buffer
 	cmd.Stdout = &stdout
 	cmd.Stderr = &stderr
@@ -136,11 +155,50 @@ func (p *Player) Execute(ctx context.Context, req registry.ExecRequest) (json.Ra
 	return json.Marshal(out)
 }
 
-func resolveWorkdir(workspace, workdir string) (string, error) {
+// buildEnv implements sandbox v0 env policy.
+// Explicit map → only those keys. Omitted → minimal inherit (never secrets).
+func buildEnv(explicit map[string]string) []string {
+	if len(explicit) > 0 {
+		env := make([]string, 0, len(explicit))
+		for k, v := range explicit {
+			env = append(env, k+"="+v)
+		}
+		return env
+	}
+	var env []string
+	for _, e := range os.Environ() {
+		key, _, ok := strings.Cut(e, "=")
+		if !ok {
+			continue
+		}
+		if allowInheritedEnv(key) {
+			env = append(env, e)
+		}
+	}
+	return env
+}
+
+func allowInheritedEnv(key string) bool {
+	switch key {
+	case "PATH", "HOME", "USER", "LANG", "TZ", "TMPDIR", "TMP", "TEMP":
+		return true
+	}
+	if strings.HasPrefix(key, "LC_") {
+		return true
+	}
+	return false
+}
+
+// ResolveWorkdir returns an absolute workdir inside workspace after symlink resolution.
+func ResolveWorkdir(workspace, workdir string) (string, error) {
 	ws, err := filepath.Abs(workspace)
 	if err != nil {
 		return "", result.Runtime(result.CodeInternal, err.Error(), false, nil)
 	}
+	if resolved, err := filepath.EvalSymlinks(ws); err == nil {
+		ws = resolved
+	}
+
 	target := workdir
 	if !filepath.IsAbs(target) {
 		target = filepath.Join(ws, workdir)
@@ -149,12 +207,37 @@ func resolveWorkdir(workspace, workdir string) (string, error) {
 	if err != nil {
 		return "", result.Validation(result.CodeInvalidInput, "invalid workdir", nil)
 	}
-	rel, err := filepath.Rel(ws, target)
-	if err != nil || strings.HasPrefix(rel, "..") {
+	resolved, err := evalSymlinksExisting(target)
+	if err != nil {
+		return "", result.Validation(result.CodeInvalidInput, "invalid workdir: "+err.Error(), nil)
+	}
+	rel, err := filepath.Rel(ws, resolved)
+	if err != nil || rel == ".." || strings.HasPrefix(rel, ".."+string(os.PathSeparator)) {
 		return "", result.Validation(result.CodeInvalidInput, "workdir must be inside workspace_root", map[string]any{
 			"workspace": ws,
-			"workdir":   target,
+			"workdir":   resolved,
 		})
 	}
-	return target, nil
+	return resolved, nil
+}
+
+// evalSymlinksExisting resolves symlinks for path, walking up if leaf does not exist yet.
+func evalSymlinksExisting(path string) (string, error) {
+	if r, err := filepath.EvalSymlinks(path); err == nil {
+		return r, nil
+	}
+	var missing []string
+	p := path
+	for {
+		dir := filepath.Dir(p)
+		base := filepath.Base(p)
+		if dir == p {
+			return "", fmt.Errorf("cannot resolve %q", path)
+		}
+		missing = append([]string{base}, missing...)
+		if r, err := filepath.EvalSymlinks(dir); err == nil {
+			return filepath.Join(append([]string{r}, missing...)...), nil
+		}
+		p = dir
+	}
 }

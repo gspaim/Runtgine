@@ -24,7 +24,7 @@ func New(c Completer) *Player {
 }
 
 func (p *Player) Manifest() registry.Manifest {
-	obj := json.RawMessage(`{"type":"object"}`)
+	obj := json.RawMessage(`{"type":"object","additionalProperties":false}`)
 	return registry.Manifest{
 		SchemaVersion: "0.1.0",
 		Name:          "llm",

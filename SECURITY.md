@@ -32,7 +32,11 @@ Inclua no relato privado:
 
 ## Escopo importante
 
-O Shell Player do MVP não é um sandbox de segurança. Tasks não confiáveis,
-isolamento entre tenants e execução hostil estão fora das garantias atuais.
-Mesmo assim, bypasses que contradigam as proteções documentadas devem ser
-relatados.
+O Shell Player do MVP não é um sandbox de isolamento (sem namespaces,
+Landlock ou deny de rede). Tasks não confiáveis, isolamento entre tenants e
+execução hostil estão fora das garantias atuais.
+
+Proteções documentadas do sandbox v0: argv-only (sem shell implícito),
+timeout, `workdir` resolvido com symlinks e confinado ao workspace, e
+herança mínima de ambiente quando `input.env` é omitido (sem tokens /
+`RUNTGINE_*`). Bypasses dessas proteções devem ser relatados.

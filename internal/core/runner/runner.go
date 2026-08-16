@@ -18,6 +18,7 @@ import (
 	"github.com/gspaim/Runtgine/internal/core/result"
 	"github.com/gspaim/Runtgine/internal/core/store"
 	"github.com/gspaim/Runtgine/internal/core/task"
+	"github.com/gspaim/Runtgine/internal/players/shell"
 )
 
 type Runner struct {
@@ -61,22 +62,8 @@ func (r *Runner) Submit(ctx context.Context, t task.Task) (SubmitResult, error) 
 }
 
 func (r *Runner) SubmitChild(ctx context.Context, t task.Task, parentRunID string) (SubmitResult, error) {
-	if err := task.StructuralValidate(t); err != nil {
-		_ = r.emit("", t.TaskID, nil, event.TypeTaskRejected, map[string]any{
-			"code":    result.CodeSchema,
-			"message": err.Error(),
-		})
-		return SubmitResult{}, result.Validation(result.CodeSchema, err.Error(), nil)
-	}
-	for _, s := range t.Steps {
-		if !r.Reg.HasCapability(s.Capability) {
-			msg := "capability \"" + s.Capability + "\" is not registered"
-			_ = r.emit("", t.TaskID, nil, event.TypeTaskRejected, map[string]any{
-				"code":    result.CodeUnknownCapability,
-				"message": msg,
-			})
-			return SubmitResult{}, result.Validation(result.CodeUnknownCapability, msg, nil)
-		}
+	if err := r.validateAdmission(t); err != nil {
+		return SubmitResult{}, err
 	}
 
 	runID, err := uuid.NewV7()
@@ -110,6 +97,53 @@ func (r *Runner) SubmitChild(ctx context.Context, t task.Task, parentRunID strin
 	go r.execute(runCtx, t, p)
 
 	return SubmitResult{RunID: rid}, nil
+}
+
+func (r *Runner) validateAdmission(t task.Task) error {
+	raw, err := json.Marshal(t)
+	if err != nil {
+		return r.reject(t.TaskID, result.CodeSchema, "marshal task ir: "+err.Error())
+	}
+	if err := task.ValidateDocument(raw); err != nil {
+		return r.reject(t.TaskID, result.CodeSchema, err.Error())
+	}
+	if err := task.IdentityValidate(t); err != nil {
+		return r.reject(t.TaskID, result.CodeSchema, err.Error())
+	}
+	if err := task.StructuralValidate(t); err != nil {
+		return r.reject(t.TaskID, result.CodeSchema, err.Error())
+	}
+	for _, s := range t.Steps {
+		if !r.Reg.HasCapability(s.Capability) {
+			return r.reject(t.TaskID, result.CodeUnknownCapability,
+				"capability \""+s.Capability+"\" is not registered")
+		}
+		if err := r.Reg.ValidateInput(s.Capability, s.Input); err != nil {
+			var ve result.Error
+			if errors.As(err, &ve) {
+				return r.reject(t.TaskID, ve.Code, ve.Message)
+			}
+			return r.reject(t.TaskID, result.CodeInvalidInput, err.Error())
+		}
+		if s.Capability == shell.CapExec {
+			if err := shell.ValidateStaticInput(r.Workspace, s.Input); err != nil {
+				var ve result.Error
+				if errors.As(err, &ve) {
+					return r.reject(t.TaskID, ve.Code, ve.Message)
+				}
+				return r.reject(t.TaskID, result.CodeInvalidInput, err.Error())
+			}
+		}
+	}
+	return nil
+}
+
+func (r *Runner) reject(taskID, code, message string) error {
+	_ = r.emit("", taskID, nil, event.TypeTaskRejected, map[string]any{
+		"code":    code,
+		"message": message,
+	})
+	return result.Validation(code, message, nil)
 }
 
 func (r *Runner) Cancel(runID string) error {
