@@ -11,7 +11,7 @@ Status de cada secao: `PROPOSED`.
 
 ## 1. Encoding (G-14)
 
-**Proposta**
+**Status: CONFIRMED** (fechamento humano)
 
 - Contrato canonico: **JSON** + **JSON Schema** (draft 2020-12 ou draft-07).
 - YAML na CLI e acucar: convertible → JSON antes da validacao (`runtgine run task.yaml`).
