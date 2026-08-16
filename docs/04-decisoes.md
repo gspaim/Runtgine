@@ -124,7 +124,8 @@ Nao implementar Core ate G-01..G-18 estarem confirmados ou rejeitados com altern
 | Core API SubmitTask/GetRun/Subscribe | CONFIRMED | G-07 — Entry Point = adapter; mesmo protocolo |
 | Shell sandbox v0 (argv, workdir, timeout) | CONFIRMED | G-06/G-18 — sessao de fechamento; allowlist opcional |
 | log/slog | CONFIRMED | G-16 — sessao de fechamento |
-| SQLite via modernc.org/sqlite | PROPOSED | Quando persistencia entrar |
+| SQLite via modernc.org/sqlite | CONFIRMED | G-15 — pure Go; sem cgo |
+| Go 1.22+; module github.com/gspaim/Runtgine | CONFIRMED | G-37 |
 | Layout `cmd/` + `internal/core|players|entrypoint` | PROPOSED | G-17 |
 
 ### Tensoes a resolver na confirmacao

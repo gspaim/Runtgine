@@ -393,9 +393,9 @@ Falha de sandbox → `validation.invalid_input` ou `runtime.player_error` com co
 | Item | Status | Decisao |
 |---|---|---|
 | Logger | CONFIRMED | `log/slog` |
-| SQLite driver (quando entrar) | PROPOSED | `modernc.org/sqlite` (pure Go, sem cgo) |
-| Go version | PROPOSED | 1.22+ (ajustar na confirmacao) |
-| Module path | PROPOSED | `github.com/gspaim/Runtgine` (confirmar case/path real do repo) |
+| SQLite driver | CONFIRMED | `modernc.org/sqlite` (pure Go, sem cgo) |
+| Go version | CONFIRMED | 1.22+ |
+| Module path | CONFIRMED | `github.com/gspaim/Runtgine` |
 
 ---
 
