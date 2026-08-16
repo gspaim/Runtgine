@@ -16,7 +16,7 @@ Autoridade de decisoes: [04-decisoes.md](04-decisoes.md).
 | 08 | 08-workflow-templates.md | Workflow Templates, TLC Spec-Driven |
 | 09 | 09-mvp.md | Corte canônico do MVP |
 | 10 | 10-gaps.md | Gaps e definicoes faltantes |
-| 12 | 12-board-p1.md | Board / pipeline vertical (P1) |
+| 13 | 13-p2.md | Engenharia P2 (G-30+) |
 
 ## Fontes historicas (raiz do repo)
 
