@@ -369,6 +369,8 @@ CancelRun(run_id) -> error          // pode ser stub no MVP
 
 ## 14. Shell Player + policy minima (G-06, G-18)
 
+**Status: CONFIRMED** (fechamento humano)
+
 Capability: `shell.exec` (schema no Manifest §6).
 
 **Sandbox v0 (obrigatorio mesmo sem Execution Policy completa)**
@@ -380,7 +382,7 @@ Capability: `shell.exec` (schema no Manifest §6).
 | Env | allowlist ou herda minimo; sem injecao livre de secrets do host alem do necessario |
 | Timeout | obrigatorio (default 60s) |
 | Rede | nao controlada no v0 (documentar risco); deny via OS fica P2 |
-| Binarios | allowlist opcional (`go`, `git`, …) — **PROPOSED:** allowlist configuravel; default permissivo + warning no log |
+| Binarios | allowlist opcional (`go`, `git`, …) — default permissivo + warning no log |
 
 Falha de sandbox → `validation.invalid_input` ou `runtime.player_error` com code dedicado futuro `policy.denied`.
 
