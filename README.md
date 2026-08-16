@@ -373,6 +373,7 @@ As decisões confirmadas e os gaps estão em
 | [Gaps](docs/10-gaps.md) | Lacunas e próximos problemas |
 | [Protocolo v0](docs/11-protocolo-v0.md) | Task IR, Manifest, Events e Results |
 | [TUI Design](docs/14-tui-design.md) | Constellation Mission Control |
+| [Git workflow](docs/15-git-workflow.md) | Branches, RC e releases |
 | [Guia para LLMs](AGENTS.md) | Regras de implementação |
 
 ## Contribuindo
@@ -383,7 +384,10 @@ Contribuições são bem-vindas. Antes de implementar:
 2. verifique se a decisão necessária já está registrada;
 3. mantenha o Core independente das interfaces;
 4. prefira execução determinística a chamadas LLM;
-5. adicione testes e execute:
+5. abra a branch a partir de `develop` com o padrão
+   `feat/<NNN>-<slug>` (ex.: `feat/001-shell-player`) e abra o PR **para
+   `develop`** — ver [fluxo Git](docs/15-git-workflow.md);
+6. adicione testes e execute:
 
 ```bash
 go test ./...
@@ -392,6 +396,14 @@ go vet ./...
 
 Para mudanças maiores, abra primeiro uma issue descrevendo o problema, o
 contrato afetado e os trade-offs.
+
+### Releases
+
+- Integração: `develop`
+- Candidates: branch `release/x.y.z` + tags `vX.Y.Z-rc.N`
+- Estável: merge em `main` + tag `vX.Y.Z`
+
+Detalhes em [docs/15-git-workflow.md](docs/15-git-workflow.md).
 
 ## Licença
 

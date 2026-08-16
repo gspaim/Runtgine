@@ -25,6 +25,7 @@ MVP canônico: `docs/09-mvp.md`.
 Gaps: `docs/10-gaps.md`.
 Protocolo v0 (proposta): `docs/11-protocolo-v0.md` — confirmar antes de codar.
 Design da TUI: `docs/14-tui-design.md`.
+Git / releases: `docs/15-git-workflow.md`.
 Skill obrigatoria para TUI: `.cursor/skills/runtgine-tui-design/SKILL.md`.
 
 ## Ordem de trabalho
@@ -64,3 +65,5 @@ Skill obrigatoria para TUI: `.cursor/skills/runtgine-tui-design/SKILL.md`.
 - Ao trabalhar na TUI, seguir `docs/14-tui-design.md` e a skill
   `.cursor/skills/runtgine-tui-design/SKILL.md`
 - Nao transformar a TUI em multiplexer nem adicionar tuios/PTY sem nova decisao
+- Nao abrir PR de feature direto para `main`; base = `develop` (ver `15-git-workflow.md`)
+- Nao publicar tag estavel `vX.Y.Z` sem passar por `release/x.y.z` e RC

@@ -20,6 +20,7 @@ Autoridade de decisoes: [04-decisoes.md](04-decisoes.md).
 | 12 | 12-board-p1.md | Board / pipeline vertical |
 | 13 | 13-p2.md | Engenharia P2 (G-30+) |
 | 14 | 14-tui-design.md | TUI Constellation Mission Control |
+| 15 | 15-git-workflow.md | Branches, RC e releases |
 
 ## Fontes historicas (raiz do repo)
 
