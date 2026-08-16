@@ -149,7 +149,7 @@ Ver [12-board-p1.md](12-board-p1.md).
 | Item | Status | Notas |
 |---|---|---|
 | G-20 Card → Task IR (adapter + polling) | CONFIRMED | Mapeamento titulo/body/ref; token via env |
-| G-21 Write-back no board | OPEN | |
+| G-21 Write-back no board | CONFIRMED | Status + comentario; sem subtasks no board |
 | G-22 Contratos por etapa | OPEN | |
 | G-23 Regras vs LLM | OPEN | |
 | G-24 Context assembly basico | OPEN | |

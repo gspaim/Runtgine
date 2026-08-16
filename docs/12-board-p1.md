@@ -29,9 +29,20 @@ Fluxo: poll card → montar Task IR v0 → `SubmitTask` → eventos/status.
 
 ---
 
+## G-21 — Write-back no board
+
+**Status: CONFIRMED**
+
+Write-back minimo no MVP:
+- Atualiza status/campo do card conforme lifecycle (`running` / `succeeded` / `failed`)
+- Comenta no card (ou issue ligada) com `run_id` + resumo/erro
+- **Nao** cria subtasks/cards filhos no board ate G-27
+- Fonte de verdade dos steps: Core / SQLite
+
+---
+
 ## Em aberto (proximos)
 
-- G-21 Write-back no board
 - G-22 Contratos por etapa do pipeline
 - G-23 Regras vs LLM por etapa
 - G-24 Context assembly basico
