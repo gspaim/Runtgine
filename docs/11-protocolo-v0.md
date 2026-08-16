@@ -319,12 +319,15 @@ Relacao: Orchestrator HYPOTHESIS futuro pode absorver Runner.
 
 ## 11. Queue v0 (G-12)
 
-**Proposta**
+**Status: CONFIRMED** (fechamento humano) — variante B
 
-- In-process, FIFO por `run_id` / steps prontos.
+- In-process, FIFO por steps prontos / runs.
 - Sem prioridade no MVP.
 - Sem persistencia da fila (ver §12).
-- Uma execucao ativa por processo no MVP (simples); multi-run concorrente = P2.
+- **Multiplos runs concorrentes** permitidos no MVP (limites de paralelismo
+  configuraveis depois; default razoavel no processo).
+- Steps de um mesmo run respeitam `depends_on` (ordem topologica);
+  runs distintos nao se bloqueiam entre si no v0.
 
 ---
 
