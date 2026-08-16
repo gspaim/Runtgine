@@ -19,10 +19,12 @@ o conteudo migra para o documento apropriado.
 
 ### Ainda em aberto
 
-- O protocolo entre Entry Point e Core e o mesmo Runtgine Protocol
-  ou um protocolo de adaptacao separado?
 - Board Integration: polling vs webhook no longo prazo?
-- Board e um Entry Point direto ou adapter sobre um Entry Point tipo API?
+- Detalhes do adapter GitHub Projects (auth, mapeamento card → Task IR) — gap P1
+
+Resolvido em proposta (`11-protocolo-v0`, aguardando confirmacao):
+- Protocolo Entry Point → Core = mesmo protocolo interno (adapters)
+- Board e Entry Point/adapter, nao Player
 
 ### Implicacao para serverless/cloud (design, nao MVP)
 
@@ -34,18 +36,34 @@ o conteudo migra para o documento apropriado.
 
 ---
 
+## Gaps e protocolo v0
+
+Formalizado em:
+- [10-gaps.md](10-gaps.md) — inventario P0/P1/P2/P3
+- [11-protocolo-v0.md](11-protocolo-v0.md) — schemas e cortes PROPOSED
+
+Proximo passo humano: percorrer o checklist de confirmacao no fim de `11`
+e promover itens em `04-decisoes.md`.
+
+Questoes de Entry Point que `11` ja propoe resposta:
+- Protocolo Entry Point → Core = mesmo protocolo interno (adapters)
+- Board = Entry Point/adapter que emite Task IR (detalhe GitHub = gap P1)
+
+Ainda em aberto apos `11` (nao bloqueia Core CLI+Shell):
+- Board: polling vs webhook no longo prazo
+- Detalhes GitHub Projects (G-20+)
+
 ## Context Management (discussao)
 
 O que temos hoje:
 - AGENTS.md: entry point para LLMs
 - docs/ numerados por ordem de leitura
 - docs/04-decisoes.md: decisoes com status
-- docs/00-rascunho.md: discussoes em andamento
+- docs/10-gaps.md + docs/11-protocolo-v0.md: gaps e propostas de contrato
 - brainstorm.md / conversas-empryo.md: fontes historicas
 
 Falta documentar (quando houver codigo):
-- Estrutura de diretorios do projeto Runtgine
-- Convencoes de codigo e documentacao
+- Convencoes de codigo alem do layout proposto em `11`
 - Genome / mapa de simbolos
 - Como o contexto e gerenciado entre modulos
 

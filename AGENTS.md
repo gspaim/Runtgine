@@ -22,18 +22,20 @@ das decisoes estarem registradas em `docs/04-decisoes.md`.
 4. `brainstorm.md` e `conversas-empryo.md` — historicos apenas
 
 MVP canônico: `docs/09-mvp.md`.
+Gaps: `docs/10-gaps.md`.
+Protocolo v0 (proposta): `docs/11-protocolo-v0.md` — confirmar antes de codar.
 
 ## Ordem de trabalho
 
-1. Entender o dominio (docs 01 a 08 + 09-mvp)
-2. Fechar Task IR v0 (schema JSON) — contrato minimo
-3. Criar arquitetura do Core (pacotes Go)
-4. Implementar Event Bus + Task model
+1. Entender o dominio (docs 01 a 09)
+2. Revisar gaps (`10`) e confirmar protocolo v0 (`11` → `04-decisoes`)
+3. Criar arquitetura do Core (layout em `11` §16, apos confirmacao)
+4. Implementar Event Bus + Task model (schemas confirmados)
 5. Implementar Validator basico
-6. Implementar Shell Player
+6. Implementar Shell Player (+ sandbox v0)
 7. CLI minima
 8. TUI minima
-9. Board Integration + pipeline vertical (ver 09-mvp)
+9. Board Integration + pipeline vertical (ver 09-mvp; gaps P1)
 10. Context assembly + LLM Player + Router
 11. Intent Engine (NL) — apenas apos Core estavel; ainda HYPOTHESIS
 12. Runtime Graph e demais HYPOTHESIS conforme promocao em 04-decisoes
@@ -55,3 +57,5 @@ MVP canônico: `docs/09-mvp.md`.
 - Nao pular o Validator (filosofia de compilador)
 - Nao construir UI rica (Wails) antes do Core + CLI/TUI funcionarem
 - Nao usar brainstorm/conversas-empryo como fonte de stack (Rust/GPUI estao REJECTED)
+- Nao implementar Core enquanto G-01..G-18 de `10-gaps.md` nao estiverem
+  confirmados ou rejeitados em `04-decisoes.md`

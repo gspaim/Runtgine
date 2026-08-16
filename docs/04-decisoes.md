@@ -101,3 +101,32 @@ Ver [09-mvp.md](09-mvp.md). Decisoes-chave:
 - Nativo (nao Electron); GPUI/Tauri/Rust-Core rejeitados para o caminho atual
 - Biblioteca grande de Players deterministicos (visao)
 - MVP: Core + Shell + CLI/TUI + Board (ver 09-mvp.md)
+
+## Propostas aguardando confirmacao (protocolo v0)
+
+Inventario: [10-gaps.md](10-gaps.md).
+Texto completo das propostas: [11-protocolo-v0.md](11-protocolo-v0.md).
+
+Nao implementar Core ate G-01..G-18 estarem confirmados ou rejeitados com alternativa.
+
+| Proposta | Status | Notas |
+|---|---|---|
+| JSON canonico; YAML so na borda CLI | PROPOSED | G-14 |
+| Task IR v0 schema | PROPOSED | Promover de HYPOTHESIS → CONFIRMED v0 se aceito |
+| Manifest v0 schema | PROPOSED | |
+| Event envelope + tipos minimos | PROPOSED | |
+| Result/Error + Run lifecycle | PROPOSED | |
+| Runner v0 (Orchestrator minimo) | PROPOSED | Nome `Runner` no MVP |
+| Queue in-memory FIFO | PROPOSED | Sem prioridade; 1 run ativo |
+| Persistencia MVP Core = memoria | PROPOSED | SQLite apos CLI+Shell (alt. B no doc 11) |
+| Core API SubmitTask/GetRun/Subscribe | PROPOSED | Entry Point = adapter |
+| Shell sandbox v0 (argv, workdir, timeout) | PROPOSED | Policy minima sem Execution Policy completa |
+| log/slog | PROPOSED | Candidato a CONFIRMED |
+| SQLite via modernc.org/sqlite | PROPOSED | Quando persistencia entrar |
+| Layout `cmd/` + `internal/core|players|entrypoint` | PROPOSED | G-17 |
+
+### Tensoes a resolver na confirmacao
+
+- Capability Resolver / Planner citados em `01-visao` sem conceito formal → absorver no Runner v0 ou documentar
+- Event Store vs “sem event sourcing” no MVP → memoria + logs; store duravel depois
+- Task IR / Validator / Runner: promover corte v0 a CONFIRMED apos aceite de `11`

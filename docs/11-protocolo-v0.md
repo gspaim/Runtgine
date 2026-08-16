@@ -1,0 +1,437 @@
+# 11 — Protocolo v0 (PROPOSTA)
+
+Contratos minimos para o MVP Core. **Aguardando confirmacao.**
+
+Nao e autoridade ate os itens serem promovidos em `04-decisoes.md`.
+Inventario de gaps: [10-gaps.md](10-gaps.md).
+
+Status de cada secao: `PROPOSED`.
+
+---
+
+## 1. Encoding (G-14)
+
+**Proposta**
+
+- Contrato canonico: **JSON** + **JSON Schema** (draft 2020-12 ou draft-07).
+- YAML na CLI e acucar: convertible → JSON antes da validacao (`runtgine run task.yaml`).
+- Core e Event Bus so veem JSON.
+
+---
+
+## 2. Identificadores e versao
+
+**Proposta**
+
+| Campo | Formato |
+|---|---|
+| IDs (`task_id`, `run_id`, `event_id`) | UUID v4 string |
+| `schema_version` | semver string no documento (`"0.1.0"`) |
+| Nomes de capability | `domain.action` em kebab-case invertido estilo reverse-DNS curto: `shell.exec`, `git.commit` |
+
+---
+
+## 3. Capability naming (G-05)
+
+**Proposta**
+
+```text
+capability = <domain> "." <action>[ "." <qualifier> ]
+domain     = [a-z][a-z0-9-]*
+action     = [a-z][a-z0-9-]*
+```
+
+MVP registry inicial:
+
+| Capability | Player |
+|---|---|
+| `shell.exec` | Shell Player |
+
+Regras:
+
+- Runtime roteia por capability, nao por nome de Player.
+- Capability desconhecida → Validator rejeita (erro de validacao, nao runtime).
+
+---
+
+## 4. Task IR v0 (G-01)
+
+Entrada estruturada do MVP (CLI/Board). Sem Intent Engine.
+
+### Exemplo
+
+```json
+{
+  "schema_version": "0.1.0",
+  "task_id": "550e8400-e29b-41d4-a716-446655440000",
+  "created_at": "2026-08-16T02:00:00Z",
+  "source": {
+    "entry_point": "cli",
+    "ref": "local"
+  },
+  "intent": {
+    "summary": "Run unit tests",
+    "notes": "optional free text; not executed directly"
+  },
+  "steps": [
+    {
+      "step_id": "s1",
+      "capability": "shell.exec",
+      "input": {
+        "command": ["go", "test", "./..."],
+        "workdir": ".",
+        "timeout_ms": 120000
+      },
+      "depends_on": []
+    }
+  ],
+  "metadata": {}
+}
+```
+
+### Campos
+
+| Campo | Obrigatorio | Notas |
+|---|---|---|
+| `schema_version` | sim | |
+| `task_id` | sim | UUID; CLI pode gerar |
+| `created_at` | sim | RFC3339 |
+| `source.entry_point` | sim | `cli` \| `tui` \| `board` \| `api` \| `other` |
+| `source.ref` | nao | id externo (card, file path) |
+| `intent.summary` | sim | humano; nao e executavel |
+| `intent.notes` | nao | |
+| `steps[]` | sim | >= 1 no MVP |
+| `steps[].step_id` | sim | unico na task |
+| `steps[].capability` | sim | deve existir no Registry |
+| `steps[].input` | sim | valida contra schema da capability |
+| `steps[].depends_on` | nao | step_ids; default `[]` (MVP: so DAG linear/simples) |
+| `metadata` | nao | mapa livre |
+
+### Fora do v0
+
+- Linguagem natural como unico input
+- Workflow Template binding
+- Policies por step (alem do sandbox global do Shell)
+- Subtasks aninhadas profundas (Board P1 pode estender)
+
+---
+
+## 5. Execution Plan v0 (G-11)
+
+**Proposta:** no MVP, Plan e **quase passthrough** do Task IR apos validacao.
+
+```json
+{
+  "schema_version": "0.1.0",
+  "plan_id": "…",
+  "task_id": "…",
+  "run_id": "…",
+  "steps": [
+    {
+      "step_id": "s1",
+      "capability": "shell.exec",
+      "player": "shell",
+      "input": { },
+      "depends_on": []
+    }
+  ]
+}
+```
+
+O Runner resolve `capability` → `player` via Registry. Sem replanejamento dinamico no v0.
+
+---
+
+## 6. Player Manifest v0 (G-02)
+
+```json
+{
+  "schema_version": "0.1.0",
+  "name": "shell",
+  "version": "0.1.0",
+  "kind": "deterministic",
+  "capabilities": [
+    {
+      "name": "shell.exec",
+      "input_schema": {
+        "type": "object",
+        "required": ["command"],
+        "properties": {
+          "command": {
+            "type": "array",
+            "items": { "type": "string" },
+            "minItems": 1
+          },
+          "workdir": { "type": "string", "default": "." },
+          "env": {
+            "type": "object",
+            "additionalProperties": { "type": "string" }
+          },
+          "timeout_ms": {
+            "type": "integer",
+            "minimum": 1,
+            "default": 60000
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "required": ["exit_code"],
+        "properties": {
+          "exit_code": { "type": "integer" },
+          "stdout": { "type": "string" },
+          "stderr": { "type": "string" }
+        }
+      }
+    }
+  ]
+}
+```
+
+`kind`: `deterministic` \| `ai` \| `human` \| `service` \| `workflow`.
+
+---
+
+## 7. Event envelope + tipos (G-03, G-04)
+
+```json
+{
+  "schema_version": "0.1.0",
+  "event_id": "…",
+  "type": "run.started",
+  "ts": "2026-08-16T02:00:01Z",
+  "run_id": "…",
+  "task_id": "…",
+  "step_id": null,
+  "payload": {}
+}
+```
+
+### Tipos minimos (MVP)
+
+| type | Quando |
+|---|---|
+| `task.accepted` | Task IR passou parse |
+| `task.rejected` | Validator falhou |
+| `run.planned` | Plan gerado |
+| `run.started` | Runner iniciou |
+| `step.started` | Step despachado ao Player |
+| `step.succeeded` | Player retornou ok |
+| `step.failed` | Player falhou / exit != 0 (shell) |
+| `run.succeeded` | Todos steps ok |
+| `run.failed` | Run abortado por falha |
+| `run.cancelled` | Cancelamento (se suportado; P2 pode adiar emissao) |
+
+Payload de `task.rejected` / `step.failed` usa o Error model (§9).
+
+---
+
+## 8. Run lifecycle (G-09)
+
+```text
+accepted → planned → running → succeeded
+                              ↘ failed
+                              ↘ cancelled   (opcional no MVP)
+rejected   (terminal; sem run)
+```
+
+Estados da Task (visao Entry Point): `accepted` | `rejected` | `running` | `succeeded` | `failed` | `cancelled`.
+
+Um `run_id` por tentativa de execucao de uma task aceita.
+
+---
+
+## 9. Result / Error (G-08)
+
+### Result (step)
+
+```json
+{
+  "ok": true,
+  "step_id": "s1",
+  "capability": "shell.exec",
+  "player": "shell",
+  "output": {
+    "exit_code": 0,
+    "stdout": "…",
+    "stderr": ""
+  },
+  "duration_ms": 1234
+}
+```
+
+### Error
+
+```json
+{
+  "code": "validation.unknown_capability",
+  "message": "capability \"foo.bar\" is not registered",
+  "retryable": false,
+  "details": {}
+}
+```
+
+Codigos iniciais:
+
+| code | Fase |
+|---|---|
+| `validation.schema` | Validator |
+| `validation.unknown_capability` | Validator |
+| `validation.invalid_input` | Validator |
+| `runtime.player_error` | Player |
+| `runtime.timeout` | Runner/Player |
+| `runtime.cancelled` | Runner |
+| `runtime.internal` | Core |
+
+---
+
+## 10. Runner v0 (G-10) — Orchestrator minimo
+
+**Proposta de nome no MVP:** `Runner` (evitar confundir com Orchestrator completo HYPOTHESIS).
+
+Responsabilidades v0:
+
+1. Receber Task IR
+2. Validar (Validator)
+3. Montar Plan (capability → player)
+4. Enfileirar steps respeitando `depends_on` (MVP: executar em ordem topologica; falha em um step falha o run)
+5. Publicar eventos
+6. Coletar Results
+
+**Nao faz no v0:** replanejamento, policies avancadas, background players, blast radius.
+
+Relacao: Orchestrator HYPOTHESIS futuro pode absorver Runner.
+
+---
+
+## 11. Queue v0 (G-12)
+
+**Proposta**
+
+- In-process, FIFO por `run_id` / steps prontos.
+- Sem prioridade no MVP.
+- Sem persistencia da fila (ver §12).
+- Uma execucao ativa por processo no MVP (simples); multi-run concorrente = P2.
+
+---
+
+## 12. Persistencia (G-13)
+
+**Proposta para MVP Core minimo (ate CLI+Shell)**
+
+| Dado | MVP Core | Notas |
+|---|---|---|
+| Eventos | Memoria (+ log stdout via slog) | Sem Event Store duravel |
+| Task/Run state | Memoria | `status` na CLI le do processo |
+| SQLite | **Adiado** ate apos Shell+CLI verdes | Alinha PRD P1; stack permanece CONFIRMED para quando entrar |
+
+**Alternativa B (se preferir durabilidade cedo):** SQLite so para `runs` + `events` append-only, sem pretender event sourcing completo.
+
+Default desta proposta: **Alternativa A** (memoria). Confirmar em `04-decisoes`.
+
+---
+
+## 13. Core API — Entry Point → Core (G-07)
+
+**Proposta:** mesmo protocolo interno; Entry Points sao adapters.
+
+```text
+SubmitTask(TaskIR) -> (run_id | ValidationError)
+GetRun(run_id) -> RunSnapshot
+Subscribe(filter) -> <-chan Event   // TUI/CLI status
+CancelRun(run_id) -> error          // pode ser stub no MVP
+```
+
+- Nao ha protocolo separado Board/CLI.
+- Board traduz card → Task IR e chama `SubmitTask`.
+- Entry Point != Player.
+
+---
+
+## 14. Shell Player + policy minima (G-06, G-18)
+
+Capability: `shell.exec` (schema no Manifest §6).
+
+**Sandbox v0 (obrigatorio mesmo sem Execution Policy completa)**
+
+| Regra | Default MVP |
+|---|---|
+| Shell | sem shell string; so `command` argv (sem `sh -c` implicito) |
+| Workdir | deve estar dentro do workspace root configurado |
+| Env | allowlist ou herda minimo; sem injecao livre de secrets do host alem do necessario |
+| Timeout | obrigatorio (default 60s) |
+| Rede | nao controlada no v0 (documentar risco); deny via OS fica P2 |
+| Binarios | allowlist opcional (`go`, `git`, …) — **PROPOSED:** allowlist configuravel; default permissivo + warning no log |
+
+Falha de sandbox → `validation.invalid_input` ou `runtime.player_error` com code dedicado futuro `policy.denied`.
+
+---
+
+## 15. Stack openers (G-15, G-16, G-37)
+
+| Item | Proposta |
+|---|---|
+| Logger | `log/slog` → promover a CONFIRMED |
+| SQLite driver (quando entrar) | `modernc.org/sqlite` (pure Go, sem cgo) |
+| Go version | 1.22+ (ajustar na confirmacao) |
+| Module path | `github.com/gspaim/Runtgine` (confirmar case/path real do repo) |
+
+---
+
+## 16. Repo layout v0 (G-17)
+
+```text
+cmd/runtgine/          # CLI entry
+internal/core/
+  task/                # Task IR types + validate
+  plan/                # Plan v0
+  event/               # bus + envelope
+  runner/              # Runner v0
+  registry/            # Player registry
+  result/              # Result/Error
+internal/players/
+  shell/
+internal/entrypoint/
+  cli/
+  tui/                 # depois do CLI
+pkg/protocol/          # tipos/schemas publicos estaveis (opcional cedo)
+schemas/               # JSON Schema files
+docs/
+```
+
+Core nao importa `entrypoint`. Players nao importam UI.
+
+---
+
+## 17. Validator v0
+
+Checagens MVP:
+
+1. JSON Schema do Task IR
+2. `steps` nao vazio; `step_id` unicos; `depends_on` aciclico e referencias validas
+3. Cada `capability` existe no Registry
+4. `input` valida contra `input_schema` da capability
+5. Regras de sandbox estaticas do Shell (workdir, argv)
+
+---
+
+## Checklist de confirmacao
+
+Marcar em `04-decisoes.md` apos revisao humana:
+
+- [ ] Encoding JSON canonico + YAML so na borda CLI
+- [ ] Task IR v0
+- [ ] Manifest v0
+- [ ] Event envelope + tipos minimos
+- [ ] Result/Error + lifecycle
+- [ ] Runner v0 (nome e escopo)
+- [ ] Queue in-memory FIFO
+- [ ] Persistencia: memoria no MVP Core (SQLite depois) **ou** Alternativa B
+- [ ] Core API SubmitTask/GetRun/Subscribe
+- [ ] Shell sandbox v0
+- [ ] slog CONFIRMED
+- [ ] modernc para SQLite quando entrar
+- [ ] Layout de pacotes
+
+Quando a maioria P0 estiver confirmada → liberar implementacao do Core.

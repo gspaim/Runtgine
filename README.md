@@ -43,4 +43,6 @@ conversas-empryo.md  — fonte histórica (não autoridade)
 3. [docs/03-principios.md](docs/03-principios.md) — princípios
 4. [docs/04-decisoes.md](docs/04-decisoes.md) — decisões e status
 5. [docs/09-mvp.md](docs/09-mvp.md) — corte do MVP
-6. [AGENTS.md](AGENTS.md) — como trabalhar no projeto
+6. [docs/10-gaps.md](docs/10-gaps.md) — gaps antes do codigo
+7. [docs/11-protocolo-v0.md](docs/11-protocolo-v0.md) — schemas PROPOSED
+8. [AGENTS.md](AGENTS.md) — como trabalhar no projeto
