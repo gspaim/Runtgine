@@ -233,6 +233,8 @@ Payload de `task.rejected` / `step.failed` usa o Error model (§9).
 
 ## 8. Run lifecycle (G-09)
 
+**Status: CONFIRMED** (fechamento humano)
+
 ```text
 accepted → planned → running → succeeded
                               ↘ failed
@@ -247,6 +249,8 @@ Um `run_id` por tentativa de execucao de uma task aceita.
 ---
 
 ## 9. Result / Error (G-08)
+
+**Status: CONFIRMED** (fechamento humano)
 
 ### Result (step)
 
