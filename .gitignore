@@ -1,1 +1,21 @@
+# Binaries / local runtime
+/bin/
+/dist/
+*.exe
+.runtgine/
+
+# Go
+/vendor/
+
+# IDE / OS
+.idea/
+.vscode/
+.DS_Store
+*.swp
+
+# Env / secrets
+.env
+.env.*
+
+# Empryo
 .empryo

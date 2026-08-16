@@ -1,0 +1,22 @@
+{
+  "schema_version": "0.1.0",
+  "source": {
+    "entry_point": "cli",
+    "ref": "examples/hello.json"
+  },
+  "intent": {
+    "summary": "Echo hello from Shell Player"
+  },
+  "steps": [
+    {
+      "step_id": "s1",
+      "capability": "shell.exec",
+      "input": {
+        "command": ["echo", "hello-runtgine"],
+        "workdir": ".",
+        "timeout_ms": 5000
+      },
+      "depends_on": []
+    }
+  ]
+}

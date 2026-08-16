@@ -8,9 +8,16 @@ Runtgine é um **runtime universal de execução e orquestração**: leve, orien
 
 ## Status do projeto
 
-**Fase 0 — Fundação (documentação).** Nenhum código ainda.
+**Fase 1 (slice 1) — Core mínimo em Go.** Protocolo v0 / P1 / P2 documentados e confirmados.
 
-Stack principal **CONFIRMED** (Go, Cobra, Bubble Tea, Wails, Event Bus in-process, JSON Schema, SQLite). Conceitos de inteligência estrutural (Intent Engine, Runtime Graph, etc.) permanecem **HYPOTHESIS**. Ver [docs/04-decisoes.md](docs/04-decisoes.md) e [docs/09-mvp.md](docs/09-mvp.md).
+```bash
+go test ./...
+go build -o bin/runtgine ./cmd/runtgine
+./bin/runtgine run examples/hello.json
+./bin/runtgine status <run_id>
+```
+
+Store local: `workspace/.runtgine/runtgine.db`
 
 ## O que é
 
@@ -30,10 +37,12 @@ Stack principal **CONFIRMED** (Go, Cobra, Bubble Tea, Wails, Event Bus in-proces
 
 ```text
 AGENTS.md            — guia para LLMs e contribuidores
-docs/                — documentação oficial (fonte de verdade)
-REVIEW.md            — resumo executivo
-brainstorm.md        — fonte histórica (não autoridade)
-conversas-empryo.md  — fonte histórica (não autoridade)
+cmd/runtgine/        — CLI
+internal/core/       — runtime (task, event, runner, store, …)
+internal/players/    — Shell (slice 1); LLM depois
+internal/entrypoint/ — CLI (TUI depois)
+examples/            — Task IR de exemplo
+docs/                — documentação oficial
 ```
 
 ## Leitura recomendada
