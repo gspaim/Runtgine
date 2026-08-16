@@ -80,6 +80,9 @@ func Open(cfg config.Config, log *slog.Logger) (*Core, error) {
 }
 
 func (c *Core) Close() error {
+	if c.Runner != nil {
+		c.Runner.WaitIdle()
+	}
 	return c.Store.Close()
 }
 

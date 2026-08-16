@@ -35,9 +35,10 @@ type Runner struct {
 	Log        *slog.Logger
 	Graph      GraphSyncer
 
-	mu      sync.Mutex
-	cancels map[string]context.CancelFunc
-	sem     chan struct{}
+	mu       sync.Mutex
+	cancels  map[string]context.CancelFunc
+	sem      chan struct{}
+	inflight sync.WaitGroup
 }
 
 func New(reg *registry.Registry, bus event.Bus, st *store.Store, workspace, llmBackend string, maxConcurrent int, log *slog.Logger) *Runner {
@@ -100,9 +101,18 @@ func (r *Runner) SubmitChild(ctx context.Context, t task.Task, parentRunID strin
 	r.cancels[rid] = cancel
 	r.mu.Unlock()
 
-	go r.execute(runCtx, t, p)
+	r.inflight.Add(1)
+	go func() {
+		defer r.inflight.Done()
+		r.execute(runCtx, t, p)
+	}()
 
 	return SubmitResult{RunID: rid}, nil
+}
+
+// WaitIdle blocks until every in-flight execute (including graph sync) has returned.
+func (r *Runner) WaitIdle() {
+	r.inflight.Wait()
 }
 
 func (r *Runner) validateAdmission(t task.Task) error {
