@@ -9,6 +9,7 @@ import (
 
 	"github.com/gspaim/Runtgine/internal/config"
 	"github.com/gspaim/Runtgine/internal/core/event"
+	"github.com/gspaim/Runtgine/internal/core/intent"
 	"github.com/gspaim/Runtgine/internal/core/registry"
 	"github.com/gspaim/Runtgine/internal/core/result"
 	"github.com/gspaim/Runtgine/internal/core/runner"
@@ -26,6 +27,7 @@ type Core struct {
 	Bus    *event.MemoryBus
 	Store  *store.Store
 	Runner *runner.Runner
+	Intent *intent.Engine
 	Log    *slog.Logger
 }
 
@@ -56,7 +58,15 @@ func Open(cfg config.Config, log *slog.Logger) (*Core, error) {
 		return nil, err
 	}
 	r := runner.New(reg, bus, st, cfg.WorkspaceRoot, cfg.LLMBackend, cfg.MaxConcurrentRuns, log)
-	return &Core{Cfg: cfg, Reg: reg, Bus: bus, Store: st, Runner: r, Log: log}, nil
+	return &Core{
+		Cfg:    cfg,
+		Reg:    reg,
+		Bus:    bus,
+		Store:  st,
+		Runner: r,
+		Intent: intent.New(completer),
+		Log:    log,
+	}, nil
 }
 
 func (c *Core) Close() error {
@@ -69,6 +79,32 @@ func (c *Core) SubmitTask(ctx context.Context, t task.Task) (string, error) {
 		return "", err
 	}
 	return res.RunID, nil
+}
+
+// CompileIntent translates natural language into Task IR (G-51).
+func (c *Core) CompileIntent(ctx context.Context, text, entryPoint, ref string) (task.Task, string, error) {
+	res, err := c.Intent.Compile(ctx, intent.Request{
+		Text:       text,
+		EntryPoint: entryPoint,
+		Ref:        ref,
+	})
+	if err != nil {
+		return task.Task{}, "", err
+	}
+	return res.Task, res.Method, nil
+}
+
+// SubmitIntent compiles NL intent and submits the resulting Task IR.
+func (c *Core) SubmitIntent(ctx context.Context, text, entryPoint, ref string) (string, string, error) {
+	tk, method, err := c.CompileIntent(ctx, text, entryPoint, ref)
+	if err != nil {
+		return "", "", err
+	}
+	runID, err := c.SubmitTask(ctx, tk)
+	if err != nil {
+		return "", method, err
+	}
+	return runID, method, nil
 }
 
 type ChildRunView struct {

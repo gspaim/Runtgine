@@ -37,17 +37,18 @@ Execution Plan -> Event Bus -> Orchestrator ->
 Capability Resolver -> Player Router -> Players -> Events -> Graph -> State
 
 No MVP: entrada estruturada (Task IR v0) via CLI/Board; Intent Engine NL
-fica fora do corte inicial.
+v0 disponivel via `runtgine intent` (pos-Core).
 
 ## 4. Modelo Conceitual
 
 CONFIRMED: Task, Workflow, Execution Plan, Player, Capability,
 Manifest, Event, Queue, Event Bus, Entry Point != Player.
 
-HYPOTHESIS: Intent Engine, Task IR (v0 no MVP), Task Validator,
-Runtime Graph, Context Engine, Orchestrator, Player Router,
+HYPOTHESIS: Runtime Graph, Context Engine, Player Router,
 Execution Policy, Resource Claim, Blast Radius, Background Player,
 Workflow Template.
+
+CONFIRMED (v0): Intent Engine, Task IR, Task Validator (subset).
 
 Distinga: Task != Workflow != Execution Plan.
 Event != Queue != Workflow. Player != Agent.
@@ -108,9 +109,9 @@ CLI -> TUI -> Board -> Context -> LLM pipeline -> Router.
 
 ## 10. Roadmap
 
-Fase 0: Documentacao (atual)
+Fase 0: Documentacao
 Fase 1: MVP (Core Go, Event Bus, Shell, CLI, TUI, Board) — slices 1–4
-Fase 2: Mais Players + Intent Engine / Graph conforme promocao
+Fase 2: Intent Engine v0 + Runtime Graph / mais Players conforme promocao
 Fase 3: Desktop (Wails)
 Fase 4: Infra (policies, blast radius; SQLite ja no MVP)
 Fase 5: Cloud (NATS, API, serverless)
@@ -120,6 +121,6 @@ Fase 6: Ecossistema (biblioteca de Players)
 
 Documentacao alinhada; stack CONFIRMED; MVP canônico em 09-mvp.md.
 **P0 + P1 + P2 CONFIRMADOS** (`11`, `12`, `13`; NATS DEFERRED).
-Slices 1–3 (Core/Shell/CLI, pipeline/LLM/Board, TUI) e slice 4
-(Validator JSON Schema + IDs estritos + sandbox Shell v0) implementados.
-P3 (G-40+) futuro.
+**Intent Engine v0 CONFIRMADO** (`17`, G-50..G-54).
+Slices 1–4 implementados; Intent Engine NL v0 implementado.
+P3 (G-40+) futuro; Runtime Graph permanece HYPOTHESIS.

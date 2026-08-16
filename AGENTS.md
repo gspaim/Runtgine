@@ -41,7 +41,7 @@ Skill obrigatoria para TUI: `.cursor/skills/runtgine-tui-design/SKILL.md`.
 8. TUI minima
 9. Board Integration + pipeline vertical (ver 09-mvp; gaps P1)
 10. Context assembly + LLM Player + Router
-11. Intent Engine (NL) — apenas apos Core estavel; ainda HYPOTHESIS
+11. Intent Engine (NL) — CONFIRMED v0 em `17-intent-engine-v0.md`
 12. Runtime Graph e demais HYPOTHESIS conforme promocao em 04-decisoes
 
 ## Conceitos chave (nao confundir)
