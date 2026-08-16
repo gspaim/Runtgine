@@ -95,10 +95,10 @@ Ate la, o Core deve rodar so com CLI + Shell.
 | G-41 | Biblioteca ampla de Players |
 | G-42 | Human-in-the-loop / Approvals |
 | G-43 | Resource Claims / Blast Radius |
-| G-44 | MCP integration — pre-requisito da Fase B de Project Memory (`16`) |
+| G-44 | MCP integration — candidato a transporte da Fase B de Project Memory (`16`) |
 | G-45 | API HTTP / webhooks |
-| G-46 | Project Memory (conceito + ContextPack `memory_hits`) — **HYPOTHESIS**; ver `16` |
-| G-47 | Memory Player / capabilities `memory.*` — **HYPOTHESIS**; apos G-46; ver `16` |
+| G-46 | Project Memory (conceito + ContextPack + validade + hierarquia) — **HYPOTHESIS**; ver `16` |
+| G-47 | Modelo de acesso Memory Provider vs Memory Player — Provider **HYPOTHESIS**; Player **OPEN QUESTION**; ver `16` |
 
 ---
 
@@ -120,4 +120,6 @@ Ordem pratica de codigo:
 2. Pipeline deterministic + LLM + Board adapter — slice 2
 
 P3 (G-40+) permanece futuro. Project Memory (G-46/G-47) e esboco em
-`16-project-memory.md` — HYPOTHESIS; nao codificar ate promocao em `04`.
+`16-project-memory.md` — HYPOTHESIS / OPEN QUESTION; nao codificar ate
+promocao explicita em `04`. Experimentos com sidecar externo (Fase A)
+nao exigem mudanca no Core.

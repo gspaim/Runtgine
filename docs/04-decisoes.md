@@ -191,17 +191,23 @@ Ver [12-board-p1.md](12-board-p1.md).
 
 ## Project Memory (P3) — HYPOTHESIS
 
-Ver [16-project-memory.md](16-project-memory.md). Esboco; **nao autoriza codigo**.
+Ver [16-project-memory.md](16-project-memory.md). Esboco reforçado (revisao
+conceitual); **nao autoriza codigo**. Nada abaixo e CONFIRMED.
 
 | Decisao | Status | Notas |
 |---|---|---|
 | Project Memory (episodica / de projeto) | HYPOTHESIS | Continuacao entre runs no mesmo projeto (G-46) |
 | Tres memorias: temporal / estrutural / episodica | HYPOTHESIS | Event Store ≠ Runtime Graph ≠ Project Memory |
-| Integracao inicial via MCP sidecar (ex. ai-memory) | HYPOTHESIS | Cliente MCP; depende G-44; nao embutir no Core |
-| Extensao ContextPack (`memory_hits` + budget) | HYPOTHESIS | Fonte opcional do AssembleContext / Context Engine |
-| Memory Player (`memory.*`) | HYPOTHESIS | G-47; apos contrato G-46 |
-| Embutir ai-memory (Rust) no Core | REJECTED | Dominio e stack ortogonais; sidecar/Player apenas |
-| Memoria como autoridade de execucao | REJECTED | Sugere contexto; Validator/Registry autorizam |
+| Fato historico ≠ status operacional (validade) | HYPOTHESIS | Candidatos: `active`/`superseded`/`archived` ou layers operational/historical |
+| Memory ≠ Knowledge (evolucao possivel) | HYPOTHESIS | Episodio vs consolidado; sem novo subsystem agora |
+| Memory Provider → ContextPack | HYPOTHESIS | Default conceitual de acesso (AssembleContext) |
+| Integracao inicial via sidecar / MCP | HYPOTHESIS | Fases A/B experimentais; depende G-44 se MCP |
+| Extensao ContextPack (`memory_hits` + budget + hierarquia) | HYPOTHESIS | Rascunho experimental; prioridade menor que task/estado atual |
+| Memory Player (`memory.*`) | OPEN QUESTION | So se steps do Plan exigirem; ver G-47 |
+| Embutir ai-memory (Rust) no Core | REJECTED | Dominio e stack ortogonais; sidecar/Provider apenas |
+| Memoria como autoridade de execucao | REJECTED | Sugere contexto; nunca capability/policy/Validator bypass |
+| Supersession silenciosa via LLM no Core | REJECTED | Validade so com opt-in explicito |
+| RAG generico / indexar transcripts como produto | REJECTED | Compile observations; nao chat retrieval |
 
 ## Git / release — fluxo de branches
 

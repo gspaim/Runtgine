@@ -7,7 +7,7 @@
 | Capability | O que um Player sabe fazer. Ex: deployment.update |
 | Chorus | Protocolo/comunicacao entre componentes (complementar ao Runtgine) |
 | Context Engine | Monta contexto relevante para cada Player |
-| ContextPack | Pacote de contexto por step (G-24); candidato a incluir `memory_hits` |
+| ContextPack | Pacote de contexto por step (G-24); candidato a `memory_hits` com budget/hierarquia |
 | Deterministic-first | Preferir execucao deterministica a IA |
 | Entry Point | Interface com o mundo externo (CLI, TUI, Board, API…). Nao e Player |
 | Event | Algo aconteceu no sistema |
@@ -16,11 +16,13 @@
 | Execution Policy | Regras de seguranca/permissao por Player/acao |
 | Intent Engine | Traduz intencao humana (NL) em Task IR |
 | Manifest | Declaracao de capabilities, entradas e saidas de um Player |
-| Memory Player | Player com capabilities `memory.*` (query/record/handoff); HYPOTHESIS |
+| Memory Player | Player opcional com `memory.*`; OPEN QUESTION (ver `16` / G-47) |
+| Memory Provider | Fonte de memoria consultada pelo AssembleContext / Context Engine; HYPOTHESIS |
 | Orchestrator | Coordena o fluxo de execucao |
 | Player | Entidade capaz de fornecer capabilities |
 | Player Router | Seleciona o melhor Player para uma capability |
-| Project Memory | Memoria episodica do projeto entre runs/sessoes; HYPOTHESIS (ver `16`) |
+| Project Knowledge | Conhecimento consolidado do projeto (evolucao possivel); HYPOTHESIS — distinto de Memory |
+| Project Memory | Memoria episodica entre runs/sessoes; HYPOTHESIS (ver `16`) |
 | Queue | Trabalho aguardando processamento |
 | Resource Claim | Bloqueio concorrente de recurso |
 | Run | Tentativa de execucao de uma Task aceita (tem run_id) |
