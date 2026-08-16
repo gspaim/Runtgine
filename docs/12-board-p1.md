@@ -113,7 +113,22 @@ Regras: truncamento deterministico se exceder budget; montado pelo Core
 
 ---
 
+## G-26 — Task Router basico
+
+**Status: CONFIRMED**
+
+Router minimo por regras (Player Router completo permanece HYPOTHESIS):
+
+1. Capability exigida pelo step
+2. Preferir `kind: deterministic` se houver candidato
+3. Se so AI: backend default da config (`openai-compat` | `anthropic`)
+4. Empate: primeiro registrado no Registry
+5. Zero candidatos → erro de validacao/plan
+
+Sem custo/latencia/policy rica no MVP.
+
+---
+
 ## Em aberto (proximos)
 
-- G-26 Task Router basico
 - G-27 Modelo de subtasks

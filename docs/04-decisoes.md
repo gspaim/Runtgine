@@ -154,5 +154,5 @@ Ver [12-board-p1.md](12-board-p1.md).
 | G-23 Regras vs LLM | CONFIRMED | repo-search/effort/difficulty det.; reviews LLM |
 | G-24 Context assembly basico | CONFIRMED | ContextPack v0; AssembleContext no Core |
 | G-25 LLM Player v0 | CONFIRMED | Interface unica; backends OpenAI-compat + Anthropic |
-| G-26 Task Router basico | OPEN | |
+| G-26 Task Router basico | CONFIRMED | Regras: capability → deterministic → default AI |
 | G-27 Subtasks | OPEN | |
