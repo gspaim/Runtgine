@@ -94,8 +94,26 @@ Regras: truncamento deterministico se exceder budget; montado pelo Core
 
 ---
 
+## G-25 — LLM Player v0
+
+**Status: CONFIRMED** (A+B)
+
+- Interface interna unica: `Complete(ctx, ContextPack, OutputSchema) → JSON`
+- **Dois backends no MVP:**
+  1. OpenAI-compatible (base URL + API key via env)
+  2. Anthropic SDK/API nativo (API key via env)
+- Selecao do backend: config/default do runtime (nao hardcode no Core)
+- Pode ser um Player `llm` com adapters plugaveis **ou** dois Players
+  (`llm-openai-compat`, `llm-anthropic`) declarando as mesmas capabilities
+  — preferencia: **um Player `llm` + adapters** (menos ruido no Registry)
+- Capabilities: `pipeline.tech-review`, `pipeline.spec-review`, refine de
+  `pipeline.decompose`
+- Resposta JSON validada contra `output_schema`; retry 1x se parse falhar
+- Sem streaming no MVP; timeout configuravel
+
+---
+
 ## Em aberto (proximos)
 
-- G-25 LLM Player v0
 - G-26 Task Router basico
 - G-27 Modelo de subtasks

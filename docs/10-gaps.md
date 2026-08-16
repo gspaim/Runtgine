@@ -62,7 +62,7 @@ Em conflito de escopo, prevalece `09-mvp.md` + `04-decisoes.md`.
 | G-22 | Contratos por etapa do pipeline | **CONFIRMED** — `pipeline.*` + steps lineares; ver `12` |
 | G-23 | Fronteira regras vs LLM | **CONFIRMED** — ver tabela em `12-board-p1.md` |
 | G-24 | Context assembly basico | **CONFIRMED** — ContextPack v0; ver `12` |
-| G-25 | LLM Player v0 | Interface Go, provedor, credenciais, retries |
+| G-25 | LLM Player v0 | **CONFIRMED** — OpenAI-compat + Anthropic; ver `12` |
 | G-26 | Task Router basico | Criterios do MVP vs Player Router HYPOTHESIS |
 | G-27 | Modelo de subtasks | Citado no sucesso do MVP; fora do Task model |
 
