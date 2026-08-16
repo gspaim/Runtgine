@@ -118,6 +118,8 @@ Entrada estruturada do MVP (CLI/Board). Sem Intent Engine.
 
 ## 5. Execution Plan v0 (G-11)
 
+**Status: CONFIRMED** (fechamento humano) — passthrough apos validacao
+
 **Proposta:** no MVP, Plan e **quase passthrough** do Task IR apos validacao.
 
 ```json
