@@ -9,7 +9,7 @@ Decisoes de tecnologia para o Runtgine.
 | Linguagem | Go | CONFIRMED |
 | CLI | Cobra | CONFIRMED |
 | TUI | Bubble Tea + Lip Gloss + Bubbles | CONFIRMED |
-| Desktop | Wails (Go + Svelte/React) | CONFIRMED |
+| Desktop | Wails (Go + Svelte) | CONFIRMED |
 | Event Bus | Canal Go (in-process) | CONFIRMED |
 | Serializacao | JSON + JSON Schema | CONFIRMED |
 | Store | SQLite (modernc.org/sqlite) | CONFIRMED |

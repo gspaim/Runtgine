@@ -80,7 +80,7 @@ Ate la, o Core deve rodar so com CLI + Shell.
 | G-32 | Fronteira Runtgine ↔ Chorus | **CONFIRMED** — MVP independente; ver `13` |
 | G-33 | Workspaces / worktrees | **CONFIRMED** — um root + `.runtgine/`; ver `13` |
 | G-34 | Estrategia de testes (unit vs integracao) | **CONFIRMED** — ver `13` |
-| G-35 | Wails: Svelte vs React |
+| G-35 | Wails: Svelte vs React | **CONFIRMED** — Wails + Svelte; ver `13` |
 | G-36 | NATS / Event Bus distribuido (OPEN QUESTION) |
 | G-37 | Modulo path Go + versao minima de Go |
 | G-38 | Config do runtime (arquivo, env, defaults) |

@@ -18,7 +18,7 @@ Status: CONFIRMED | HYPOTHESIS | OPEN QUESTION | REJECTED
 | Cobra | CONFIRMED | CLI |
 | Bubble Tea | CONFIRMED | TUI |
 | Lip Gloss + Bubbles | CONFIRMED | Estilizacao e componentes TUI |
-| Wails | CONFIRMED | Desktop (Go + Svelte/React) |
+| Wails | CONFIRMED | Desktop (Go + Svelte) |
 | Canal Go (Event Bus) | CONFIRMED | Pub/sub in-process |
 | JSON + JSON Schema | CONFIRMED | Protocolo e contratos |
 | SQLite (modernc.org/sqlite) | CONFIRMED | Persistencia local; pure Go |
@@ -153,7 +153,7 @@ Ver [13-p2.md](13-p2.md).
 | G-32 Runtgine ↔ Chorus | CONFIRMED | Independencia total no MVP; sem acoplamento |
 | G-33 Workspaces / worktrees | CONFIRMED | Um workspace_root; store em `.runtgine/` |
 | G-34 Testes | CONFIRMED | Unit + integracao + smoke; LLM mockado |
-| G-35 Wails Svelte vs React | OPEN | |
+| G-35 Wails Svelte vs React | CONFIRMED | Wails mantido; frontend Svelte |
 | G-36 NATS | OPEN | |
 | G-38 Config runtime | OPEN | |
 
