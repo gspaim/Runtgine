@@ -222,4 +222,4 @@ Ver [15-git-workflow.md](15-git-workflow.md).
 | Release estavel | CONFIRMED | Merge `release/*` → `main` + tag `vX.Y.Z`; back-merge para `develop` |
 | Semver do produto | CONFIRMED | Tags Git do binario/CLI; distinto de `schema_version` do Task IR |
 | CI em PR (test + vet) | CONFIRMED | GitHub Actions; ver `.github/workflows/` |
-| Branch protection | CONFIRMED | Recomendado em `develop`/`main`/`release/*`; configurar no GitHub |
+| Branch protection | CONFIRMED | IMPLEMENTED: ruleset `runtgine-protected-branches` em `main`/`develop`/`release/*` (repo publico; Free nao protege privado) |

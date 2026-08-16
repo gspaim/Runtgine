@@ -1,7 +1,7 @@
 ## Summary
 
 - Branch naming: `<tipo>/<NNN>-<slug>` (ex.: `feat/001-shell-player`)
-- Target branch: `develop` (not `main`)
+- Target branch: `develop` (GitHub defaults to `main` — change the base)
 - Linked issue/spec id: #
 
 ## Checklist
