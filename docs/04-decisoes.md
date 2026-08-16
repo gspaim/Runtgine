@@ -149,7 +149,7 @@ Ver [13-p2.md](13-p2.md).
 | Item | Status | Notas |
 |---|---|---|
 | G-30 Cancel/timeout/retry/concorrencia | CONFIRMED | Retry automatico configuravel por step (B) |
-| G-31 Observabilidade | OPEN | |
+| G-31 Observabilidade | CONFIRMED | slog + correlacao; sem OTel no MVP |
 | G-32 Runtgine ↔ Chorus | OPEN | |
 | G-33 Workspaces / worktrees | OPEN | |
 | G-34 Testes | OPEN | |
