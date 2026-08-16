@@ -21,8 +21,9 @@ Tudo conectado por eventos. Distincao: Event (algo aconteceu),
 Queue (trabalho aguardando), Workflow (estrutura de execucao).
 
 ## 5. Core e o produto. Interface e superficie.
-O Core funciona independentemente da TUI, CLI ou GPUI.
+O Core funciona independentemente da TUI, CLI ou Wails.
 UI nunca chama Player diretamente — tudo passa pelo protocolo.
+Entry Point != Player.
 
 ## 6. Validacao antes da execucao
 Task Validator verifica capabilities, inputs, schemas, dependencias,
@@ -30,7 +31,7 @@ resources, permissions, policies antes de executar. Filosofia de
 compilador: deslocar runtime errors para validation errors.
 
 ## 7. Entrada flexivel, protocolo unico
-CLI, TUI, API, Webhooks, Slack, Scheduler — todos convergem para
+CLI, TUI, Board, API, Webhooks, Slack, Scheduler — todos convergem para
 o mesmo Task Protocol interno.
 
 ## 8. Runtime Graph = memoria estrutural

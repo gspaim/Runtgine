@@ -7,12 +7,13 @@
 | Capability | O que um Player sabe fazer. Ex: deployment.update |
 | Chorus | Protocolo/comunicacao entre componentes (complementar ao Runtgine) |
 | Context Engine | Monta contexto relevante para cada Player |
-| Deterministic-first | Preferir execucao deterministicA a IA |
+| Deterministic-first | Preferir execucao deterministica a IA |
+| Entry Point | Interface com o mundo externo (CLI, TUI, Board, API…). Nao e Player |
 | Event | Algo aconteceu no sistema |
 | Event Bus | Transporte de eventos entre componentes |
 | Execution Plan | Plano especifico criado para UMA execucao |
 | Execution Policy | Regras de seguranca/permissao por Player/acao |
-| Intent Engine | Traduz intencao humana em Task IR |
+| Intent Engine | Traduz intencao humana (NL) em Task IR |
 | Manifest | Declaracao de capabilities, entradas e saidas de um Player |
 | Orchestrator | Coordena o fluxo de execucao |
 | Player | Entidade capaz de fornecer capabilities |

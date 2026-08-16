@@ -30,6 +30,17 @@ Human Intent -> Intent Engine -> Task IR -> Validator -> Execution Plan -> Event
 | Execution Policy | HYPOTHESIS | Regras de seguranca/permissao |
 | Resource Claim | HYPOTHESIS | Bloqueio concorrente de recurso |
 | Blast Radius | HYPOTHESIS | Impacto de uma mudanca |
+| Entry Point | CONFIRMED | Interface externa; nao e Player |
+
+---
+
+## Entry Point
+
+Status: CONFIRMED
+
+Entry Point traduz sinal do mundo externo para o protocolo interno
+(CLI, TUI, Board, API, Wails, Webhooks…). Nao executa trabalho:
+Player executa. UI/Board nunca chama Player diretamente.
 
 ---
 
@@ -63,7 +74,7 @@ Outra distincao importante:
 
 ## Intent Engine
 
-Status: HYPOTHESIS
+Status: HYPOTHESIS (fora do MVP Core; ver `09-mvp.md`)
 
 O usuario pode escrever: Pega a ultima versao da API, roda os
 testes e coloca no staging. Em vez de executar diretamente,
@@ -72,6 +83,9 @@ o Intent Engine traduz essa intencao para Task IR.
 Funciona como um compilador:
 
 Human Intent -> Intent Engine -> Task IR -> Validator -> Execution Plan
+
+No MVP, a entrada e Task IR v0 estruturado (JSON/YAML via CLI/Board).
+Intent Engine de linguagem natural vem depois do Core estavel.
 
 O Intent Engine e uma LLM especializada em Runtgine Protocol,
 Players, Capabilities, Task Schemas, Policies e Runtime Graph.
@@ -82,7 +96,7 @@ o Registry rejeita.
 
 ## Task Validator
 
-Status: HYPOTHESIS
+Status: HYPOTHESIS (Validator basico incluso no MVP; ver `09-mvp.md`)
 
 Antes de executar, o Validator verifica:
 - capabilities existem
@@ -94,6 +108,7 @@ Antes de executar, o Validator verifica:
 - policies respeitadas
 - execution graph valido
 
+No MVP: subset — capabilities, inputs e schemas.
 Filosofia: deslocar erros de runtime error para compile/validation error.
 
 ---

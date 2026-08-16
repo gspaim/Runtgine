@@ -12,8 +12,7 @@ como uma das capacidades disponiveis.
 
 ## Runtgine e Chorus
 
-Diferente do que foi documentado anteriormente, Runtgine e Chorus
-NAO sao predecessor/sucessor. Sao complementares:
+Runtgine e Chorus NAO sao predecessor/sucessor. Sao complementares:
 
 - Runtgine: runtime, execucao, Players, workflows, recursos
 - Chorus: protocolo/comunicacao/orquestracao entre componentes
@@ -23,6 +22,9 @@ NAO sao predecessor/sucessor. Sao complementares:
 Human Intent -> Intent Engine -> Task IR -> Validator ->
 Execution Plan -> Event Bus -> Orchestrator -> Capability Resolver
 -> Player Router -> Players -> Events -> Graph -> State
+
+No MVP, a entrada tipica e Task IR estruturado (CLI/Board), sem
+Intent Engine de linguagem natural.
 
 ## Arquitetura
 
@@ -35,12 +37,13 @@ RUNTGINE CORE:
 
 Interfaces (superficies sobre o Core):
 - CLI (automacao, scripting, CI/CD)
-- TUI (primeira interface real do projeto)
-- GPUI (futura interface desktop nativa)
+- TUI (primeira interface interativa do projeto)
+- Wails (futura interface desktop; Go + frontend web)
 - API, Webhooks, Slack, Scheduler (todos convergem para o Task Protocol)
 
 Core e o produto. A interface e uma superficie sobre ele.
 UI nunca chama Player diretamente.
+Entry Point != Player.
 
 ## O que NAO e
 

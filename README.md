@@ -8,14 +8,16 @@ Runtgine é um **runtime universal de execução e orquestração**: leve, orien
 
 ## Status do projeto
 
-**Fase 0 — Fundação (documentação).** Nenhum código ainda. As tecnologias estão em definição — ver [docs/04-decisoes.md](docs/04-decisoes.md) para o registro de decisões (CONFIRMED / HYPOTHESIS / OPEN QUESTION).
+**Fase 0 — Fundação (documentação).** Nenhum código ainda.
+
+Stack principal **CONFIRMED** (Go, Cobra, Bubble Tea, Wails, Event Bus in-process, JSON Schema, SQLite). Conceitos de inteligência estrutural (Intent Engine, Runtime Graph, etc.) permanecem **HYPOTHESIS**. Ver [docs/04-decisoes.md](docs/04-decisoes.md) e [docs/09-mvp.md](docs/09-mvp.md).
 
 ## O que é
 
 - Um runtime de execução e orquestração baseado em protocolo
 - Orientado a eventos, com estado derivado do fluxo de eventos
 - **Deterministic-first**: usa IA apenas quando necessário
-- Local-first, CLI/runtime-first, com UI desktop como camada de observação
+- Local-first, CLI/runtime-first, com UI desktop (Wails) como camada posterior
 - Extensível via Players que declaram capacidades em um manifest
 
 ## O que não é
@@ -27,14 +29,18 @@ Runtgine é um **runtime universal de execução e orquestração**: leve, orien
 ## Estrutura do repositório
 
 ```text
-AGENTS.md          — guia para LLMs e contribuidores trabalharem no projeto
-brainstorm.md      — visão original consolidada (fonte bruta do projeto)
-docs/              — documentação oficial
+AGENTS.md            — guia para LLMs e contribuidores
+docs/                — documentação oficial (fonte de verdade)
+REVIEW.md            — resumo executivo
+brainstorm.md        — fonte histórica (não autoridade)
+conversas-empryo.md  — fonte histórica (não autoridade)
 ```
 
 ## Leitura recomendada
 
-1. [docs/01-visao.md](docs/01-visao.md) — visão consolidada e norte do projeto
-2. [docs/02-conceitos.md](docs/02-conceitos.md) — modelo conceitual (Player, Execution, Task, Event…)
-3. [docs/05-prd.md](docs/05-prd.md) — PRD (problema, personas, requisitos, MVP)
-4. [AGENTS.md](AGENTS.md) — como trabalhar no projeto
+1. [docs/01-visao.md](docs/01-visao.md) — visão consolidada
+2. [docs/02-conceitos.md](docs/02-conceitos.md) — modelo conceitual
+3. [docs/03-principios.md](docs/03-principios.md) — princípios
+4. [docs/04-decisoes.md](docs/04-decisoes.md) — decisões e status
+5. [docs/09-mvp.md](docs/09-mvp.md) — corte do MVP
+6. [AGENTS.md](AGENTS.md) — como trabalhar no projeto

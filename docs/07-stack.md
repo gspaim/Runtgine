@@ -59,11 +59,14 @@ Persistencia local, zero config, biblioteca embutida.
 mattn/go-sqlite3 (cgo) ou modernc.org/sqlite (pure Go).
 Se precisar de PostgreSQL/cloud: store plugavel.
 
-## Tecnologias descartadas
+## Tecnologias REJECTED (caminho atual)
 
-- Rust (Core): I/O-bound. Ecossistema SDKs de infra imaturo.
-- GPUI: Exige Rust no Core. Experimental.
-- Tauri: Dois runtimes. Wails e mais simples.
+Ver status em [04-decisoes.md](04-decisoes.md).
+
+- Rust (Core): I/O-bound para o caso; ecossistema SDKs de infra menos
+  pratico que Go. REJECTED para o Core atual.
+- GPUI: Exige Rust no Core. REJECTED; desktop = Wails.
+- Tauri: Dois runtimes. REJECTED; Wails e mais simples.
 - Electron: Pesado (+100MB).
 - Python: Runtime pesado, concorrencia limitada.
 - Node/TS: Single-thread, npm.
