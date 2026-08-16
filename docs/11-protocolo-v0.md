@@ -298,7 +298,9 @@ Codigos iniciais:
 
 ## 10. Runner v0 (G-10) — Orchestrator minimo
 
-**Proposta de nome no MVP:** `Runner` (evitar confundir com Orchestrator completo HYPOTHESIS).
+**Status: CONFIRMED** (fechamento humano)
+
+**Nome no MVP:** `Runner` (evitar confundir com Orchestrator completo HYPOTHESIS).
 
 Responsabilidades v0:
 
