@@ -15,18 +15,8 @@ feat/<NNN>-<slug>  →  develop  →  release/x.y.z (+ RC tags)  →  main (+ ta
 | `release/x.y.z` | Congela escopo; só bugfix / docs / version bump | Maintainers |
 | `main` | Código liberável / última estável | Maintainers (só via `release/*`) |
 
-`main` permanece a default branch do GitHub. `develop` é a base usual de PRs de feature.
-
-### Bootstrap (uma vez)
-
-Se `develop` ainda não existir:
-
-```bash
-git checkout main
-git pull origin main
-git checkout -b develop
-git push -u origin develop
-```
+`main` permanece a default branch do GitHub (clone e PRs novos apontam para ela).
+**Troque a base do PR para `develop`.** `develop` já existe no remoto.
 
 ## Naming de branches de trabalho
 
@@ -109,18 +99,24 @@ Hotfix durante RC: PR **para `release/x.y.z`**, depois back-merge para `develop`
 | `ci.yml` | PR e push em `develop`, `main`, `release/**` | `go test ./...`, `go vet ./...` |
 | `release.yml` | Push de tag `v*` | Build multi-OS + GitHub Release |
 
-## Proteção de branches (recomendado)
+## Proteção de branches (enforced)
 
-No GitHub → Settings → Branches, para `develop`, `main` e `release/*`:
+Ruleset Active: [runtgine-protected-branches](https://github.com/gspaim/Runtgine/rules/20913960)
+(`Settings` → `Rules` → `Rulesets`). Cobre `main`, `develop` e `release/*`:
 
-- Require pull request before merging
-- Require status checks: job `test` do workflow CI
-- Restrict who can push (maintainers)
-- Em `main`: dispensar force-push; idealmente só merges vindos de `release/*`
+- PR obrigatório (0 approvals; maintainer solo pode mergear)
+- Check `test` (GitHub Actions) obrigatório; branch atualizada com a base
+- Sem force-push e sem delete
+- Sem bypass (nem admin)
+- Criar `release/x.y.z` a partir de `develop` é permitido; commits seguintes exigem PR
 
-Branch protection é configuração do remoto (não versionada neste repo).
+Restringir PRs para `main` só a partir de `release/*` é **processo** (o GitHub
+não filtra a branch de origem). O ruleset é configuração do remoto, não do git.
+
+Requer repo **público** no plano Free; se o repositório voltar a privado,
+esta proteção some até haver GitHub Pro.
 
 ## Relação com segurança
 
 Após a primeira release estável, vulnerabilidades devem citar a tag afetada.
-Até lá, a política em `SECURITY.md` cobre o tip de `main` (e, após bootstrap, o tip de `develop` para pré-release).
+Até lá, a política em `SECURITY.md` cobre o tip de `main` e o tip de `develop` (pré-release).

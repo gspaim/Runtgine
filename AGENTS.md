@@ -66,5 +66,5 @@ Skill obrigatoria para TUI: `.cursor/skills/runtgine-tui-design/SKILL.md`.
 - Ao trabalhar na TUI, seguir `docs/14-tui-design.md` e a skill
   `.cursor/skills/runtgine-tui-design/SKILL.md`
 - Nao transformar a TUI em multiplexer nem adicionar tuios/PTY sem nova decisao
-- Nao abrir PR de feature direto para `main`; base = `develop` (ver `15-git-workflow.md`)
+- Nao abrir PR de feature direto para `main`; base = `develop` (a default do GitHub e `main`; trocar a base). Ver `15-git-workflow.md`
 - Nao publicar tag estavel `vX.Y.Z` sem passar por `release/x.y.z` e RC

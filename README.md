@@ -358,16 +358,27 @@ vulnerabilidade.
 
 ## Contribuindo
 
-Contribuições são bem-vindas. Antes de implementar:
+Contribuições são bem-vindas (fork + PR ou branch no remoto). Antes de
+implementar:
 
 1. leia `AGENTS.md` e os documentos `01` a `06`;
 2. verifique se a decisão necessária já está registrada;
 3. mantenha o Core independente das interfaces;
 4. prefira execução determinística a chamadas LLM;
-5. abra a branch a partir de `develop` com o padrão
-   `feat/<NNN>-<slug>` (ex.: `feat/001-shell-player`) e abra o PR **para
-   `develop`** — ver [fluxo Git](docs/15-git-workflow.md);
-6. adicione testes e execute:
+5. parta de `develop` (não de `main`):
+
+```bash
+git fetch origin
+git checkout develop
+git pull
+git checkout -b feat/<NNN>-<slug>   # ex.: feat/001-shell-player
+```
+
+6. abra o PR **para `develop`**. A default branch do GitHub é `main`: no
+   compare, troque a base para `develop`. Pushes diretos a
+   `develop` / `main` / `release/*` são bloqueados; o check `test` precisa
+   passar. Ver [fluxo Git](docs/15-git-workflow.md);
+7. adicione testes e execute:
 
 ```bash
 go test ./...
