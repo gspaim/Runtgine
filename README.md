@@ -80,8 +80,8 @@ Visão enxuta do que já está em `main`. **Atualizar esta seção em todo PR
 | Feito | Slice 1 — Core, Task IR, Validator, Event Bus, SQLite, Shell Player, CLI |
 | Feito | Slice 2 — Pipeline, ContextPack, LLM Players, GitHub Board |
 | Feito | Slice 3 — TUI Constellation Mission Control |
-| Próximo | Fechar critérios do MVP — schema de input no Validator, IDs/`schema_version` estritos, sandbox Shell mais forte |
-| Depois | Intent Engine (NL), Runtime Graph, mais Players, policies/HITL, API HTTP, bus distribuído, desktop Wails |
+| Próximo | Spec Runtime Graph v0 (`docs/18`) — confirmar em `04` antes de codar; em paralelo: closeout Validator (#11) e Intent Engine (#12) |
+| Depois | Runtime Graph (codigo pos-CONFIRMED), mais Players, policies/HITL, API HTTP, bus distribuído, desktop Wails |
 
 Detalhe do corte: [`docs/09-mvp.md`](docs/09-mvp.md). Limitações atuais abaixo.
 

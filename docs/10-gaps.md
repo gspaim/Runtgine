@@ -102,22 +102,44 @@ Ate la, o Core deve rodar so com CLI + Shell.
 
 ---
 
+## Runtime Graph (pos-Intent) — proposta
+
+| ID | Gap | Notas |
+|---|---|---|
+| G-60 | Papel Runtime Graph / fronteiras | **PROPOSED** — ver `18-runtime-graph-v0.md` |
+| G-61 | Node kinds v0 | **PROPOSED** — player, capability, task, run, path, symbol |
+| G-62 | Edge kinds v0 | **PROPOSED** — provides, executed, instance_of, mentions, child_of |
+| G-63 | Persistência SQLite | **PROPOSED** — mesmo `.runtgine/runtgine.db` |
+| G-64 | Core API + CLI snapshot | **PROPOSED** — sem tab TUI no v0 |
+| G-65 | Sync boot / SyncFromRun | **PROPOSED** — best-effort; nao falha Run |
+| G-66 | ContextPack / Intent hits | **PROPOSED DEFERRED** — apos graph estavel |
+
+Nao autoriza codigo ate promocao em `04-decisoes.md`.
+
+---
+
 ## Ordem para fechar gaps
 
 1. Revisar e confirmar [11-protocolo-v0.md](11-protocolo-v0.md)
 2. Promover itens aceitos em `04-decisoes.md` (HYPOTHESIS → CONFIRMED v0)
 3. Implementar Core na ordem de `09-mvp.md` / `AGENTS.md`
-4. So entao especificar Board/LLM (P1) em doc dedicado
+4. Board/LLM (P1) — feito (`12`)
+5. Intent Engine — spec/impl em `17` (PR)
+6. Revisar e confirmar [18-runtime-graph-v0.md](18-runtime-graph-v0.md) antes de codar Graph
 
 ## Criterio de “pronto para codar”
 
 **P0 protocolo v0: CONFIRMADO.**  
 **P1 Board/pipeline (G-20..G-27): CONFIRMADO.**  
-**P2 engenharia (G-30..G-38): CONFIRMADO** (G-36 DEFERRED).
+**P2 engenharia (G-30..G-38): CONFIRMADO** (G-36 DEFERRED).  
+**Runtime Graph (G-60..G-66): PROPOSED** — aguarda confirmacao humana em `04`.
 
 Ordem pratica de codigo:
-1. Core CLI + Shell (+ SQLite) — slice 1
-2. Pipeline deterministic + LLM + Board adapter — slice 2
+1. Core CLI + Shell (+ SQLite) — slice 1 — feito
+2. Pipeline deterministic + LLM + Board adapter — slice 2 — feito
+3. TUI — slice 3 — feito
+4. Validator/sandbox closeout / Intent Engine — PRs abertos
+5. Runtime Graph v0 — **somente apos CONFIRMED** (`18` → `04`)
 
 P3 (G-40+) permanece futuro. Project Memory (G-46/G-47) e esboco em
 `16-project-memory.md` — HYPOTHESIS / OPEN QUESTION; nao codificar ate

@@ -121,4 +121,5 @@ Fase 6: Ecossistema (biblioteca de Players)
 Documentacao alinhada; stack CONFIRMED; MVP canônico em 09-mvp.md.
 **P0 + P1 + P2 CONFIRMADOS** (`11`, `12`, `13`; NATS DEFERRED).
 Slice 1 (Core/Shell/CLI) e slice 2 (pipeline/LLM/Board) implementados.
+**Runtime Graph v0: PROPOSED** em `18-runtime-graph-v0.md` (G-60+; sem codigo).
 P3 (G-40+) futuro.
