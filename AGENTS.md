@@ -67,3 +67,26 @@ Skill obrigatoria para TUI: `.cursor/skills/runtgine-tui-design/SKILL.md`.
 - Nao transformar a TUI em multiplexer nem adicionar tuios/PTY sem nova decisao
 - Nao abrir PR de feature direto para `main`; base = `develop` (ver `15-git-workflow.md`)
 - Nao publicar tag estavel `vX.Y.Z` sem passar por `release/x.y.z` e RC
+
+## Cursor Cloud specific instructions
+
+Projeto Go puro (Go 1.25+, ja instalado na imagem). Comandos padrao de
+lint/test/build/run estao no `README.md` (secao "Começando" e "CLI"):
+`go vet ./...`, `go test ./...`, `go build -o bin/runtgine ./cmd/runtgine`.
+O update script (startup) roda `go mod download`; nao ha build/test/servico no startup.
+
+Notas nao obvias para desenvolver aqui:
+
+- SQLite usa `modernc.org/sqlite` (Go puro): nao precisa de CGO nem de
+  bibliotecas de sistema. `CGO_ENABLED=0` funciona.
+- Nao ha servico de longa duracao: e um binario CLI/TUI. Cada `runtgine run`
+  executa e encerra; nao ha servidor para deixar rodando.
+- Estado persistido em `<workspace>/.runtgine/runtgine.db` (gitignored). Para
+  um estado limpo, apague `.runtgine/` entre execucoes.
+- `runtgine tui` exige um TTY interativo; nao roda em pipe/CI nao interativo.
+  Use `RUNTGINE_ASCII=1` e `NO_COLOR=1` para glifos/cores simplificados.
+- Pipeline e LLM Players funcionam offline sem credenciais: usam um completer
+  heuristico. Credenciais LLM/GitHub sao opcionais e so via variaveis de
+  ambiente (ver tabela em `README.md`).
+- Smoke test rapido end-to-end: `./bin/runtgine run examples/hello.json` deve
+  emitir `run.succeeded` com stdout `hello-runtgine`.
