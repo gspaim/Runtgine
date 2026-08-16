@@ -21,7 +21,7 @@ Status: CONFIRMED | HYPOTHESIS | OPEN QUESTION | REJECTED
 | Wails | CONFIRMED | Desktop (Go + Svelte/React) |
 | Canal Go (Event Bus) | CONFIRMED | Pub/sub in-process |
 | JSON + JSON Schema | CONFIRMED | Protocolo e contratos |
-| SQLite (mattn/modernc) | CONFIRMED | Persistencia local |
+| SQLite (modernc.org/sqlite) | CONFIRMED | Persistencia local; pure Go |
 | log/slog | CONFIRMED | Logger padrao — sessao de fechamento |
 | NATS (futuro) | OPEN QUESTION | Event Bus distribuido |
 | Rust (Core) | REJECTED | Adiado; stack atual e Go |
