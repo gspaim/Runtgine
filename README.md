@@ -186,28 +186,39 @@ Use `runtgine <comando> --help` para consultar todas as flags.
 ## Arquitetura
 
 ```mermaid
-flowchart LR
-    EP["Entry Points<br/>CLI · TUI · Board"] --> API["Core API"]
-    API --> IR["Task IR"]
-    IR --> V["Validator"]
-    V --> R["Runner + Queue"]
-    R --> B["Event Bus"]
-    R --> REG["Player Registry"]
-    REG --> P["Players<br/>Shell · Pipeline · LLM"]
-    P --> RES["Result"]
-    RES --> R
-    B --> DB[("SQLite<br/>runs · events · outputs")]
-    R --> DB
-    B --> EP
+flowchart TB
+    CLI["CLI"] --> TaskIR["Task IR"]
+    Board["Board"] --> TaskIR
+    TaskIR --> API["Core API"]
+    TUI["TUI"] -->|"GetRun / Cancel"| API
+    API --> Validator
+    Validator --> Runner
+    Runner --> Plan["Execution Plan"]
+    Plan --> Ctx["ContextPack"]
+    Ctx -->|"capability"| Registry
+    Registry -->|"Execute"| Players["Players: Shell / Pipeline / LLM"]
+    Players --> Result
+    Runner --> Store[("SQLite")]
+    Result --> Store
+    Runner -.-> Bus["Event Bus"]
+    Bus -.-> TUI
+    Bus -.-> CLI
 ```
+
+O Event Bus só publica o lifecycle da Run; não admite Task. A TUI observa
+o Bus e consulta o Core; CLI e Board é que submetem Task IR.
 
 ### Modelo central
 
 | Conceito | Responsabilidade |
 |---|---|
 | `Task` | Intenção estruturada e lista de steps |
+| `Plan` | Capability → Player para esta Run |
+| `ContextPack` | Contexto montado por step antes do `Execute` |
+| `Capability` | O que o runtime roteia; não o nome do Player |
 | `Event` | Fato imutável emitido durante o lifecycle |
-| `Queue` | Ordem de admissão e controle de concorrência |
+| `Event Bus` | Pub/sub in-process para quem observa a Run |
+| `Queue` | Semáforo de concorrência no Runner (`maxConcurrentRuns`) |
 | `Player` | Executor que declara capabilities em um manifest |
 | `Result` | Saída estruturada ou erro tipado |
 | `Run` | Instância observável da execução de uma Task |
