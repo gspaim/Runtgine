@@ -109,6 +109,8 @@ Default keymap:
 | arrows or `j`/`k` | navigate |
 | `enter` | inspect |
 | `c` | cancel selected active run (confirm first) |
+| `a` | approve selected run in `waiting_approval` (Core `ApproveRun` grant) |
+| `d` | deny selected run in `waiting_approval` (Core `ApproveRun` deny) |
 | `/` | filter |
 | `r` | refresh |
 | `q` | quit |

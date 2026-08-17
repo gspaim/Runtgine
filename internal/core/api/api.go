@@ -11,6 +11,7 @@ import (
 	"github.com/gspaim/Runtgine/internal/core/event"
 	"github.com/gspaim/Runtgine/internal/core/graph"
 	"github.com/gspaim/Runtgine/internal/core/intent"
+	"github.com/gspaim/Runtgine/internal/core/policy"
 	"github.com/gspaim/Runtgine/internal/core/registry"
 	"github.com/gspaim/Runtgine/internal/core/result"
 	"github.com/gspaim/Runtgine/internal/core/runner"
@@ -70,8 +71,17 @@ func Open(cfg config.Config, log *slog.Logger) (*Core, error) {
 		return nil, err
 	}
 	g := graph.New(st, log)
+	tab, err := policy.Compile(policy.FileConfig{
+		Default:      cfg.ExecutionPolicy.Default,
+		Capabilities: cfg.ExecutionPolicy.Capabilities,
+	}, cfg.PolicyDefaultEnv, reg)
+	if err != nil {
+		_ = st.Close()
+		return nil, err
+	}
 	r := runner.New(reg, bus, st, cfg.WorkspaceRoot, cfg.LLMBackend, cfg.MaxConcurrentRuns, log)
 	r.Graph = g
+	r.Policy = tab
 	if err := g.RefreshFromRegistry(context.Background(), reg); err != nil {
 		if log != nil {
 			log.Warn("graph refresh failed", "err", err)
@@ -161,16 +171,23 @@ type ConfigSnapshot struct {
 	Precedence        string `json:"precedence"`
 }
 
+type PendingApproval struct {
+	StepID     string `json:"step_id"`
+	Capability string `json:"capability"`
+	Player     string `json:"player"`
+}
+
 type RunSnapshot struct {
-	RunID       string          `json:"run_id"`
-	TaskID      string          `json:"task_id"`
-	ParentRunID string          `json:"parent_run_id,omitempty"`
-	Status      string          `json:"status"`
-	Error       string          `json:"error,omitempty"`
-	Events      []event.Event   `json:"events"`
-	Task        json.RawMessage `json:"task,omitempty"`
-	Subtasks    []store.Subtask `json:"subtasks,omitempty"`
-	ChildRuns   []ChildRunView  `json:"child_runs,omitempty"`
+	RunID           string           `json:"run_id"`
+	TaskID          string           `json:"task_id"`
+	ParentRunID     string           `json:"parent_run_id,omitempty"`
+	Status          string           `json:"status"`
+	Error           string           `json:"error,omitempty"`
+	PendingApproval *PendingApproval `json:"pending_approval,omitempty"`
+	Events          []event.Event    `json:"events"`
+	Task            json.RawMessage  `json:"task,omitempty"`
+	Subtasks        []store.Subtask  `json:"subtasks,omitempty"`
+	ChildRuns       []ChildRunView   `json:"child_runs,omitempty"`
 }
 
 func (c *Core) GetRun(ctx context.Context, runID string) (RunSnapshot, error) {
@@ -191,7 +208,7 @@ func (c *Core) GetRun(ctx context.Context, runID string) (RunSnapshot, error) {
 	for _, ch := range children {
 		views = append(views, ChildRunView{RunID: ch.RunID, TaskID: ch.TaskID, Status: string(ch.Status)})
 	}
-	return RunSnapshot{
+	snap := RunSnapshot{
 		RunID:       run.RunID,
 		TaskID:      run.TaskID,
 		ParentRunID: run.ParentRunID,
@@ -201,7 +218,15 @@ func (c *Core) GetRun(ctx context.Context, runID string) (RunSnapshot, error) {
 		Task:        taskJSON,
 		Subtasks:    subs,
 		ChildRuns:   views,
-	}, nil
+	}
+	if run.Status == store.StatusWaitingApproval && run.PendingStepID != "" {
+		snap.PendingApproval = &PendingApproval{
+			StepID:     run.PendingStepID,
+			Capability: run.PendingCapability,
+			Player:     run.PendingPlayer,
+		}
+	}
+	return snap, nil
 }
 
 func (c *Core) ListRuns(ctx context.Context, limit int) ([]RunSummary, error) {
@@ -249,6 +274,10 @@ func (c *Core) Subscribe(buffer int) (<-chan event.Event, func()) {
 	return c.Bus.Subscribe(buffer)
 }
 
+func (c *Core) ApproveRun(runID, decision string) error {
+	return c.Runner.Approve(context.Background(), runID, decision)
+}
+
 func (c *Core) CancelRun(runID string) error {
 	if err := c.Runner.Cancel(runID); err == nil {
 		return nil
@@ -263,6 +292,9 @@ func (c *Core) CancelRun(runID string) error {
 	switch run.Status {
 	case store.StatusSucceeded, store.StatusFailed, store.StatusCancelled, store.StatusRejected:
 		return result.Runtime(result.CodeCancelled, "run is already terminal", false, nil)
+	}
+	if err := c.Store.ClearPendingApproval(context.Background(), runID); err != nil {
+		return err
 	}
 	if err := c.Store.UpdateRunStatus(
 		context.Background(), runID, store.StatusCancelled, "",

@@ -27,6 +27,8 @@ Autoridade de decisoes: [04-decisoes.md](04-decisoes.md).
 | 19 | 19-graph-hits-v0.md | Graph Hits v0 (**CONFIRMED**; G-66..G-69) |
 | 20 | 20-git-player-v0.md | Git Player v0 (**CONFIRMED**; G-70..G-74) |
 | 21 | 21-filesystem-player-v0.md | Filesystem Player v0 (**CONFIRMED**; G-75..G-80) |
+| 22 | 22-execution-policy-v0.md | Execution Policy + HITL v0 (**CONFIRMED**; G-81..G-86) |
+| 23 | 23-docker-player-v0.md | Docker Player v0 (**CONFIRMED**; G-87..G-92) |
 | — | [openspec/](../openspec/README.md) | Pacotes de mudança OpenSpec (`NNN-slug`) |
 
 ## Fontes historicas (raiz do repo)
@@ -42,5 +44,6 @@ Nao usar fontes historicas para decisoes de implementacao.
 Antes de codar: P0 (`11`), P1 Board (`12`), P1b Intent (`17`) e P2 (`13`)
 estao **CONFIRMADOS** (G-36 NATS = DEFERRED). Runtime Graph (`18`), Graph
 Hits (`19`), Git Player (`20`) e Filesystem Player (`21`, G-75..G-80)
-sao **CONFIRMED v0**. P3 ainda futuro em `10-gaps.md` (HITL G-42 e
-Project Memory G-46/G-47 — HYPOTHESIS).
+sao **CONFIRMED v0**. Execution Policy + HITL (`22`, G-81..G-86) e Docker
+Player (`23`, G-87..G-92) estao **CONFIRMED v0** (codigo = slices 10 e 11).
+P3 restante: Claims/Blast (G-43), Project Memory G-46/G-47 (HYPOTHESIS).

@@ -43,6 +43,12 @@ Git Player: `docs/20-git-player-v0.md` + archive
 Filesystem Player: `docs/21-filesystem-player-v0.md` + archive
 `openspec/changes/archive/2026-08-17-021-filesystem-player/` — CONFIRMED v0
 (G-75..G-80); slice 9 feito.
+Execution Policy + HITL: `docs/22-execution-policy-v0.md` + archive
+`openspec/changes/archive/2026-08-17-022-execution-policy/` — CONFIRMED v0
+(G-81..G-86); slice 10 feito.
+Docker Player: `docs/23-docker-player-v0.md` +
+`openspec/changes/023-docker-player/` — CONFIRMED v0 (G-87..G-92);
+codigo = slice 11 (apos 10).
 Skill obrigatoria para TUI: `.cursor/skills/runtgine-tui-design/SKILL.md`.
 
 ## Ordem de trabalho
@@ -62,7 +68,9 @@ Skill obrigatoria para TUI: `.cursor/skills/runtgine-tui-design/SKILL.md`.
 13. Graph Hits — CONFIRMED v0 em `19` + OpenSpec archive `019-graph-hits` — feito
 14. Git Player — CONFIRMED v0 em `20` + OpenSpec archive `020-git-player` — feito
 15. Filesystem Player — CONFIRMED v0 em `21` + OpenSpec archive `021-filesystem-player` — feito
-16. Mais Players / TUI GRAPH / Policies-HITL — so apos nova promocao em `04`
+16. Execution Policy + HITL — CONFIRMED v0 em `22` + OpenSpec archive `022-execution-policy` — feito
+17. Docker Player — CONFIRMED v0 em `23` + OpenSpec `023-docker-player` — slice 11 apos 10
+18. TUI GRAPH / Claims / Blast Radius / mais Players — so apos nova promocao em `04`
 
 ## Conceitos chave (nao confundir)
 

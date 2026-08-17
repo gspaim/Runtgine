@@ -37,7 +37,7 @@ branch:              feat/<NNN>-<slug>   (ou docs/ fix/ chore/)
 
 Exemplos válidos: `001-shell-player`, `017-intent-engine`, `019-graph-hits`.
 
-**Próximo id livre:** `022`.
+**Próximo id livre:** `024`.
 
 ## Autoridade
 
@@ -68,4 +68,5 @@ Não codificar mudança cujo status em `04` não esteja **CONFIRMED**
 | `intent-engine` | NL → Task IR |
 | `runtime-graph` | Graph estrutural + QueryHits |
 | `git-player` | Player `git.*` (status/diff/log/add/commit) |
+| `execution-policy` | allow/deny/HITL (`waiting_approval`) |
 | `filesystem-player` | Player `fs.*` (read/write/list/stat) |

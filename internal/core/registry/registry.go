@@ -33,9 +33,10 @@ type Manifest struct {
 }
 
 type Capability struct {
-	Name         string          `json:"name"`
-	InputSchema  json.RawMessage `json:"input_schema"`
-	OutputSchema json.RawMessage `json:"output_schema"`
+	Name             string          `json:"name"`
+	InputSchema      json.RawMessage `json:"input_schema"`
+	OutputSchema     json.RawMessage `json:"output_schema"`
+	ExecutionPolicy  string          `json:"execution_policy,omitempty"`
 }
 
 type ExecRequest struct {
@@ -128,6 +129,25 @@ func (r *Registry) HasCapability(name string) bool {
 	r.mu.RLock()
 	defer r.mu.RUnlock()
 	return len(r.caps[name]) > 0
+}
+
+// CapabilityNames returns registered capability names.
+func (r *Registry) CapabilityNames() []string {
+	r.mu.RLock()
+	defer r.mu.RUnlock()
+	out := make([]string, 0, len(r.caps))
+	for name := range r.caps {
+		out = append(out, name)
+	}
+	sort.Strings(out)
+	return out
+}
+
+// ManifestPolicy returns the optional execution_policy declared on a capability.
+func (r *Registry) ManifestPolicy(capability string) string {
+	r.mu.RLock()
+	defer r.mu.RUnlock()
+	return r.meta[capability].ExecutionPolicy
 }
 
 // ValidateInput checks raw step input against the capability input_schema.

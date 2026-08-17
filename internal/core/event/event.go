@@ -30,7 +30,10 @@ const (
 	TypeStepFailed    = "step.failed"
 	TypeRunSucceeded  = "run.succeeded"
 	TypeRunFailed     = "run.failed"
-	TypeRunCancelled  = "run.cancelled"
+	TypeRunCancelled        = "run.cancelled"
+	TypeRunWaitingApproval  = "run.waiting_approval"
+	TypeRunApprovalGranted  = "run.approval_granted"
+	TypeRunApprovalDenied   = "run.approval_denied"
 )
 
 func New(typ, runID, taskID string, stepID *string, payload map[string]any) (Event, error) {

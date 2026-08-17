@@ -104,8 +104,8 @@ Ate la, o Core deve rodar so com CLI + Shell.
 | ID | Gap |
 |---|---|
 | G-40 | Workflow Templates loading (nativo vs repo externo) — ver `08` |
-| G-41 | Biblioteca ampla de Players | Em andamento — Git (`20`) e Filesystem (`21`) v0 feitos |
-| G-42 | Human-in-the-loop / Approvals |
+| G-41 | Biblioteca ampla de Players | Em andamento — Git (`20`), Filesystem (`21`), Docker (`23`) v0 |
+| G-42 | Human-in-the-loop / Approvals | **CONFIRMED v0** — recorte G-81..G-86 em `22` |
 | G-43 | Resource Claims / Blast Radius |
 | G-44 | MCP integration — candidato a transporte da Fase B de Project Memory (`16`) |
 | G-45 | API HTTP / webhooks |
@@ -155,6 +155,28 @@ Ate la, o Core deve rodar so com CLI + Shell.
 | G-79 | Registry + static validation + exemplo | **CONFIRMED** |
 | G-80 | Exclusões v0 | **CONFIRMED** — delete/move/chmod/rede/HITL fora |
 
+## Execution Policy + HITL (recorte G-42) — CONFIRMED v0
+
+| ID | Gap | Notas |
+|---|---|---|
+| G-81 | Papel / Core vs Player | **CONFIRMED** — ver `22-execution-policy-v0.md` |
+| G-82 | Verbos + precedência | **CONFIRMED** — allow/deny/approval-required |
+| G-83 | Lifecycle `waiting_approval` | **CONFIRMED** |
+| G-84 | `ApproveRun` + CLI | **CONFIRMED** |
+| G-85 | TUI RUNS/LIVE | **CONFIRMED** — sem aba nova |
+| G-86 | Exclusões v0 | **CONFIRMED** — Claims/wildcards/Human Player/Docker |
+
+## Docker Player (recorte G-41) — CONFIRMED v0
+
+| ID | Gap | Notas |
+|---|---|---|
+| G-87 | Papel / pacote `docker` | **CONFIRMED** — ver `23-docker-player-v0.md` |
+| G-88 | Capabilities ps/inspect/logs/run/build | **CONFIRMED** |
+| G-89 | Sandbox argv | **CONFIRMED** — pull never; network none |
+| G-90 | Policy Manifest run/build | **CONFIRMED** — depende de `22` |
+| G-91 | Registry + exemplo | **CONFIRMED** |
+| G-92 | Exclusões v0 | **CONFIRMED** — push/compose/K8s/privileged |
+
 ---
 
 ## Ordem para fechar gaps
@@ -168,6 +190,8 @@ Ate la, o Core deve rodar so com CLI + Shell.
 7. Graph Hits — spec em `19` — G-66..G-69 CONFIRMED; codigo = slice 7 — feito
 8. Git Player — spec em `20` — G-70..G-74 CONFIRMED; codigo = slice 8 — feito
 9. Filesystem Player — spec em `21` — G-75..G-80 CONFIRMED; codigo = slice 9 — feito
+10. Execution Policy + HITL — spec em `22` — G-81..G-86 CONFIRMED; codigo = slice 10
+11. Docker Player — spec em `23` — G-87..G-92 CONFIRMED; codigo = slice 11 (apos 10)
 
 ## Criterio de “pronto para codar”
 
@@ -178,7 +202,9 @@ Ate la, o Core deve rodar so com CLI + Shell.
 **Runtime Graph (G-60..G-65): CONFIRMADO.**  
 **Graph Hits (G-66..G-69): CONFIRMADO** — slice 7 feito.  
 **Git Player (G-70..G-74): CONFIRMADO** — slice 8 feito.
-**Filesystem Player (G-75..G-80): CONFIRMADO** — slice 9 feito.
+**Filesystem Player (G-75..G-80): CONFIRMADO** — slice 9 feito.  
+**Execution Policy + HITL (G-81..G-86): CONFIRMADO** — slice 10 feito.  
+**Docker Player (G-87..G-92): CONFIRMADO** — slice 11; bloqueado ate o 10.
 
 Ordem pratica de codigo:
 1. Core CLI + Shell (+ SQLite) — slice 1 — feito
@@ -190,9 +216,10 @@ Ordem pratica de codigo:
 7. Graph Hits v0 — slice 7 (G-66..G-69) — feito
 8. Git Player v0 — slice 8 (G-70..G-74) — feito
 9. Filesystem Player v0 — slice 9 (G-75..G-80) — feito
+10. Execution Policy + HITL v0 — slice 10 (G-81..G-86) — feito
+11. Docker Player v0 — slice 11 (G-87..G-92) — spec pronta; apos 10
 
-P3 (G-40+) permanece futuro. Proximo: mais Players (Docker/…) ou
-policies-HITL (G-42 — ainda sem Execution Policy CONFIRMED). Project
-Memory (G-46/G-47) e esboco em `16-project-memory.md` — HYPOTHESIS; nao
-codificar ate promocao explicita em `04`. Experimentos com sidecar externo
-(Fase A) nao exigem mudanca no Core.
+P3 restante (G-40 templates, G-43 Claims/Blast, G-44 MCP, G-45 HTTP).
+Project Memory (G-46/G-47) permanece HYPOTHESIS em `16` — nao codificar.
+Aba TUI GRAPH exige `14` + skill. Experimentos de sidecar (Fase A) nao
+exigem mudanca no Core.

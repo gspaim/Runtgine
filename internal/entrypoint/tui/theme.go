@@ -76,7 +76,7 @@ func (t Theme) Panel(focused bool) lipgloss.Style {
 func (t Theme) Status(status string) lipgloss.Style {
 	color := Muted
 	switch status {
-	case "running":
+	case "running", "waiting_approval":
 		color = Amber
 	case "succeeded":
 		color = Telemetry
@@ -93,6 +93,8 @@ func (t Theme) Symbol(status string) string {
 		switch status {
 		case "running":
 			return ">"
+		case "waiting_approval":
+			return "W"
 		case "succeeded":
 			return "+"
 		case "failed", "cancelled", "rejected":
@@ -104,6 +106,8 @@ func (t Theme) Symbol(status string) string {
 	switch status {
 	case "running":
 		return "◉"
+	case "waiting_approval":
+		return "◐"
 	case "succeeded":
 		return "●"
 	case "failed", "cancelled", "rejected":

@@ -50,7 +50,7 @@ Status: CONFIRMED | HYPOTHESIS | OPEN QUESTION | REJECTED
 | Context Engine | HYPOTHESIS | Monta contexto relevante |
 | Project Memory | HYPOTHESIS | Memoria episodica / de projeto; ver `16` |
 | Player Router | HYPOTHESIS | Roteia por capability + custo |
-| Execution Policy | HYPOTHESIS | Regras de seguranca |
+| Execution Policy | CONFIRMED (v0) | allow/deny/approval-required; ver `22-execution-policy-v0.md` |
 | Resource Claim | HYPOTHESIS | Bloqueio concorrente |
 | Blast Radius | HYPOTHESIS | Impact analysis |
 | Many deterministic Players | CONFIRMED | Estrategico |
@@ -108,6 +108,8 @@ Ver [09-mvp.md](09-mvp.md). Decisoes-chave:
 - Graph Hits v0 (G-66..G-69; ContextPack + Intent)
 - Git Player v0 (G-70..G-74; recorte G-41)
 - Filesystem Player v0 (G-75..G-80; recorte G-41)
+- Execution Policy + HITL v0 (G-81..G-86; recorte G-42) — spec; codigo = slice 10
+- Docker Player v0 (G-87..G-92; recorte G-41) — spec; codigo = slice 11; depende de 022
 
 ## Protocolo v0 — confirmado (sessao de fechamento)
 
@@ -284,6 +286,33 @@ Ver [21-filesystem-player-v0.md](21-filesystem-player-v0.md). Recorte de G-41.
 | G-78 Limites / atomicidade | CONFIRMED | UTF-8; 4 MiB; list limit; write atomic |
 | G-79 Registry + static validation | CONFIRMED | `api.Open` + Runner + `examples/fs-read.json` |
 | G-80 Exclusoes v0 | CONFIRMED | delete/move/chmod/rede/HITL fora |
+
+## Execution Policy + HITL — CONFIRMED v0
+
+Ver [22-execution-policy-v0.md](22-execution-policy-v0.md). Recorte de G-42.
+
+| Item | Status | Notas |
+|---|---|---|
+| G-81 Papel (Core, nao Player) | CONFIRMED | `internal/core/policy`; HITL = ApproveRun |
+| G-82 Verbos + precedencia | CONFIRMED | allow/deny/approval-required; exact capability |
+| G-83 Lifecycle HITL | CONFIRMED | `waiting_approval`; eventos; persistencia SQLite |
+| G-84 API + CLI | CONFIRMED | `ApproveRun`; `runtgine approve` / `deny` |
+| G-85 TUI RUNS/LIVE | CONFIRMED | Amber; teclas `a`/`d`; sem aba nova |
+| G-86 Exclusoes v0 | CONFIRMED | Claims, wildcards, Human Player, Docker |
+
+## Docker Player — CONFIRMED v0
+
+Ver [23-docker-player-v0.md](23-docker-player-v0.md). Recorte de G-41.
+Codigo = slice 11 apos slice 10 (022).
+
+| Item | Status | Notas |
+|---|---|---|
+| G-87 Papel / pacote `docker` | CONFIRMED | `internal/players/docker`; binario `docker` |
+| G-88 Capabilities v0 | CONFIRMED | ps, inspect, logs, run, build |
+| G-89 Sandbox argv | CONFIRMED | `--pull=never --network=none --rm`; sem privileged |
+| G-90 Policy Manifest | CONFIRMED | run/build = approval-required (usa 22) |
+| G-91 Registry + exemplo | CONFIRMED | `api.Open` + `examples/docker-ps.json` |
+| G-92 Exclusoes v0 | CONFIRMED | push/compose/K8s/privileged |
 
 ## Git / release — fluxo de branches
 

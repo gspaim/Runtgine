@@ -20,17 +20,21 @@ const (
 	StatusRunning   Status = "running"
 	StatusSucceeded Status = "succeeded"
 	StatusFailed    Status = "failed"
-	StatusCancelled Status = "cancelled"
+	StatusCancelled        Status = "cancelled"
+	StatusWaitingApproval  Status = "waiting_approval"
 )
 
 type Run struct {
-	RunID       string
-	TaskID      string
-	ParentRunID string
-	Status      Status
-	ErrorJSON   string
-	CreatedAt   time.Time
-	UpdatedAt   time.Time
+	RunID              string
+	TaskID             string
+	ParentRunID        string
+	Status             Status
+	ErrorJSON          string
+	PendingStepID      string
+	PendingCapability  string
+	PendingPlayer      string
+	CreatedAt          time.Time
+	UpdatedAt          time.Time
 }
 
 type RunRecord struct {
@@ -141,6 +145,9 @@ CREATE INDEX IF NOT EXISTS idx_graph_edges_to ON graph_edges(to_kind, to_id);
 	}
 	// Existing DBs from slice 1 may lack parent_run_id.
 	_, _ = s.db.Exec(`ALTER TABLE runs ADD COLUMN parent_run_id TEXT NOT NULL DEFAULT ''`)
+	_, _ = s.db.Exec(`ALTER TABLE runs ADD COLUMN pending_step_id TEXT NOT NULL DEFAULT ''`)
+	_, _ = s.db.Exec(`ALTER TABLE runs ADD COLUMN pending_capability TEXT NOT NULL DEFAULT ''`)
+	_, _ = s.db.Exec(`ALTER TABLE runs ADD COLUMN pending_player TEXT NOT NULL DEFAULT ''`)
 	return nil
 }
 
@@ -161,15 +168,34 @@ UPDATE runs SET status=?, error_json=?, updated_at=? WHERE run_id=?`,
 	return err
 }
 
+func (s *Store) SetPendingApproval(ctx context.Context, runID, stepID, capability, player string) error {
+	now := time.Now().UTC().Format(time.RFC3339Nano)
+	_, err := s.db.ExecContext(ctx, `
+UPDATE runs SET status=?, pending_step_id=?, pending_capability=?, pending_player=?, error_json='', updated_at=?
+WHERE run_id=?`,
+		string(StatusWaitingApproval), stepID, capability, player, now, runID)
+	return err
+}
+
+func (s *Store) ClearPendingApproval(ctx context.Context, runID string) error {
+	now := time.Now().UTC().Format(time.RFC3339Nano)
+	_, err := s.db.ExecContext(ctx, `
+UPDATE runs SET pending_step_id='', pending_capability='', pending_player='', updated_at=?
+WHERE run_id=?`, now, runID)
+	return err
+}
+
 func (s *Store) GetRun(ctx context.Context, runID string) (Run, []byte, error) {
 	var r Run
 	var status string
 	var created, updated string
 	var taskJSON string
 	err := s.db.QueryRowContext(ctx, `
-SELECT run_id, task_id, parent_run_id, status, error_json, task_json, created_at, updated_at
+SELECT run_id, task_id, parent_run_id, status, error_json, task_json,
+       pending_step_id, pending_capability, pending_player, created_at, updated_at
 FROM runs WHERE run_id=?`, runID).Scan(
-		&r.RunID, &r.TaskID, &r.ParentRunID, &status, &r.ErrorJSON, &taskJSON, &created, &updated)
+		&r.RunID, &r.TaskID, &r.ParentRunID, &status, &r.ErrorJSON, &taskJSON,
+		&r.PendingStepID, &r.PendingCapability, &r.PendingPlayer, &created, &updated)
 	if err != nil {
 		return r, nil, err
 	}
@@ -184,7 +210,8 @@ func (s *Store) ListRuns(ctx context.Context, limit int) ([]RunRecord, error) {
 		limit = 100
 	}
 	rows, err := s.db.QueryContext(ctx, `
-SELECT run_id, task_id, parent_run_id, status, error_json, task_json, created_at, updated_at
+SELECT run_id, task_id, parent_run_id, status, error_json, task_json,
+       pending_step_id, pending_capability, pending_player, created_at, updated_at
 FROM runs ORDER BY created_at DESC, run_id DESC LIMIT ?`, limit)
 	if err != nil {
 		return nil, err
@@ -197,7 +224,9 @@ FROM runs ORDER BY created_at DESC, run_id DESC LIMIT ?`, limit)
 		var status, taskJSON, created, updated string
 		if err := rows.Scan(
 			&rec.RunID, &rec.TaskID, &rec.ParentRunID, &status,
-			&rec.ErrorJSON, &taskJSON, &created, &updated,
+			&rec.ErrorJSON, &taskJSON,
+			&rec.PendingStepID, &rec.PendingCapability, &rec.PendingPlayer,
+			&created, &updated,
 		); err != nil {
 			return nil, err
 		}

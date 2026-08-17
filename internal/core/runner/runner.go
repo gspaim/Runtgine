@@ -15,6 +15,7 @@ import (
 	"github.com/gspaim/Runtgine/internal/core/graph"
 	corepipe "github.com/gspaim/Runtgine/internal/core/pipeline"
 	"github.com/gspaim/Runtgine/internal/core/plan"
+	"github.com/gspaim/Runtgine/internal/core/policy"
 	"github.com/gspaim/Runtgine/internal/core/registry"
 	"github.com/gspaim/Runtgine/internal/core/result"
 	"github.com/gspaim/Runtgine/internal/core/store"
@@ -38,6 +39,7 @@ type Runner struct {
 	LLMBackend string
 	Log        *slog.Logger
 	Graph      GraphBridge
+	Policy     policy.Table
 
 	mu       sync.Mutex
 	cancels  map[string]context.CancelFunc
@@ -108,7 +110,7 @@ func (r *Runner) SubmitChild(ctx context.Context, t task.Task, parentRunID strin
 	r.inflight.Add(1)
 	go func() {
 		defer r.inflight.Done()
-		r.execute(runCtx, t, p)
+		r.execute(runCtx, t, p, "")
 	}()
 
 	return SubmitResult{RunID: rid}, nil
@@ -173,6 +175,28 @@ func (r *Runner) validateAdmission(t task.Task) error {
 			}
 		}
 	}
+	if err := r.checkAdmissionPolicy(t); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (r *Runner) checkAdmissionPolicy(t task.Task) error {
+	for _, s := range t.Steps {
+		manifest, err := policy.ParseVerb(r.Reg.ManifestPolicy(s.Capability))
+		if err != nil {
+			return r.reject(t.TaskID, result.CodePolicyDenied, err.Error())
+		}
+		verb := r.Policy.Verb(s.Capability, manifest)
+		if verb == policy.Deny {
+			err := policy.DeniedError(s.Capability)
+			_ = r.emit("", t.TaskID, nil, event.TypeTaskRejected, map[string]any{
+				"code":    err.Code,
+				"message": err.Message,
+			})
+			return err
+		}
+	}
 	return nil
 }
 
@@ -195,7 +219,71 @@ func (r *Runner) Cancel(runID string) error {
 	return nil
 }
 
-func (r *Runner) execute(ctx context.Context, t task.Task, p plan.Plan) {
+const (
+	DecisionGrant = "grant"
+	DecisionDeny  = "deny"
+)
+
+func (r *Runner) Approve(ctx context.Context, runID, decision string) error {
+	run, taskJSON, err := r.Store.GetRun(ctx, runID)
+	if err != nil {
+		return result.Runtime(result.CodeInternal, "run not found", false, nil)
+	}
+	if run.Status != store.StatusWaitingApproval {
+		return policy.NotWaitingError()
+	}
+	stepID := run.PendingStepID
+	capName := run.PendingCapability
+	player := run.PendingPlayer
+
+	switch decision {
+	case DecisionDeny:
+		err := policy.ApprovalDeniedError(capName)
+		_ = r.emit(runID, run.TaskID, &stepID, event.TypeRunApprovalDenied, map[string]any{
+			"step_id":    stepID,
+			"capability": capName,
+			"player":     player,
+		})
+		_ = r.Store.ClearPendingApproval(ctx, runID)
+		_ = r.Store.UpdateRunStatus(ctx, runID, store.StatusFailed, store.FormatErr(err))
+		_ = r.emit(runID, run.TaskID, nil, event.TypeRunFailed, map[string]any{"error": err.Error()})
+		r.syncGraph(runID)
+		return nil
+	case DecisionGrant:
+		_ = r.emit(runID, run.TaskID, &stepID, event.TypeRunApprovalGranted, map[string]any{
+			"step_id":    stepID,
+			"capability": capName,
+			"player":     player,
+		})
+		var t task.Task
+		if err := json.Unmarshal(taskJSON, &t); err != nil {
+			return result.Runtime(result.CodeInternal, "corrupt task json", false, nil)
+		}
+		p, err := plan.FromTask(t, runID, func(cap string) (string, error) {
+			name, _, err := r.Reg.Resolve(cap, r.LLMBackend)
+			return name, err
+		})
+		if err != nil {
+			return err
+		}
+		skip := stepID
+		_ = r.Store.ClearPendingApproval(ctx, runID)
+		runCtx, cancel := context.WithCancel(context.Background())
+		r.mu.Lock()
+		r.cancels[runID] = cancel
+		r.mu.Unlock()
+		r.inflight.Add(1)
+		go func() {
+			defer r.inflight.Done()
+			r.execute(runCtx, t, p, skip)
+		}()
+		return nil
+	default:
+		return result.Runtime(result.CodeInternal, "decision must be grant or deny", false, nil)
+	}
+}
+
+func (r *Runner) execute(ctx context.Context, t task.Task, p plan.Plan, skipApprovalFor string) {
 	r.sem <- struct{}{}
 	defer func() { <-r.sem }()
 	defer func() {
@@ -205,7 +293,9 @@ func (r *Runner) execute(ctx context.Context, t task.Task, p plan.Plan) {
 	}()
 
 	_ = r.Store.UpdateRunStatus(ctx, p.RunID, store.StatusRunning, "")
-	_ = r.emit(p.RunID, t.TaskID, nil, event.TypeRunStarted, nil)
+	if skipApprovalFor == "" {
+		_ = r.emit(p.RunID, t.TaskID, nil, event.TypeRunStarted, nil)
+	}
 
 	order, err := task.TopoOrder(t.Steps)
 	if err != nil {
@@ -217,6 +307,13 @@ func (r *Runner) execute(ctx context.Context, t task.Task, p plan.Plan) {
 		byID[s.StepID] = s
 	}
 
+	done := map[string]store.StepOutput{}
+	if priorsList, err := r.Store.ListStepOutputs(ctx, p.RunID); err == nil {
+		for _, o := range priorsList {
+			done[o.StepID] = o
+		}
+	}
+
 	var priors []store.StepOutput
 	for _, sid := range order {
 		if ctx.Err() != nil {
@@ -224,6 +321,34 @@ func (r *Runner) execute(ctx context.Context, t task.Task, p plan.Plan) {
 			return
 		}
 		s := byID[sid]
+		if prev, ok := done[sid]; ok {
+			priors = append(priors, prev)
+			continue
+		}
+
+		manifest, perr := policy.ParseVerb(r.Reg.ManifestPolicy(s.Capability))
+		if perr != nil {
+			r.fail(ctx, p, result.Runtime(result.CodeInternal, perr.Error(), false, nil))
+			return
+		}
+		verb := r.Policy.Verb(s.Capability, manifest)
+		if verb == policy.Deny {
+			err := policy.DeniedError(s.Capability)
+			r.fail(ctx, p, err)
+			return
+		}
+		if verb == policy.ApprovalRequired && sid != skipApprovalFor {
+			_ = r.Store.SetPendingApproval(ctx, p.RunID, s.StepID, s.Capability, s.Player)
+			payload := map[string]any{
+				"run_id":     p.RunID,
+				"step_id":    s.StepID,
+				"capability": s.Capability,
+				"player":     s.Player,
+			}
+			_ = r.emit(p.RunID, t.TaskID, &s.StepID, event.TypeRunWaitingApproval, payload)
+			return
+		}
+
 		stepID := s.StepID
 		pack := contextpack.Assemble(t, s.StepID, s.Capability, priors)
 		pack = r.attachGraphHits(ctx, pack, t)
@@ -293,6 +418,7 @@ func (r *Runner) execute(ctx context.Context, t task.Task, p plan.Plan) {
 		}
 	}
 
+	_ = r.Store.ClearPendingApproval(ctx, p.RunID)
 	_ = r.Store.UpdateRunStatus(ctx, p.RunID, store.StatusSucceeded, "")
 	_ = r.emit(p.RunID, t.TaskID, nil, event.TypeRunSucceeded, nil)
 	r.syncGraph(p.RunID)

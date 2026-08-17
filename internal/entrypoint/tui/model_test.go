@@ -20,6 +20,7 @@ type fakeCore struct {
 	config    api.ConfigSnapshot
 	stream    chan event.Event
 	cancelled string
+	approved  string
 }
 
 func (f *fakeCore) ListRuns(context.Context, int) ([]api.RunSummary, error) {
@@ -47,6 +48,11 @@ func (f *fakeCore) Subscribe(int) (<-chan event.Event, func()) {
 
 func (f *fakeCore) CancelRun(runID string) error {
 	f.cancelled = runID
+	return nil
+}
+
+func (f *fakeCore) ApproveRun(runID, decision string) error {
+	f.approved = runID + ":" + decision
 	return nil
 }
 
@@ -134,6 +140,34 @@ func TestNavigationAndCancelConfirmation(t *testing.T) {
 	if core.cancelled != "019c-run-0001" || model.confirm {
 		t.Fatalf("cancelled=%q confirm=%v", core.cancelled, model.confirm)
 	}
+}
+
+func TestApproveDenyKeysOnWaitingRun(t *testing.T) {
+	model, core := loadedModel(t)
+	core.runs[0].Status = "waiting_approval"
+	core.snapshot.Status = "waiting_approval"
+	core.snapshot.PendingApproval = &api.PendingApproval{StepID: "s1", Capability: "shell.exec", Player: "shell"}
+	model.runs = core.runs
+	model.snapshot = core.snapshot
+	model.tab = tabRuns
+
+	updated, cmd := model.Update(key("a"))
+	model = updated.(Model)
+	if cmd == nil {
+		t.Fatal("a must approve")
+	}
+	msg := cmd()
+	updated, _ = model.Update(msg)
+	model = updated.(Model)
+	if core.approved != "019c-run-0001:grant" {
+		t.Fatalf("approved=%q", core.approved)
+	}
+
+	updated, cmd = model.Update(key("d"))
+	if cmd == nil {
+		t.Fatal("d must deny")
+	}
+	_ = cmd()
 }
 
 func TestNoColorAndConfigMasksSecrets(t *testing.T) {

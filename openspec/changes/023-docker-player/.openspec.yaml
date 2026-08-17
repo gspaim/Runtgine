@@ -1,0 +1,9 @@
+schema: spec-driven
+created: 2026-08-17
+nnn: "023"
+slug: docker-player
+docs_canonical: docs/23-docker-player-v0.md
+gaps: [G-87, G-88, G-89, G-90, G-91, G-92]
+status: confirmed
+branch: feat/023-docker-player
+depends_on: ["022-execution-policy"]
