@@ -37,7 +37,7 @@ branch:              feat/<NNN>-<slug>   (ou docs/ fix/ chore/)
 
 Exemplos válidos: `001-shell-player`, `017-intent-engine`, `019-graph-hits`.
 
-**Próximo id livre:** `021` (após `020-git-player` arquivado).
+**Próximo id livre:** `022` (após `021-filesystem-player` ativo).
 
 ## Autoridade
 
@@ -68,3 +68,4 @@ Não codificar mudança cujo status em `04` não esteja **CONFIRMED**
 | `intent-engine` | NL → Task IR |
 | `runtime-graph` | Graph estrutural + QueryHits |
 | `git-player` | Player `git.*` (status/diff/log/add/commit) |
+| *(novo via 021)* | `filesystem-player` após archive do slice 9 |

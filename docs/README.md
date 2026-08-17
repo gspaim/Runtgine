@@ -26,6 +26,7 @@ Autoridade de decisoes: [04-decisoes.md](04-decisoes.md).
 | 18 | 18-runtime-graph-v0.md | Runtime Graph v0 (**CONFIRMED**; G-60..G-65) |
 | 19 | 19-graph-hits-v0.md | Graph Hits v0 (**CONFIRMED**; G-66..G-69) |
 | 20 | 20-git-player-v0.md | Git Player v0 (**CONFIRMED**; G-70..G-74) |
+| 21 | 21-filesystem-player-v0.md | Filesystem Player v0 (**CONFIRMED**; G-75..G-80) |
 | — | [openspec/](../openspec/README.md) | Pacotes de mudança OpenSpec (`NNN-slug`) |
 
 ## Fontes historicas (raiz do repo)
@@ -40,5 +41,6 @@ Nao usar fontes historicas para decisoes de implementacao.
 
 Antes de codar: P0 (`11`), P1 Board (`12`), P1b Intent (`17`) e P2 (`13`)
 estao **CONFIRMADOS** (G-36 NATS = DEFERRED). Runtime Graph (`18`), Graph
-Hits (`19`) e Git Player (`20`, G-70..G-74) sao **CONFIRMED v0**. P3 ainda
-futuro em `10-gaps.md` (HITL G-42 e Project Memory G-46/G-47 — HYPOTHESIS).
+Hits (`19`), Git Player (`20`) e Filesystem Player (`21`, G-75..G-80)
+sao **CONFIRMED v0**. P3 ainda futuro em `10-gaps.md` (HITL G-42 e
+Project Memory G-46/G-47 — HYPOTHESIS).

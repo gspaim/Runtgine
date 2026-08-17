@@ -144,6 +144,17 @@ Ate la, o Core deve rodar so com CLI + Shell.
 | G-73 | Registry + exemplo | **CONFIRMED** |
 | G-74 | Exclusões v0 | **CONFIRMED** — push/HITL/fora |
 
+## Filesystem Player (recorte G-41) — CONFIRMED v0
+
+| ID | Gap | Notas |
+|---|---|---|
+| G-75 | Papel / pacote `filesystem` | **CONFIRMED** — ver `21-filesystem-player-v0.md` |
+| G-76 | Capabilities read/write/list/stat | **CONFIRMED** |
+| G-77 | Confinamento e symlink policy | **CONFIRMED** — workspace only |
+| G-78 | Limites / UTF-8 / escrita atômica | **CONFIRMED** |
+| G-79 | Registry + static validation + exemplo | **CONFIRMED** |
+| G-80 | Exclusões v0 | **CONFIRMED** — delete/move/chmod/rede/HITL fora |
+
 ---
 
 ## Ordem para fechar gaps
@@ -156,6 +167,7 @@ Ate la, o Core deve rodar so com CLI + Shell.
 6. Runtime Graph — spec/impl em `18` — G-60..G-65 CONFIRMED — feito
 7. Graph Hits — spec em `19` — G-66..G-69 CONFIRMED; codigo = slice 7 — feito
 8. Git Player — spec em `20` — G-70..G-74 CONFIRMED; codigo = slice 8 — feito
+9. Filesystem Player — spec em `21` — G-75..G-80 CONFIRMED; codigo = **proximo** slice 9
 
 ## Criterio de “pronto para codar”
 
@@ -166,6 +178,7 @@ Ate la, o Core deve rodar so com CLI + Shell.
 **Runtime Graph (G-60..G-65): CONFIRMADO.**  
 **Graph Hits (G-66..G-69): CONFIRMADO** — slice 7 feito.  
 **Git Player (G-70..G-74): CONFIRMADO** — slice 8 feito.
+**Filesystem Player (G-75..G-80): CONFIRMADO** — liberado implementar slice 9.
 
 Ordem pratica de codigo:
 1. Core CLI + Shell (+ SQLite) — slice 1 — feito
@@ -176,6 +189,7 @@ Ordem pratica de codigo:
 6. Runtime Graph v0 — slice 6 (G-60..G-65) — feito
 7. Graph Hits v0 — slice 7 (G-66..G-69) — feito
 8. Git Player v0 — slice 8 (G-70..G-74) — feito
+9. Filesystem Player v0 — slice 9 (G-75..G-80) — **proximo**
 
 P3 (G-40+) permanece futuro. Proximo: mais Players (FS/Docker/…) ou
 policies-HITL (G-42 — ainda sem Execution Policy CONFIRMED). Project
