@@ -73,8 +73,7 @@ Task → Event → Queue → Player → Result
 Visão enxuta do que já está em `main`. **Atualizar esta seção em todo PR
 `release/*` → `main`** (e em PRs para `develop` quando o estágio mudar).
 
-**Agora:** MVP funcional (slices 1–6) + Graph Hits **spec** CONFIRMED
-(slice 7 de código ainda pendente), sem release estável.
+**Agora:** MVP funcional (slices 1–7), sem release estável.
 
 | | Entrega |
 |---|---|
@@ -84,8 +83,9 @@ Visão enxuta do que já está em `main`. **Atualizar esta seção em todo PR
 | Feito | Slice 4 — Validator com JSON Schema, IDs/`schema_version` estritos, sandbox Shell v0 |
 | Feito | Slice 5 — Intent Engine NL v0 (`runtgine intent`) |
 | Feito | Slice 6 — Runtime Graph v0 (`runtgine graph snapshot`) |
-| Próximo | Slice 7 — Graph Hits v0 (`openspec/changes/019-graph-hits/`) |
-| Depois | Mais Players determinísticos, policies/HITL; Project Memory (HYPOTHESIS); API HTTP; bus distribuído; desktop Wails |
+| Feito | Slice 7 — Graph Hits v0 (`graph_hits` / `QueryHits`) |
+| Próximo | Mais Players determinísticos, policies/HITL |
+| Depois | Project Memory (HYPOTHESIS); API HTTP; bus distribuído; desktop Wails |
 
 Detalhe do corte: [`docs/09-mvp.md`](docs/09-mvp.md). Limitações atuais abaixo.
 
@@ -360,7 +360,7 @@ vulnerabilidade.
 | [Gaps](docs/10-gaps.md) | Lacunas e próximos problemas |
 | [Protocolo v0](docs/11-protocolo-v0.md) | Task IR, Manifest, Events e Results |
 | [Runtime Graph](docs/18-runtime-graph-v0.md) | Memória estrutural v0 (G-60..G-65) |
-| [Graph Hits](docs/19-graph-hits-v0.md) | `graph_hits` / QueryHits (G-66..G-69; próximo código) |
+| [Graph Hits](docs/19-graph-hits-v0.md) | `graph_hits` / QueryHits (G-66..G-69; slice 7) |
 | [OpenSpec](openspec/README.md) | Pacotes de mudança `NNN-slug` |
 | [TUI Design](docs/14-tui-design.md) | Constellation Mission Control |
 | [Git workflow](docs/15-git-workflow.md) | Branches, RC e releases |

@@ -8,6 +8,7 @@ import (
 	"unicode"
 
 	"github.com/gspaim/Runtgine/internal/core/contextpack"
+	"github.com/gspaim/Runtgine/internal/core/graph"
 	corepipe "github.com/gspaim/Runtgine/internal/core/pipeline"
 	"github.com/gspaim/Runtgine/internal/core/result"
 	"github.com/gspaim/Runtgine/internal/core/task"
@@ -20,10 +21,16 @@ const (
 	MethodLLM               = "llm"
 )
 
+// HitsQuerier is optional Graph access for the LLM compile path (G-69).
+type HitsQuerier interface {
+	QueryHits(ctx context.Context, q graph.Query) graph.Hits
+}
+
 // Engine compiles natural language into Task IR v0 (G-50..G-53).
 // It is not a Player and never bypasses the Validator.
 type Engine struct {
 	Completer llm.Completer
+	Graph     HitsQuerier // optional; only used on LLM path
 }
 
 func New(c llm.Completer) *Engine {
@@ -98,6 +105,27 @@ func (e *Engine) compileLLM(ctx context.Context, text, ep, ref string) (task.Tas
 	pack := contextpack.Pack{
 		Task: contextpack.TaskView{Summary: text, Notes: "intent.compile"},
 		Step: contextpack.StepView{StepID: "intent", Capability: "intent.compile"},
+		Budget: contextpack.Budget{
+			MaxChars:      contextpack.DefaultMaxChars,
+			MaxFiles:      contextpack.DefaultMaxFiles,
+			GraphMaxHits:  contextpack.DefaultGraphMaxHits,
+			GraphMaxChars: contextpack.DefaultGraphMaxChars,
+		},
+		GraphHits: contextpack.GraphHits{Items: []contextpack.GraphHit{}},
+	}
+	if e.Graph != nil {
+		hits := e.Graph.QueryHits(ctx, graph.Query{
+			Text:     text,
+			Limit:    pack.Budget.GraphMaxHits,
+			MaxChars: pack.Budget.GraphMaxChars,
+		})
+		items := make([]contextpack.GraphHit, 0, len(hits.Items))
+		for _, h := range hits.Items {
+			items = append(items, contextpack.GraphHit{
+				Kind: h.Kind, ID: h.ID, Reason: h.Reason, Score: h.Score,
+			})
+		}
+		pack = contextpack.WithGraphHits(pack, items)
 	}
 
 	var last error

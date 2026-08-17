@@ -67,13 +67,15 @@ func Open(cfg config.Config, log *slog.Logger) (*Core, error) {
 			log.Warn("graph refresh failed", "err", err)
 		}
 	}
+	eng := intent.New(completer)
+	eng.Graph = g
 	return &Core{
 		Cfg:    cfg,
 		Reg:    reg,
 		Bus:    bus,
 		Store:  st,
 		Runner: r,
-		Intent: intent.New(completer),
+		Intent: eng,
 		Graph:  g,
 		Log:    log,
 	}, nil

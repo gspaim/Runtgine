@@ -12,6 +12,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/gspaim/Runtgine/internal/core/contextpack"
 	"github.com/gspaim/Runtgine/internal/core/event"
+	"github.com/gspaim/Runtgine/internal/core/graph"
 	corepipe "github.com/gspaim/Runtgine/internal/core/pipeline"
 	"github.com/gspaim/Runtgine/internal/core/plan"
 	"github.com/gspaim/Runtgine/internal/core/registry"
@@ -21,9 +22,10 @@ import (
 	"github.com/gspaim/Runtgine/internal/players/shell"
 )
 
-// GraphSyncer persists structural memory after a terminal run (G-65). Optional.
-type GraphSyncer interface {
+// GraphBridge syncs structural memory (G-65) and serves QueryHits (G-68). Optional.
+type GraphBridge interface {
 	SyncFromRun(ctx context.Context, runID string) error
+	QueryHits(ctx context.Context, q graph.Query) graph.Hits
 }
 
 type Runner struct {
@@ -33,7 +35,7 @@ type Runner struct {
 	Workspace  string
 	LLMBackend string
 	Log        *slog.Logger
-	Graph      GraphSyncer
+	Graph      GraphBridge
 
 	mu       sync.Mutex
 	cancels  map[string]context.CancelFunc
@@ -204,6 +206,7 @@ func (r *Runner) execute(ctx context.Context, t task.Task, p plan.Plan) {
 		s := byID[sid]
 		stepID := s.StepID
 		pack := contextpack.Assemble(t, s.StepID, s.Capability, priors)
+		pack = r.attachGraphHits(ctx, pack, t)
 		packJSON, _ := contextpack.Marshal(pack)
 		_ = r.emit(p.RunID, t.TaskID, &stepID, event.TypeStepStarted, map[string]any{
 			"capability":    s.Capability,
@@ -296,6 +299,34 @@ func (r *Runner) syncGraph(runID string) {
 	if err := r.Graph.SyncFromRun(ctx, runID); err != nil {
 		r.Log.Warn("graph sync failed", "run_id", runID, "err", err)
 	}
+}
+
+func (r *Runner) attachGraphHits(ctx context.Context, pack contextpack.Pack, t task.Task) contextpack.Pack {
+	if r.Graph == nil {
+		return pack
+	}
+	text := t.Intent.Summary
+	if t.Intent.Notes != "" && len(t.Intent.Notes) < 500 {
+		if text != "" {
+			text += " "
+		}
+		text += t.Intent.Notes
+	}
+	hits := r.Graph.QueryHits(ctx, graph.Query{
+		Text:           text,
+		SeedPaths:      pack.RepoHits.Paths,
+		SeedSymbols:    pack.RepoHits.Symbols,
+		SeedCapability: pack.Step.Capability,
+		Limit:          pack.Budget.GraphMaxHits,
+		MaxChars:       pack.Budget.GraphMaxChars,
+	})
+	items := make([]contextpack.GraphHit, 0, len(hits.Items))
+	for _, h := range hits.Items {
+		items = append(items, contextpack.GraphHit{
+			Kind: h.Kind, ID: h.ID, Reason: h.Reason, Score: h.Score,
+		})
+	}
+	return contextpack.WithGraphHits(pack, items)
 }
 
 func (r *Runner) emit(runID, taskID string, stepID *string, typ string, payload map[string]any) error {

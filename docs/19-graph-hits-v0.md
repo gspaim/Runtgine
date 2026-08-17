@@ -11,10 +11,10 @@ G-60..G-65) **implementado e estável**.
 **Status deste doc: CONFIRMED (v0).** G-66..G-69 autorizam o slice de
 código seguinte. Aba TUI GRAPH permanece fora (exige `14` + skill).
 
-**Pacote OpenSpec (trabalho):**
-[`openspec/changes/019-graph-hits/`](../openspec/changes/019-graph-hits/)
-(`proposal` / `design` / `tasks` / deltas). Branch de implementação:
-`feat/019-graph-hits`.
+**Pacote OpenSpec:** arquivado em
+[`openspec/changes/archive/2026-08-17-019-graph-hits/`](../openspec/changes/archive/2026-08-17-019-graph-hits/).
+Deltas mergeados em `openspec/specs/`. Branch de implementação:
+`cursor/019-graph-hits-0ac1` (equiv. `feat/019-graph-hits`).
 
 Ortogonal a: Project Memory / `memory_hits` ([16-project-memory.md](16-project-memory.md)
 — HYPOTHESIS; não misturar).

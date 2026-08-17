@@ -34,8 +34,9 @@ Git / releases: `docs/15-git-workflow.md`.
 Project Memory (esboco): `docs/16-project-memory.md` — HYPOTHESIS; nao codificar.
 Intent Engine v0: `docs/17-intent-engine-v0.md` — CONFIRMED.
 Runtime Graph: `docs/18-runtime-graph-v0.md` — CONFIRMED v0 (G-60..G-65).
-Graph Hits: `docs/19-graph-hits-v0.md` + `openspec/changes/019-graph-hits/` —
-CONFIRMED v0 (G-66..G-69); proximo codigo.
+Graph Hits: `docs/19-graph-hits-v0.md` + archive
+`openspec/changes/archive/2026-08-17-019-graph-hits/` — CONFIRMED v0
+(G-66..G-69); slice 7 feito.
 Skill obrigatoria para TUI: `.cursor/skills/runtgine-tui-design/SKILL.md`.
 
 ## Ordem de trabalho
@@ -52,7 +53,7 @@ Skill obrigatoria para TUI: `.cursor/skills/runtgine-tui-design/SKILL.md`.
 10. Context assembly + LLM Player + Router
 11. Intent Engine (NL) — CONFIRMED v0 em `17-intent-engine-v0.md`
 12. Runtime Graph — CONFIRMED v0 em `18-runtime-graph-v0.md` (G-60..G-65) — feito
-13. Graph Hits — CONFIRMED v0 em `19` + `openspec/changes/019-graph-hits/` — proximo codigo
+13. Graph Hits — CONFIRMED v0 em `19` + OpenSpec archive `019-graph-hits` — feito
 14. Runtime Graph TUI / Policies / Players amplos — so apos nova promocao em `04`
 
 ## Conceitos chave (nao confundir)

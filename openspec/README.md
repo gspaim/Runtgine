@@ -37,8 +37,7 @@ branch:              feat/<NNN>-<slug>   (ou docs/ fix/ chore/)
 
 Exemplos válidos: `001-shell-player`, `017-intent-engine`, `019-graph-hits`.
 
-**Próximo id livre:** consultar `openspec/changes/` + `archive/` + docs
-numerados (`docs/NN-*.md`) e usar `max+1`.
+**Próximo id livre:** `020` (após `019-graph-hits` arquivado).
 
 ## Autoridade
 
