@@ -127,5 +127,5 @@ Documentacao alinhada; stack CONFIRMED; MVP canônico em 09-mvp.md.
 **Intent Engine v0 CONFIRMADO** (`17`, G-50..G-54).
 Slices 1–6 implementados (Core → Intent → Runtime Graph estrutural).
 **Runtime Graph v0: CONFIRMED** em `18` (G-60..G-65).
-**Git Player v0: CONFIRMED** em `20` (G-70..G-74) — liberado codigo slice 8.
+**Git Player v0: CONFIRMED + implementado** (`20`, G-70..G-74; slice 8).
 P3 restante: mais Players / HITL (G-42) / Memory — futuros.

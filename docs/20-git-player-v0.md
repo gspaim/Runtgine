@@ -11,9 +11,10 @@ Pré-requisito: Core + Shell + Validator estáveis (slices 1–7).
 de código. HITL / Approvals (G-42) e Execution Policy completa
 permanecem fora (HYPOTHESIS / P3).
 
-**Pacote OpenSpec (trabalho):**
-[`openspec/changes/020-git-player/`](../openspec/changes/020-git-player/).
-Branch de implementação: `feat/020-git-player` (agentes: `cursor/020-*-0ac1`).
+**Pacote OpenSpec:** arquivado em
+[`openspec/changes/archive/2026-08-17-020-git-player/`](../openspec/changes/archive/2026-08-17-020-git-player/).
+Deltas mergeados em `openspec/specs/git-player/`. Branch de implementação:
+`cursor/020-git-player-0ac1`.
 
 ---
 

@@ -19,6 +19,7 @@ import (
 	"github.com/gspaim/Runtgine/internal/core/result"
 	"github.com/gspaim/Runtgine/internal/core/store"
 	"github.com/gspaim/Runtgine/internal/core/task"
+	"github.com/gspaim/Runtgine/internal/players/git"
 	"github.com/gspaim/Runtgine/internal/players/shell"
 )
 
@@ -145,6 +146,16 @@ func (r *Runner) validateAdmission(t task.Task) error {
 		}
 		if s.Capability == shell.CapExec {
 			if err := shell.ValidateStaticInput(r.Workspace, s.Input); err != nil {
+				var ve result.Error
+				if errors.As(err, &ve) {
+					return r.reject(t.TaskID, ve.Code, ve.Message)
+				}
+				return r.reject(t.TaskID, result.CodeInvalidInput, err.Error())
+			}
+		}
+		switch s.Capability {
+		case git.CapStatus, git.CapDiff, git.CapLog, git.CapAdd, git.CapCommit:
+			if err := git.ValidateStaticInput(r.Workspace, s.Capability, s.Input); err != nil {
 				var ve result.Error
 				if errors.As(err, &ve) {
 					return r.reject(t.TaskID, ve.Code, ve.Message)

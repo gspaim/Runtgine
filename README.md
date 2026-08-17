@@ -73,8 +73,7 @@ Task → Event → Queue → Player → Result
 Visão enxuta do que já está em `main`. **Atualizar esta seção em todo PR
 `release/*` → `main`** (e em PRs para `develop` quando o estágio mudar).
 
-**Agora:** MVP funcional (slices 1–7) + Git Player **spec** CONFIRMED
-(slice 8 de código ainda pendente), sem release estável.
+**Agora:** MVP funcional (slices 1–8), sem release estável.
 
 | | Entrega |
 |---|---|
@@ -85,8 +84,9 @@ Visão enxuta do que já está em `main`. **Atualizar esta seção em todo PR
 | Feito | Slice 5 — Intent Engine NL v0 (`runtgine intent`) |
 | Feito | Slice 6 — Runtime Graph v0 (`runtgine graph snapshot`) |
 | Feito | Slice 7 — Graph Hits v0 (`graph_hits` / `QueryHits`) |
-| Próximo | Slice 8 — Git Player v0 (`openspec/changes/020-git-player/`) |
-| Depois | Mais Players (FS/Docker/…), policies/HITL; Project Memory (HYPOTHESIS); API HTTP; bus distribuído; desktop Wails |
+| Feito | Slice 8 — Git Player v0 (`git.status` / `diff` / `log` / `add` / `commit`) |
+| Próximo | Mais Players determinísticos (FS/Docker/…) ou policies/HITL (nova spec) |
+| Depois | Project Memory (HYPOTHESIS); API HTTP; bus distribuído; desktop Wails |
 
 Detalhe do corte: [`docs/09-mvp.md`](docs/09-mvp.md). Limitações atuais abaixo.
 
@@ -171,6 +171,9 @@ runtgine tui                        Abre a Mission Control
 Exemplos:
 
 ```bash
+# Git Player
+./bin/runtgine run examples/git-status.json
+
 # Linguagem natural → Task IR → execução
 ./bin/runtgine intent "echo hello-intent"
 ./bin/runtgine intent "revisar a arquitetura do workspace" --dry-run
@@ -228,7 +231,7 @@ Fluxo real do MVP: **CLI/Board** montam `Task IR` e chamam `SubmitTask`. O **Val
 cmd/runtgine/             binário e CLI
 internal/config/          defaults, arquivo, env e flags
 internal/core/            Task, Event, Runner, Registry, Store, Graph e APIs
-internal/players/         Shell, Pipeline e LLM Players
+internal/players/         Shell, Git, Pipeline e LLM Players
 internal/entrypoint/      CLI, Board e TUI
 examples/                 exemplos de Task IR
 docs/                     decisões e especificações oficiais
@@ -362,7 +365,7 @@ vulnerabilidade.
 | [Protocolo v0](docs/11-protocolo-v0.md) | Task IR, Manifest, Events e Results |
 | [Runtime Graph](docs/18-runtime-graph-v0.md) | Memória estrutural v0 (G-60..G-65) |
 | [Graph Hits](docs/19-graph-hits-v0.md) | `graph_hits` / QueryHits (G-66..G-69; slice 7) |
-| [Git Player](docs/20-git-player-v0.md) | Player `git.*` v0 (G-70..G-74; próximo código) |
+| [Git Player](docs/20-git-player-v0.md) | Player `git.*` v0 (G-70..G-74; slice 8) |
 | [OpenSpec](openspec/README.md) | Pacotes de mudança `NNN-slug` |
 | [TUI Design](docs/14-tui-design.md) | Constellation Mission Control |
 | [Git workflow](docs/15-git-workflow.md) | Branches, RC e releases |
