@@ -16,6 +16,7 @@ import (
 	"github.com/gspaim/Runtgine/internal/core/runner"
 	"github.com/gspaim/Runtgine/internal/core/store"
 	"github.com/gspaim/Runtgine/internal/core/task"
+	"github.com/gspaim/Runtgine/internal/players/filesystem"
 	gitplayer "github.com/gspaim/Runtgine/internal/players/git"
 	"github.com/gspaim/Runtgine/internal/players/llm"
 	pipeplayer "github.com/gspaim/Runtgine/internal/players/pipeline"
@@ -49,6 +50,10 @@ func Open(cfg config.Config, log *slog.Logger) (*Core, error) {
 		return nil, err
 	}
 	if err := reg.Register(gitplayer.New()); err != nil {
+		_ = st.Close()
+		return nil, err
+	}
+	if err := reg.Register(filesystem.New()); err != nil {
 		_ = st.Close()
 		return nil, err
 	}
