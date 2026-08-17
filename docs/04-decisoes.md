@@ -106,6 +106,7 @@ Ver [09-mvp.md](09-mvp.md). Decisoes-chave:
 - MVP: Core + Shell + CLI/TUI + Board (ver 09-mvp.md)
 - Runtime Graph v0 (G-60..G-65)
 - Graph Hits v0 (G-66..G-69; ContextPack + Intent)
+- Git Player v0 (G-70..G-74; recorte G-41)
 
 ## Protocolo v0 — confirmado (sessao de fechamento)
 
@@ -257,6 +258,18 @@ Ver [18-runtime-graph-v0.md](18-runtime-graph-v0.md) (estrutural) e
 | G-67 Schema graph_hits + budget | CONFIRMED | Extensao ContextPack; hierarquia vs repo_hits |
 | G-68 API QueryHits | CONFIRMED | Ranking deterministico; degrada vazio |
 | G-69 Intent LLM + AssembleContext | CONFIRMED | Heuristicas shell\|pipeline nao consultam Graph |
+
+## Git Player — CONFIRMED v0
+
+Ver [20-git-player-v0.md](20-git-player-v0.md). Recorte de G-41.
+
+| Item | Status | Notas |
+|---|---|---|
+| G-70 Papel / pacote `git` | CONFIRMED | `internal/players/git`; Player deterministic |
+| G-71 Capabilities v0 | CONFIRMED | status, diff, log, add, commit |
+| G-72 Sandbox minima | CONFIRMED | Sem rede; hooks off no commit; workdir no workspace |
+| G-73 Registry + exemplo | CONFIRMED | `api.Open` + `examples/git-status.json` |
+| G-74 Exclusoes v0 | CONFIRMED | push/pull/clone/HITL/fora |
 
 ## Git / release — fluxo de branches
 

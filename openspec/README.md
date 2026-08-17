@@ -37,7 +37,7 @@ branch:              feat/<NNN>-<slug>   (ou docs/ fix/ chore/)
 
 Exemplos válidos: `001-shell-player`, `017-intent-engine`, `019-graph-hits`.
 
-**Próximo id livre:** `020` (após `019-graph-hits` arquivado).
+**Próximo id livre:** `021` (após `020-git-player` ativo).
 
 ## Autoridade
 
@@ -64,8 +64,7 @@ Não codificar mudança cujo status em `04` não esteja **CONFIRMED**
 
 | Domain | Cobre |
 |---|---|
-| `contextpack` | AssembleContext / ContextPack v0 |
+| `contextpack` | AssembleContext / ContextPack (+ graph_hits) |
 | `intent-engine` | NL → Task IR |
-| `runtime-graph` | Graph estrutural G-60..G-65 |
-
-Novos domains só quando a mudança introduzir superfície estável.
+| `runtime-graph` | Graph estrutural + QueryHits |
+| *(novo via 020)* | `git-player` após archive do slice 8 |
