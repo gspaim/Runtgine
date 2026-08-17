@@ -104,7 +104,7 @@ Ate la, o Core deve rodar so com CLI + Shell.
 | ID | Gap |
 |---|---|
 | G-40 | Workflow Templates loading (nativo vs repo externo) — ver `08` |
-| G-41 | Biblioteca ampla de Players |
+| G-41 | Biblioteca ampla de Players | Em andamento — primeiro corte: Git Player v0 (`20`, G-70+) |
 | G-42 | Human-in-the-loop / Approvals |
 | G-43 | Resource Claims / Blast Radius |
 | G-44 | MCP integration — candidato a transporte da Fase B de Project Memory (`16`) |
@@ -134,6 +134,16 @@ Ate la, o Core deve rodar so com CLI + Shell.
 | G-68 | API `QueryHits` | **CONFIRMED** — ranking deterministico |
 | G-69 | Intent LLM + AssembleContext | **CONFIRMED** — heuristicas sem Graph |
 
+## Git Player (recorte G-41) — CONFIRMED v0
+
+| ID | Gap | Notas |
+|---|---|---|
+| G-70 | Papel / pacote `git` | **CONFIRMED** — ver `20-git-player-v0.md` |
+| G-71 | Capabilities status/diff/log/add/commit | **CONFIRMED** |
+| G-72 | Sandbox mínima | **CONFIRMED** — sem rede; hooks off no commit |
+| G-73 | Registry + exemplo | **CONFIRMED** |
+| G-74 | Exclusões v0 | **CONFIRMED** — push/HITL/fora |
+
 ---
 
 ## Ordem para fechar gaps
@@ -145,6 +155,7 @@ Ate la, o Core deve rodar so com CLI + Shell.
 5. Intent Engine — spec/impl em `17` — feito
 6. Runtime Graph — spec/impl em `18` — G-60..G-65 CONFIRMED — feito
 7. Graph Hits — spec em `19` — G-66..G-69 CONFIRMED; codigo = slice 7 — feito
+8. Git Player — spec em `20` — G-70..G-74 CONFIRMED; codigo = **proximo** slice 8
 
 ## Criterio de “pronto para codar”
 
@@ -153,7 +164,8 @@ Ate la, o Core deve rodar so com CLI + Shell.
 **P1b Intent Engine (G-50..G-54): CONFIRMADO.**  
 **P2 engenharia (G-30..G-38): CONFIRMADO** (G-36 DEFERRED).  
 **Runtime Graph (G-60..G-65): CONFIRMADO.**  
-**Graph Hits (G-66..G-69): CONFIRMADO** — slice 7 feito.
+**Graph Hits (G-66..G-69): CONFIRMADO** — slice 7 feito.  
+**Git Player (G-70..G-74): CONFIRMADO** — liberado implementar slice 8.
 
 Ordem pratica de codigo:
 1. Core CLI + Shell (+ SQLite) — slice 1 — feito
@@ -163,9 +175,10 @@ Ordem pratica de codigo:
 5. Intent Engine NL v0 — slice 5 — feito
 6. Runtime Graph v0 — slice 6 (G-60..G-65) — feito
 7. Graph Hits v0 — slice 7 (G-66..G-69) — feito
+8. Git Player v0 — slice 8 (G-70..G-74) — **proximo**
 
-P3 (G-40+) permanece futuro. Proximo trabalho de produto: mais Players
-deterministicos / policies-HITL. Project Memory (G-46/G-47) e esboco em
-`16-project-memory.md` — HYPOTHESIS / OPEN QUESTION; nao codificar ate
-promocao explicita em `04`. Experimentos com sidecar externo (Fase A)
-nao exigem mudanca no Core.
+P3 (G-40+) permanece futuro. Proximo apos Git: mais Players (FS/Docker/…)
+ou policies-HITL (G-42 — ainda sem Execution Policy CONFIRMED). Project
+Memory (G-46/G-47) e esboco em `16-project-memory.md` — HYPOTHESIS; nao
+codificar ate promocao explicita em `04`. Experimentos com sidecar externo
+(Fase A) nao exigem mudanca no Core.
