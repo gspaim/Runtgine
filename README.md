@@ -87,7 +87,8 @@ Visão enxuta do que já está em `main`. **Atualizar esta seção em todo PR
 | Feito | Slice 8 — Git Player v0 (`git.status` / `diff` / `log` / `add` / `commit`) |
 | Feito | Slice 9 — Filesystem Player v0 (`fs.read` / `write` / `list` / `stat`) |
 | Feito | Slice 10 — Execution Policy + HITL v0 (`approve` / `deny` / `waiting_approval`) |
-| Próximo | Slice 11 — Docker Player v0 (`23`; OpenSpec `023-docker-player`) |
+| Feito | Slice 11 — Docker Player v0 (`docker.ps` / `inspect` / `logs` / `run` / `build`) |
+| Próximo | TUI GRAPH / Claims / Blast Radius (ainda sem promoção em `04`) |
 | Depois | Project Memory (HYPOTHESIS); API HTTP; bus distribuído; desktop Wails |
 
 Detalhe do corte: [`docs/09-mvp.md`](docs/09-mvp.md). Limitações atuais abaixo.

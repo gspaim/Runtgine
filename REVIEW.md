@@ -133,5 +133,5 @@ Slices 1–9 implementados (Core → Intent → Graph → Git → Filesystem).
 **Git Player v0: CONFIRMED + implementado** (`20`, G-70..G-74; slice 8).
 **Filesystem Player v0: CONFIRMED + implementado** (`21`, G-75..G-80; slice 9).
 **Execution Policy + HITL v0: CONFIRMED** (`22`, G-81..G-86; slice 10).
-**Docker Player v0: CONFIRMED** (`23`, G-87..G-92; slice 11 apos 10).
+**Docker Player v0: CONFIRMED + implementado** (`23`, G-87..G-92; slice 11).
 P3 restante: Claims/Blast / Memory (HYPOTHESIS) / TUI GRAPH.

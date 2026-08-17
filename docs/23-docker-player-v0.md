@@ -11,8 +11,10 @@ Pré-requisito: Execution Policy + HITL v0 implementados
 **Status deste doc: CONFIRMED (v0).** G-87..G-92 autorizam o slice 11
 de código. Compose, K8s, push/pull explícitos e privileged permanecem fora.
 
-**Pacote OpenSpec:** [`openspec/changes/023-docker-player/`](../openspec/changes/023-docker-player/).
-Branch prevista: `feat/023-docker-player`.
+**Pacote OpenSpec:** arquivado em
+[`openspec/changes/archive/2026-08-17-023-docker-player/`](../openspec/changes/archive/2026-08-17-023-docker-player/).
+Deltas mergeados em `openspec/specs/docker-player/`. Branch de implementação:
+`feat/023-docker-player`.
 
 ---
 

@@ -104,7 +104,7 @@ Ate la, o Core deve rodar so com CLI + Shell.
 | ID | Gap |
 |---|---|
 | G-40 | Workflow Templates loading (nativo vs repo externo) — ver `08` |
-| G-41 | Biblioteca ampla de Players | Em andamento — Git (`20`), Filesystem (`21`), Docker (`23`) v0 |
+| G-41 | Biblioteca ampla de Players | Em andamento — Git (`20`), Filesystem (`21`), Docker (`23`) v0 feitos |
 | G-42 | Human-in-the-loop / Approvals | **CONFIRMED v0** — recorte G-81..G-86 em `22` |
 | G-43 | Resource Claims / Blast Radius |
 | G-44 | MCP integration — candidato a transporte da Fase B de Project Memory (`16`) |
@@ -204,7 +204,7 @@ Ate la, o Core deve rodar so com CLI + Shell.
 **Git Player (G-70..G-74): CONFIRMADO** — slice 8 feito.
 **Filesystem Player (G-75..G-80): CONFIRMADO** — slice 9 feito.  
 **Execution Policy + HITL (G-81..G-86): CONFIRMADO** — slice 10 feito.  
-**Docker Player (G-87..G-92): CONFIRMADO** — slice 11; bloqueado ate o 10.
+**Docker Player (G-87..G-92): CONFIRMADO** — slice 11 feito.
 
 Ordem pratica de codigo:
 1. Core CLI + Shell (+ SQLite) — slice 1 — feito
@@ -217,7 +217,7 @@ Ordem pratica de codigo:
 8. Git Player v0 — slice 8 (G-70..G-74) — feito
 9. Filesystem Player v0 — slice 9 (G-75..G-80) — feito
 10. Execution Policy + HITL v0 — slice 10 (G-81..G-86) — feito
-11. Docker Player v0 — slice 11 (G-87..G-92) — spec pronta; apos 10
+11. Docker Player v0 — slice 11 (G-87..G-92) — feito
 
 P3 restante (G-40 templates, G-43 Claims/Blast, G-44 MCP, G-45 HTTP).
 Project Memory (G-46/G-47) permanece HYPOTHESIS em `16` — nao codificar.

@@ -68,5 +68,6 @@ Não codificar mudança cujo status em `04` não esteja **CONFIRMED**
 | `intent-engine` | NL → Task IR |
 | `runtime-graph` | Graph estrutural + QueryHits |
 | `git-player` | Player `git.*` (status/diff/log/add/commit) |
+| `docker-player` | Player `docker.*` (ps/inspect/logs/run/build) |
 | `execution-policy` | allow/deny/HITL (`waiting_approval`) |
 | `filesystem-player` | Player `fs.*` (read/write/list/stat) |

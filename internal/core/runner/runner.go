@@ -20,6 +20,7 @@ import (
 	"github.com/gspaim/Runtgine/internal/core/result"
 	"github.com/gspaim/Runtgine/internal/core/store"
 	"github.com/gspaim/Runtgine/internal/core/task"
+	dockplayer "github.com/gspaim/Runtgine/internal/players/docker"
 	"github.com/gspaim/Runtgine/internal/players/filesystem"
 	"github.com/gspaim/Runtgine/internal/players/git"
 	"github.com/gspaim/Runtgine/internal/players/shell"
@@ -167,6 +168,14 @@ func (r *Runner) validateAdmission(t task.Task) error {
 			}
 		case filesystem.CapRead, filesystem.CapWrite, filesystem.CapList, filesystem.CapStat:
 			if err := filesystem.ValidateStaticInput(r.Workspace, s.Capability, s.Input); err != nil {
+				var ve result.Error
+				if errors.As(err, &ve) {
+					return r.reject(t.TaskID, ve.Code, ve.Message)
+				}
+				return r.reject(t.TaskID, result.CodeInvalidInput, err.Error())
+			}
+		case dockplayer.CapPS, dockplayer.CapInspect, dockplayer.CapLogs, dockplayer.CapRun, dockplayer.CapBuild:
+			if err := dockplayer.ValidateStaticInput(r.Workspace, s.Capability, s.Input); err != nil {
 				var ve result.Error
 				if errors.As(err, &ve) {
 					return r.reject(t.TaskID, ve.Code, ve.Message)

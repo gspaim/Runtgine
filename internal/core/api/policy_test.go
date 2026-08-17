@@ -145,6 +145,37 @@ func TestHITLGrantAndDeny(t *testing.T) {
 	}
 }
 
+func TestDockerRunWaitsForHITL(t *testing.T) {
+	core := openPolicyCore(t, nil)
+	id, err := uuid.NewV7()
+	if err != nil {
+		t.Fatal(err)
+	}
+	tk := task.Task{
+		SchemaVersion: task.SchemaVersion,
+		TaskID:        id.String(),
+		Source:        task.Source{EntryPoint: "cli"},
+		Intent:        task.Intent{Summary: "docker run gated"},
+		Steps: []task.Step{{
+			StepID:     "s1",
+			Capability: "docker.run",
+			Input:      json.RawMessage(`{"image":"alpine:3.19","argv":["echo","hi"]}`),
+		}},
+	}
+	runID, err := core.SubmitTask(context.Background(), tk)
+	if err != nil {
+		t.Fatal(err)
+	}
+	snap := waitStatus(t, core, runID, store.StatusWaitingApproval)
+	if snap.PendingApproval == nil || snap.PendingApproval.Capability != "docker.run" {
+		t.Fatalf("pending=%#v", snap.PendingApproval)
+	}
+	if err := core.ApproveRun(runID, runner.DecisionDeny); err != nil {
+		t.Fatal(err)
+	}
+	waitStatus(t, core, runID, store.StatusFailed)
+}
+
 func TestApproveNotWaiting(t *testing.T) {
 	core := openPolicyCore(t, nil)
 	runID, err := core.SubmitTask(context.Background(), helloTask(t))

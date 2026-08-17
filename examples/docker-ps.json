@@ -1,0 +1,21 @@
+{
+  "schema_version": "0.1.0",
+  "source": {
+    "entry_point": "cli",
+    "ref": "examples/docker-ps.json"
+  },
+  "intent": {
+    "summary": "List local Docker containers"
+  },
+  "steps": [
+    {
+      "step_id": "ps",
+      "capability": "docker.ps",
+      "input": {
+        "all": true,
+        "timeout_ms": 15000
+      },
+      "depends_on": []
+    }
+  ]
+}
