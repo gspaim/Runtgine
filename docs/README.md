@@ -25,6 +25,7 @@ Autoridade de decisoes: [04-decisoes.md](04-decisoes.md).
 | 17 | 17-intent-engine-v0.md | Intent Engine NL v0 (CONFIRMED) |
 | 18 | 18-runtime-graph-v0.md | Runtime Graph v0 (**CONFIRMED**; G-60..G-65) |
 | 19 | 19-graph-hits-v0.md | Graph Hits v0 (**CONFIRMED**; G-66..G-69) |
+| — | [openspec/](../openspec/README.md) | Pacotes de mudança OpenSpec (`NNN-slug`) |
 
 ## Fontes historicas (raiz do repo)
 

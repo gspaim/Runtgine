@@ -1,0 +1,8 @@
+schema: spec-driven
+created: 2026-08-17
+nnn: "019"
+slug: graph-hits
+docs_canonical: docs/19-graph-hits-v0.md
+gaps: [G-66, G-67, G-68, G-69]
+status: confirmed-awaiting-code
+branch: feat/019-graph-hits

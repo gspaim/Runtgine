@@ -11,6 +11,11 @@ G-60..G-65) **implementado e estável**.
 **Status deste doc: CONFIRMED (v0).** G-66..G-69 autorizam o slice de
 código seguinte. Aba TUI GRAPH permanece fora (exige `14` + skill).
 
+**Pacote OpenSpec (trabalho):**
+[`openspec/changes/019-graph-hits/`](../openspec/changes/019-graph-hits/)
+(`proposal` / `design` / `tasks` / deltas). Branch de implementação:
+`feat/019-graph-hits`.
+
 Ortogonal a: Project Memory / `memory_hits` ([16-project-memory.md](16-project-memory.md)
 — HYPOTHESIS; não misturar).
 
@@ -254,11 +259,12 @@ graph_hits (Task IR ≠ ContextPack).
 
 ## 6. Ordem deste slice (código, após merge desta spec)
 
-1. G-66..G-69 CONFIRMED em `04` — **este PR de docs**
-2. `QueryHits` + testes em `internal/core/graph`
-3. Extender `contextpack.Pack` / `Assemble`
-4. Wire no Runner (LLM steps) e Intent caminho LLM
-5. Atualizar estágio README (Feito = Slice 7) no PR de implementação
+1. G-66..G-69 CONFIRMED em `04` — feito
+2. Pacote OpenSpec `openspec/changes/019-graph-hits/` — feito (este ciclo)
+3. `QueryHits` + testes em `internal/core/graph`
+4. Extender `contextpack.Pack` / `Assemble`
+5. Wire no Runner (LLM steps) e Intent caminho LLM
+6. Atualizar estágio README (Feito = Slice 7); arquivar change OpenSpec
 
 ---
 
@@ -271,3 +277,4 @@ Marcado em `04-decisoes.md`:
 - [x] G-68 API `QueryHits` determinística
 - [x] G-69 Intent LLM + AssembleContext consomem hits
 - [x] TUI GRAPH / memory_hits / CLI hits fora do v0
+- [x] Pacote `openspec/changes/019-graph-hits/` criado

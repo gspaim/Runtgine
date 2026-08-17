@@ -267,6 +267,7 @@ Ver [15-git-workflow.md](15-git-workflow.md).
 | Fluxo `feat → develop → release → main` | CONFIRMED | Integracao em `develop`; estabilizacao em `release/*`; estavel em `main` |
 | Prefixo de feature `feat/<NNN>-<slug>` | CONFIRMED | `NNN` = id da spec/issue (ex.: `feat/001-shell-player`) |
 | Outros prefixos `fix/` `docs/` `chore/` | CONFIRMED | Mesmo padrao numerico quando houver issue/spec |
+| OpenSpec em `openspec/` | CONFIRMED | Changes = `openspec/changes/<NNN>-<slug>/`; ver `15` + `openspec/README.md` |
 | Release candidates | CONFIRMED | Branch `release/x.y.z` + tags `vX.Y.Z-rc.N` |
 | Release estavel | CONFIRMED | Merge `release/*` → `main` + tag `vX.Y.Z`; back-merge para `develop` |
 | Semver do produto | CONFIRMED | Tags Git do binario/CLI; distinto de `schema_version` do Task IR |
