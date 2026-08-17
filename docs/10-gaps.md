@@ -155,7 +155,7 @@ Ate la, o Core deve rodar so com CLI + Shell.
 5. Intent Engine — spec/impl em `17` — feito
 6. Runtime Graph — spec/impl em `18` — G-60..G-65 CONFIRMED — feito
 7. Graph Hits — spec em `19` — G-66..G-69 CONFIRMED; codigo = slice 7 — feito
-8. Git Player — spec em `20` — G-70..G-74 CONFIRMED; codigo = **proximo** slice 8
+8. Git Player — spec em `20` — G-70..G-74 CONFIRMED; codigo = slice 8 — feito
 
 ## Criterio de “pronto para codar”
 
@@ -165,7 +165,7 @@ Ate la, o Core deve rodar so com CLI + Shell.
 **P2 engenharia (G-30..G-38): CONFIRMADO** (G-36 DEFERRED).  
 **Runtime Graph (G-60..G-65): CONFIRMADO.**  
 **Graph Hits (G-66..G-69): CONFIRMADO** — slice 7 feito.  
-**Git Player (G-70..G-74): CONFIRMADO** — liberado implementar slice 8.
+**Git Player (G-70..G-74): CONFIRMADO** — slice 8 feito.
 
 Ordem pratica de codigo:
 1. Core CLI + Shell (+ SQLite) — slice 1 — feito
@@ -175,10 +175,10 @@ Ordem pratica de codigo:
 5. Intent Engine NL v0 — slice 5 — feito
 6. Runtime Graph v0 — slice 6 (G-60..G-65) — feito
 7. Graph Hits v0 — slice 7 (G-66..G-69) — feito
-8. Git Player v0 — slice 8 (G-70..G-74) — **proximo**
+8. Git Player v0 — slice 8 (G-70..G-74) — feito
 
-P3 (G-40+) permanece futuro. Proximo apos Git: mais Players (FS/Docker/…)
-ou policies-HITL (G-42 — ainda sem Execution Policy CONFIRMED). Project
+P3 (G-40+) permanece futuro. Proximo: mais Players (FS/Docker/…) ou
+policies-HITL (G-42 — ainda sem Execution Policy CONFIRMED). Project
 Memory (G-46/G-47) e esboco em `16-project-memory.md` — HYPOTHESIS; nao
 codificar ate promocao explicita em `04`. Experimentos com sidecar externo
 (Fase A) nao exigem mudanca no Core.
