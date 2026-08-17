@@ -32,7 +32,7 @@ runtime e o time já aprenderam.
 | Memória | Papel | Status hoje |
 |---|---|---|
 | **Temporal** | Event Store / SQLite — o que aconteceu em runs | CONFIRMED (G-13) |
-| **Estrutural** | Runtime Graph — o que existe e como se relaciona | HYPOTHESIS |
+| **Estrutural** | Runtime Graph — o que existe e como se relaciona | CONFIRMED v0 (`18`); hits ContextPack em `19` |
 | **Episódica / de projeto** | Project Memory — episódios: decisões, falhas, handoffs, briefs | **HYPOTHESIS (este doc)** |
 
 Project Memory **não** substitui Event Store nem Runtime Graph.

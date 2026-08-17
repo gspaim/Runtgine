@@ -21,6 +21,11 @@ das decisoes estarem registradas em `docs/04-decisoes.md`.
 3. Este arquivo / README / REVIEW
 4. `brainstorm.md` e `conversas-empryo.md` — historicos apenas
 
+Mudancas de implementacao ativas: `openspec/changes/<NNN>-<slug>/`
+(padrao OpenSpec; naming alinhado a `feat/<NNN>-<slug>`). Ver
+`openspec/README.md` e `docs/15-git-workflow.md`. `openspec/` **nao**
+substitui `04` — so organiza proposal/design/tasks/deltas.
+
 MVP canônico: `docs/09-mvp.md`.
 Gaps: `docs/10-gaps.md`.
 Protocolo v0 (proposta): `docs/11-protocolo-v0.md` — confirmar antes de codar.
@@ -28,7 +33,9 @@ Design da TUI: `docs/14-tui-design.md`.
 Git / releases: `docs/15-git-workflow.md`.
 Project Memory (esboco): `docs/16-project-memory.md` — HYPOTHESIS; nao codificar.
 Intent Engine v0: `docs/17-intent-engine-v0.md` — CONFIRMED.
-Runtime Graph: `docs/18-runtime-graph-v0.md` — CONFIRMED v0 (G-60..G-65; G-66 DEFERRED).
+Runtime Graph: `docs/18-runtime-graph-v0.md` — CONFIRMED v0 (G-60..G-65).
+Graph Hits: `docs/19-graph-hits-v0.md` + `openspec/changes/019-graph-hits/` —
+CONFIRMED v0 (G-66..G-69); proximo codigo.
 Skill obrigatoria para TUI: `.cursor/skills/runtgine-tui-design/SKILL.md`.
 
 ## Ordem de trabalho
@@ -44,7 +51,9 @@ Skill obrigatoria para TUI: `.cursor/skills/runtgine-tui-design/SKILL.md`.
 9. Board Integration + pipeline vertical (ver 09-mvp; gaps P1)
 10. Context assembly + LLM Player + Router
 11. Intent Engine (NL) — CONFIRMED v0 em `17-intent-engine-v0.md`
-12. Runtime Graph — CONFIRMED v0 em `18-runtime-graph-v0.md` (G-66 DEFERRED)
+12. Runtime Graph — CONFIRMED v0 em `18-runtime-graph-v0.md` (G-60..G-65) — feito
+13. Graph Hits — CONFIRMED v0 em `19` + `openspec/changes/019-graph-hits/` — proximo codigo
+14. Runtime Graph TUI / Policies / Players amplos — so apos nova promocao em `04`
 
 ## Conceitos chave (nao confundir)
 

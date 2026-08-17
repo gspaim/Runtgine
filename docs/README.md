@@ -23,7 +23,9 @@ Autoridade de decisoes: [04-decisoes.md](04-decisoes.md).
 | 15 | 15-git-workflow.md | Branches, RC e releases |
 | 16 | 16-project-memory.md | Project Memory (esboco; HYPOTHESIS) |
 | 17 | 17-intent-engine-v0.md | Intent Engine NL v0 (CONFIRMED) |
-| 18 | 18-runtime-graph-v0.md | Runtime Graph v0 (**CONFIRMED**; G-66 DEFERRED) |
+| 18 | 18-runtime-graph-v0.md | Runtime Graph v0 (**CONFIRMED**; G-60..G-65) |
+| 19 | 19-graph-hits-v0.md | Graph Hits v0 (**CONFIRMED**; G-66..G-69) |
+| — | [openspec/](../openspec/README.md) | Pacotes de mudança OpenSpec (`NNN-slug`) |
 
 ## Fontes historicas (raiz do repo)
 
@@ -37,5 +39,5 @@ Nao usar fontes historicas para decisoes de implementacao.
 
 Antes de codar: P0 (`11`), P1 Board (`12`), P1b Intent (`17`) e P2 (`13`)
 estao **CONFIRMADOS** (G-36 NATS = DEFERRED). Runtime Graph (`18`, G-60..G-65)
-e **CONFIRMED v0** (G-66 DEFERRED). P3 ainda futuro
+e Graph Hits (`19`, G-66..G-69) sao **CONFIRMED v0**. P3 ainda futuro
 em `10-gaps.md` (inclui Project Memory G-46/G-47 em `16` — HYPOTHESIS, sem codigo).

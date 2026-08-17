@@ -81,16 +81,19 @@ existirem). Fronteira regras vs LLM: G-23.
 
 **Status: CONFIRMED**
 
-ContextPack v0 (sem Runtime Graph / Genome):
+ContextPack v0 (G-24) + extensao Graph Hits (G-67, ver `19`):
 
 - `task` — intent.summary/notes + task_id
 - `step` — step_id + capability atual
 - `prior_outputs` — outputs das etapas anteriores do mesmo run
 - `repo_hits` — paths/symbols do `pipeline.repo-search` (capados)
-- `budget` — max_chars / max_files (defaults fixos)
+- `graph_hits` — hits estruturais do Runtime Graph (**slice 7**; `19`)
+- `budget` — max_chars / max_files + graph_max_hits / graph_max_chars
 
 Regras: truncamento deterministico se exceder budget; montado pelo Core
 (`AssembleContext`) antes do LLM Player; nao e Intent Engine.
+`repo_hits` = intra-run; `graph_hits` = entre runs (estrutural).
+`memory_hits` permanece HYPOTHESIS (`16`).
 
 ---
 

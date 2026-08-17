@@ -1,0 +1,43 @@
+# openspec/config.yaml — Runtgine
+schema: spec-driven
+
+context: |
+  Project: Runtgine — event-driven runtime (Go 1.25+).
+  Flow: Task → Event → Queue → Player → Result.
+  Principles: deterministic-first; validation-before-execute; Player ≠ Agent;
+  Core is the product; CLI/TUI/Board are surfaces.
+  Stack: Cobra, Bubble Tea v2, SQLite (modernc), slog, JSON Schema Task IR.
+  Authority: docs/04-decisoes.md. Do not code HYPOTHESIS items.
+  Change folders MUST be named NNN-slug (e.g. 019-graph-hits), matching
+  feat/NNN-slug branches (docs/15-git-workflow.md).
+  Package layout: internal/core/*, internal/players/*, internal/entrypoint/*.
+  Tests: go test ./... ; go vet ./... ; CGO_ENABLED=0 ok.
+  Out of scope until promoted: Project Memory (docs/16), NATS, Wails MVP,
+  TUI GRAPH tab, MCP, HTTP API.
+
+rules:
+  proposal:
+    - State whether docs/04 already CONFIRMED the slice
+    - Name the change folder as NNN-slug and list the matching branch
+    - Separate in-scope vs explicit non-goals (TUI / Memory / Policies)
+  specs:
+    - Use SHALL/MUST requirements with Given/When/Then scenarios
+    - Prefer ADDED/MODIFIED/REMOVED deltas against openspec/specs/
+    - Do not invent capabilities outside Registry/Validator authority
+  design:
+    - Point to concrete packages under internal/
+    - Keep Graph/ContextPack/Intent boundaries explicit
+    - Failure of graph queries MUST degrade (empty hits), never fail the Run
+  tasks:
+    - Checkbox tasks small enough for one PR commit each when practical
+    - Include go test coverage for QueryHits / Assemble / Intent heuristic path
+
+operations:
+  apply:
+    guidance:
+      - Implement only CONFIRMED gaps; refuse HYPOTHESIS scope creep
+      - Run go test ./... before marking tasks done
+  archive:
+    guidance:
+      - Merge deltas into openspec/specs/ then move to changes/archive/
+      - Update README Estágio do projeto and docs/10-gaps checklist

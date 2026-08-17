@@ -124,7 +124,15 @@ Ate la, o Core deve rodar so com CLI + Shell.
 | G-63 | Persistência SQLite | **CONFIRMED** — mesmo `.runtgine/runtgine.db` |
 | G-64 | Core API + CLI snapshot | **CONFIRMED** — sem tab TUI no v0 |
 | G-65 | Sync boot / SyncFromRun | **CONFIRMED** — best-effort; nao falha Run |
-| G-66 | ContextPack / Intent hits | **DEFERRED** — apos graph estavel |
+
+## Graph Hits (pos-Graph estrutural) — CONFIRMED v0
+
+| ID | Gap | Notas |
+|---|---|---|
+| G-66 | Papel Graph Hits | **CONFIRMED** — ver `19-graph-hits-v0.md` |
+| G-67 | Schema `graph_hits` + budget | **CONFIRMED** — extensao ContextPack |
+| G-68 | API `QueryHits` | **CONFIRMED** — ranking deterministico |
+| G-69 | Intent LLM + AssembleContext | **CONFIRMED** — heuristicas sem Graph |
 
 ---
 
@@ -135,7 +143,8 @@ Ate la, o Core deve rodar so com CLI + Shell.
 3. Implementar Core na ordem de `09-mvp.md` / `AGENTS.md`
 4. Board/LLM (P1) — feito (`12`)
 5. Intent Engine — spec/impl em `17` — feito
-6. Runtime Graph — spec/impl em `18` — G-60..G-65 CONFIRMED (G-66 DEFERRED)
+6. Runtime Graph — spec/impl em `18` — G-60..G-65 CONFIRMED — feito
+7. Graph Hits — spec em `19` — G-66..G-69 CONFIRMED; codigo = proximo slice
 
 ## Criterio de “pronto para codar”
 
@@ -143,7 +152,8 @@ Ate la, o Core deve rodar so com CLI + Shell.
 **P1 Board/pipeline (G-20..G-27): CONFIRMADO.**  
 **P1b Intent Engine (G-50..G-54): CONFIRMADO.**  
 **P2 engenharia (G-30..G-38): CONFIRMADO** (G-36 DEFERRED).  
-**Runtime Graph (G-60..G-65): CONFIRMADO** (G-66 DEFERRED).
+**Runtime Graph (G-60..G-65): CONFIRMADO.**  
+**Graph Hits (G-66..G-69): CONFIRMADO** — liberado implementar slice 7.
 
 Ordem pratica de codigo:
 1. Core CLI + Shell (+ SQLite) — slice 1 — feito
@@ -151,7 +161,8 @@ Ordem pratica de codigo:
 3. TUI Constellation Mission Control — slice 3 — feito
 4. Validator JSON Schema + IDs estritos + sandbox Shell v0 — slice 4 — feito
 5. Intent Engine NL v0 — slice 5 — feito
-6. Runtime Graph v0 — slice 6 (G-60..G-65; G-66 DEFERRED)
+6. Runtime Graph v0 — slice 6 (G-60..G-65) — feito
+7. Graph Hits v0 — slice 7 (G-66..G-69) — **proximo**
 
 P3 (G-40+) permanece futuro. Project Memory (G-46/G-47) e esboco em
 `16-project-memory.md` — HYPOTHESIS / OPEN QUESTION; nao codificar ate

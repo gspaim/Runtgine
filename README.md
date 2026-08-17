@@ -73,7 +73,8 @@ Task → Event → Queue → Player → Result
 Visão enxuta do que já está em `main`. **Atualizar esta seção em todo PR
 `release/*` → `main`** (e em PRs para `develop` quando o estágio mudar).
 
-**Agora:** MVP funcional (slices 1–5) + Runtime Graph v0, sem release estável.
+**Agora:** MVP funcional (slices 1–6) + Graph Hits **spec** CONFIRMED
+(slice 7 de código ainda pendente), sem release estável.
 
 | | Entrega |
 |---|---|
@@ -83,8 +84,8 @@ Visão enxuta do que já está em `main`. **Atualizar esta seção em todo PR
 | Feito | Slice 4 — Validator com JSON Schema, IDs/`schema_version` estritos, sandbox Shell v0 |
 | Feito | Slice 5 — Intent Engine NL v0 (`runtgine intent`) |
 | Feito | Slice 6 — Runtime Graph v0 (`runtgine graph snapshot`) |
-| Próximo | Mais Players determinísticos, policies/HITL |
-| Depois | Project Memory (ainda HYPOTHESIS), API HTTP, bus distribuído, desktop Wails |
+| Próximo | Slice 7 — Graph Hits v0 (`openspec/changes/019-graph-hits/`) |
+| Depois | Mais Players determinísticos, policies/HITL; Project Memory (HYPOTHESIS); API HTTP; bus distribuído; desktop Wails |
 
 Detalhe do corte: [`docs/09-mvp.md`](docs/09-mvp.md). Limitações atuais abaixo.
 
@@ -230,6 +231,7 @@ internal/players/         Shell, Pipeline e LLM Players
 internal/entrypoint/      CLI, Board e TUI
 examples/                 exemplos de Task IR
 docs/                     decisões e especificações oficiais
+openspec/                 mudanças OpenSpec (`changes/<NNN>-<slug>/`)
 ```
 
 ## Pipeline
@@ -357,7 +359,9 @@ vulnerabilidade.
 | [MVP](docs/09-mvp.md) | Escopo canônico |
 | [Gaps](docs/10-gaps.md) | Lacunas e próximos problemas |
 | [Protocolo v0](docs/11-protocolo-v0.md) | Task IR, Manifest, Events e Results |
-| [Runtime Graph](docs/18-runtime-graph-v0.md) | Memória estrutural v0 (G-66 DEFERRED) |
+| [Runtime Graph](docs/18-runtime-graph-v0.md) | Memória estrutural v0 (G-60..G-65) |
+| [Graph Hits](docs/19-graph-hits-v0.md) | `graph_hits` / QueryHits (G-66..G-69; próximo código) |
+| [OpenSpec](openspec/README.md) | Pacotes de mudança `NNN-slug` |
 | [TUI Design](docs/14-tui-design.md) | Constellation Mission Control |
 | [Git workflow](docs/15-git-workflow.md) | Branches, RC e releases |
 | [Intent Engine](docs/17-intent-engine-v0.md) | NL → Task IR v0 |
@@ -369,23 +373,25 @@ Contribuições são bem-vindas (fork + PR ou branch no remoto). Antes de
 implementar:
 
 1. leia `AGENTS.md` e os documentos `01` a `06`;
-2. verifique se a decisão necessária já está registrada;
-3. mantenha o Core independente das interfaces;
-4. prefira execução determinística a chamadas LLM;
-5. parta de `develop` (não de `main`):
+2. verifique se a decisão necessária já está registrada em `docs/04`;
+3. para a próxima mudança, use (ou crie) `openspec/changes/<NNN>-<slug>/`
+   alinhado à branch `feat/<NNN>-<slug>` — ver [`openspec/README.md`](openspec/README.md);
+4. mantenha o Core independente das interfaces;
+5. prefira execução determinística a chamadas LLM;
+6. parta de `develop` (não de `main`):
 
 ```bash
 git fetch origin
 git checkout develop
 git pull
-git checkout -b feat/<NNN>-<slug>   # ex.: feat/001-shell-player
+git checkout -b feat/<NNN>-<slug>   # ex.: feat/019-graph-hits
 ```
 
-6. abra o PR **para `develop`**. A default branch do GitHub é `main`: no
+7. abra o PR **para `develop`**. A default branch do GitHub é `main`: no
    compare, troque a base para `develop`. Pushes diretos a
    `develop` / `main` / `release/*` são bloqueados; o check `test` precisa
    passar. Ver [fluxo Git](docs/15-git-workflow.md);
-7. adicione testes e execute:
+8. adicione testes e execute:
 
 ```bash
 go test ./...

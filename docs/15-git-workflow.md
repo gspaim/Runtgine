@@ -36,6 +36,32 @@ Exemplos válidos:
 
 PRs de agentes Cursor (`cursor/...`) são exceção operacional; ao concluir, o conteúdo deve aterrissar em `develop` (ou `release/*` se for hotfix de RC).
 
+## OpenSpec (pacotes de mudança)
+
+Layout e regras: [`openspec/README.md`](../openspec/README.md).
+
+Cada mudança ativa vive em:
+
+```text
+openspec/changes/<NNN>-<slug>/
+  proposal.md
+  design.md
+  tasks.md
+  specs/<domain>/spec.md    # deltas ADDED|MODIFIED|REMOVED
+```
+
+O `NNN-slug` **é o mesmo** da branch `feat/<NNN>-<slug>` e do id da spec
+de produto quando houver (`docs/NN-…` ou gaps G-xx promovidos).
+
+| Papel | Onde |
+|---|---|
+| Status CONFIRMED / HYPOTHESIS | `docs/04-decisoes.md` (autoridade) |
+| Comportamento atual do sistema | `openspec/specs/` |
+| Pacote da próxima implementação | `openspec/changes/<NNN>-<slug>/` |
+
+Ao concluir a mudança: merge dos deltas em `openspec/specs/` e mover a
+pasta para `openspec/changes/archive/YYYY-MM-DD-NNN-slug/`.
+
 ## Fluxo de feature
 
 1. Abrir/ter issue ou spec com id `NNN`.
