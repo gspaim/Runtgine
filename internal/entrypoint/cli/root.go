@@ -38,6 +38,7 @@ func NewRoot() *cobra.Command {
 	root.AddCommand(newIntentCmd(&workspace, &verbose))
 	root.AddCommand(newStatusCmd(&workspace, &verbose))
 	root.AddCommand(newCancelCmd(&workspace, &verbose))
+	root.AddCommand(newGraphCmd(&workspace, &verbose))
 	root.AddCommand(newPipelineCmd(&workspace, &verbose))
 	root.AddCommand(newBoardCmd(&workspace, &verbose))
 	root.AddCommand(newTUICmd(&workspace, &verbose))
@@ -240,6 +241,45 @@ func newCancelCmd(workspace *string, verbose *bool) *cobra.Command {
 			return core.CancelRun(args[0])
 		},
 	}
+}
+
+func newGraphCmd(workspace *string, verbose *bool) *cobra.Command {
+	cmd := &cobra.Command{Use: "graph", Short: "Runtime Graph (structural memory)"}
+	cmd.AddCommand(&cobra.Command{
+		Use:   "snapshot",
+		Short: "Print the workspace graph as JSON (no secrets)",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			core, err := openCore(*workspace, *verbose)
+			if err != nil {
+				return err
+			}
+			defer core.Close()
+			snap, err := core.GetGraphSnapshot(context.Background())
+			if err != nil {
+				return err
+			}
+			enc := json.NewEncoder(os.Stdout)
+			enc.SetIndent("", "  ")
+			return enc.Encode(snap)
+		},
+	})
+	cmd.AddCommand(&cobra.Command{
+		Use:   "refresh",
+		Short: "Re-register players and capabilities from the current process",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			core, err := openCore(*workspace, *verbose)
+			if err != nil {
+				return err
+			}
+			defer core.Close()
+			if err := core.RefreshGraph(context.Background()); err != nil {
+				return err
+			}
+			fmt.Println("ok")
+			return nil
+		},
+	})
+	return cmd
 }
 
 func newTUICmd(workspace *string, verbose *bool) *cobra.Command {

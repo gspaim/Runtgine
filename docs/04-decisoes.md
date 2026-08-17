@@ -46,7 +46,7 @@ Status: CONFIRMED | HYPOTHESIS | OPEN QUESTION | REJECTED
 | Intent Engine | CONFIRMED (v0) | NL → Task IR; ver `17-intent-engine-v0.md` |
 | Task IR | CONFIRMED (v0) | Schema em 11-protocolo-v0; NL via Intent Engine v0 |
 | Task Validator | CONFIRMED (v0) | Subset MVP: capabilities, inputs, schemas; ver 11 |
-| Runtime Graph | HYPOTHESIS | Memoria estrutural; proposta em `18-runtime-graph-v0.md` |
+| Runtime Graph | CONFIRMED (v0) | Memoria estrutural; ver `18-runtime-graph-v0.md` |
 | Context Engine | HYPOTHESIS | Monta contexto relevante |
 | Project Memory | HYPOTHESIS | Memoria episodica / de projeto; ver `16` |
 | Player Router | HYPOTHESIS | Roteia por capability + custo |
@@ -86,7 +86,7 @@ Ver [09-mvp.md](09-mvp.md). Decisoes-chave:
 | Intent Engine | CONFIRMED (v0) | Traduz intencao NL → Task IR; ver `17` |
 | Task IR | CONFIRMED (v0) | Schema em 11-protocolo-v0 |
 | Task Validator | HYPOTHESIS | Valida antes de executar |
-| Runtime Graph | HYPOTHESIS | Memoria estrutural; proposta em `18-runtime-graph-v0.md` |
+| Runtime Graph | CONFIRMED (v0) | Memoria estrutural; ver `18-runtime-graph-v0.md` |
 | Context Engine | HYPOTHESIS | Monta contexto relevante |
 | Project Memory | HYPOTHESIS | Memoria episodica / de projeto; ver `16` |
 
@@ -104,6 +104,7 @@ Ver [09-mvp.md](09-mvp.md). Decisoes-chave:
 - Nativo (nao Electron); GPUI/Tauri/Rust-Core rejeitados para o caminho atual
 - Biblioteca grande de Players deterministicos (visao)
 - MVP: Core + Shell + CLI/TUI + Board (ver 09-mvp.md)
+- Runtime Graph v0 (G-60..G-65; G-66 DEFERRED)
 
 ## Protocolo v0 — confirmado (sessao de fechamento)
 
@@ -238,21 +239,19 @@ conceitual); **nao autoriza codigo**. Nada abaixo e CONFIRMED.
 | Supersession silenciosa via LLM no Core | REJECTED | Validade so com opt-in explicito |
 | RAG generico / indexar transcripts como produto | REJECTED | Compile observations; nao chat retrieval |
 
-## Runtime Graph — proposta (nao confirmada)
+## Runtime Graph — CONFIRMED v0
 
 Ver [18-runtime-graph-v0.md](18-runtime-graph-v0.md).
 
 | Item | Status | Notas |
 |---|---|---|
-| G-60 Papel / fronteiras | PROPOSED | Um graph por workspace; ≠ Event Store / Project Memory |
-| G-61 Node kinds v0 | PROPOSED | player, capability, task, run, path, symbol |
-| G-62 Edge kinds v0 | PROPOSED | provides, executed, instance_of, mentions, child_of |
-| G-63 Persistencia | PROPOSED | Mesmo SQLite do Core |
-| G-64 Core API + CLI snapshot | PROPOSED | Sem tab TUI no v0 |
-| G-65 Sync boot / SyncFromRun | PROPOSED | Best-effort; nao falha Run |
-| G-66 ContextPack / Intent | PROPOSED DEFERRED | Apos graph estavel |
-
-**Nao autoriza codigo** ate checklist de `18` marcado CONFIRMED neste arquivo.
+| G-60 Papel / fronteiras | CONFIRMED | Um graph por workspace; ≠ Event Store / Project Memory |
+| G-61 Node kinds v0 | CONFIRMED | player, capability, task, run, path, symbol |
+| G-62 Edge kinds v0 | CONFIRMED | provides, executed, instance_of, mentions, child_of |
+| G-63 Persistencia | CONFIRMED | Mesmo SQLite do Core |
+| G-64 Core API + CLI snapshot | CONFIRMED | Sem tab TUI no v0 |
+| G-65 Sync boot / SyncFromRun | CONFIRMED | Best-effort; nao falha Run |
+| G-66 ContextPack / Intent | DEFERRED | Apos graph estavel; sem graph_hits / Intent neste slice |
 
 ## Git / release — fluxo de branches
 

@@ -116,6 +116,25 @@ CREATE TABLE IF NOT EXISTS subtasks (
 );
 CREATE INDEX IF NOT EXISTS idx_events_run ON events(run_id);
 CREATE INDEX IF NOT EXISTS idx_subtasks_parent ON subtasks(parent_run_id);
+CREATE TABLE IF NOT EXISTS graph_nodes (
+  kind TEXT NOT NULL,
+  id   TEXT NOT NULL,
+  attrs_json TEXT NOT NULL DEFAULT '{}',
+  updated_at TEXT NOT NULL,
+  PRIMARY KEY (kind, id)
+);
+CREATE TABLE IF NOT EXISTS graph_edges (
+  kind TEXT NOT NULL,
+  from_kind TEXT NOT NULL,
+  from_id TEXT NOT NULL,
+  to_kind TEXT NOT NULL,
+  to_id TEXT NOT NULL,
+  attrs_json TEXT NOT NULL DEFAULT '{}',
+  updated_at TEXT NOT NULL,
+  PRIMARY KEY (kind, from_kind, from_id, to_kind, to_id)
+);
+CREATE INDEX IF NOT EXISTS idx_graph_edges_from ON graph_edges(from_kind, from_id);
+CREATE INDEX IF NOT EXISTS idx_graph_edges_to ON graph_edges(to_kind, to_id);
 `)
 	if err != nil {
 		return err
@@ -377,4 +396,145 @@ func MustJSON(v any) string {
 		return fmt.Sprintf("%q", err.Error())
 	}
 	return string(b)
+}
+
+type GraphNode struct {
+	Kind      string
+	ID        string
+	AttrsJSON string
+	UpdatedAt time.Time
+}
+
+type GraphEdge struct {
+	Kind      string
+	FromKind  string
+	FromID    string
+	ToKind    string
+	ToID      string
+	AttrsJSON string
+	UpdatedAt time.Time
+}
+
+func (s *Store) UpsertGraphNode(ctx context.Context, kind, id, attrsJSON string) error {
+	if attrsJSON == "" {
+		attrsJSON = "{}"
+	}
+	now := time.Now().UTC().Format(time.RFC3339Nano)
+	_, err := s.db.ExecContext(ctx, `
+INSERT INTO graph_nodes(kind, id, attrs_json, updated_at)
+VALUES(?,?,?,?)
+ON CONFLICT(kind, id) DO UPDATE SET
+  attrs_json=excluded.attrs_json,
+  updated_at=excluded.updated_at`,
+		kind, id, attrsJSON, now)
+	return err
+}
+
+func (s *Store) UpsertGraphEdge(ctx context.Context, kind, fromKind, fromID, toKind, toID, attrsJSON string) error {
+	if attrsJSON == "" {
+		attrsJSON = "{}"
+	}
+	now := time.Now().UTC().Format(time.RFC3339Nano)
+	_, err := s.db.ExecContext(ctx, `
+INSERT INTO graph_edges(kind, from_kind, from_id, to_kind, to_id, attrs_json, updated_at)
+VALUES(?,?,?,?,?,?,?)
+ON CONFLICT(kind, from_kind, from_id, to_kind, to_id) DO UPDATE SET
+  attrs_json=excluded.attrs_json,
+  updated_at=excluded.updated_at`,
+		kind, fromKind, fromID, toKind, toID, attrsJSON, now)
+	return err
+}
+
+func (s *Store) GetGraphNode(ctx context.Context, kind, id string) (GraphNode, error) {
+	var n GraphNode
+	var updated string
+	err := s.db.QueryRowContext(ctx, `
+SELECT kind, id, attrs_json, updated_at FROM graph_nodes WHERE kind=? AND id=?`,
+		kind, id).Scan(&n.Kind, &n.ID, &n.AttrsJSON, &updated)
+	if err != nil {
+		return n, err
+	}
+	n.UpdatedAt, _ = time.Parse(time.RFC3339Nano, updated)
+	return n, nil
+}
+
+func (s *Store) ListGraphNodes(ctx context.Context) ([]GraphNode, error) {
+	rows, err := s.db.QueryContext(ctx, `
+SELECT kind, id, attrs_json, updated_at FROM graph_nodes ORDER BY kind ASC, id ASC`)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var out []GraphNode
+	for rows.Next() {
+		var n GraphNode
+		var updated string
+		if err := rows.Scan(&n.Kind, &n.ID, &n.AttrsJSON, &updated); err != nil {
+			return nil, err
+		}
+		n.UpdatedAt, _ = time.Parse(time.RFC3339Nano, updated)
+		out = append(out, n)
+	}
+	return out, rows.Err()
+}
+
+func (s *Store) ListGraphEdges(ctx context.Context) ([]GraphEdge, error) {
+	rows, err := s.db.QueryContext(ctx, `
+SELECT kind, from_kind, from_id, to_kind, to_id, attrs_json, updated_at
+FROM graph_edges
+ORDER BY kind ASC, from_kind ASC, from_id ASC, to_kind ASC, to_id ASC`)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var out []GraphEdge
+	for rows.Next() {
+		var e GraphEdge
+		var updated string
+		if err := rows.Scan(&e.Kind, &e.FromKind, &e.FromID, &e.ToKind, &e.ToID, &e.AttrsJSON, &updated); err != nil {
+			return nil, err
+		}
+		e.UpdatedAt, _ = time.Parse(time.RFC3339Nano, updated)
+		out = append(out, e)
+	}
+	return out, rows.Err()
+}
+
+func (s *Store) QueryGraphNeighbors(ctx context.Context, kind, id, edgeKind, direction string) ([]GraphNode, error) {
+	var q string
+	var args []any
+	switch direction {
+	case "in":
+		q = `
+SELECT n.kind, n.id, n.attrs_json, n.updated_at
+FROM graph_edges e
+JOIN graph_nodes n ON n.kind=e.from_kind AND n.id=e.from_id
+WHERE e.to_kind=? AND e.to_id=? AND (?='' OR e.kind=?)
+ORDER BY n.kind ASC, n.id ASC`
+		args = []any{kind, id, edgeKind, edgeKind}
+	default: // out
+		q = `
+SELECT n.kind, n.id, n.attrs_json, n.updated_at
+FROM graph_edges e
+JOIN graph_nodes n ON n.kind=e.to_kind AND n.id=e.to_id
+WHERE e.from_kind=? AND e.from_id=? AND (?='' OR e.kind=?)
+ORDER BY n.kind ASC, n.id ASC`
+		args = []any{kind, id, edgeKind, edgeKind}
+	}
+	rows, err := s.db.QueryContext(ctx, q, args...)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var out []GraphNode
+	for rows.Next() {
+		var n GraphNode
+		var updated string
+		if err := rows.Scan(&n.Kind, &n.ID, &n.AttrsJSON, &updated); err != nil {
+			return nil, err
+		}
+		n.UpdatedAt, _ = time.Parse(time.RFC3339Nano, updated)
+		out = append(out, n)
+	}
+	return out, rows.Err()
 }

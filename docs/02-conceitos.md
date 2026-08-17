@@ -24,7 +24,7 @@ Human Intent -> Intent Engine -> Task IR -> Validator -> Execution Plan -> Event
 | Intent Engine | CONFIRMED (v0) | Traduz intencao em Task IR; ver `17` |
 | Task IR | CONFIRMED (v0) | Schema em 11-protocolo-v0; NL via Intent Engine v0 |
 | Task Validator | HYPOTHESIS | Valida antes de executar |
-| Runtime Graph | HYPOTHESIS | Memoria estrutural do sistema |
+| Runtime Graph | CONFIRMED (v0) | Memoria estrutural; ver `18` |
 | Context Engine | HYPOTHESIS | Monta contexto para cada Player |
 | Orchestrator | HYPOTHESIS | Coordena fluxo de execucao |
 | Execution Policy | HYPOTHESIS | Regras de seguranca/permissao |
@@ -116,11 +116,10 @@ Filosofia: deslocar erros de runtime error para compile/validation error.
 
 ## Runtime Graph
 
-Status: HYPOTHESIS — proposta em [18-runtime-graph-v0.md](18-runtime-graph-v0.md)
+Status: CONFIRMED (v0) — ver [18-runtime-graph-v0.md](18-runtime-graph-v0.md)
 
-Representa relacoes entre Players, Capabilities, Tasks, Workflows,
-Resources, Repositories, Symbols, Events, Runs, Artifacts e
-Dependencies.
+Representa relacoes entre Players, Capabilities, Tasks,
+Resources, Repositories, Symbols, Runs e artefatos de path.
 
 Enquanto o Event Bus responde O que esta acontecendo agora?,
 o Runtime Graph responde O que existe e como as coisas se relacionam?.
@@ -128,10 +127,9 @@ o Runtime Graph responde O que existe e como as coisas se relacionam?.
 Runtime Graph = memoria estrutural
 Event Store = memoria temporal
 
-O corte v0 proposto (ainda nao CONFIRMED) limita-se a nos/arestas
-minimos em SQLite por workspace, sync best-effort apos runs, e CLI
-read-only — sem Workflow Templates, sem tab TUI e sem hits no
-ContextPack/Intent neste slice.
+O corte v0 limita-se a nos/arestas minimos em SQLite por workspace,
+sync best-effort apos runs, e CLI read-only — sem Workflow Templates,
+sem tab TUI e sem hits no ContextPack/Intent neste slice (G-66 DEFERRED).
 
 ---
 

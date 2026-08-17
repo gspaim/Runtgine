@@ -44,11 +44,11 @@ v0 disponivel via `runtgine intent` (pos-Core).
 CONFIRMED: Task, Workflow, Execution Plan, Player, Capability,
 Manifest, Event, Queue, Event Bus, Entry Point != Player.
 
-HYPOTHESIS: Runtime Graph, Context Engine, Player Router,
+HYPOTHESIS: Context Engine, Player Router,
 Execution Policy, Resource Claim, Blast Radius, Background Player,
 Workflow Template.
 
-CONFIRMED (v0): Intent Engine, Task IR, Task Validator (subset).
+CONFIRMED (v0): Intent Engine, Task IR, Task Validator (subset), Runtime Graph.
 
 Distinga: Task != Workflow != Execution Plan.
 Event != Queue != Workflow. Player != Agent.
@@ -122,6 +122,6 @@ Fase 6: Ecossistema (biblioteca de Players)
 Documentacao alinhada; stack CONFIRMED; MVP canônico em 09-mvp.md.
 **P0 + P1 + P2 CONFIRMADOS** (`11`, `12`, `13`; NATS DEFERRED).
 **Intent Engine v0 CONFIRMADO** (`17`, G-50..G-54).
-Slices 1–4 implementados; Intent Engine NL v0 implementado.
-**Runtime Graph v0: PROPOSED** em `18-runtime-graph-v0.md` (G-60+; sem codigo).
+Slices 1–5 implementados; Intent Engine NL v0 implementado.
+**Runtime Graph v0: CONFIRMED** em `18-runtime-graph-v0.md` (G-60..G-65; G-66 DEFERRED).
 P3 (G-40+) futuro.

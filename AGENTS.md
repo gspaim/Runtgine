@@ -28,7 +28,7 @@ Design da TUI: `docs/14-tui-design.md`.
 Git / releases: `docs/15-git-workflow.md`.
 Project Memory (esboco): `docs/16-project-memory.md` — HYPOTHESIS; nao codificar.
 Intent Engine v0: `docs/17-intent-engine-v0.md` — CONFIRMED.
-Runtime Graph: `docs/18-runtime-graph-v0.md` — PROPOSED; nao codificar ate `04`.
+Runtime Graph: `docs/18-runtime-graph-v0.md` — CONFIRMED v0 (G-60..G-65; G-66 DEFERRED).
 Skill obrigatoria para TUI: `.cursor/skills/runtgine-tui-design/SKILL.md`.
 
 ## Ordem de trabalho
@@ -44,7 +44,7 @@ Skill obrigatoria para TUI: `.cursor/skills/runtgine-tui-design/SKILL.md`.
 9. Board Integration + pipeline vertical (ver 09-mvp; gaps P1)
 10. Context assembly + LLM Player + Router
 11. Intent Engine (NL) — CONFIRMED v0 em `17-intent-engine-v0.md`
-12. Runtime Graph — proposta em `18-runtime-graph-v0.md`; codificar so apos CONFIRMED em `04`
+12. Runtime Graph — CONFIRMED v0 em `18-runtime-graph-v0.md` (G-66 DEFERRED)
 
 ## Conceitos chave (nao confundir)
 

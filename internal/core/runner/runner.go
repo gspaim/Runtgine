@@ -21,6 +21,11 @@ import (
 	"github.com/gspaim/Runtgine/internal/players/shell"
 )
 
+// GraphSyncer persists structural memory after a terminal run (G-65). Optional.
+type GraphSyncer interface {
+	SyncFromRun(ctx context.Context, runID string) error
+}
+
 type Runner struct {
 	Reg        *registry.Registry
 	Bus        event.Bus
@@ -28,10 +33,12 @@ type Runner struct {
 	Workspace  string
 	LLMBackend string
 	Log        *slog.Logger
+	Graph      GraphSyncer
 
-	mu      sync.Mutex
-	cancels map[string]context.CancelFunc
-	sem     chan struct{}
+	mu       sync.Mutex
+	cancels  map[string]context.CancelFunc
+	sem      chan struct{}
+	inflight sync.WaitGroup
 }
 
 func New(reg *registry.Registry, bus event.Bus, st *store.Store, workspace, llmBackend string, maxConcurrent int, log *slog.Logger) *Runner {
@@ -94,9 +101,18 @@ func (r *Runner) SubmitChild(ctx context.Context, t task.Task, parentRunID strin
 	r.cancels[rid] = cancel
 	r.mu.Unlock()
 
-	go r.execute(runCtx, t, p)
+	r.inflight.Add(1)
+	go func() {
+		defer r.inflight.Done()
+		r.execute(runCtx, t, p)
+	}()
 
 	return SubmitResult{RunID: rid}, nil
+}
+
+// WaitIdle blocks until every in-flight execute (including graph sync) has returned.
+func (r *Runner) WaitIdle() {
+	r.inflight.Wait()
 }
 
 func (r *Runner) validateAdmission(t task.Task) error {
@@ -256,16 +272,30 @@ func (r *Runner) execute(ctx context.Context, t task.Task, p plan.Plan) {
 
 	_ = r.Store.UpdateRunStatus(ctx, p.RunID, store.StatusSucceeded, "")
 	_ = r.emit(p.RunID, t.TaskID, nil, event.TypeRunSucceeded, nil)
+	r.syncGraph(p.RunID)
 }
 
 func (r *Runner) fail(ctx context.Context, p plan.Plan, err error) {
 	_ = r.Store.UpdateRunStatus(ctx, p.RunID, store.StatusFailed, store.FormatErr(err))
 	_ = r.emit(p.RunID, p.TaskID, nil, event.TypeRunFailed, map[string]any{"error": err.Error()})
+	r.syncGraph(p.RunID)
 }
 
 func (r *Runner) cancelled(ctx context.Context, p plan.Plan) {
 	_ = r.Store.UpdateRunStatus(ctx, p.RunID, store.StatusCancelled, "")
 	_ = r.emit(p.RunID, p.TaskID, nil, event.TypeRunCancelled, nil)
+	r.syncGraph(p.RunID)
+}
+
+func (r *Runner) syncGraph(runID string) {
+	if r.Graph == nil || runID == "" {
+		return
+	}
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+	if err := r.Graph.SyncFromRun(ctx, runID); err != nil {
+		r.Log.Warn("graph sync failed", "run_id", runID, "err", err)
+	}
 }
 
 func (r *Runner) emit(runID, taskID string, stepID *string, typ string, payload map[string]any) error {

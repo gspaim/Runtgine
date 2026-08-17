@@ -1,4 +1,4 @@
-# 18 — Runtime Graph v0 (PROPOSTA)
+# 18 — Runtime Graph v0
 
 Memória **estrutural** do workspace: o que existe e como se relaciona.
 
@@ -6,13 +6,13 @@ Inventário: [10-gaps.md](10-gaps.md) (G-60+).
 Autoridade de status: [04-decisoes.md](04-decisoes.md).
 Ortogonal a: Event Store (temporal, G-13) e Project Memory (episódica, `16`).
 
-**Status deste doc: PROPOSED.** Não autoriza código até promoção
-explícita em `04-decisoes.md` (HYPOTHESIS → CONFIRMED v0).
+**Status deste doc: CONFIRMED (v0).** G-60..G-65 autorizam o corte deste
+slice. G-66 permanece DEFERRED (sem `graph_hits` no ContextPack, sem Intent
+consultar o Graph, sem aba TUI).
 
 Pré-requisitos de produto (ordem AGENTS): Core estável; Intent Engine v0
-especificado/implementado (`17` / PR aberto). Graph v0 **não** depende de
-Intent Engine para o corte mínimo, mas o Intent não consulta o Graph neste
-slice.
+especificado/implementado (`17`). Graph v0 **não** depende de Intent Engine
+para o corte mínimo, e o Intent não consulta o Graph neste slice.
 
 ---
 
@@ -44,7 +44,7 @@ Sem isso:
 | Memória | Papel | Status |
 |---|---|---|
 | Temporal | Event Store / SQLite — fatos de lifecycle | CONFIRMED |
-| **Estrutural** | **Runtime Graph — nós e arestas** | **HYPOTHESIS → este doc** |
+| **Estrutural** | **Runtime Graph — nós e arestas** | **CONFIRMED (v0)** |
 | Episódica | Project Memory — decisões/handoffs | HYPOTHESIS (`16`) |
 
 Regras:
@@ -57,11 +57,11 @@ Regras:
 
 ---
 
-## 3. Cortes propostos (G-60+)
+## 3. Cortes confirmados (G-60+)
 
 ### G-60 — Papel e nome
 
-**Proposta: CONFIRMED v0 após revisão**
+**Status: CONFIRMED**
 
 - Nome: Runtime Graph (não “Genome” no protocolo; Genome fica glossário/UI)
 - Escopo: **um graph por `workspace_root`**, persistido em SQLite
@@ -69,7 +69,7 @@ Regras:
 
 ### G-61 — Modelo de nós (v0)
 
-**Proposta**
+**Status: CONFIRMED**
 
 Tipos mínimos:
 
@@ -80,14 +80,14 @@ Tipos mínimos:
 | `task` | `task_id` | Submit / Store |
 | `run` | `run_id` | Store |
 | `path` | path relativo ao workspace | `pipeline.repo-search` / index leve |
-| `symbol` | `path#name` ou `name@path` | repo-search |
+| `symbol` | string do output de repo-search (`func Foo`); sem `path#name` no v0 | repo-search |
 
 Payload JSON opcional por nó (`attrs`): versão do player, status da run,
 `intent.summary`, etc. Sem schema rígido além de `kind` + `id`.
 
 ### G-62 — Modelo de arestas (v0)
 
-**Proposta**
+**Status: CONFIRMED**
 
 | `edge_kind` | from → to | Semântica |
 |---|---|---|
@@ -102,7 +102,7 @@ Arestas são direcionadas, idempotentes na chave
 
 ### G-63 — Persistência
 
-**Proposta: variante B (mesmo SQLite do Core)**
+**Status: CONFIRMED** — variante B (mesmo SQLite do Core)
 
 - Tabelas no DB existente (`workspace/.runtgine/runtgine.db`)
 - Sem Neo4j / sem processo separado no v0
@@ -134,7 +134,7 @@ CREATE TABLE graph_edges (
 
 ### G-64 — Core API
 
-**Proposta**
+**Status: CONFIRMED**
 
 ```text
 UpsertNode(kind, id, attrs) -> error
@@ -152,7 +152,7 @@ SyncFromRun(run_id) -> error                // após run terminal
 
 ### G-65 — Quando popular
 
-**Proposta**
+**Status: CONFIRMED**
 
 | Momento | Ação |
 |---|---|
@@ -166,12 +166,12 @@ pipeline ou refresh explícito já produziu.
 
 ### G-66 — Integração com ContextPack / Intent
 
-**Proposta: DEFERRED neste corte**
+**Status: DEFERRED neste corte**
 
 - ContextPack v0 permanece como está (G-24)
 - Intent Engine v0 **não** consulta o Graph (`17` já exclui)
-- Extensão futura: `graph_hits` no ContextPack + budget — só após CONFIRMED
-  e um slice de código estável do graph
+- Extensão futura: `graph_hits` no ContextPack + budget — só após um slice
+  de código estável do graph
 
 ---
 
@@ -188,7 +188,7 @@ pipeline ou refresh explícito já produziu.
 
 ---
 
-## 5. Critérios de aceite (após CONFIRMED + código)
+## 5. Critérios de aceite
 
 1. Boot registra nós `player`/`capability` e arestas `provides`
 2. Um `runtgine run` bem-sucedido cria/atualiza `run`, `task`, `executed`, `instance_of`
@@ -199,9 +199,9 @@ pipeline ou refresh explícito já produziu.
 
 ---
 
-## 6. Ordem sugerida pós-confirmação
+## 6. Ordem deste slice
 
-1. Promover G-60..G-65 em `04` (G-66 DEFERRED)
+1. G-60..G-65 CONFIRMED em `04` (G-66 DEFERRED) — feito
 2. Migração SQLite + pacote `internal/core/graph`
 3. Hooks no Runner + `RefreshFromRegistry` em `api.Open`
 4. CLI `graph snapshot` / `graph refresh`
@@ -211,14 +211,12 @@ pipeline ou refresh explícito já produziu.
 
 ## Checklist de confirmação humana
 
-Marcar em `04-decisoes.md` após revisão:
+Marcado em `04-decisoes.md`:
 
-- [ ] G-60 Papel / um graph por workspace
-- [ ] G-61 Node kinds v0
-- [ ] G-62 Edge kinds v0
-- [ ] G-63 SQLite no mesmo DB
-- [ ] G-64 Core API + CLI read-only
-- [ ] G-65 Momentos de sync (best-effort)
-- [ ] G-66 ContextPack/Intent DEFERRED
-
-**Até lá: HYPOTHESIS. Não codificar.**
+- [x] G-60 Papel / um graph por workspace
+- [x] G-61 Node kinds v0
+- [x] G-62 Edge kinds v0
+- [x] G-63 SQLite no mesmo DB
+- [x] G-64 Core API + CLI read-only
+- [x] G-65 Momentos de sync (best-effort)
+- [x] G-66 ContextPack/Intent DEFERRED

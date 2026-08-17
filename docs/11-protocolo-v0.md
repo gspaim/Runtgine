@@ -422,6 +422,7 @@ internal/core/
   runner/              # Runner v0
   registry/            # Player registry
   result/              # Result/Error
+  graph/               # Runtime Graph v0 (G-60+)
 internal/players/
   shell/
 internal/entrypoint/

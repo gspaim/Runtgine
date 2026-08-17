@@ -5,6 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"sort"
 	"strings"
 	"sync"
 
@@ -186,4 +187,16 @@ func (r *Registry) Get(name string) (Player, bool) {
 	defer r.mu.RUnlock()
 	p, ok := r.players[name]
 	return p, ok
+}
+
+// Manifests returns registered player manifests, sorted by name.
+func (r *Registry) Manifests() []Manifest {
+	r.mu.RLock()
+	defer r.mu.RUnlock()
+	out := make([]Manifest, 0, len(r.players))
+	for _, p := range r.players {
+		out = append(out, p.Manifest())
+	}
+	sort.Slice(out, func(i, j int) bool { return out[i].Name < out[j].Name })
+	return out
 }
