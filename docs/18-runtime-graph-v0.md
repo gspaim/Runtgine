@@ -7,12 +7,13 @@ Autoridade de status: [04-decisoes.md](04-decisoes.md).
 Ortogonal a: Event Store (temporal, G-13) e Project Memory (episódica, `16`).
 
 **Status deste doc: CONFIRMED (v0).** G-60..G-65 autorizam o corte deste
-slice. G-66 permanece DEFERRED (sem `graph_hits` no ContextPack, sem Intent
-consultar o Graph, sem aba TUI).
+slice. Integração ContextPack/Intent (`graph_hits`) está em
+[19-graph-hits-v0.md](19-graph-hits-v0.md) (**CONFIRMED** G-66..G-69).
+Aba TUI GRAPH permanece fora.
 
 Pré-requisitos de produto (ordem AGENTS): Core estável; Intent Engine v0
 especificado/implementado (`17`). Graph v0 **não** depende de Intent Engine
-para o corte mínimo, e o Intent não consulta o Graph neste slice.
+para o corte mínimo estrutural; hits no ContextPack/Intent são o slice `19`.
 
 ---
 
@@ -166,25 +167,27 @@ pipeline ou refresh explícito já produziu.
 
 ### G-66 — Integração com ContextPack / Intent
 
-**Status: DEFERRED neste corte**
+**Status: CONFIRMED** — especificação completa em
+[19-graph-hits-v0.md](19-graph-hits-v0.md) (G-66..G-69).
 
-- ContextPack v0 permanece como está (G-24)
-- Intent Engine v0 **não** consulta o Graph (`17` já exclui)
-- Extensão futura: `graph_hits` no ContextPack + budget — só após um slice
-  de código estável do graph
+Este doc (`18`) cobre só o Graph estrutural (G-60..G-65). Hits,
+`QueryHits`, budget e wiring Intent/AssembleContext vivem em `19`.
 
 ---
 
-## 4. Fora do v0
+## 4. Fora do v0 (estrutural)
 
 - Workflow Templates nativos no Graph (`08` / G-40)
 - Genome completo / indexação AST contínua
 - Multi-workspace / graph federado
 - NATS / sync distribuído
-- Aba TUI GRAPH (exige decisão em `14`)
+- Aba TUI GRAPH (exige decisão em `14` + skill)
 - Project Memory / validade operacional (`16`)
 - Policies / Blast Radius derivados do graph
 - Substituir Registry ou Event Store
+
+Hits no ContextPack/Intent: ver [19-graph-hits-v0.md](19-graph-hits-v0.md)
+(não faz parte deste corte estrutural).
 
 ---
 
@@ -201,11 +204,12 @@ pipeline ou refresh explícito já produziu.
 
 ## 6. Ordem deste slice
 
-1. G-60..G-65 CONFIRMED em `04` (G-66 DEFERRED) — feito
-2. Migração SQLite + pacote `internal/core/graph`
-3. Hooks no Runner + `RefreshFromRegistry` em `api.Open`
-4. CLI `graph snapshot` / `graph refresh`
-5. Só então discutir ContextPack/`graph_hits` e TUI
+1. G-60..G-65 CONFIRMED em `04` — feito
+2. Migração SQLite + pacote `internal/core/graph` — feito
+3. Hooks no Runner + `RefreshFromRegistry` em `api.Open` — feito
+4. CLI `graph snapshot` / `graph refresh` — feito
+5. Graph Hits (`19`, G-66..G-69) — próximo slice de código
+6. Aba TUI GRAPH — só após decisão em `14` + skill
 
 ---
 
@@ -219,4 +223,4 @@ Marcado em `04-decisoes.md`:
 - [x] G-63 SQLite no mesmo DB
 - [x] G-64 Core API + CLI read-only
 - [x] G-65 Momentos de sync (best-effort)
-- [x] G-66 ContextPack/Intent DEFERRED
+- [x] G-66+ ContextPack/Intent — ver `19` (CONFIRMED)

@@ -13,7 +13,8 @@ Inventario: `10-gaps.md` (G-50+).
 2. Saida e sempre Task IR v0 → Validator → Runner (sem bypass)
 3. Deterministic-first: heuristicas antes de LLM
 4. Capabilities inventadas → rejeitadas pelo Registry/Validator
-5. Sem Runtime Graph / Workflow Templates neste corte
+5. Sem Runtime Graph / Workflow Templates nas heuristicas v0; o caminho LLM
+   passa a receber `graph_hits` apos o slice `19` (G-69)
 
 ---
 
@@ -104,11 +105,14 @@ runtgine intent "<nl>" [--dry-run] [--wait]
 
 ## Fora do v0
 
-- Runtime Graph / Genome
 - Workflow Templates / SDD auto-sizing
 - Multi-step planning rico alem de shell|pipeline
 - TUI input de NL
 - Intent Engine como Player (`intent.*`)
+- Consulta Graph nas heuristicas shell\|pipeline (so caminho LLM; ver `19`)
+
+Nota: Graph Hits no Completer LLM e ContextPack e o slice
+[19-graph-hits-v0.md](19-graph-hits-v0.md) (G-66..G-69), nao deste doc.
 
 ---
 

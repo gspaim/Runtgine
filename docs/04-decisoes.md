@@ -104,7 +104,8 @@ Ver [09-mvp.md](09-mvp.md). Decisoes-chave:
 - Nativo (nao Electron); GPUI/Tauri/Rust-Core rejeitados para o caminho atual
 - Biblioteca grande de Players deterministicos (visao)
 - MVP: Core + Shell + CLI/TUI + Board (ver 09-mvp.md)
-- Runtime Graph v0 (G-60..G-65; G-66 DEFERRED)
+- Runtime Graph v0 (G-60..G-65)
+- Graph Hits v0 (G-66..G-69; ContextPack + Intent)
 
 ## Protocolo v0 — confirmado (sessao de fechamento)
 
@@ -241,7 +242,8 @@ conceitual); **nao autoriza codigo**. Nada abaixo e CONFIRMED.
 
 ## Runtime Graph — CONFIRMED v0
 
-Ver [18-runtime-graph-v0.md](18-runtime-graph-v0.md).
+Ver [18-runtime-graph-v0.md](18-runtime-graph-v0.md) (estrutural) e
+[19-graph-hits-v0.md](19-graph-hits-v0.md) (hits).
 
 | Item | Status | Notas |
 |---|---|---|
@@ -249,9 +251,12 @@ Ver [18-runtime-graph-v0.md](18-runtime-graph-v0.md).
 | G-61 Node kinds v0 | CONFIRMED | player, capability, task, run, path, symbol |
 | G-62 Edge kinds v0 | CONFIRMED | provides, executed, instance_of, mentions, child_of |
 | G-63 Persistencia | CONFIRMED | Mesmo SQLite do Core |
-| G-64 Core API + CLI snapshot | CONFIRMED | Sem tab TUI no v0 |
+| G-64 Core API + CLI snapshot | CONFIRMED | Sem tab TUI no v0 estrutural |
 | G-65 Sync boot / SyncFromRun | CONFIRMED | Best-effort; nao falha Run |
-| G-66 ContextPack / Intent | DEFERRED | Apos graph estavel; sem graph_hits / Intent neste slice |
+| G-66 Papel Graph Hits | CONFIRMED | Promovido; ver `19-graph-hits-v0.md` |
+| G-67 Schema graph_hits + budget | CONFIRMED | Extensao ContextPack; hierarquia vs repo_hits |
+| G-68 API QueryHits | CONFIRMED | Ranking deterministico; degrada vazio |
+| G-69 Intent LLM + AssembleContext | CONFIRMED | Heuristicas shell\|pipeline nao consultam Graph |
 
 ## Git / release — fluxo de branches
 

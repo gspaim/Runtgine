@@ -127,9 +127,10 @@ o Runtime Graph responde O que existe e como as coisas se relacionam?.
 Runtime Graph = memoria estrutural
 Event Store = memoria temporal
 
-O corte v0 limita-se a nos/arestas minimos em SQLite por workspace,
-sync best-effort apos runs, e CLI read-only — sem Workflow Templates,
-sem tab TUI e sem hits no ContextPack/Intent neste slice (G-66 DEFERRED).
+O corte estrutural v0 (G-60..G-65) limita-se a nos/arestas minimos em SQLite
+por workspace, sync best-effort apos runs, e CLI read-only — sem Workflow
+Templates e sem tab TUI. Hits no ContextPack/Intent sao o slice Graph Hits
+v0 ([19-graph-hits-v0.md](19-graph-hits-v0.md), G-66..G-69).
 
 ---
 
