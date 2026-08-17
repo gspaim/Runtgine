@@ -4,5 +4,5 @@ nnn: "021"
 slug: filesystem-player
 docs_canonical: docs/21-filesystem-player-v0.md
 gaps: [G-75, G-76, G-77, G-78, G-79, G-80]
-status: confirmed-awaiting-code
-branch: cursor/021-filesystem-player-spec-0ac1
+status: archived
+branch: cursor/021-filesystem-player-0ac1

@@ -104,7 +104,7 @@ Ate la, o Core deve rodar so com CLI + Shell.
 | ID | Gap |
 |---|---|
 | G-40 | Workflow Templates loading (nativo vs repo externo) — ver `08` |
-| G-41 | Biblioteca ampla de Players | Em andamento — primeiro corte: Git Player v0 (`20`, G-70+) |
+| G-41 | Biblioteca ampla de Players | Em andamento — Git (`20`) e Filesystem (`21`) v0 feitos |
 | G-42 | Human-in-the-loop / Approvals |
 | G-43 | Resource Claims / Blast Radius |
 | G-44 | MCP integration — candidato a transporte da Fase B de Project Memory (`16`) |
@@ -167,7 +167,7 @@ Ate la, o Core deve rodar so com CLI + Shell.
 6. Runtime Graph — spec/impl em `18` — G-60..G-65 CONFIRMED — feito
 7. Graph Hits — spec em `19` — G-66..G-69 CONFIRMED; codigo = slice 7 — feito
 8. Git Player — spec em `20` — G-70..G-74 CONFIRMED; codigo = slice 8 — feito
-9. Filesystem Player — spec em `21` — G-75..G-80 CONFIRMED; codigo = **proximo** slice 9
+9. Filesystem Player — spec em `21` — G-75..G-80 CONFIRMED; codigo = slice 9 — feito
 
 ## Criterio de “pronto para codar”
 
@@ -178,7 +178,7 @@ Ate la, o Core deve rodar so com CLI + Shell.
 **Runtime Graph (G-60..G-65): CONFIRMADO.**  
 **Graph Hits (G-66..G-69): CONFIRMADO** — slice 7 feito.  
 **Git Player (G-70..G-74): CONFIRMADO** — slice 8 feito.
-**Filesystem Player (G-75..G-80): CONFIRMADO** — liberado implementar slice 9.
+**Filesystem Player (G-75..G-80): CONFIRMADO** — slice 9 feito.
 
 Ordem pratica de codigo:
 1. Core CLI + Shell (+ SQLite) — slice 1 — feito
@@ -189,9 +189,9 @@ Ordem pratica de codigo:
 6. Runtime Graph v0 — slice 6 (G-60..G-65) — feito
 7. Graph Hits v0 — slice 7 (G-66..G-69) — feito
 8. Git Player v0 — slice 8 (G-70..G-74) — feito
-9. Filesystem Player v0 — slice 9 (G-75..G-80) — **proximo**
+9. Filesystem Player v0 — slice 9 (G-75..G-80) — feito
 
-P3 (G-40+) permanece futuro. Proximo: mais Players (FS/Docker/…) ou
+P3 (G-40+) permanece futuro. Proximo: mais Players (Docker/…) ou
 policies-HITL (G-42 — ainda sem Execution Policy CONFIRMED). Project
 Memory (G-46/G-47) e esboco em `16-project-memory.md` — HYPOTHESIS; nao
 codificar ate promocao explicita em `04`. Experimentos com sidecar externo

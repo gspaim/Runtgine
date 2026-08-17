@@ -11,10 +11,10 @@ Pré-requisito: Core + Shell + Git Player estáveis (slices 1–8).
 de código. HITL / Approvals e Execution Policy completa permanecem fora
 (G-42 HYPOTHESIS / P3).
 
-**Pacote OpenSpec (trabalho):**
-[`openspec/changes/021-filesystem-player/`](../openspec/changes/021-filesystem-player/).
-Branch de implementação: `feat/021-filesystem-player`
-(agentes: `cursor/021-*-0ac1`).
+**Pacote OpenSpec:** arquivado em
+[`openspec/changes/archive/2026-08-17-021-filesystem-player/`](../openspec/changes/archive/2026-08-17-021-filesystem-player/).
+Deltas mergeados em `openspec/specs/filesystem-player/`. Branch de implementação:
+`cursor/021-filesystem-player-0ac1`.
 
 ---
 
@@ -159,10 +159,10 @@ bytes/entries. O contexto do Runner ainda pode cancelar a execução.
 
 ## 5. Ordem do slice de código
 
-1. G-75..G-80 CONFIRMED — este PR de docs/OpenSpec.
-2. Pacote `internal/players/filesystem` + Manifest + testes.
-3. Registrar no Core, adicionar static validation e exemplo.
-4. Atualizar estágio README (Slice 9 Feito) e arquivar OpenSpec.
+1. G-75..G-80 CONFIRMED — spec em `21` + OpenSpec
+2. Pacote `internal/players/filesystem` + Manifest + testes — feito
+3. Registrar no Core, adicionar static validation e exemplo — feito
+4. Atualizar estágio README (Slice 9 Feito) e arquivar OpenSpec — este PR
 
 ---
 
