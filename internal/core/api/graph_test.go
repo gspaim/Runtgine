@@ -85,6 +85,29 @@ func TestGraphSyncFromSuccessfulRun(t *testing.T) {
 	}
 }
 
+func TestQueryHitsAfterMentionsSync(t *testing.T) {
+	core := openTestCore(t)
+	ctx := context.Background()
+	path := "internal/core/graph/hits.go"
+	_ = core.Graph.UpsertNode(ctx, graph.KindPath, path, nil)
+	_ = core.Graph.UpsertNode(ctx, graph.KindRun, "prior-run", nil)
+	_ = core.Graph.UpsertEdge(ctx, graph.EdgeMentions, graph.KindRun, "prior-run", graph.KindPath, path, nil)
+
+	hits := core.Graph.QueryHits(ctx, graph.Query{
+		SeedPaths: []string{path},
+		Text:      "hits graph",
+	})
+	found := false
+	for _, h := range hits.Items {
+		if h.Kind == graph.KindPath && h.ID == path && h.Reason == "seed" {
+			found = true
+		}
+	}
+	if !found {
+		t.Fatalf("expected seed path hit, got %+v", hits.Items)
+	}
+}
+
 func TestGraphFailureDoesNotFailRun(t *testing.T) {
 	core := openTestCore(t)
 	core.Runner.Graph = failingGraph{}
@@ -136,6 +159,10 @@ type failingGraph struct{}
 
 func (failingGraph) SyncFromRun(context.Context, string) error {
 	return errors.New("graph unavailable")
+}
+
+func (failingGraph) QueryHits(context.Context, graph.Query) graph.Hits {
+	return graph.Hits{Items: []graph.Hit{}}
 }
 
 func waitTerminal(t *testing.T, core *api.Core, runID string, want store.Status) {

@@ -8,8 +8,10 @@ import (
 )
 
 const (
-	DefaultMaxChars = 12000
-	DefaultMaxFiles = 40
+	DefaultMaxChars      = 12000
+	DefaultMaxFiles      = 40
+	DefaultGraphMaxHits  = 20
+	DefaultGraphMaxChars = 4000
 )
 
 type Pack struct {
@@ -17,6 +19,7 @@ type Pack struct {
 	Step         StepView           `json:"step"`
 	PriorOutputs []store.StepOutput `json:"prior_outputs"`
 	RepoHits     RepoHits           `json:"repo_hits"`
+	GraphHits    GraphHits          `json:"graph_hits"`
 	Budget       Budget             `json:"budget"`
 }
 
@@ -36,20 +39,59 @@ type RepoHits struct {
 	Symbols []string `json:"symbols,omitempty"`
 }
 
+type GraphHit struct {
+	Kind   string `json:"kind"`
+	ID     string `json:"id"`
+	Reason string `json:"reason"`
+	Score  int    `json:"score"`
+}
+
+type GraphHits struct {
+	Items []GraphHit `json:"items"`
+}
+
 type Budget struct {
-	MaxChars int `json:"max_chars"`
-	MaxFiles int `json:"max_files"`
+	MaxChars      int `json:"max_chars"`
+	MaxFiles      int `json:"max_files"`
+	GraphMaxHits  int `json:"graph_max_hits"`
+	GraphMaxChars int `json:"graph_max_chars"`
 }
 
 func Assemble(t task.Task, stepID, capability string, priors []store.StepOutput) Pack {
 	p := Pack{
-		Task: TaskView{TaskID: t.TaskID, Summary: t.Intent.Summary, Notes: t.Intent.Notes},
-		Step: StepView{StepID: stepID, Capability: capability},
+		Task:         TaskView{TaskID: t.TaskID, Summary: t.Intent.Summary, Notes: t.Intent.Notes},
+		Step:         StepView{StepID: stepID, Capability: capability},
 		PriorOutputs: priors,
-		Budget:       Budget{MaxChars: DefaultMaxChars, MaxFiles: DefaultMaxFiles},
+		GraphHits:    GraphHits{Items: []GraphHit{}},
+		Budget: Budget{
+			MaxChars:      DefaultMaxChars,
+			MaxFiles:      DefaultMaxFiles,
+			GraphMaxHits:  DefaultGraphMaxHits,
+			GraphMaxChars: DefaultGraphMaxChars,
+		},
 	}
 	p.RepoHits = extractRepoHits(priors, p.Budget)
 	p.PriorOutputs = truncatePriors(priors, p.Budget.MaxChars)
+	return p
+}
+
+// WithGraphHits attaches ranked structural hits and applies graph budgets.
+// Items should already be score-sorted (highest first); lowest scores are dropped first.
+func WithGraphHits(p Pack, items []GraphHit) Pack {
+	if p.Budget.GraphMaxHits <= 0 {
+		p.Budget.GraphMaxHits = DefaultGraphMaxHits
+	}
+	if p.Budget.GraphMaxChars <= 0 {
+		p.Budget.GraphMaxChars = DefaultGraphMaxChars
+	}
+	if items == nil {
+		items = []GraphHit{}
+	}
+	if len(items) > p.Budget.GraphMaxHits {
+		items = items[:p.Budget.GraphMaxHits]
+	}
+	items = trimGraphHitsByChars(items, p.Budget.GraphMaxChars)
+	p.GraphHits = GraphHits{Items: items}
 	return p
 }
 
@@ -97,6 +139,23 @@ func truncatePriors(priors []store.StepOutput, maxChars int) []store.StepOutput 
 		used += n
 	}
 	return out
+}
+
+func trimGraphHitsByChars(items []GraphHit, maxChars int) []GraphHit {
+	if maxChars <= 0 || len(items) == 0 {
+		return items
+	}
+	for n := len(items); n > 0; n-- {
+		slice := items[:n]
+		b, err := json.Marshal(slice)
+		if err != nil {
+			return slice
+		}
+		if len(b) <= maxChars {
+			return slice
+		}
+	}
+	return []GraphHit{}
 }
 
 func capStrings(in []string, n int) []string {
