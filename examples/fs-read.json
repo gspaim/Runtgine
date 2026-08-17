@@ -1,0 +1,21 @@
+{
+  "schema_version": "0.1.0",
+  "source": {
+    "entry_point": "cli",
+    "ref": "examples/fs-read.json"
+  },
+  "intent": {
+    "summary": "Read LICENSE via Filesystem Player"
+  },
+  "steps": [
+    {
+      "step_id": "read",
+      "capability": "fs.read",
+      "input": {
+        "path": "LICENSE",
+        "max_bytes": 4096
+      },
+      "depends_on": []
+    }
+  ]
+}
