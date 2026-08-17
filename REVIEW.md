@@ -127,5 +127,5 @@ Documentacao alinhada; stack CONFIRMED; MVP canônico em 09-mvp.md.
 **Intent Engine v0 CONFIRMADO** (`17`, G-50..G-54).
 Slices 1–6 implementados (Core → Intent → Runtime Graph estrutural).
 **Runtime Graph v0: CONFIRMED** em `18` (G-60..G-65).
-**Graph Hits v0: CONFIRMED** em `19` (G-66..G-69) — liberado codigo slice 7.
-P3 (G-40+) futuro.
+**Graph Hits v0: CONFIRMED + implementado** (`19`, G-66..G-69; slice 7).
+P3 (G-40+) futuro — proximo: Players / policies-HITL.

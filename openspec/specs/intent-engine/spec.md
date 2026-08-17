@@ -1,6 +1,6 @@
 # Intent Engine
 
-Status: comportamento atual (Intent Engine v0, `docs/17`, G-50..G-54).
+Status: comportamento atual (Intent Engine v0 + Graph Hits G-69).
 
 ## Requirements
 
@@ -28,12 +28,26 @@ The Engine SHALL try shell then pipeline heuristics before the LLM Completer.
 - WHEN `CompileIntent` runs
 - THEN method is `heuristic.pipeline` or routes to the pipeline template
 
-### Requirement: LLM path uses ContextPack without graph
+### Requirement: LLM compile path consumes QueryHits
 
-Until `019-graph-hits`, the LLM Completer ContextPack SHALL NOT query the
-Runtime Graph.
+When the Intent Engine uses the LLM Completer path, it SHALL call
+`QueryHits` with the NL text and attach results as `graph_hits` on the
+Completer ContextPack. Heuristic shell and pipeline paths MUST NOT call
+QueryHits.
 
-#### Scenario: No graph query on heuristics
-- GIVEN text matching shell heuristic
+#### Scenario: LLM path queries graph
+- GIVEN NL text that does not match shell or pipeline heuristics
+- AND the Completer is invoked
 - WHEN compile runs
-- THEN the Runtime Graph is not consulted
+- THEN QueryHits is called with Text set to the NL input
+
+#### Scenario: Heuristic shell skips graph
+- GIVEN text `echo hello-intent`
+- WHEN CompileIntent runs
+- THEN method is `heuristic.shell`
+- AND QueryHits is not invoked
+
+#### Scenario: Graph failure still compiles
+- GIVEN QueryHits returns an empty result due to store error
+- WHEN compile LLM runs
+- THEN a Task IR is still produced when the Completer succeeds

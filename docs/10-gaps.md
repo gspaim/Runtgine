@@ -144,7 +144,7 @@ Ate la, o Core deve rodar so com CLI + Shell.
 4. Board/LLM (P1) — feito (`12`)
 5. Intent Engine — spec/impl em `17` — feito
 6. Runtime Graph — spec/impl em `18` — G-60..G-65 CONFIRMED — feito
-7. Graph Hits — spec em `19` — G-66..G-69 CONFIRMED; codigo = proximo slice
+7. Graph Hits — spec em `19` — G-66..G-69 CONFIRMED; codigo = slice 7 — feito
 
 ## Criterio de “pronto para codar”
 
@@ -153,7 +153,7 @@ Ate la, o Core deve rodar so com CLI + Shell.
 **P1b Intent Engine (G-50..G-54): CONFIRMADO.**  
 **P2 engenharia (G-30..G-38): CONFIRMADO** (G-36 DEFERRED).  
 **Runtime Graph (G-60..G-65): CONFIRMADO.**  
-**Graph Hits (G-66..G-69): CONFIRMADO** — liberado implementar slice 7.
+**Graph Hits (G-66..G-69): CONFIRMADO** — slice 7 feito.
 
 Ordem pratica de codigo:
 1. Core CLI + Shell (+ SQLite) — slice 1 — feito
@@ -162,9 +162,10 @@ Ordem pratica de codigo:
 4. Validator JSON Schema + IDs estritos + sandbox Shell v0 — slice 4 — feito
 5. Intent Engine NL v0 — slice 5 — feito
 6. Runtime Graph v0 — slice 6 (G-60..G-65) — feito
-7. Graph Hits v0 — slice 7 (G-66..G-69) — **proximo**
+7. Graph Hits v0 — slice 7 (G-66..G-69) — feito
 
-P3 (G-40+) permanece futuro. Project Memory (G-46/G-47) e esboco em
+P3 (G-40+) permanece futuro. Proximo trabalho de produto: mais Players
+deterministicos / policies-HITL. Project Memory (G-46/G-47) e esboco em
 `16-project-memory.md` — HYPOTHESIS / OPEN QUESTION; nao codificar ate
 promocao explicita em `04`. Experimentos com sidecar externo (Fase A)
 nao exigem mudanca no Core.
