@@ -107,6 +107,7 @@ Ver [09-mvp.md](09-mvp.md). Decisoes-chave:
 - Runtime Graph v0 (G-60..G-65)
 - Graph Hits v0 (G-66..G-69; ContextPack + Intent)
 - Git Player v0 (G-70..G-74; recorte G-41)
+- Filesystem Player v0 (G-75..G-80; recorte G-41)
 
 ## Protocolo v0 — confirmado (sessao de fechamento)
 
@@ -270,6 +271,19 @@ Ver [20-git-player-v0.md](20-git-player-v0.md). Recorte de G-41.
 | G-72 Sandbox minima | CONFIRMED | Sem rede; hooks off no commit; workdir no workspace |
 | G-73 Registry + exemplo | CONFIRMED | `api.Open` + `examples/git-status.json` |
 | G-74 Exclusoes v0 | CONFIRMED | push/pull/clone/HITL/fora |
+
+## Filesystem Player — CONFIRMED v0
+
+Ver [21-filesystem-player-v0.md](21-filesystem-player-v0.md). Recorte de G-41.
+
+| Item | Status | Notas |
+|---|---|---|
+| G-75 Papel / pacote `filesystem` | CONFIRMED | `internal/players/filesystem`; Player deterministic |
+| G-76 Capabilities v0 | CONFIRMED | `fs.read`, `fs.write`, `fs.list`, `fs.stat` |
+| G-77 Confinamento | CONFIRMED | Workspace root; symlink externo rejeitado |
+| G-78 Limites / atomicidade | CONFIRMED | UTF-8; 4 MiB; list limit; write atomic |
+| G-79 Registry + static validation | CONFIRMED | `api.Open` + Runner + `examples/fs-read.json` |
+| G-80 Exclusoes v0 | CONFIRMED | delete/move/chmod/rede/HITL fora |
 
 ## Git / release — fluxo de branches
 

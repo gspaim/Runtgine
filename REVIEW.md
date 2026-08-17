@@ -128,4 +128,5 @@ Documentacao alinhada; stack CONFIRMED; MVP canônico em 09-mvp.md.
 Slices 1–6 implementados (Core → Intent → Runtime Graph estrutural).
 **Runtime Graph v0: CONFIRMED** em `18` (G-60..G-65).
 **Git Player v0: CONFIRMED + implementado** (`20`, G-70..G-74; slice 8).
+**Filesystem Player v0: CONFIRMED** (`21`, G-75..G-80) — próximo slice 9.
 P3 restante: mais Players / HITL (G-42) / Memory — futuros.

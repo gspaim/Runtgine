@@ -40,6 +40,9 @@ Graph Hits: `docs/19-graph-hits-v0.md` + archive
 Git Player: `docs/20-git-player-v0.md` + archive
 `openspec/changes/archive/2026-08-17-020-git-player/` — CONFIRMED v0
 (G-70..G-74); slice 8 feito.
+Filesystem Player: `docs/21-filesystem-player-v0.md` +
+`openspec/changes/021-filesystem-player/` — CONFIRMED v0
+(G-75..G-80); proximo codigo (slice 9).
 Skill obrigatoria para TUI: `.cursor/skills/runtgine-tui-design/SKILL.md`.
 
 ## Ordem de trabalho
@@ -58,7 +61,8 @@ Skill obrigatoria para TUI: `.cursor/skills/runtgine-tui-design/SKILL.md`.
 12. Runtime Graph — CONFIRMED v0 em `18-runtime-graph-v0.md` (G-60..G-65) — feito
 13. Graph Hits — CONFIRMED v0 em `19` + OpenSpec archive `019-graph-hits` — feito
 14. Git Player — CONFIRMED v0 em `20` + OpenSpec archive `020-git-player` — feito
-15. Mais Players / TUI GRAPH / Policies-HITL — so apos nova promocao em `04`
+15. Filesystem Player — CONFIRMED v0 em `21` + `openspec/changes/021-filesystem-player/` — proximo codigo
+16. Mais Players / TUI GRAPH / Policies-HITL — so apos nova promocao em `04`
 
 ## Conceitos chave (nao confundir)
 

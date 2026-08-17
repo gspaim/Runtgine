@@ -85,7 +85,7 @@ Visão enxuta do que já está em `main`. **Atualizar esta seção em todo PR
 | Feito | Slice 6 — Runtime Graph v0 (`runtgine graph snapshot`) |
 | Feito | Slice 7 — Graph Hits v0 (`graph_hits` / `QueryHits`) |
 | Feito | Slice 8 — Git Player v0 (`git.status` / `diff` / `log` / `add` / `commit`) |
-| Próximo | Mais Players determinísticos (FS/Docker/…) ou policies/HITL (nova spec) |
+| Próximo | Slice 9 — Filesystem Player v0 (`openspec/changes/021-filesystem-player/`) |
 | Depois | Project Memory (HYPOTHESIS); API HTTP; bus distribuído; desktop Wails |
 
 Detalhe do corte: [`docs/09-mvp.md`](docs/09-mvp.md). Limitações atuais abaixo.
@@ -231,7 +231,7 @@ Fluxo real do MVP: **CLI/Board** montam `Task IR` e chamam `SubmitTask`. O **Val
 cmd/runtgine/             binário e CLI
 internal/config/          defaults, arquivo, env e flags
 internal/core/            Task, Event, Runner, Registry, Store, Graph e APIs
-internal/players/         Shell, Git, Pipeline e LLM Players
+internal/players/         Shell, Git, Filesystem, Pipeline e LLM Players
 internal/entrypoint/      CLI, Board e TUI
 examples/                 exemplos de Task IR
 docs/                     decisões e especificações oficiais
@@ -366,6 +366,7 @@ vulnerabilidade.
 | [Runtime Graph](docs/18-runtime-graph-v0.md) | Memória estrutural v0 (G-60..G-65) |
 | [Graph Hits](docs/19-graph-hits-v0.md) | `graph_hits` / QueryHits (G-66..G-69; slice 7) |
 | [Git Player](docs/20-git-player-v0.md) | Player `git.*` v0 (G-70..G-74; slice 8) |
+| [Filesystem Player](docs/21-filesystem-player-v0.md) | Player `fs.*` v0 (G-75..G-80; próximo código) |
 | [OpenSpec](openspec/README.md) | Pacotes de mudança `NNN-slug` |
 | [TUI Design](docs/14-tui-design.md) | Constellation Mission Control |
 | [Git workflow](docs/15-git-workflow.md) | Branches, RC e releases |
