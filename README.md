@@ -89,8 +89,9 @@ Visão enxuta do que já está em `main`. **Atualizar esta seção em todo PR
 | Feito | Slice 10 — Execution Policy + HITL v0 (`approve` / `deny` / `waiting_approval`) |
 | Feito | Slice 11 — Docker Player v0 (`docker.ps` / `inspect` / `logs` / `run` / `build`) |
 | Feito | Slice 12 — Resource Claims v0 (`24`, G-93..G-98; `claim.conflict`) |
-| Próximo | Slice 13 — Blast Radius v0 (`25`, G-99..G-104; spec CONFIRMED) |
-| Depois | TUI GRAPH (exige `14`); walk Blast←Graph; Project Memory (HYPOTHESIS); API HTTP; bus distribuído; desktop Wails |
+| Feito | Slice 13 — Blast Radius v0 (`25`, G-99..G-104; `runtgine blast`) |
+| Próximo | TUI GRAPH (exige `14`); walk Blast←Graph |
+| Depois | Project Memory (HYPOTHESIS); API HTTP; bus distribuído; desktop Wails |
 
 Detalhe do corte: [`docs/09-mvp.md`](docs/09-mvp.md). Limitações atuais abaixo.
 
@@ -167,6 +168,7 @@ runtgine status <run_id>            Exibe snapshot e eventos
 runtgine cancel <run_id>            Solicita cancelamento de um run
 runtgine graph snapshot             Imprime o Runtime Graph (JSON)
 runtgine graph refresh              Atualiza players/capabilities do Graph
+runtgine blast <task.json|task.yaml> Relatório de impacto (sem executar)
 runtgine pipeline run               Executa o pipeline de análise
 runtgine board poll                 Importa cards do GitHub
 runtgine tui                        Abre a Mission Control

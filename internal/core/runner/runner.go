@@ -124,7 +124,20 @@ func (r *Runner) WaitIdle() {
 	r.inflight.Wait()
 }
 
+// ValidateTaskIR runs admission checks used by SubmitTask *before* policy
+// (schema, registry, static player input). BlastTask uses this subset.
+func (r *Runner) ValidateTaskIR(t task.Task) error {
+	return r.validateTaskIR(t)
+}
+
 func (r *Runner) validateAdmission(t task.Task) error {
+	if err := r.validateTaskIR(t); err != nil {
+		return err
+	}
+	return r.checkAdmissionPolicy(t)
+}
+
+func (r *Runner) validateTaskIR(t task.Task) error {
 	raw, err := json.Marshal(t)
 	if err != nil {
 		return r.reject(t.TaskID, result.CodeSchema, "marshal task ir: "+err.Error())
@@ -185,9 +198,6 @@ func (r *Runner) validateAdmission(t task.Task) error {
 				return r.reject(t.TaskID, result.CodeInvalidInput, err.Error())
 			}
 		}
-	}
-	if err := r.checkAdmissionPolicy(t); err != nil {
-		return err
 	}
 	return nil
 }

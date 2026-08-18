@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/gspaim/Runtgine/internal/config"
+	"github.com/gspaim/Runtgine/internal/core/blast"
 	"github.com/gspaim/Runtgine/internal/core/claim"
 	"github.com/gspaim/Runtgine/internal/core/event"
 	"github.com/gspaim/Runtgine/internal/core/graph"
@@ -127,6 +128,23 @@ func (c *Core) SubmitTask(ctx context.Context, t task.Task) (string, error) {
 		return "", err
 	}
 	return res.RunID, nil
+}
+
+// BlastTask returns a G-100 impact report without creating a Run, acquiring
+// claims, evaluating policy, or calling a Player.
+func (c *Core) BlastTask(ctx context.Context, t task.Task) (blast.Report, error) {
+	if err := c.Runner.ValidateTaskIR(t); err != nil {
+		return blast.Report{}, err
+	}
+	var active []store.ResourceClaim
+	if c.Store != nil {
+		rows, err := c.Store.ListActiveClaims(ctx)
+		if err != nil {
+			return blast.Report{}, err
+		}
+		active = rows
+	}
+	return blast.Analyze(t.Steps, active)
 }
 
 // CompileIntent translates natural language into Task IR (G-51).
