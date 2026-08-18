@@ -16,6 +16,7 @@ import (
 
 	"github.com/gspaim/Runtgine/internal/core/api"
 	"github.com/gspaim/Runtgine/internal/core/event"
+	"github.com/gspaim/Runtgine/internal/core/graph"
 	"github.com/gspaim/Runtgine/internal/core/runner"
 	"github.com/gspaim/Runtgine/internal/core/task"
 )
@@ -25,11 +26,12 @@ const (
 	tabLive
 	tabBoard
 	tabEvents
+	tabGraph
 	tabConfig
 	tabCount
 )
 
-var tabNames = []string{"RUNS", "LIVE", "BOARD", "EVENTS", "CONFIG"}
+var tabNames = []string{"RUNS", "LIVE", "BOARD", "EVENTS", "GRAPH", "CONFIG"}
 
 type CoreAPI interface {
 	ListRuns(context.Context, int) ([]api.RunSummary, error)
@@ -39,26 +41,34 @@ type CoreAPI interface {
 	Subscribe(int) (<-chan event.Event, func())
 	CancelRun(string) error
 	ApproveRun(string, string) error
+	GetGraphSnapshot(context.Context) (graph.Snapshot, error)
+	RefreshGraph(context.Context) error
 }
 
 type Model struct {
-	core      CoreAPI
-	theme     Theme
-	width     int
-	height    int
-	tab       int
-	selected  int
-	runs      []api.RunSummary
-	snapshot  api.RunSnapshot
-	events    []event.Event
-	config    api.ConfigSnapshot
-	eventCh   <-chan event.Event
-	filtering bool
-	filter    string
-	confirm   bool
-	err       error
-	spinner   spinner.Model
-	progress  progress.Model
+	core          CoreAPI
+	theme         Theme
+	width         int
+	height        int
+	tab           int
+	selected      int
+	runs          []api.RunSummary
+	snapshot      api.RunSnapshot
+	events        []event.Event
+	config        api.ConfigSnapshot
+	eventCh       <-chan event.Event
+	filtering     bool
+	filter        string
+	graphFilter   string
+	graph         graph.Snapshot
+	graphSelected int
+	graphInspect  bool
+	graphLoaded   bool
+	graphErr      error
+	confirm       bool
+	err           error
+	spinner       spinner.Model
+	progress      progress.Model
 }
 
 type refreshMsg struct {
@@ -74,6 +84,10 @@ type cancelMsg struct{ err error }
 type approveMsg struct{ err error }
 type tickMsg time.Time
 type streamClosedMsg struct{}
+type graphMsg struct {
+	snap graph.Snapshot
+	err  error
+}
 
 func New(core CoreAPI) (Model, func()) {
 	theme := DetectTheme()
@@ -130,6 +144,15 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		} else if len(m.runs) == 0 {
 			m.snapshot = api.RunSnapshot{}
 		}
+	case graphMsg:
+		if msg.err != nil {
+			m.graphErr = msg.err
+			break
+		}
+		m.graphErr = nil
+		m.graph = msg.snap
+		m.graphLoaded = true
+		m.clampGraphSelection()
 	case streamEventMsg:
 		e := event.Event(msg)
 		m.events = append([]event.Event{e}, m.events...)
@@ -162,18 +185,25 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 func (m Model) handleKey(msg tea.KeyPressMsg) (tea.Model, tea.Cmd) {
 	key := msg.String()
 	if m.filtering {
+		target := &m.filter
+		if m.tab == tabGraph {
+			target = &m.graphFilter
+		}
 		switch key {
 		case "esc", "enter":
 			m.filtering = false
 		case "backspace":
-			if m.filter != "" {
-				_, size := utf8.DecodeLastRuneInString(m.filter)
-				m.filter = m.filter[:len(m.filter)-size]
+			if *target != "" {
+				_, size := utf8.DecodeLastRuneInString(*target)
+				*target = (*target)[:len(*target)-size]
 			}
 		default:
 			if msg.Key().Text != "" {
-				m.filter += msg.Key().Text
+				*target += msg.Key().Text
 			}
+		}
+		if m.tab == tabGraph {
+			m.clampGraphSelection()
 		}
 		return m, nil
 	}
@@ -184,30 +214,55 @@ func (m Model) handleKey(msg tea.KeyPressMsg) (tea.Model, tea.Cmd) {
 	case "tab", "right", "l":
 		m.tab = (m.tab + 1) % tabCount
 		m.confirm = false
+		m.filtering = false
+		return m, m.maybeLoadGraph()
 	case "shift+tab", "left", "h":
 		m.tab = (m.tab + tabCount - 1) % tabCount
 		m.confirm = false
+		m.filtering = false
+		return m, m.maybeLoadGraph()
 	case "up", "k":
+		if m.tab == tabGraph {
+			if m.graphSelected > 0 {
+				m.graphSelected--
+				m.graphInspect = false
+			}
+			return m, nil
+		}
 		if m.selected > 0 {
 			m.selected--
 			m.confirm = false
 			return m, m.refreshCmd()
 		}
 	case "down", "j":
+		if m.tab == tabGraph {
+			if m.graphSelected+1 < len(m.filteredGraphNodes()) {
+				m.graphSelected++
+				m.graphInspect = false
+			}
+			return m, nil
+		}
 		if m.selected+1 < len(m.runs) {
 			m.selected++
 			m.confirm = false
 			return m, m.refreshCmd()
 		}
 	case "enter":
+		if m.tab == tabGraph {
+			m.graphInspect = true
+			return m, nil
+		}
 		if len(m.runs) > 0 {
 			m.tab = tabLive
 		}
 	case "/":
-		if m.tab == tabEvents {
+		if m.tab == tabEvents || m.tab == tabGraph {
 			m.filtering = true
 		}
 	case "r":
+		if m.tab == tabGraph {
+			return m, m.graphLoadCmd(true)
+		}
 		return m, m.refreshCmd()
 	case "esc":
 		m.confirm = false
@@ -370,6 +425,8 @@ func (m Model) renderBody() string {
 		body = m.renderBoard()
 	case tabEvents:
 		body = m.renderEvents()
+	case tabGraph:
+		body = m.renderGraph()
 	case tabConfig:
 		body = m.renderConfig()
 	}
@@ -577,7 +634,13 @@ func (m Model) renderFooter() string {
 	if m.theme.ASCII {
 		hint = "tab navigate | j/k select | enter inspect | c cancel | / filter | r refresh | q quit"
 	}
-	if m.selectedWaiting() {
+	if m.tab == tabGraph {
+		hint = "tab/shift+tab navigate · j/k select · enter inspect · / filter · r refresh graph · q quit"
+		if m.theme.ASCII {
+			hint = "tab navigate | j/k select | enter inspect | / filter | r refresh graph | q quit"
+		}
+	}
+	if m.selectedWaiting() && m.tab != tabGraph {
 		hint = "tab/shift+tab navigate · j/k select · a approve · d deny · c cancel · q quit"
 		if m.theme.ASCII {
 			hint = "tab navigate | j/k select | a approve | d deny | c cancel | q quit"
@@ -588,6 +651,9 @@ func (m Model) renderFooter() string {
 	}
 	if m.err != nil {
 		hint += "  |  " + m.theme.Status("failed").Render("error: "+truncate(m.err.Error(), 60))
+	}
+	if m.graphErr != nil && m.tab == tabGraph {
+		hint += "  |  " + m.theme.Status("failed").Render("error: "+truncate(m.graphErr.Error(), 60))
 	}
 	return m.theme.Muted().Render(truncate(hint, max(20, m.width-1)))
 }
