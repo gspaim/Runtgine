@@ -215,7 +215,7 @@ Ate la, o Core deve rodar so com CLI + Shell.
 10. Execution Policy + HITL — spec em `22` — G-81..G-86 CONFIRMED; codigo = slice 10
 11. Docker Player — spec em `23` — G-87..G-92 CONFIRMED; codigo = slice 11 (apos 10)
 12. Resource Claims — spec em `24` — G-93..G-98 CONFIRMED; codigo = slice 12 — feito
-13. Blast Radius — spec em `25` — G-99..G-104 CONFIRMED; codigo = slice 13
+13. Blast Radius — spec em `25` — G-99..G-104 CONFIRMED; codigo = slice 13 — feito
 
 ## Criterio de “pronto para codar”
 
@@ -230,7 +230,7 @@ Ate la, o Core deve rodar so com CLI + Shell.
 **Execution Policy + HITL (G-81..G-86): CONFIRMADO** — slice 10 feito.  
 **Docker Player (G-87..G-92): CONFIRMADO** — slice 11 feito.  
 **Resource Claims (G-93..G-98): CONFIRMADO** — slice 12 feito.  
-**Blast Radius (G-99..G-104): CONFIRMADO** — spec; codigo = slice 13.
+**Blast Radius (G-99..G-104): CONFIRMADO** — slice 13 feito.
 
 Ordem pratica de codigo:
 1. Core CLI + Shell (+ SQLite) — slice 1 — feito
@@ -245,7 +245,7 @@ Ordem pratica de codigo:
 10. Execution Policy + HITL v0 — slice 10 (G-81..G-86) — feito
 11. Docker Player v0 — slice 11 (G-87..G-92) — feito
 12. Resource Claims v0 — slice 12 (G-93..G-98) — feito
-13. Blast Radius v0 — slice 13 (G-99..G-104) — spec CONFIRMED; codigo pendente
+13. Blast Radius v0 — slice 13 (G-99..G-104) — feito
 
 P3 restante (G-40 templates, G-44 MCP, G-45 HTTP).
 Project Memory (G-46/G-47) permanece HYPOTHESIS em `16` — nao codificar.

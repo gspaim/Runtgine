@@ -11,13 +11,14 @@ afetado*.
 Consumidor seguinte: TUI GRAPH (exige [14-tui-design.md](14-tui-design.md)
 + skill) ou walk no Runtime Graph — **fora** deste corte.
 
-**Status deste doc: CONFIRMED (v0).** G-99..G-104 autorizam o slice 13
-de código. Walk no Graph, gate de Execute, TUI GRAPH e Human Player
+**Status deste doc: CONFIRMED (v0).** G-99..G-104 implementados no
+slice 13. Walk no Graph, gate de Execute, TUI GRAPH e Human Player
 permanecem fora.
 
-**Pacote OpenSpec:** ativo em
-[`openspec/changes/025-blast-radius/`](../openspec/changes/025-blast-radius/).
-Branch de implementação: `feat/025-blast-radius`.
+**Pacote OpenSpec:** arquivado em
+[`openspec/changes/archive/2026-08-18-025-blast-radius/`](../openspec/changes/archive/2026-08-18-025-blast-radius/).
+Deltas mergeados em `openspec/specs/blast-radius/`. Branch de implementação:
+`feat/025-blast-radius`.
 
 ---
 
@@ -237,20 +238,20 @@ Imprime o JSON do relatório (stdout). Abre o Core do workspace como
    hello vazio.
 9. `go test ./...` e `go vet ./...` verdes.
 10. OpenSpec `025-blast-radius` arquivado após o merge do **código**
-    (slice 13), não neste PR de spec.
+    (slice 13).
 
 ---
 
 ## 5. Ordem do slice de código
 
-Bloqueado até G-99..G-104 CONFIRMED — este doc + OpenSpec (este PR):
+Slice 13 feito:
 
 1. Pacote `internal/core/blast` (Report, Touched, risk, overlay)
 2. Reuso de `claim.Required` + `claim.Overlaps` / `NormalizePath`
 3. `api.BlastTask` (valida, não submete)
 4. CLI `runtgine blast`
-5. Testes das tabelas + overlay; README Estágio: Slice 13
-6. Arquivar OpenSpec `025` após o merge do código
+5. Testes das tabelas + overlay; README Estágio: Slice 13 Feito
+6. OpenSpec `025` arquivado
 
 ---
 

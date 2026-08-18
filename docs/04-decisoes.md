@@ -111,7 +111,7 @@ Ver [09-mvp.md](09-mvp.md). Decisoes-chave:
 - Execution Policy + HITL v0 (G-81..G-86; recorte G-42) — spec; codigo = slice 10
 - Docker Player v0 (G-87..G-92; recorte G-41) — spec; codigo = slice 11; depende de 022
 - Resource Claims v0 (G-93..G-98; recorte G-43) — spec; codigo = slice 12 — feito
-- Blast Radius v0 (G-99..G-104; resto de G-43) — spec; codigo = slice 13
+- Blast Radius v0 (G-99..G-104; resto de G-43) — spec; codigo = slice 13 — feito
 
 ## Protocolo v0 — confirmado (sessao de fechamento)
 
@@ -333,7 +333,7 @@ Ver [24-resource-claims-v0.md](24-resource-claims-v0.md). Recorte de G-43
 ## Blast Radius — CONFIRMED v0
 
 Ver [25-blast-radius-v0.md](25-blast-radius-v0.md). Resto de G-43
-(análise de impacto; Claims já em `24`). Codigo = slice 13.
+(análise de impacto; Claims já em `24`). Slice 13 feito.
 
 | Item | Status | Notas |
 |---|---|---|

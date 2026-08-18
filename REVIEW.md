@@ -109,7 +109,7 @@ Plugin system, Wails, MCP, Event sourcing, API, NATS. Intent Engine NL,
 Runtime Graph, Graph Hits, Git/FS Players foram promovidos pos-Core.
 Execution Policy + HITL (`22`), Docker Player (`23`) e Resource Claims
 (`24`, G-93..G-98) estao CONFIRMED v0 (slices 10–12). Blast Radius
-(`25`, G-99..G-104) esta CONFIRMED v0 (codigo = slice 13).
+(`25`, G-99..G-104) esta CONFIRMED v0 (slice 13 feito).
 
 Ordem: Task IR -> Registry -> Event Bus -> Validator -> Shell ->
 CLI -> TUI -> Board -> Context -> LLM pipeline -> Router.
@@ -121,7 +121,7 @@ Fase 1: MVP (Core Go, Event Bus, Shell, CLI, TUI, Board) — slices 1–4
 Fase 2: Graph Hits + Git/FS Players feitos; Execution Policy + Docker
 specs em `22`/`23` (slices 10–11); Project Memory so apos sair de HYPOTHESIS.
 Fase 3: Desktop (Wails)
-Fase 4: Infra (Claims v0 slice 12 feito; Blast Radius spec `25` / slice 13)
+Fase 4: Infra (Claims v0 slice 12; Blast Radius v0 slice 13 feitos)
 Fase 5: Cloud (NATS, API, serverless)
 Fase 6: Ecossistema (biblioteca de Players)
 
@@ -137,5 +137,5 @@ Slices 1–9 implementados (Core → Intent → Graph → Git → Filesystem).
 **Execution Policy + HITL v0: CONFIRMED** (`22`, G-81..G-86; slice 10).
 **Docker Player v0: CONFIRMED + implementado** (`23`, G-87..G-92; slice 11).
 **Resource Claims v0: CONFIRMED + implementado** (`24`, G-93..G-98; slice 12).
-**Blast Radius v0: CONFIRMED** (`25`, G-99..G-104; codigo = slice 13).
+**Blast Radius v0: CONFIRMED + implementado** (`25`, G-99..G-104; slice 13).
 P3 restante: walk Blast←Graph / Memory (HYPOTHESIS) / TUI GRAPH.

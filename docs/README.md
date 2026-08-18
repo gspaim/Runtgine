@@ -49,5 +49,5 @@ Hits (`19`), Git Player (`20`) e Filesystem Player (`21`, G-75..G-80)
 sao **CONFIRMED v0**. Execution Policy + HITL (`22`, G-81..G-86) e Docker
 Player (`23`, G-87..G-92) estao **CONFIRMED v0** (codigo = slices 10 e 11).
 Resource Claims (`24`, G-93..G-98) esta **CONFIRMED v0** (slice 12 feito).
-Blast Radius (`25`, G-99..G-104) esta **CONFIRMED v0** (codigo = slice 13).
+Blast Radius (`25`, G-99..G-104) esta **CONFIRMED v0** (slice 13 feito).
 P3 restante: walk Blast←Graph, Project Memory G-46/G-47 (HYPOTHESIS).
