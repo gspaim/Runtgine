@@ -184,7 +184,8 @@ Este doc (`18`) cobre só o Graph estrutural (G-60..G-65). Hits,
 - NATS / sync distribuído
 - Aba TUI GRAPH — recorte em `26` (G-105..G-110); fora deste corte estrutural
 - Project Memory / validade operacional (`16`)
-- Policies / Blast Radius derivados do graph (Claims v0 e Core, spec `24`; Blast v0 e Core, spec `25`; nenhum dos dois deriva do Graph)
+- Policies / Blast Radius derivados do graph além do 1-hop de `27`
+  (Claims v0 Core `24`; Blast IR `25`; walk path/`mentions` em `27`)
 - Substituir Registry ou Event Store
 
 Hits no ContextPack/Intent: ver [19-graph-hits-v0.md](19-graph-hits-v0.md)

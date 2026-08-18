@@ -8,12 +8,13 @@ Autoridade de status: [04-decisoes.md](04-decisoes.md).
 Pré-requisito: Resource Claims v0 ([24-resource-claims-v0.md](24-resource-claims-v0.md),
 slice 12). Claims respondem *quem segura*; Blast responde *o que seria
 afetado*.
-Consumidor seguinte: TUI GRAPH (exige [14-tui-design.md](14-tui-design.md)
-+ skill) ou walk no Runtime Graph — **fora** deste corte.
+Consumidor seguinte: walk no Runtime Graph —
+[27-blast-graph-walk-v0.md](27-blast-graph-walk-v0.md) (G-111..G-116).
+TUI GRAPH é superfície estrutural ([26-tui-graph-v0.md](26-tui-graph-v0.md)).
 
 **Status deste doc: CONFIRMED (v0).** G-99..G-104 implementados no
-slice 13. Walk no Graph, gate de Execute, TUI GRAPH e Human Player
-permanecem fora.
+slice 13. Walk 1-hop no Graph está em `27`. Gate de Execute, TUI
+GRAPH como origem de blast e Human Player permanecem fora.
 
 **Pacote OpenSpec:** arquivado em
 [`openspec/changes/archive/2026-08-18-025-blast-radius/`](../openspec/changes/archive/2026-08-18-025-blast-radius/).
@@ -202,7 +203,8 @@ Imprime o JSON do relatório (stdout). Abre o Core do workspace como
 
 **Status: CONFIRMED** (como exclusões)
 
-- Walk no Runtime Graph (symbols, workflows, `mentions`, QueryHits)
+- Walk no Runtime Graph além do 1-hop path/`mentions` de `27`
+  (symbols, workflows, QueryHits, multi-hop)
 - Gate / bloquear Execute por `risk` ou `conflicts`
 - Auto-blast no Runner; evento `blast.computed`
 - Wait / queue / `waiting_claim` (continua fora, como em `24`)
@@ -264,4 +266,4 @@ Marcado em `04-decisoes.md`:
 - [x] G-101 Touches vs predicted claims (G-95 intacto)
 - [x] G-102 Overlay read-only vs claims ativos
 - [x] G-103 CLI `blast` + `BlastTask`; sem TUI GRAPH; sem auto no Runner
-- [x] G-104 Exclusões (Graph walk, gate, shell argv, persistência)
+- [x] G-104 Exclusões (gate, shell argv, persistência; walk 1-hop em `27`)

@@ -30,6 +30,7 @@ Human Intent -> Intent Engine -> Task IR -> Validator -> Execution Plan -> Event
 | Execution Policy | CONFIRMED (v0) | allow/deny/approval-required; ver `22` |
 | Resource Claim | CONFIRMED (v0) | Bloqueio concorrente; ver `24` |
 | Blast Radius | CONFIRMED (v0) | Relatorio de impacto da Task IR; ver `25` |
+| Blast Graph Walk | CONFIRMED (v0) | 1 hop mentions no Graph; ver `27` |
 | Entry Point | CONFIRMED | Interface externa; nao e Player |
 
 ---
@@ -223,13 +224,15 @@ Blast Radius v0: ver [25-blast-radius-v0.md](25-blast-radius-v0.md).
 
 Status: CONFIRMED (v0) — ver [25-blast-radius-v0.md](25-blast-radius-v0.md).
 
-Relatorio deterministico a partir da Task IR (nao caminha o Graph no
-v0): o que a Task toca (inclui leituras) e o que claimaria (tabela
-G-95), mais overlay dos claims ativos. CLI `runtgine blast`; nao e
-gate de Execute e nao entra no Runner.
+Relatorio deterministico a partir da Task IR: o que a Task toca
+(inclui leituras) e o que claimaria (tabela G-95), mais overlay dos
+claims ativos. CLI `runtgine blast`; nao e gate de Execute e nao
+entra no Runner.
 
-Walk `Change -> Graph -> Affected Players, Workflows, Resources, Symbols`
-permanece fora (spec futura).
+Walk `Change -> Graph -> Affected` no v0 e **1 hop** inbound
+`mentions` a partir de `touches` path — ver
+[27-blast-graph-walk-v0.md](27-blast-graph-walk-v0.md). Players,
+Workflows e Symbols no walk permanecem fora.
 
 ---
 

@@ -10,7 +10,9 @@ Pré-requisito: Runtime Graph v0 ([18-runtime-graph-v0.md](18-runtime-graph-v0.m
 slice 6) e TUI Slice 3 ([14-tui-design.md](14-tui-design.md)).
 Este PR **altera `14`** (sexta aba) e a skill
 `.cursor/skills/runtgine-tui-design/SKILL.md`.
-Walk Blast←Graph permanece fora (spec futura).
+Walk Blast←Graph a partir **desta aba** permanece fora. O walk 1-hop
+do Impact Report é a spec [27-blast-graph-walk-v0.md](27-blast-graph-walk-v0.md)
+(CLI `runtgine blast`, não GRAPH).
 
 **Status deste doc: CONFIRMED (v0).** G-105..G-110 implementados no
 slice 14. Multiplexer, PTY, edição do Graph e Hits UI permanecem fora.

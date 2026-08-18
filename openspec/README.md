@@ -37,11 +37,10 @@ branch:              feat/<NNN>-<slug>   (ou docs/ fix/ chore/)
 
 Exemplos válidos: `001-shell-player`, `017-intent-engine`, `019-graph-hits`.
 
-**Próximo id livre:** `027`.
+**Próximo id livre:** `028`.
 
-Nenhuma mudança ativa. Último archive:
-[`changes/archive/2026-08-18-026-tui-graph/`](changes/archive/2026-08-18-026-tui-graph/)
-(TUI GRAPH v0; slice 14 feito).
+Mudança ativa: [`changes/027-blast-graph-walk/`](changes/027-blast-graph-walk/)
+(spec CONFIRMED; código = slice 15).
 
 ## Autoridade
 
@@ -78,3 +77,4 @@ Não codificar mudança cujo status em `04` não esteja **CONFIRMED**
 | `resource-claims` | Claims exclusivos `workspace`/`path`; auto-claim; `claim.conflict` |
 | `blast-radius` | Impact Report Task IR; `runtgine blast`; overlay vs claims |
 | `tui-graph` | Aba GRAPH da TUI sobre `GetGraphSnapshot` |
+| `blast-graph-walk` | (delta ativo em `changes/027-blast-graph-walk/`; merge após slice 15) |

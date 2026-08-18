@@ -52,6 +52,8 @@ Status: CONFIRMED | HYPOTHESIS | OPEN QUESTION | REJECTED
 | Player Router | HYPOTHESIS | Roteia por capability + custo |
 | Execution Policy | CONFIRMED (v0) | allow/deny/approval-required; ver `22-execution-policy-v0.md` |
 | Resource Claim | CONFIRMED (v0) | Bloqueio concorrente; ver `24-resource-claims-v0.md` |
+| Blast Radius | CONFIRMED (v0) | Relatorio Task IR; ver `25-blast-radius-v0.md` |
+| Blast Graph Walk | CONFIRMED (v0) | 1 hop mentions; ver `27-blast-graph-walk-v0.md` |
 | TUI GRAPH tab | CONFIRMED (v0) | Aba read-only; ver `26-tui-graph-v0.md` + `14` |
 | Many deterministic Players | CONFIRMED | Estrategico |
 | Runtgine + Chorus | CONFIRMED | Complementares |
@@ -113,6 +115,7 @@ Ver [09-mvp.md](09-mvp.md). Decisoes-chave:
 - Resource Claims v0 (G-93..G-98; recorte G-43) — spec; codigo = slice 12 — feito
 - Blast Radius v0 (G-99..G-104; resto de G-43) — spec; codigo = slice 13 — feito
 - TUI GRAPH v0 (G-105..G-110) — spec; codigo = slice 14 — feito; altera `14` + skill
+- Walk Blast←Graph v0 (G-111..G-116) — spec; codigo = slice 15
 
 ## Protocolo v0 — confirmado (sessao de fechamento)
 
@@ -343,7 +346,7 @@ Ver [25-blast-radius-v0.md](25-blast-radius-v0.md). Resto de G-43
 | G-101 Tabelas | CONFIRMED | predicted = G-95; touches incluem fs.read/list/stat |
 | G-102 Overlay | CONFIRMED | read-only vs claims ativos; nunca Acquire |
 | G-103 Superficie | CONFIRMED | `BlastTask` + `runtgine blast`; sem TUI GRAPH |
-| G-104 Exclusoes v0 | CONFIRMED | Graph walk, gate Execute, shell argv, persistencia |
+| G-104 Exclusoes v0 | CONFIRMED | Gate Execute, shell argv, persistencia; walk 1-hop promovido em `27` |
 
 ## TUI GRAPH — CONFIRMED v0
 
@@ -359,6 +362,21 @@ Slice 14 feito.
 | G-108 Refresh | CONFIRMED | `r` → `RefreshGraph` + snapshot |
 | G-109 Filtro | CONFIRMED | `/` substring kind/id; independente de EVENTS |
 | G-110 Exclusoes v0 | CONFIRMED | Blast-from-graph, Hits UI, PTY, editar grafo |
+
+## Walk Blast←Graph — CONFIRMED v0
+
+Ver [27-blast-graph-walk-v0.md](27-blast-graph-walk-v0.md). 1 hop
+`mentions` inbound a partir de `touches` path do Blast (`25`).
+Codigo = slice 15. Nao e QueryHits; nao dispara a partir da aba GRAPH.
+
+| Item | Status | Notas |
+|---|---|---|
+| G-111 Papel | CONFIRMED | `blast.Walk`; 1 hop; nao e Player |
+| G-112 Snapshot | CONFIRMED | `GetGraphSnapshot`; erro → `affected=[]` |
+| G-113 Sementes / hop | CONFIRMED | path touches; inbound `mentions` only |
+| G-114 Campo `affected` | CONFIRMED | Aditivo; `risk` intacto; schema `0.1.0` |
+| G-115 Superficie | CONFIRMED | Mesmo `BlastTask` / CLI; sem TUI |
+| G-116 Exclusoes v0 | CONFIRMED | GRAPH→blast, multi-hop, gate, Hits |
 
 ## Git / release — fluxo de branches
 

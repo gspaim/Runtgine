@@ -91,8 +91,8 @@ Visão enxuta do que já está em `main`. **Atualizar esta seção em todo PR
 | Feito | Slice 12 — Resource Claims v0 (`24`, G-93..G-98; `claim.conflict`) |
 | Feito | Slice 13 — Blast Radius v0 (`25`, G-99..G-104; `runtgine blast`) |
 | Feito | Slice 14 — TUI GRAPH v0 (`26`, G-105..G-110; aba GRAPH) |
-| Próximo | Walk Blast←Graph (HYPOTHESIS); mais Players |
-| Depois | Project Memory (HYPOTHESIS); API HTTP; bus distribuído; desktop Wails |
+| Próximo | Slice 15 — Walk Blast←Graph v0 (`27`, G-111..G-116; spec CONFIRMED) |
+| Depois | Mais Players; Project Memory (HYPOTHESIS); API HTTP; bus distribuído; desktop Wails |
 
 Detalhe do corte: [`docs/09-mvp.md`](docs/09-mvp.md). Limitações atuais abaixo.
 
