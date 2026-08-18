@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/gspaim/Runtgine/internal/config"
+	"github.com/gspaim/Runtgine/internal/core/claim"
 	"github.com/gspaim/Runtgine/internal/core/event"
 	"github.com/gspaim/Runtgine/internal/core/graph"
 	"github.com/gspaim/Runtgine/internal/core/intent"
@@ -87,6 +88,13 @@ func Open(cfg config.Config, log *slog.Logger) (*Core, error) {
 	r := runner.New(reg, bus, st, cfg.WorkspaceRoot, cfg.LLMBackend, cfg.MaxConcurrentRuns, log)
 	r.Graph = g
 	r.Policy = tab
+	claims := claim.New(st)
+	if err := claims.SweepOrphans(context.Background()); err != nil {
+		if log != nil {
+			log.Warn("claim sweep failed", "err", err)
+		}
+	}
+	r.Claims = claims
 	if err := g.RefreshFromRegistry(context.Background(), reg); err != nil {
 		if log != nil {
 			log.Warn("graph refresh failed", "err", err)
@@ -316,6 +324,7 @@ func (c *Core) CancelRun(runID string) error {
 		return err
 	}
 	c.Bus.Publish(e)
+	c.Runner.ReleaseClaims(runID, run.TaskID)
 	c.syncGraph(runID)
 	return nil
 }

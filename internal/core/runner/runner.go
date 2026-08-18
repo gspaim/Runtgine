@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+	"github.com/gspaim/Runtgine/internal/core/claim"
 	"github.com/gspaim/Runtgine/internal/core/contextpack"
 	"github.com/gspaim/Runtgine/internal/core/event"
 	"github.com/gspaim/Runtgine/internal/core/graph"
@@ -41,6 +42,7 @@ type Runner struct {
 	Log        *slog.Logger
 	Graph      GraphBridge
 	Policy     policy.Table
+	Claims     *claim.Service
 
 	mu       sync.Mutex
 	cancels  map[string]context.CancelFunc
@@ -256,6 +258,7 @@ func (r *Runner) Approve(ctx context.Context, runID, decision string) error {
 		_ = r.Store.ClearPendingApproval(ctx, runID)
 		_ = r.Store.UpdateRunStatus(ctx, runID, store.StatusFailed, store.FormatErr(err))
 		_ = r.emit(runID, run.TaskID, nil, event.TypeRunFailed, map[string]any{"error": err.Error()})
+		r.releaseClaims(runID, run.TaskID)
 		r.syncGraph(runID)
 		return nil
 	case DecisionGrant:
@@ -358,6 +361,11 @@ func (r *Runner) execute(ctx context.Context, t task.Task, p plan.Plan, skipAppr
 			return
 		}
 
+		if err := r.acquireStep(ctx, p, t, s); err != nil {
+			r.fail(ctx, p, err)
+			return
+		}
+
 		stepID := s.StepID
 		pack := contextpack.Assemble(t, s.StepID, s.Capability, priors)
 		pack = r.attachGraphHits(ctx, pack, t)
@@ -430,18 +438,21 @@ func (r *Runner) execute(ctx context.Context, t task.Task, p plan.Plan, skipAppr
 	_ = r.Store.ClearPendingApproval(ctx, p.RunID)
 	_ = r.Store.UpdateRunStatus(ctx, p.RunID, store.StatusSucceeded, "")
 	_ = r.emit(p.RunID, t.TaskID, nil, event.TypeRunSucceeded, nil)
+	r.releaseClaims(p.RunID, t.TaskID)
 	r.syncGraph(p.RunID)
 }
 
 func (r *Runner) fail(ctx context.Context, p plan.Plan, err error) {
 	_ = r.Store.UpdateRunStatus(ctx, p.RunID, store.StatusFailed, store.FormatErr(err))
 	_ = r.emit(p.RunID, p.TaskID, nil, event.TypeRunFailed, map[string]any{"error": err.Error()})
+	r.releaseClaims(p.RunID, p.TaskID)
 	r.syncGraph(p.RunID)
 }
 
 func (r *Runner) cancelled(ctx context.Context, p plan.Plan) {
 	_ = r.Store.UpdateRunStatus(ctx, p.RunID, store.StatusCancelled, "")
 	_ = r.emit(p.RunID, p.TaskID, nil, event.TypeRunCancelled, nil)
+	r.releaseClaims(p.RunID, p.TaskID)
 	r.syncGraph(p.RunID)
 }
 
@@ -482,6 +493,59 @@ func (r *Runner) attachGraphHits(ctx context.Context, pack contextpack.Pack, t t
 		})
 	}
 	return contextpack.WithGraphHits(pack, items)
+}
+
+func (r *Runner) acquireStep(ctx context.Context, p plan.Plan, t task.Task, s plan.Step) error {
+	if r.Claims == nil {
+		return nil
+	}
+	res, ok, err := claim.Required(s.Capability, s.Input)
+	if err != nil {
+		return err
+	}
+	if !ok {
+		return nil
+	}
+	if err := r.Claims.Acquire(ctx, p.RunID, s.StepID, res); err != nil {
+		var ve result.Error
+		if errors.As(err, &ve) && ve.Code == result.CodeClaimConflict {
+			holder, _ := ve.Details["holder_run_id"].(string)
+			_ = r.emit(p.RunID, t.TaskID, &s.StepID, event.TypeClaimConflict, map[string]any{
+				"kind":          string(res.Kind),
+				"key":           res.Key,
+				"holder_run_id": holder,
+			})
+		}
+		return err
+	}
+	_ = r.emit(p.RunID, t.TaskID, &s.StepID, event.TypeClaimAcquired, map[string]any{
+		"kind":       string(res.Kind),
+		"key":        res.Key,
+		"step_id":    s.StepID,
+		"capability": s.Capability,
+	})
+	return nil
+}
+
+func (r *Runner) ReleaseClaims(runID, taskID string) {
+	r.releaseClaims(runID, taskID)
+}
+
+func (r *Runner) releaseClaims(runID, taskID string) {
+	if r.Claims == nil || runID == "" {
+		return
+	}
+	released, err := r.Claims.ReleaseAll(context.Background(), runID)
+	if err != nil {
+		r.Log.Warn("claim release failed", "run_id", runID, "err", err)
+		return
+	}
+	for _, res := range released {
+		_ = r.emit(runID, taskID, nil, event.TypeClaimReleased, map[string]any{
+			"kind": string(res.Kind),
+			"key":  res.Key,
+		})
+	}
 }
 
 func (r *Runner) emit(runID, taskID string, stepID *string, typ string, payload map[string]any) error {

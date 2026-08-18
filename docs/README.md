@@ -47,5 +47,5 @@ estao **CONFIRMADOS** (G-36 NATS = DEFERRED). Runtime Graph (`18`), Graph
 Hits (`19`), Git Player (`20`) e Filesystem Player (`21`, G-75..G-80)
 sao **CONFIRMED v0**. Execution Policy + HITL (`22`, G-81..G-86) e Docker
 Player (`23`, G-87..G-92) estao **CONFIRMED v0** (codigo = slices 10 e 11).
-Resource Claims (`24`, G-93..G-98) esta **CONFIRMED v0** (codigo = slice 12).
+Resource Claims (`24`, G-93..G-98) esta **CONFIRMED v0** (slice 12 feito).
 P3 restante: Blast Radius (resto de G-43), Project Memory G-46/G-47 (HYPOTHESIS).

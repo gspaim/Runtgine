@@ -14,27 +14,27 @@ import (
 type Status string
 
 const (
-	StatusAccepted  Status = "accepted"
-	StatusRejected  Status = "rejected"
-	StatusPlanned   Status = "planned"
-	StatusRunning   Status = "running"
-	StatusSucceeded Status = "succeeded"
-	StatusFailed    Status = "failed"
-	StatusCancelled        Status = "cancelled"
-	StatusWaitingApproval  Status = "waiting_approval"
+	StatusAccepted        Status = "accepted"
+	StatusRejected        Status = "rejected"
+	StatusPlanned         Status = "planned"
+	StatusRunning         Status = "running"
+	StatusSucceeded       Status = "succeeded"
+	StatusFailed          Status = "failed"
+	StatusCancelled       Status = "cancelled"
+	StatusWaitingApproval Status = "waiting_approval"
 )
 
 type Run struct {
-	RunID              string
-	TaskID             string
-	ParentRunID        string
-	Status             Status
-	ErrorJSON          string
-	PendingStepID      string
-	PendingCapability  string
-	PendingPlayer      string
-	CreatedAt          time.Time
-	UpdatedAt          time.Time
+	RunID             string
+	TaskID            string
+	ParentRunID       string
+	Status            Status
+	ErrorJSON         string
+	PendingStepID     string
+	PendingCapability string
+	PendingPlayer     string
+	CreatedAt         time.Time
+	UpdatedAt         time.Time
 }
 
 type RunRecord struct {
@@ -139,6 +139,16 @@ CREATE TABLE IF NOT EXISTS graph_edges (
 );
 CREATE INDEX IF NOT EXISTS idx_graph_edges_from ON graph_edges(from_kind, from_id);
 CREATE INDEX IF NOT EXISTS idx_graph_edges_to ON graph_edges(to_kind, to_id);
+CREATE TABLE IF NOT EXISTS resource_claims (
+  run_id TEXT NOT NULL,
+  kind TEXT NOT NULL,
+  key TEXT NOT NULL,
+  step_id TEXT NOT NULL DEFAULT '',
+  acquired_at TEXT NOT NULL,
+  released_at TEXT
+);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_resource_claims_active
+  ON resource_claims(kind, key) WHERE released_at IS NULL;
 `)
 	if err != nil {
 		return err
@@ -566,4 +576,156 @@ ORDER BY n.kind ASC, n.id ASC`
 		out = append(out, n)
 	}
 	return out, rows.Err()
+}
+
+type ResourceClaim struct {
+	RunID  string
+	Kind   string
+	Key    string
+	StepID string
+}
+
+// TryAcquireClaim inserts an exclusive claim. A non-empty holderRunID means
+// conflict with another run (err is nil). Same-run re-acquire of the same
+// kind+key is idempotent.
+func (s *Store) TryAcquireClaim(ctx context.Context, runID, stepID, kind, key string, overlaps func(aKind, aKey, bKind, bKey string) bool) (holderRunID string, err error) {
+	tx, err := s.db.BeginTx(ctx, nil)
+	if err != nil {
+		return "", err
+	}
+	committed := false
+	defer func() {
+		if !committed {
+			_ = tx.Rollback()
+		}
+	}()
+
+	rows, err := tx.QueryContext(ctx, `
+SELECT run_id, kind, key FROM resource_claims WHERE released_at IS NULL`)
+	if err != nil {
+		return "", err
+	}
+	var active []ResourceClaim
+	for rows.Next() {
+		var row ResourceClaim
+		if err := rows.Scan(&row.RunID, &row.Kind, &row.Key); err != nil {
+			_ = rows.Close()
+			return "", err
+		}
+		active = append(active, row)
+	}
+	if err := rows.Err(); err != nil {
+		_ = rows.Close()
+		return "", err
+	}
+	if err := rows.Close(); err != nil {
+		return "", err
+	}
+
+	for _, row := range active {
+		if row.RunID == runID && row.Kind == kind && row.Key == key {
+			if err := tx.Commit(); err != nil {
+				return "", err
+			}
+			committed = true
+			return "", nil
+		}
+		if row.RunID != runID && overlaps != nil && overlaps(kind, key, row.Kind, row.Key) {
+			if err := tx.Commit(); err != nil {
+				return "", err
+			}
+			committed = true
+			return row.RunID, nil
+		}
+	}
+
+	now := time.Now().UTC().Format(time.RFC3339Nano)
+	_, err = tx.ExecContext(ctx, `
+INSERT INTO resource_claims(run_id, kind, key, step_id, acquired_at, released_at)
+VALUES(?,?,?,?,?,NULL)`, runID, kind, key, stepID, now)
+	if err != nil {
+		return "", err
+	}
+	if err := tx.Commit(); err != nil {
+		return "", err
+	}
+	committed = true
+	return "", nil
+}
+
+func (s *Store) ListActiveClaims(ctx context.Context) ([]ResourceClaim, error) {
+	rows, err := s.db.QueryContext(ctx, `
+SELECT run_id, kind, key, step_id FROM resource_claims WHERE released_at IS NULL`)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var out []ResourceClaim
+	for rows.Next() {
+		var c ResourceClaim
+		if err := rows.Scan(&c.RunID, &c.Kind, &c.Key, &c.StepID); err != nil {
+			return nil, err
+		}
+		out = append(out, c)
+	}
+	return out, rows.Err()
+}
+
+func (s *Store) ReleaseClaimsForRun(ctx context.Context, runID string) ([]ResourceClaim, error) {
+	tx, err := s.db.BeginTx(ctx, nil)
+	if err != nil {
+		return nil, err
+	}
+	committed := false
+	defer func() {
+		if !committed {
+			_ = tx.Rollback()
+		}
+	}()
+	rows, err := tx.QueryContext(ctx, `
+SELECT run_id, kind, key, step_id FROM resource_claims
+WHERE run_id=? AND released_at IS NULL`, runID)
+	if err != nil {
+		return nil, err
+	}
+	var held []ResourceClaim
+	for rows.Next() {
+		var c ResourceClaim
+		if err := rows.Scan(&c.RunID, &c.Kind, &c.Key, &c.StepID); err != nil {
+			_ = rows.Close()
+			return nil, err
+		}
+		held = append(held, c)
+	}
+	if err := rows.Err(); err != nil {
+		_ = rows.Close()
+		return nil, err
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	now := time.Now().UTC().Format(time.RFC3339Nano)
+	if _, err := tx.ExecContext(ctx, `
+UPDATE resource_claims SET released_at=? WHERE run_id=? AND released_at IS NULL`, now, runID); err != nil {
+		return nil, err
+	}
+	if err := tx.Commit(); err != nil {
+		return nil, err
+	}
+	committed = true
+	return held, nil
+}
+
+func (s *Store) SweepOrphanClaims(ctx context.Context) (int64, error) {
+	now := time.Now().UTC().Format(time.RFC3339Nano)
+	res, err := s.db.ExecContext(ctx, `
+UPDATE resource_claims SET released_at=?
+WHERE released_at IS NULL
+  AND run_id NOT IN (
+    SELECT run_id FROM runs WHERE status IN ('running', 'waiting_approval')
+  )`, now)
+	if err != nil {
+		return 0, err
+	}
+	return res.RowsAffected()
 }
