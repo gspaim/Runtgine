@@ -89,8 +89,8 @@ Visão enxuta do que já está em `main`. **Atualizar esta seção em todo PR
 | Feito | Slice 10 — Execution Policy + HITL v0 (`approve` / `deny` / `waiting_approval`) |
 | Feito | Slice 11 — Docker Player v0 (`docker.ps` / `inspect` / `logs` / `run` / `build`) |
 | Feito | Slice 12 — Resource Claims v0 (`24`, G-93..G-98; `claim.conflict`) |
-| Próximo | Blast Radius (HYPOTHESIS; candidato `025`); TUI GRAPH (exige `14`) |
-| Depois | Project Memory (HYPOTHESIS); API HTTP; bus distribuído; desktop Wails |
+| Próximo | Slice 13 — Blast Radius v0 (`25`, G-99..G-104; spec CONFIRMED) |
+| Depois | TUI GRAPH (exige `14`); walk Blast←Graph; Project Memory (HYPOTHESIS); API HTTP; bus distribuído; desktop Wails |
 
 Detalhe do corte: [`docs/09-mvp.md`](docs/09-mvp.md). Limitações atuais abaixo.
 

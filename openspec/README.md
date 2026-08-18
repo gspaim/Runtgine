@@ -37,10 +37,10 @@ branch:              feat/<NNN>-<slug>   (ou docs/ fix/ chore/)
 
 Exemplos válidos: `001-shell-player`, `017-intent-engine`, `019-graph-hits`.
 
-**Próximo id livre:** `025`.
+**Próximo id livre:** `026`.
 
-Nenhuma mudança ativa. Último arquivo: [`changes/archive/2026-08-18-024-resource-claims/`](changes/archive/2026-08-18-024-resource-claims/)
-(slice 12 feito).
+Mudança ativa: [`changes/025-blast-radius/`](changes/025-blast-radius/)
+(spec CONFIRMED; código = slice 13).
 
 ## Autoridade
 
@@ -75,3 +75,4 @@ Não codificar mudança cujo status em `04` não esteja **CONFIRMED**
 | `execution-policy` | allow/deny/HITL (`waiting_approval`); ordem Policy→Claim |
 | `filesystem-player` | Player `fs.*` (read/write/list/stat) |
 | `resource-claims` | Claims exclusivos `workspace`/`path`; auto-claim; `claim.conflict` |
+| `blast-radius` | (delta ativo em `changes/025-blast-radius/`; merge após slice 13) |

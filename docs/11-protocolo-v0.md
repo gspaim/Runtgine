@@ -333,8 +333,10 @@ Responsabilidades v0:
 6. Coletar Results
 7. Resource Claims v0 nos steps mutadores da tabela (G-93..G-98; spec `24`) — depois da Policy, antes do Execute
 
-**Nao faz no v0:** replanejamento, background players, blast radius,
-wait/queue de claim. Execution Policy v0 (allow/deny/HITL) esta em
+**Nao faz no Runner v0:** replanejamento, background players, auto-blast.
+Blast Radius on-demand (`BlastTask` / `runtgine blast`) esta em
+[25-blast-radius-v0.md](25-blast-radius-v0.md) — nao entra neste
+pipeline. Execution Policy v0 (allow/deny/HITL) esta em
 [22-execution-policy-v0.md](22-execution-policy-v0.md). Resource Claims
 v0 esta em [24-resource-claims-v0.md](24-resource-claims-v0.md) — nao e
 o Orchestrator completo HYPOTHESIS.
@@ -388,6 +390,7 @@ GetRun(run_id) -> RunSnapshot
 Subscribe(filter) -> <-chan Event   // TUI/CLI status
 CancelRun(run_id) -> error          // pode ser stub no MVP
 ApproveRun(run_id, grant|deny) -> error  // G-84; spec `22`
+BlastTask(TaskIR) -> (ImpactReport | ValidationError)  // G-103; spec `25`; nao cria Run
 ```
 
 - Nao ha protocolo separado Board/CLI.
@@ -444,6 +447,8 @@ internal/core/
   registry/            # Player registry
   result/              # Result/Error
   graph/               # Runtime Graph v0 (G-60+)
+  claim/               # Resource Claims v0 (G-93+)
+  blast/               # Blast Radius v0 (G-99+; slice 13)
 internal/players/
   shell/
 internal/entrypoint/
