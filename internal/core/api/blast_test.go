@@ -10,6 +10,7 @@ import (
 
 	"github.com/gspaim/Runtgine/internal/core/blast"
 	"github.com/gspaim/Runtgine/internal/core/claim"
+	"github.com/gspaim/Runtgine/internal/core/graph"
 	"github.com/gspaim/Runtgine/internal/core/result"
 	"github.com/gspaim/Runtgine/internal/core/store"
 	"github.com/gspaim/Runtgine/internal/core/task"
@@ -40,6 +41,9 @@ func TestBlastHelloEmptyAndNoRun(t *testing.T) {
 	if len(runs) != 0 {
 		t.Fatalf("blast created runs: %v", runs)
 	}
+	if rep.Affected == nil || len(rep.Affected) != 0 {
+		t.Fatalf("affected=%v", rep.Affected)
+	}
 	active, err := core.Store.ListActiveClaims(context.Background())
 	if err != nil || len(active) != 0 {
 		t.Fatalf("claims=%v err=%v", active, err)
@@ -63,6 +67,9 @@ func TestBlastFSReadNoClaim(t *testing.T) {
 	}
 	if len(rep.Touches) != 1 || rep.Touches[0].Key != "a.txt" || rep.Touches[0].Mode != blast.ModeRead {
 		t.Fatalf("touches=%v", rep.Touches)
+	}
+	if len(rep.Affected) != 0 {
+		t.Fatalf("no path node → affected=%v", rep.Affected)
 	}
 }
 
@@ -158,5 +165,33 @@ func TestBlastIgnoresPolicyDeny(t *testing.T) {
 	}
 	if rep.Risk != blast.RiskPath {
 		t.Fatalf("risk=%s", rep.Risk)
+	}
+}
+
+func TestBlastWalkMentionsFromPathTouch(t *testing.T) {
+	core := openPolicyCore(t, nil)
+	ctx := context.Background()
+	if err := core.Graph.UpsertNode(ctx, graph.KindPath, "notes.md", nil); err != nil {
+		t.Fatal(err)
+	}
+	if err := core.Graph.UpsertEdge(ctx, graph.EdgeMentions, graph.KindRun, "prior-run", graph.KindPath, "notes.md", nil); err != nil {
+		t.Fatal(err)
+	}
+	rep, err := core.BlastTask(ctx, newTask(t, "write", []task.Step{writeStep("notes.md", "x")}))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if rep.Risk != blast.RiskPath {
+		t.Fatalf("risk must stay path, got %s", rep.Risk)
+	}
+	if len(rep.Affected) != 2 {
+		t.Fatalf("affected=%+v", rep.Affected)
+	}
+	if rep.Affected[0].Kind != graph.KindPath || rep.Affected[0].ID != "notes.md" || rep.Affected[0].Reason != blast.ReasonSeed {
+		t.Fatalf("seed=%+v", rep.Affected[0])
+	}
+	if rep.Affected[1].Kind != graph.KindRun || rep.Affected[1].ID != "prior-run" ||
+		rep.Affected[1].Reason != blast.ReasonMentions || rep.Affected[1].Via != "path:notes.md" {
+		t.Fatalf("mentions=%+v", rep.Affected[1])
 	}
 }
