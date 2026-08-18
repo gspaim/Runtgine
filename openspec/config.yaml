@@ -13,8 +13,9 @@ context: |
   Package layout: internal/core/*, internal/players/*, internal/entrypoint/*.
   Tests: go test ./... ; go vet ./... ; CGO_ENABLED=0 ok.
   Out of scope until promoted: Project Memory (docs/16), NATS, Wails MVP,
-  TUI GRAPH tab, MCP, HTTP API, Blast Radius. Resource Claims v0 is
-  CONFIRMED in docs/24 (slice 12 code still pending).
+  TUI GRAPH tab, MCP, HTTP API, Blast-from-Graph walk. Blast Radius v0 is
+  CONFIRMED in docs/25 (slice 13 code still pending). Resource Claims v0
+  is CONFIRMED in docs/24 (slice 12 done).
 
 rules:
   proposal:

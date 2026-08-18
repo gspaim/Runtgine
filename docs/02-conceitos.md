@@ -29,7 +29,7 @@ Human Intent -> Intent Engine -> Task IR -> Validator -> Execution Plan -> Event
 | Orchestrator | HYPOTHESIS | Coordena fluxo de execucao |
 | Execution Policy | CONFIRMED (v0) | allow/deny/approval-required; ver `22` |
 | Resource Claim | CONFIRMED (v0) | Bloqueio concorrente; ver `24` |
-| Blast Radius | HYPOTHESIS | Impacto de uma mudanca |
+| Blast Radius | CONFIRMED (v0) | Relatorio de impacto da Task IR; ver `25` |
 | Entry Point | CONFIRMED | Interface externa; nao e Player |
 
 ---
@@ -198,8 +198,9 @@ Default global: `allow`. Manifest pode declarar o verbo; `config.json`
 sobrescreve. `deny` rejeita na admissao; `approval-required` pausa o Run
 (`waiting_approval`) ate `ApproveRun`.
 
-Fora do motor de policy: wildcards, Blast Radius, Human Player.
+Fora do motor de policy: wildcards, Blast Radius como gate, Human Player.
 Resource Claims v0: ver [24-resource-claims-v0.md](24-resource-claims-v0.md).
+Blast Radius v0 (analise on-demand): ver [25-blast-radius-v0.md](25-blast-radius-v0.md).
 
 ---
 
@@ -214,19 +215,21 @@ mount). `shell.exec` nao claima. Conflito e fail-fast
 (`claim.conflict`); hold ate o Run terminal.
 
 Garante que dois Runs nao mutem o mesmo recurso simultaneamente.
-Blast Radius (analise de impacto) permanece HYPOTHESIS.
+Blast Radius v0: ver [25-blast-radius-v0.md](25-blast-radius-v0.md).
 
 ---
 
 ## Blast Radius
 
-Status: HYPOTHESIS
+Status: CONFIRMED (v0) — ver [25-blast-radius-v0.md](25-blast-radius-v0.md).
 
-Antes de executar uma mudanca, analisa o impacto:
+Relatorio deterministico a partir da Task IR (nao caminha o Graph no
+v0): o que a Task toca (inclui leituras) e o que claimaria (tabela
+G-95), mais overlay dos claims ativos. CLI `runtgine blast`; nao e
+gate de Execute e nao entra no Runner.
 
-Change -> Graph -> Affected Players, Workflows, Resources, Symbols
-
-Saida: Impact Analysis com workflows, recursos e risco afetados.
+Walk `Change -> Graph -> Affected Players, Workflows, Resources, Symbols`
+permanece fora (spec futura).
 
 ---
 

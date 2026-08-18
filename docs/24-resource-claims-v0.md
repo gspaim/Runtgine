@@ -7,12 +7,11 @@ Inventário: [10-gaps.md](10-gaps.md) (G-93+; recorte de G-43).
 Autoridade de status: [04-decisoes.md](04-decisoes.md).
 Pré-requisito: Execution Policy + HITL v0 ([22-execution-policy-v0.md](22-execution-policy-v0.md),
 slice 10) e Players mutadores Git/FS/Docker (slices 8–11).
-Consumidor seguinte: Blast Radius (candidato `025`); não depende deste
-slice para o Graph existir.
+Consumidor seguinte: Blast Radius v0 ([25-blast-radius-v0.md](25-blast-radius-v0.md)).
 
 **Status deste doc: CONFIRMED (v0).** G-93..G-98 implementados no
-slice 12. Blast Radius, wait/queue de claim e Human Player permanecem
-fora.
+slice 12. Wait/queue de claim e Human Player permanecem fora. Blast
+Radius v0: [25-blast-radius-v0.md](25-blast-radius-v0.md) (não é lock).
 
 **Pacote OpenSpec:** arquivado em
 [`openspec/changes/archive/2026-08-18-024-resource-claims/`](../openspec/changes/archive/2026-08-18-024-resource-claims/).
@@ -189,7 +188,7 @@ falho de admissão tardia.
 
 **Status: CONFIRMED** (como exclusões)
 
-- Blast Radius (resto de G-43; spec futura)
+- Blast Radius — recorte em `25` (G-99..G-104); fora deste motor (não é lock)
 - Wait / queue / estado `waiting_claim` / retry automático de claim
 - Locks distribuídos (NATS / multi-processo)
 - Wildcards de capability; claim por argv do `shell.exec`

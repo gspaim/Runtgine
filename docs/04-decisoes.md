@@ -52,7 +52,7 @@ Status: CONFIRMED | HYPOTHESIS | OPEN QUESTION | REJECTED
 | Player Router | HYPOTHESIS | Roteia por capability + custo |
 | Execution Policy | CONFIRMED (v0) | allow/deny/approval-required; ver `22-execution-policy-v0.md` |
 | Resource Claim | CONFIRMED (v0) | Bloqueio concorrente; ver `24-resource-claims-v0.md` |
-| Blast Radius | HYPOTHESIS | Impact analysis |
+| Blast Radius | CONFIRMED (v0) | Impact report Task IR; ver `25-blast-radius-v0.md` |
 | Many deterministic Players | CONFIRMED | Estrategico |
 | Runtgine + Chorus | CONFIRMED | Complementares |
 | Event Bus in-process (MVP) | CONFIRMED | Canais Go |
@@ -111,6 +111,7 @@ Ver [09-mvp.md](09-mvp.md). Decisoes-chave:
 - Execution Policy + HITL v0 (G-81..G-86; recorte G-42) — spec; codigo = slice 10
 - Docker Player v0 (G-87..G-92; recorte G-41) — spec; codigo = slice 11; depende de 022
 - Resource Claims v0 (G-93..G-98; recorte G-43) — spec; codigo = slice 12 — feito
+- Blast Radius v0 (G-99..G-104; resto de G-43) — spec; codigo = slice 13
 
 ## Protocolo v0 — confirmado (sessao de fechamento)
 
@@ -318,7 +319,7 @@ Codigo = slice 11 apos slice 10 (022).
 ## Resource Claims — CONFIRMED v0
 
 Ver [24-resource-claims-v0.md](24-resource-claims-v0.md). Recorte de G-43
-(Claims só; Blast Radius permanece HYPOTHESIS). Slice 12 feito.
+(Claims só; Blast Radius em `25`). Slice 12 feito.
 
 | Item | Status | Notas |
 |---|---|---|
@@ -328,6 +329,20 @@ Ver [24-resource-claims-v0.md](24-resource-claims-v0.md). Recorte de G-43
 | G-96 Lifecycle | CONFIRMED | Acquire no step; hold ate terminal; SQLite; eventos |
 | G-97 Conflito fail-fast | CONFIRMED | `claim.conflict`; sem wait/`waiting_claim`; TUI sem aba nova |
 | G-98 Exclusoes v0 | CONFIRMED | Blast, wait, Manifest `claims[]`, GRAPH, locks distribuidos |
+
+## Blast Radius — CONFIRMED v0
+
+Ver [25-blast-radius-v0.md](25-blast-radius-v0.md). Resto de G-43
+(análise de impacto; Claims já em `24`). Codigo = slice 13.
+
+| Item | Status | Notas |
+|---|---|---|
+| G-99 Papel / pacote `blast` | CONFIRMED | Core, nao Player; analise ≠ lock; nao entra no Runner |
+| G-100 Impact Report | CONFIRMED | touches, predicted_claims, risk, conflicts, images |
+| G-101 Tabelas | CONFIRMED | predicted = G-95; touches incluem fs.read/list/stat |
+| G-102 Overlay | CONFIRMED | read-only vs claims ativos; nunca Acquire |
+| G-103 Superficie | CONFIRMED | `BlastTask` + `runtgine blast`; sem TUI GRAPH |
+| G-104 Exclusoes v0 | CONFIRMED | Graph walk, gate Execute, shell argv, persistencia |
 
 ## Git / release — fluxo de branches
 

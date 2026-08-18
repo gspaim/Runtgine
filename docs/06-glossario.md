@@ -3,7 +3,7 @@
 | Termo | Definicao |
 |---|---|
 | Background Player | Player coordenado por outro Player via eventos |
-| Blast Radius | Analise de impacto de uma mudanca no grafo |
+| Blast Radius | Analise de impacto deterministica de uma Task IR (touches + predicted claims; ver `25`) |
 | Capability | O que um Player sabe fazer. Ex: deployment.update |
 | Chorus | Protocolo/comunicacao entre componentes (complementar ao Runtgine) |
 | Context Engine | Monta contexto relevante para cada Player |

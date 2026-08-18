@@ -106,7 +106,7 @@ Ate la, o Core deve rodar so com CLI + Shell.
 | G-40 | Workflow Templates loading (nativo vs repo externo) — ver `08` |
 | G-41 | Biblioteca ampla de Players | Em andamento — Git (`20`), Filesystem (`21`), Docker (`23`) v0 feitos |
 | G-42 | Human-in-the-loop / Approvals | **CONFIRMED v0** — recorte G-81..G-86 em `22` |
-| G-43 | Resource Claims / Blast Radius | **Claims CONFIRMED v0** — recorte G-93..G-98 em `24`. Blast Radius permanece HYPOTHESIS |
+| G-43 | Resource Claims / Blast Radius | **Claims CONFIRMED v0** — `24`. **Blast CONFIRMED v0** — recorte G-99..G-104 em `25` |
 | G-44 | MCP integration — candidato a transporte da Fase B de Project Memory (`16`) |
 | G-45 | API HTTP / webhooks |
 | G-46 | Project Memory (conceito + ContextPack + validade + hierarquia) — **HYPOTHESIS**; ver `16` |
@@ -188,6 +188,17 @@ Ate la, o Core deve rodar so com CLI + Shell.
 | G-97 | Conflito fail-fast | **CONFIRMED** — `claim.conflict`; sem wait |
 | G-98 | Exclusões v0 | **CONFIRMED** — Blast/wait/Manifest claims[]/GRAPH |
 
+## Blast Radius (resto de G-43) — CONFIRMED v0
+
+| ID | Gap | Notas |
+|---|---|---|
+| G-99 | Papel / pacote `blast` | **CONFIRMED** — ver `25-blast-radius-v0.md` |
+| G-100 | Impact Report | **CONFIRMED** — touches / predicted_claims / risk / conflicts |
+| G-101 | Tabelas de derivação | **CONFIRMED** — predicted = G-95; touches incluem leituras |
+| G-102 | Overlay vs claims ativos | **CONFIRMED** — read-only; nunca Acquire |
+| G-103 | Superfície CLI + API | **CONFIRMED** — `runtgine blast`; sem TUI GRAPH; sem auto no Runner |
+| G-104 | Exclusões v0 | **CONFIRMED** — Graph walk, gate Execute, argv shell, persistência |
+
 ---
 
 ## Ordem para fechar gaps
@@ -204,6 +215,7 @@ Ate la, o Core deve rodar so com CLI + Shell.
 10. Execution Policy + HITL — spec em `22` — G-81..G-86 CONFIRMED; codigo = slice 10
 11. Docker Player — spec em `23` — G-87..G-92 CONFIRMED; codigo = slice 11 (apos 10)
 12. Resource Claims — spec em `24` — G-93..G-98 CONFIRMED; codigo = slice 12 — feito
+13. Blast Radius — spec em `25` — G-99..G-104 CONFIRMED; codigo = slice 13
 
 ## Criterio de “pronto para codar”
 
@@ -217,7 +229,8 @@ Ate la, o Core deve rodar so com CLI + Shell.
 **Filesystem Player (G-75..G-80): CONFIRMADO** — slice 9 feito.  
 **Execution Policy + HITL (G-81..G-86): CONFIRMADO** — slice 10 feito.  
 **Docker Player (G-87..G-92): CONFIRMADO** — slice 11 feito.  
-**Resource Claims (G-93..G-98): CONFIRMADO** — slice 12 feito.
+**Resource Claims (G-93..G-98): CONFIRMADO** — slice 12 feito.  
+**Blast Radius (G-99..G-104): CONFIRMADO** — spec; codigo = slice 13.
 
 Ordem pratica de codigo:
 1. Core CLI + Shell (+ SQLite) — slice 1 — feito
@@ -232,8 +245,9 @@ Ordem pratica de codigo:
 10. Execution Policy + HITL v0 — slice 10 (G-81..G-86) — feito
 11. Docker Player v0 — slice 11 (G-87..G-92) — feito
 12. Resource Claims v0 — slice 12 (G-93..G-98) — feito
+13. Blast Radius v0 — slice 13 (G-99..G-104) — spec CONFIRMED; codigo pendente
 
-P3 restante (G-40 templates, G-43 Blast Radius, G-44 MCP, G-45 HTTP).
+P3 restante (G-40 templates, G-44 MCP, G-45 HTTP).
 Project Memory (G-46/G-47) permanece HYPOTHESIS em `16` — nao codificar.
-Aba TUI GRAPH exige `14` + skill. Experimentos de sidecar (Fase A) nao
-exigem mudanca no Core.
+Walk Blast←Graph e aba TUI GRAPH exigem spec futura / `14` + skill.
+Experimentos de sidecar (Fase A) nao exigem mudanca no Core.
