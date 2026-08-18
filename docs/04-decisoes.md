@@ -51,7 +51,7 @@ Status: CONFIRMED | HYPOTHESIS | OPEN QUESTION | REJECTED
 | Project Memory | HYPOTHESIS | Memoria episodica / de projeto; ver `16` |
 | Player Router | HYPOTHESIS | Roteia por capability + custo |
 | Execution Policy | CONFIRMED (v0) | allow/deny/approval-required; ver `22-execution-policy-v0.md` |
-| Resource Claim | HYPOTHESIS | Bloqueio concorrente |
+| Resource Claim | CONFIRMED (v0) | Bloqueio concorrente; ver `24-resource-claims-v0.md` |
 | Blast Radius | HYPOTHESIS | Impact analysis |
 | Many deterministic Players | CONFIRMED | Estrategico |
 | Runtgine + Chorus | CONFIRMED | Complementares |
@@ -110,6 +110,7 @@ Ver [09-mvp.md](09-mvp.md). Decisoes-chave:
 - Filesystem Player v0 (G-75..G-80; recorte G-41)
 - Execution Policy + HITL v0 (G-81..G-86; recorte G-42) — spec; codigo = slice 10
 - Docker Player v0 (G-87..G-92; recorte G-41) — spec; codigo = slice 11; depende de 022
+- Resource Claims v0 (G-93..G-98; recorte G-43) — spec; codigo = slice 12
 
 ## Protocolo v0 — confirmado (sessao de fechamento)
 
@@ -313,6 +314,20 @@ Codigo = slice 11 apos slice 10 (022).
 | G-90 Policy Manifest | CONFIRMED | run/build = approval-required (usa 22) |
 | G-91 Registry + exemplo | CONFIRMED | `api.Open` + `examples/docker-ps.json` |
 | G-92 Exclusoes v0 | CONFIRMED | push/compose/K8s/privileged |
+
+## Resource Claims — CONFIRMED v0
+
+Ver [24-resource-claims-v0.md](24-resource-claims-v0.md). Recorte de G-43
+(Claims só; Blast Radius permanece HYPOTHESIS). Codigo = slice 12.
+
+| Item | Status | Notas |
+|---|---|---|
+| G-93 Papel / pacote `claim` | CONFIRMED | Core, nao Player; Validator → Policy → Claim → Execute |
+| G-94 Kinds v0 | CONFIRMED | `workspace` e `path`; overlap segmentado; exclusivo |
+| G-95 Tabela automatica | CONFIRMED | fs.write, git.add/commit, docker.build, docker.run+mount; `shell.exec` fora |
+| G-96 Lifecycle | CONFIRMED | Acquire no step; hold ate terminal; SQLite; eventos |
+| G-97 Conflito fail-fast | CONFIRMED | `claim.conflict`; sem wait/`waiting_claim`; TUI sem aba nova |
+| G-98 Exclusoes v0 | CONFIRMED | Blast, wait, Manifest `claims[]`, GRAPH, locks distribuidos |
 
 ## Git / release — fluxo de branches
 

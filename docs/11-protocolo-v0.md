@@ -239,6 +239,9 @@ O Runner resolve `capability` → `player` via Registry. Sem replanejamento dina
 | `run.waiting_approval` | Policy `approval-required`; pausa antes do Execute (G-83) |
 | `run.approval_granted` | `ApproveRun(grant)` |
 | `run.approval_denied` | `ApproveRun(deny)` |
+| `claim.acquired` | Lock gravado (G-96; spec `24`) |
+| `claim.conflict` | Recurso tomado por outro Run (G-97) |
+| `claim.released` | Release no terminal do Run |
 
 Payload de `task.rejected` / `step.failed` usa o Error model (§9).
 
@@ -310,6 +313,7 @@ Codigos iniciais:
 | `policy.denied` | Execution Policy deny na admissao (G-82; spec `22`) |
 | `policy.approval_denied` | Humano recusou HITL (G-83) |
 | `policy.not_waiting` | `ApproveRun` sem Run em `waiting_approval` |
+| `claim.conflict` | Resource Claim: recurso exclusivo tomado (G-97; spec `24`) |
 
 ---
 
@@ -327,11 +331,13 @@ Responsabilidades v0:
 4. Enfileirar steps respeitando `depends_on` (MVP: executar em ordem topologica; falha em um step falha o run)
 5. Publicar eventos
 6. Coletar Results
+7. Resource Claims v0 nos steps mutadores da tabela (G-93..G-98; spec `24`) — depois da Policy, antes do Execute
 
 **Nao faz no v0:** replanejamento, background players, blast radius,
-resource claims. Execution Policy v0 (allow/deny/HITL) esta em
-[22-execution-policy-v0.md](22-execution-policy-v0.md) — nao e o
-Orchestrator completo HYPOTHESIS.
+wait/queue de claim. Execution Policy v0 (allow/deny/HITL) esta em
+[22-execution-policy-v0.md](22-execution-policy-v0.md). Resource Claims
+v0 esta em [24-resource-claims-v0.md](24-resource-claims-v0.md) — nao e
+o Orchestrator completo HYPOTHESIS.
 
 Relacao: Orchestrator HYPOTHESIS futuro pode absorver Runner.
 
@@ -347,7 +353,9 @@ Relacao: Orchestrator HYPOTHESIS futuro pode absorver Runner.
 - **Multiplos runs concorrentes** permitidos no MVP (limites de paralelismo
   configuraveis depois; default razoavel no processo).
 - Steps de um mesmo run respeitam `depends_on` (ordem topologica);
-  runs distintos nao se bloqueiam entre si no v0.
+  runs distintos nao se bloqueiam na fila. Resource Claims v0 (spec `24`)
+  pode **falhar** um Run mutador se o recurso ja estiver tomado
+  (fail-fast; nao e wait na Queue).
 
 ---
 

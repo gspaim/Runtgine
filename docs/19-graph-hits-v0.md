@@ -234,7 +234,7 @@ graph_hits (Task IR ≠ ContextPack).
 - `memory_hits` / Project Memory (`16`)
 - Novos `node_kind` / `edge_kind`
 - Ranking por embedding / LLM
-- Policies, Blast Radius, Claims derivados do Graph
+- Policies, Blast Radius derivados do Graph; Claims v0 é Core (`24`), não Graph
 - Mudança de heuristicas Intent por histórico de runs
 - Indexação background do repositório
 

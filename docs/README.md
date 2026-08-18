@@ -29,6 +29,7 @@ Autoridade de decisoes: [04-decisoes.md](04-decisoes.md).
 | 21 | 21-filesystem-player-v0.md | Filesystem Player v0 (**CONFIRMED**; G-75..G-80) |
 | 22 | 22-execution-policy-v0.md | Execution Policy + HITL v0 (**CONFIRMED**; G-81..G-86) |
 | 23 | 23-docker-player-v0.md | Docker Player v0 (**CONFIRMED**; G-87..G-92) |
+| 24 | 24-resource-claims-v0.md | Resource Claims v0 (**CONFIRMED**; G-93..G-98) |
 | — | [openspec/](../openspec/README.md) | Pacotes de mudança OpenSpec (`NNN-slug`) |
 
 ## Fontes historicas (raiz do repo)
@@ -46,4 +47,5 @@ estao **CONFIRMADOS** (G-36 NATS = DEFERRED). Runtime Graph (`18`), Graph
 Hits (`19`), Git Player (`20`) e Filesystem Player (`21`, G-75..G-80)
 sao **CONFIRMED v0**. Execution Policy + HITL (`22`, G-81..G-86) e Docker
 Player (`23`, G-87..G-92) estao **CONFIRMED v0** (codigo = slices 10 e 11).
-P3 restante: Claims/Blast (G-43), Project Memory G-46/G-47 (HYPOTHESIS).
+Resource Claims (`24`, G-93..G-98) esta **CONFIRMED v0** (codigo = slice 12).
+P3 restante: Blast Radius (resto de G-43), Project Memory G-46/G-47 (HYPOTHESIS).

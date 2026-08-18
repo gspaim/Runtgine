@@ -8,7 +8,7 @@ depois de G-93..G-98 CONFIRMED em `04` (este change) e merge em
 
 - [x] 0.1 `docs/24-resource-claims-v0.md` (G-93..G-98)
 - [x] 0.2 OpenSpec proposal / design / deltas
-- [ ] 0.3 Promover `04` / `10` / `02` / `11` e espelhos (mesmo PR)
+- [x] 0.3 Promover `04` / `10` / `02` / `11` e espelhos (mesmo PR)
 
 ## 1. Claim engine
 
