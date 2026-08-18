@@ -32,14 +32,15 @@ func Runtime(code, msg string, retryable bool, details map[string]any) Error {
 }
 
 const (
-	CodeSchema             = "validation.schema"
-	CodeUnknownCapability  = "validation.unknown_capability"
-	CodeInvalidInput       = "validation.invalid_input"
-	CodePlayerError        = "runtime.player_error"
-	CodeTimeout            = "runtime.timeout"
-	CodeCancelled          = "runtime.cancelled"
+	CodeSchema               = "validation.schema"
+	CodeUnknownCapability    = "validation.unknown_capability"
+	CodeInvalidInput         = "validation.invalid_input"
+	CodePlayerError          = "runtime.player_error"
+	CodeTimeout              = "runtime.timeout"
+	CodeCancelled            = "runtime.cancelled"
 	CodeInternal             = "runtime.internal"
 	CodePolicyDenied         = "policy.denied"
 	CodePolicyApprovalDenied = "policy.approval_denied"
 	CodePolicyNotWaiting     = "policy.not_waiting"
+	CodeClaimConflict        = "claim.conflict"
 )
