@@ -77,13 +77,13 @@ func writeStep(path, content string) task.Step {
 	return task.Step{StepID: "write", Capability: "fs.write", Input: raw}
 }
 
-func sleepStep(seconds int) task.Step {
+func sleepStep(seconds int, dependsOn ...string) task.Step {
 	raw, _ := json.Marshal(map[string]any{
 		"command":    []string{"sleep", strconv.Itoa(seconds)},
 		"workdir":    ".",
 		"timeout_ms": (seconds + 5) * 1000,
 	})
-	return task.Step{StepID: "hold", Capability: "shell.exec", Input: raw}
+	return task.Step{StepID: "hold", Capability: "shell.exec", Input: raw, DependsOn: dependsOn}
 }
 
 func TestClaimShellConcurrentHello(t *testing.T) {
@@ -104,7 +104,7 @@ func TestClaimFSWriteSamePathConflict(t *testing.T) {
 	core := openPolicyCore(t, nil)
 	holder := newTask(t, "hold notes", []task.Step{
 		writeStep("notes.md", "one"),
-		sleepStep(2),
+		sleepStep(2, "write"),
 	})
 	challenger := newTask(t, "write notes", []task.Step{writeStep("notes.md", "two")})
 	a, err := core.SubmitTask(context.Background(), holder)
@@ -200,7 +200,7 @@ func TestClaimGitCommitVsFSWrite(t *testing.T) {
 	addRaw, _ := json.Marshal(map[string]any{"paths": []string{"README"}})
 	holder := newTask(t, "git add hold", []task.Step{
 		{StepID: "add", Capability: "git.add", Input: addRaw},
-		sleepStep(2),
+		sleepStep(2, "add"),
 	})
 	a, err := core.SubmitTask(context.Background(), holder)
 	if err != nil {
@@ -248,7 +248,7 @@ func TestClaimHITLDoesNotHoldThenConflictOnGrant(t *testing.T) {
 	addRaw, _ := json.Marshal(map[string]any{"paths": []string{"README"}})
 	holder := newTask(t, "hold workspace", []task.Step{
 		{StepID: "add", Capability: "git.add", Input: addRaw},
-		sleepStep(2),
+		sleepStep(2, "add"),
 	})
 	b, err := core.SubmitTask(context.Background(), holder)
 	if err != nil {
