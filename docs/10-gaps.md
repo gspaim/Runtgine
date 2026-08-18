@@ -106,7 +106,7 @@ Ate la, o Core deve rodar so com CLI + Shell.
 | G-40 | Workflow Templates loading (nativo vs repo externo) — ver `08` |
 | G-41 | Biblioteca ampla de Players | Em andamento — Git (`20`), Filesystem (`21`), Docker (`23`) v0 feitos |
 | G-42 | Human-in-the-loop / Approvals | **CONFIRMED v0** — recorte G-81..G-86 em `22` |
-| G-43 | Resource Claims / Blast Radius | **Claims CONFIRMED v0** — `24`. **Blast CONFIRMED v0** — recorte G-99..G-104 em `25` |
+| G-43 | Resource Claims / Blast Radius | **Claims CONFIRMED v0** — `24`. **Blast CONFIRMED v0** — `25`. **Walk Blast←Graph CONFIRMED v0** — recorte G-111..G-116 em `27` |
 | G-44 | MCP integration — candidato a transporte da Fase B de Project Memory (`16`) |
 | G-45 | API HTTP / webhooks |
 | G-46 | Project Memory (conceito + ContextPack + validade + hierarquia) — **HYPOTHESIS**; ver `16` |
@@ -197,7 +197,7 @@ Ate la, o Core deve rodar so com CLI + Shell.
 | G-101 | Tabelas de derivação | **CONFIRMED** — predicted = G-95; touches incluem leituras |
 | G-102 | Overlay vs claims ativos | **CONFIRMED** — read-only; nunca Acquire |
 | G-103 | Superfície CLI + API | **CONFIRMED** — `runtgine blast`; sem TUI GRAPH; sem auto no Runner |
-| G-104 | Exclusões v0 | **CONFIRMED** — Graph walk, gate Execute, argv shell, persistência |
+| G-104 | Exclusões v0 | **CONFIRMED** — gate Execute, argv shell, persistência; walk 1-hop em `27` |
 
 ## TUI GRAPH (aba) — CONFIRMED v0
 
@@ -209,6 +209,17 @@ Ate la, o Core deve rodar so com CLI + Shell.
 | G-108 | Refresh | **CONFIRMED** — `r` → RefreshGraph + snapshot |
 | G-109 | Filtro | **CONFIRMED** — substring kind/id |
 | G-110 | Exclusões v0 | **CONFIRMED** — Blast-from-graph, Hits UI, PTY, edit |
+
+## Walk Blast←Graph — CONFIRMED v0
+
+| ID | Gap | Notas |
+|---|---|---|
+| G-111 | Papel do walk | **CONFIRMED** — ver `27-blast-graph-walk-v0.md` |
+| G-112 | Snapshot / degradação | **CONFIRMED** — erro → `affected=[]` |
+| G-113 | Sementes e hop | **CONFIRMED** — path touches; inbound `mentions` |
+| G-114 | Campo `affected` | **CONFIRMED** — `risk` intacto |
+| G-115 | Superfície | **CONFIRMED** — `BlastTask` + CLI; sem TUI |
+| G-116 | Exclusões v0 | **CONFIRMED** — GRAPH→blast, multi-hop, gate, Hits |
 
 ---
 
@@ -228,6 +239,7 @@ Ate la, o Core deve rodar so com CLI + Shell.
 12. Resource Claims — spec em `24` — G-93..G-98 CONFIRMED; codigo = slice 12 — feito
 13. Blast Radius — spec em `25` — G-99..G-104 CONFIRMED; codigo = slice 13 — feito
 14. TUI GRAPH — spec em `26` — G-105..G-110 CONFIRMED; codigo = slice 14 — feito
+15. Walk Blast←Graph — spec em `27` — G-111..G-116 CONFIRMED; codigo = slice 15
 
 ## Criterio de “pronto para codar”
 
@@ -243,7 +255,8 @@ Ate la, o Core deve rodar so com CLI + Shell.
 **Docker Player (G-87..G-92): CONFIRMADO** — slice 11 feito.  
 **Resource Claims (G-93..G-98): CONFIRMADO** — slice 12 feito.  
 **Blast Radius (G-99..G-104): CONFIRMADO** — slice 13 feito.  
-**TUI GRAPH (G-105..G-110): CONFIRMADO** — slice 14 feito.
+**TUI GRAPH (G-105..G-110): CONFIRMADO** — slice 14 feito.  
+**Walk Blast←Graph (G-111..G-116): CONFIRMADO** — spec; codigo = slice 15.
 
 Ordem pratica de codigo:
 1. Core CLI + Shell (+ SQLite) — slice 1 — feito
@@ -260,9 +273,10 @@ Ordem pratica de codigo:
 12. Resource Claims v0 — slice 12 (G-93..G-98) — feito
 13. Blast Radius v0 — slice 13 (G-99..G-104) — feito
 14. TUI GRAPH v0 — slice 14 (G-105..G-110) — feito
+15. Walk Blast←Graph v0 — slice 15 (G-111..G-116) — spec CONFIRMED; codigo pendente
 
 P3 restante (G-40 templates, G-44 MCP, G-45 HTTP).
 Project Memory (G-46/G-47) permanece HYPOTHESIS em `16` — nao codificar.
-Walk Blast←Graph permanece HYPOTHESIS. Aba TUI GRAPH: spec `26` (G-105..G-110);
-slice 14 feito.
+Walk Blast←Graph: spec `27` (G-111..G-116); codigo = slice 15.
+Aba TUI GRAPH: spec `26` — slice 14 feito.
 Experimentos de sidecar (Fase A) nao exigem mudanca no Core.

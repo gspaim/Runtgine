@@ -1,0 +1,9 @@
+schema: spec-driven
+created: 2026-08-18
+nnn: "027"
+slug: blast-graph-walk
+docs_canonical: docs/27-blast-graph-walk-v0.md
+gaps: [G-111, G-112, G-113, G-114, G-115, G-116]
+status: active
+branch: feat/027-blast-graph-walk
+depends_on: ["025-blast-radius", "026-tui-graph"]
