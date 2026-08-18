@@ -199,6 +199,17 @@ Ate la, o Core deve rodar so com CLI + Shell.
 | G-103 | Superfície CLI + API | **CONFIRMED** — `runtgine blast`; sem TUI GRAPH; sem auto no Runner |
 | G-104 | Exclusões v0 | **CONFIRMED** — Graph walk, gate Execute, argv shell, persistência |
 
+## TUI GRAPH (aba) — CONFIRMED v0
+
+| ID | Gap | Notas |
+|---|---|---|
+| G-105 | Papel da aba GRAPH | **CONFIRMED** — ver `26-tui-graph-v0.md` |
+| G-106 | Seis tabs + keymap | **CONFIRMED** — GRAPH entre EVENTS e CONFIG |
+| G-107 | Lista / counts / detalhe | **CONFIRMED** — sem canvas 2D |
+| G-108 | Refresh | **CONFIRMED** — `r` → RefreshGraph + snapshot |
+| G-109 | Filtro | **CONFIRMED** — substring kind/id |
+| G-110 | Exclusões v0 | **CONFIRMED** — Blast-from-graph, Hits UI, PTY, edit |
+
 ---
 
 ## Ordem para fechar gaps
@@ -216,6 +227,7 @@ Ate la, o Core deve rodar so com CLI + Shell.
 11. Docker Player — spec em `23` — G-87..G-92 CONFIRMED; codigo = slice 11 (apos 10)
 12. Resource Claims — spec em `24` — G-93..G-98 CONFIRMED; codigo = slice 12 — feito
 13. Blast Radius — spec em `25` — G-99..G-104 CONFIRMED; codigo = slice 13 — feito
+14. TUI GRAPH — spec em `26` — G-105..G-110 CONFIRMED; codigo = slice 14
 
 ## Criterio de “pronto para codar”
 
@@ -230,7 +242,8 @@ Ate la, o Core deve rodar so com CLI + Shell.
 **Execution Policy + HITL (G-81..G-86): CONFIRMADO** — slice 10 feito.  
 **Docker Player (G-87..G-92): CONFIRMADO** — slice 11 feito.  
 **Resource Claims (G-93..G-98): CONFIRMADO** — slice 12 feito.  
-**Blast Radius (G-99..G-104): CONFIRMADO** — slice 13 feito.
+**Blast Radius (G-99..G-104): CONFIRMADO** — slice 13 feito.  
+**TUI GRAPH (G-105..G-110): CONFIRMADO** — spec; codigo = slice 14.
 
 Ordem pratica de codigo:
 1. Core CLI + Shell (+ SQLite) — slice 1 — feito
@@ -246,8 +259,10 @@ Ordem pratica de codigo:
 11. Docker Player v0 — slice 11 (G-87..G-92) — feito
 12. Resource Claims v0 — slice 12 (G-93..G-98) — feito
 13. Blast Radius v0 — slice 13 (G-99..G-104) — feito
+14. TUI GRAPH v0 — slice 14 (G-105..G-110) — spec CONFIRMED; codigo pendente
 
 P3 restante (G-40 templates, G-44 MCP, G-45 HTTP).
 Project Memory (G-46/G-47) permanece HYPOTHESIS em `16` — nao codificar.
-Walk Blast←Graph e aba TUI GRAPH exigem spec futura / `14` + skill.
+Walk Blast←Graph permanece HYPOTHESIS. Aba TUI GRAPH: spec `26` (G-105..G-110);
+codigo = slice 14.
 Experimentos de sidecar (Fase A) nao exigem mudanca no Core.

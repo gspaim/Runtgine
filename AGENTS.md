@@ -55,6 +55,9 @@ Resource Claims: `docs/24-resource-claims-v0.md` + archive
 Blast Radius: `docs/25-blast-radius-v0.md` + archive
 `openspec/changes/archive/2026-08-18-025-blast-radius/` — CONFIRMED v0
 (G-99..G-104); slice 13 feito.
+TUI GRAPH: `docs/26-tui-graph-v0.md` + change
+`openspec/changes/026-tui-graph/` — CONFIRMED v0 (G-105..G-110);
+codigo = slice 14.
 Skill obrigatoria para TUI: `.cursor/skills/runtgine-tui-design/SKILL.md`.
 
 ## Ordem de trabalho
@@ -78,7 +81,8 @@ Skill obrigatoria para TUI: `.cursor/skills/runtgine-tui-design/SKILL.md`.
 17. Docker Player — CONFIRMED v0 em `23` + OpenSpec archive `023-docker-player` — feito
 18. Resource Claims — CONFIRMED v0 em `24` + OpenSpec archive `024-resource-claims` — feito
 19. Blast Radius — CONFIRMED v0 em `25` + OpenSpec archive `025-blast-radius` — feito
-20. TUI GRAPH / walk Blast←Graph / mais Players — so apos nova promocao em `04`
+20. TUI GRAPH — CONFIRMED v0 em `26` + OpenSpec `026-tui-graph` — spec; codigo = slice 14
+21. Walk Blast←Graph / mais Players — so apos nova promocao em `04`
 
 ## Conceitos chave (nao confundir)
 

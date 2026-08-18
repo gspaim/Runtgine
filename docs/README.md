@@ -31,6 +31,7 @@ Autoridade de decisoes: [04-decisoes.md](04-decisoes.md).
 | 23 | 23-docker-player-v0.md | Docker Player v0 (**CONFIRMED**; G-87..G-92) |
 | 24 | 24-resource-claims-v0.md | Resource Claims v0 (**CONFIRMED**; G-93..G-98) |
 | 25 | 25-blast-radius-v0.md | Blast Radius v0 (**CONFIRMED**; G-99..G-104) |
+| 26 | 26-tui-graph-v0.md | TUI GRAPH v0 (**CONFIRMED**; G-105..G-110) |
 | — | [openspec/](../openspec/README.md) | Pacotes de mudança OpenSpec (`NNN-slug`) |
 
 ## Fontes historicas (raiz do repo)
@@ -50,4 +51,5 @@ sao **CONFIRMED v0**. Execution Policy + HITL (`22`, G-81..G-86) e Docker
 Player (`23`, G-87..G-92) estao **CONFIRMED v0** (codigo = slices 10 e 11).
 Resource Claims (`24`, G-93..G-98) esta **CONFIRMED v0** (slice 12 feito).
 Blast Radius (`25`, G-99..G-104) esta **CONFIRMED v0** (slice 13 feito).
+TUI GRAPH (`26`, G-105..G-110) esta **CONFIRMED v0** (codigo = slice 14).
 P3 restante: walk Blast←Graph, Project Memory G-46/G-47 (HYPOTHESIS).

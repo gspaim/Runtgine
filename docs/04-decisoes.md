@@ -52,7 +52,7 @@ Status: CONFIRMED | HYPOTHESIS | OPEN QUESTION | REJECTED
 | Player Router | HYPOTHESIS | Roteia por capability + custo |
 | Execution Policy | CONFIRMED (v0) | allow/deny/approval-required; ver `22-execution-policy-v0.md` |
 | Resource Claim | CONFIRMED (v0) | Bloqueio concorrente; ver `24-resource-claims-v0.md` |
-| Blast Radius | CONFIRMED (v0) | Impact report Task IR; ver `25-blast-radius-v0.md` |
+| TUI GRAPH tab | CONFIRMED (v0) | Aba read-only; ver `26-tui-graph-v0.md` + `14` |
 | Many deterministic Players | CONFIRMED | Estrategico |
 | Runtgine + Chorus | CONFIRMED | Complementares |
 | Event Bus in-process (MVP) | CONFIRMED | Canais Go |
@@ -112,6 +112,7 @@ Ver [09-mvp.md](09-mvp.md). Decisoes-chave:
 - Docker Player v0 (G-87..G-92; recorte G-41) — spec; codigo = slice 11; depende de 022
 - Resource Claims v0 (G-93..G-98; recorte G-43) — spec; codigo = slice 12 — feito
 - Blast Radius v0 (G-99..G-104; resto de G-43) — spec; codigo = slice 13 — feito
+- TUI GRAPH v0 (G-105..G-110) — spec; codigo = slice 14; altera `14` + skill
 
 ## Protocolo v0 — confirmado (sessao de fechamento)
 
@@ -343,6 +344,21 @@ Ver [25-blast-radius-v0.md](25-blast-radius-v0.md). Resto de G-43
 | G-102 Overlay | CONFIRMED | read-only vs claims ativos; nunca Acquire |
 | G-103 Superficie | CONFIRMED | `BlastTask` + `runtgine blast`; sem TUI GRAPH |
 | G-104 Exclusoes v0 | CONFIRMED | Graph walk, gate Execute, shell argv, persistencia |
+
+## TUI GRAPH — CONFIRMED v0
+
+Ver [26-tui-graph-v0.md](26-tui-graph-v0.md). Aba da TUI sobre o Graph
+de `18`. Altera [14-tui-design.md](14-tui-design.md) e a skill.
+Codigo = slice 14.
+
+| Item | Status | Notas |
+|---|---|---|
+| G-105 Papel | CONFIRMED | Aba TUI; SoT = `GetGraphSnapshot`; nao e Core novo |
+| G-106 Tabs + teclas | CONFIRMED | Seis abas; GRAPH entre EVENTS e CONFIG; sem tecla `g` |
+| G-107 Conteudo | CONFIRMED | Counts + lista + detalhe; sem canvas 2D |
+| G-108 Refresh | CONFIRMED | `r` → `RefreshGraph` + snapshot |
+| G-109 Filtro | CONFIRMED | `/` substring kind/id; independente de EVENTS |
+| G-110 Exclusoes v0 | CONFIRMED | Blast-from-graph, Hits UI, PTY, editar grafo |
 
 ## Git / release — fluxo de branches
 

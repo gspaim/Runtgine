@@ -1,0 +1,9 @@
+schema: spec-driven
+created: 2026-08-18
+nnn: "026"
+slug: tui-graph
+docs_canonical: docs/26-tui-graph-v0.md
+gaps: [G-105, G-106, G-107, G-108, G-109, G-110]
+status: active
+branch: feat/026-tui-graph
+depends_on: ["018-runtime-graph"]

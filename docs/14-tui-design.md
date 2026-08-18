@@ -72,7 +72,7 @@ workspace ~/proj · local ●
 Tabs:
 
 ```text
-[ RUNS ] [ LIVE ] [ BOARD ] [ EVENTS ] [ CONFIG ]
+[ RUNS ] [ LIVE ] [ BOARD ] [ EVENTS ] [ GRAPH ] [ CONFIG ]
 ```
 
 Footer:
@@ -149,6 +149,23 @@ Stream de telemetria com:
 - filtro `/` (ex.: `run:... type:step.*`);
 - painel de payload JSON.
 
+## Aba GRAPH
+
+Read-only sobre o Runtime Graph do workspace (spec `26`, G-105..G-110).
+Não substitui LIVE (LIVE = trajetória de **um** Run).
+
+Mostra:
+
+- counts `nodes` / `edges` e por `node_kind`;
+- lista `kind` + `id` (ordem G-61, depois id);
+- detalhe do nó selecionado: attrs + arestas incidentes (texto).
+
+`r` na aba chama `RefreshGraph` e recarrega o snapshot. `/` filtra
+kind/id. Em `< 80` colunas: lista vertical; sem diagrama horizontal.
+
+Core APIs: `GetGraphSnapshot`, `RefreshGraph`. Sem Player, sem canvas 2D,
+sem Blast/Hits nesta aba.
+
 ## Aba CONFIG
 
 Somente leitura no v0:
@@ -184,7 +201,8 @@ Secrets sempre mascarados.
 - tuios / terminal multiplexer;
 - PTY interativo embutido;
 - edicao rica de config;
-- Runtime Graph completo;
+- Runtime Graph “completo” (genome, AST contínuo, grafo federado);
+- walk Blast←Graph na TUI;
 - acesso web/SSH;
 - Wails.
 
@@ -200,9 +218,10 @@ Antes de criar ou alterar a TUI, ler:
 - Comando: `runtgine tui`
 - Stack: Charm v2 (`charm.land/bubbletea/v2`, `lipgloss/v2`, `bubbles/v2`)
 - Core APIs: `ListRuns`, `GetRun`, `ListRecentEvents`, `Subscribe`,
-  `CancelRun` e `ConfigSnapshot`
+  `CancelRun`, `ConfigSnapshot`; GRAPH (slice 14) acrescenta
+  `GetGraphSnapshot` e `RefreshGraph` — ver `26`
 - Config permanece read-only; o snapshot nao expoe tokens ou API keys
 - Cancelamento exige confirmacao e persiste o estado de runs orfaos de um
   processo CLI anterior
-- Testes cobrem navegacao, resize, cinco tabs, filtro, cancelamento e
-  `NO_COLOR`
+- Testes cobrem navegacao, resize, **seis** tabs (após slice 14), filtro,
+  cancelamento e `NO_COLOR`
