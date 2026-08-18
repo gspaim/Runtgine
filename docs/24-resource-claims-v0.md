@@ -10,13 +10,14 @@ slice 10) e Players mutadores Git/FS/Docker (slices 8–11).
 Consumidor seguinte: Blast Radius (candidato `025`); não depende deste
 slice para o Graph existir.
 
-**Status deste doc: CONFIRMED (v0).** G-93..G-98 autorizam o slice 12
-de código. Blast Radius, wait/queue de claim e Human Player permanecem
+**Status deste doc: CONFIRMED (v0).** G-93..G-98 implementados no
+slice 12. Blast Radius, wait/queue de claim e Human Player permanecem
 fora.
 
-**Pacote OpenSpec:** ativo em
-[`openspec/changes/024-resource-claims/`](../openspec/changes/024-resource-claims/).
-Branch de implementação: `feat/024-resource-claims`.
+**Pacote OpenSpec:** arquivado em
+[`openspec/changes/archive/2026-08-18-024-resource-claims/`](../openspec/changes/archive/2026-08-18-024-resource-claims/).
+Deltas mergeados em `openspec/specs/resource-claims/`. Branch de implementação:
+`feat/024-resource-claims`.
 
 ---
 
@@ -223,20 +224,20 @@ falho de admissão tardia.
    overlap de path, workspace vs path, e órfãos no boot.
 9. `go test ./...` e `go vet ./...` verdes.
 10. OpenSpec `024-resource-claims` arquivado após o merge do **código**
-    (slice 12), não neste PR de spec.
+    (slice 12).
 
 ---
 
 ## 5. Ordem do slice de código
 
-Bloqueado até G-93..G-98 CONFIRMED — este doc + OpenSpec (este PR):
+Slice 12 feito:
 
 1. Pacote `internal/core/claim` + migração SQLite
 2. Tabela automática + overlap + boot sweep
 3. Runner: Policy → Claim → Execute; eventos + `claim.conflict`
 4. CLI mensagem; TUI sem aba nova (status `failed` existente)
-5. Testes de corrida `fs.write`; README Estágio: Slice 12
-6. Arquivar OpenSpec `024` após o merge do código
+5. Testes de corrida `fs.write`; README Estágio: Slice 12 Feito
+6. OpenSpec `024` arquivado
 
 ---
 

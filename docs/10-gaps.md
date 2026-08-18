@@ -203,7 +203,7 @@ Ate la, o Core deve rodar so com CLI + Shell.
 9. Filesystem Player — spec em `21` — G-75..G-80 CONFIRMED; codigo = slice 9 — feito
 10. Execution Policy + HITL — spec em `22` — G-81..G-86 CONFIRMED; codigo = slice 10
 11. Docker Player — spec em `23` — G-87..G-92 CONFIRMED; codigo = slice 11 (apos 10)
-12. Resource Claims — spec em `24` — G-93..G-98 CONFIRMED; codigo = slice 12
+12. Resource Claims — spec em `24` — G-93..G-98 CONFIRMED; codigo = slice 12 — feito
 
 ## Criterio de “pronto para codar”
 
@@ -217,7 +217,7 @@ Ate la, o Core deve rodar so com CLI + Shell.
 **Filesystem Player (G-75..G-80): CONFIRMADO** — slice 9 feito.  
 **Execution Policy + HITL (G-81..G-86): CONFIRMADO** — slice 10 feito.  
 **Docker Player (G-87..G-92): CONFIRMADO** — slice 11 feito.  
-**Resource Claims (G-93..G-98): CONFIRMADO** — spec; codigo = slice 12.
+**Resource Claims (G-93..G-98): CONFIRMADO** — slice 12 feito.
 
 Ordem pratica de codigo:
 1. Core CLI + Shell (+ SQLite) — slice 1 — feito
@@ -231,7 +231,7 @@ Ordem pratica de codigo:
 9. Filesystem Player v0 — slice 9 (G-75..G-80) — feito
 10. Execution Policy + HITL v0 — slice 10 (G-81..G-86) — feito
 11. Docker Player v0 — slice 11 (G-87..G-92) — feito
-12. Resource Claims v0 — slice 12 (G-93..G-98) — spec CONFIRMED; codigo pendente
+12. Resource Claims v0 — slice 12 (G-93..G-98) — feito
 
 P3 restante (G-40 templates, G-43 Blast Radius, G-44 MCP, G-45 HTTP).
 Project Memory (G-46/G-47) permanece HYPOTHESIS em `16` — nao codificar.

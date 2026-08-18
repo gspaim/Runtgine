@@ -39,8 +39,8 @@ Exemplos válidos: `001-shell-player`, `017-intent-engine`, `019-graph-hits`.
 
 **Próximo id livre:** `025`.
 
-Mudança ativa: [`changes/024-resource-claims/`](changes/024-resource-claims/)
-(spec CONFIRMED; código = slice 12).
+Nenhuma mudança ativa. Último arquivo: [`changes/archive/2026-08-18-024-resource-claims/`](changes/archive/2026-08-18-024-resource-claims/)
+(slice 12 feito).
 
 ## Autoridade
 
@@ -72,6 +72,6 @@ Não codificar mudança cujo status em `04` não esteja **CONFIRMED**
 | `runtime-graph` | Graph estrutural + QueryHits |
 | `git-player` | Player `git.*` (status/diff/log/add/commit) |
 | `docker-player` | Player `docker.*` (ps/inspect/logs/run/build) |
-| `execution-policy` | allow/deny/HITL (`waiting_approval`); ordem Policy→Claim em `024` |
+| `execution-policy` | allow/deny/HITL (`waiting_approval`); ordem Policy→Claim |
 | `filesystem-player` | Player `fs.*` (read/write/list/stat) |
-| `resource-claims` | (delta ativo em `changes/024-resource-claims/`; merge após slice 12) |
+| `resource-claims` | Claims exclusivos `workspace`/`path`; auto-claim; `claim.conflict` |

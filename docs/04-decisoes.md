@@ -110,7 +110,7 @@ Ver [09-mvp.md](09-mvp.md). Decisoes-chave:
 - Filesystem Player v0 (G-75..G-80; recorte G-41)
 - Execution Policy + HITL v0 (G-81..G-86; recorte G-42) — spec; codigo = slice 10
 - Docker Player v0 (G-87..G-92; recorte G-41) — spec; codigo = slice 11; depende de 022
-- Resource Claims v0 (G-93..G-98; recorte G-43) — spec; codigo = slice 12
+- Resource Claims v0 (G-93..G-98; recorte G-43) — spec; codigo = slice 12 — feito
 
 ## Protocolo v0 — confirmado (sessao de fechamento)
 
@@ -318,7 +318,7 @@ Codigo = slice 11 apos slice 10 (022).
 ## Resource Claims — CONFIRMED v0
 
 Ver [24-resource-claims-v0.md](24-resource-claims-v0.md). Recorte de G-43
-(Claims só; Blast Radius permanece HYPOTHESIS). Codigo = slice 12.
+(Claims só; Blast Radius permanece HYPOTHESIS). Slice 12 feito.
 
 | Item | Status | Notas |
 |---|---|---|
