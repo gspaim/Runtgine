@@ -239,7 +239,7 @@ Ate la, o Core deve rodar so com CLI + Shell.
 12. Resource Claims — spec em `24` — G-93..G-98 CONFIRMED; codigo = slice 12 — feito
 13. Blast Radius — spec em `25` — G-99..G-104 CONFIRMED; codigo = slice 13 — feito
 14. TUI GRAPH — spec em `26` — G-105..G-110 CONFIRMED; codigo = slice 14 — feito
-15. Walk Blast←Graph — spec em `27` — G-111..G-116 CONFIRMED; codigo = slice 15
+15. Walk Blast←Graph — spec em `27` — G-111..G-116 CONFIRMED; codigo = slice 15 — feito
 
 ## Criterio de “pronto para codar”
 
@@ -256,7 +256,7 @@ Ate la, o Core deve rodar so com CLI + Shell.
 **Resource Claims (G-93..G-98): CONFIRMADO** — slice 12 feito.  
 **Blast Radius (G-99..G-104): CONFIRMADO** — slice 13 feito.  
 **TUI GRAPH (G-105..G-110): CONFIRMADO** — slice 14 feito.  
-**Walk Blast←Graph (G-111..G-116): CONFIRMADO** — spec; codigo = slice 15.
+**Walk Blast←Graph (G-111..G-116): CONFIRMADO** — slice 15 feito.
 
 Ordem pratica de codigo:
 1. Core CLI + Shell (+ SQLite) — slice 1 — feito
@@ -273,10 +273,10 @@ Ordem pratica de codigo:
 12. Resource Claims v0 — slice 12 (G-93..G-98) — feito
 13. Blast Radius v0 — slice 13 (G-99..G-104) — feito
 14. TUI GRAPH v0 — slice 14 (G-105..G-110) — feito
-15. Walk Blast←Graph v0 — slice 15 (G-111..G-116) — spec CONFIRMED; codigo pendente
+15. Walk Blast←Graph v0 — slice 15 (G-111..G-116) — feito
 
 P3 restante (G-40 templates, G-44 MCP, G-45 HTTP).
 Project Memory (G-46/G-47) permanece HYPOTHESIS em `16` — nao codificar.
-Walk Blast←Graph: spec `27` (G-111..G-116); codigo = slice 15.
+Walk Blast←Graph: spec `27` (G-111..G-116); slice 15 feito.
 Aba TUI GRAPH: spec `26` — slice 14 feito.
 Experimentos de sidecar (Fase A) nao exigem mudanca no Core.

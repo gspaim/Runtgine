@@ -53,5 +53,5 @@ Player (`23`, G-87..G-92) estao **CONFIRMED v0** (codigo = slices 10 e 11).
 Resource Claims (`24`, G-93..G-98) esta **CONFIRMED v0** (slice 12 feito).
 Blast Radius (`25`, G-99..G-104) esta **CONFIRMED v0** (slice 13 feito).
 TUI GRAPH (`26`, G-105..G-110) esta **CONFIRMED v0** (slice 14 feito).
-Walk Blast←Graph (`27`, G-111..G-116) esta **CONFIRMED v0** (codigo = slice 15).
+Walk Blast←Graph (`27`, G-111..G-116) esta **CONFIRMED v0** (slice 15 feito).
 P3 restante: Project Memory G-46/G-47 (HYPOTHESIS); mais Players.

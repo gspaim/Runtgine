@@ -14,7 +14,7 @@ context: |
   Tests: go test ./... ; go vet ./... ; CGO_ENABLED=0 ok.
   Out of scope until promoted: Project Memory (docs/16), NATS, Wails MVP,
   MCP, HTTP API, Blast-from-GRAPH (TUI node → blast). Walk Blast←Graph
-  v0 is CONFIRMED in docs/27 (slice 15 code still pending). TUI GRAPH v0
+  v0 is CONFIRMED in docs/27 (slice 15 done). TUI GRAPH v0
   is CONFIRMED in docs/26 (slice 14 done). Blast Radius v0 is CONFIRMED in
   docs/25 (slice 13 done). Resource Claims v0 is CONFIRMED in docs/24
   (slice 12 done).

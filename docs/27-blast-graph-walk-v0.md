@@ -12,12 +12,13 @@ slice 13) e Runtime Graph v0 ([18-runtime-graph-v0.md](18-runtime-graph-v0.md),
 slice 6). TUI GRAPH (`26`) permanece superfície estrutural — **não**
 inicia walk.
 
-**Status deste doc: CONFIRMED (v0).** G-111..G-116 autorizam o slice 15
-de código. Gate de Execute, multi-hop, símbolos e Blast-from-GRAPH
+**Status deste doc: CONFIRMED (v0).** G-111..G-116 implementados no
+slice 15. Gate de Execute, multi-hop, símbolos e Blast-from-GRAPH
 permanecem fora.
 
-**Pacote OpenSpec:** ativo em
-[`openspec/changes/027-blast-graph-walk/`](../openspec/changes/027-blast-graph-walk/).
+**Pacote OpenSpec:** arquivado em
+[`openspec/changes/archive/2026-08-18-027-blast-graph-walk/`](../openspec/changes/archive/2026-08-18-027-blast-graph-walk/).
+Deltas mergeados em `openspec/specs/blast-graph-walk/` e `openspec/specs/blast-radius/`.
 Branch de implementação: `feat/027-blast-graph-walk`.
 
 ---
@@ -156,13 +157,13 @@ reason: seed | mentions
 7. `go test ./internal/core/blast/...` cobre seed + mentions + empty.
 8. `go test ./...` e `go vet ./...` verdes.
 9. OpenSpec `027-blast-graph-walk` arquivado após o **código**
-   (slice 15), não neste PR de spec.
+   (slice 15).
 
 ---
 
 ## 5. Ordem do slice de código
 
-Bloqueado até G-111..G-116 CONFIRMED — este doc + `04` (este PR):
+Implementado no slice 15:
 
 1. `Affected` + `Walk(snapshot, touches)` no pacote `blast`
 2. `BlastTask` lê snapshot e preenche `affected` (degrada vazio)

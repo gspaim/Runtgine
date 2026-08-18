@@ -73,7 +73,7 @@ Task → Event → Queue → Player → Result
 Visão enxuta do que já está em `main`. **Atualizar esta seção em todo PR
 `release/*` → `main`** (e em PRs para `develop` quando o estágio mudar).
 
-**Agora:** MVP funcional (slices 1–14), sem release estável.
+**Agora:** MVP funcional (slices 1–15), sem release estável.
 
 | | Entrega |
 |---|---|
@@ -91,8 +91,9 @@ Visão enxuta do que já está em `main`. **Atualizar esta seção em todo PR
 | Feito | Slice 12 — Resource Claims v0 (`24`, G-93..G-98; `claim.conflict`) |
 | Feito | Slice 13 — Blast Radius v0 (`25`, G-99..G-104; `runtgine blast`) |
 | Feito | Slice 14 — TUI GRAPH v0 (`26`, G-105..G-110; aba GRAPH) |
-| Próximo | Slice 15 — Walk Blast←Graph v0 (`27`, G-111..G-116; spec CONFIRMED) |
-| Depois | Mais Players; Project Memory (HYPOTHESIS); API HTTP; bus distribuído; desktop Wails |
+| Feito | Slice 15 — Walk Blast←Graph v0 (`27`, G-111..G-116; `affected`) |
+| Próximo | Mais Players; Project Memory (HYPOTHESIS) |
+| Depois | API HTTP; bus distribuído; desktop Wails |
 
 Detalhe do corte: [`docs/09-mvp.md`](docs/09-mvp.md). Limitações atuais abaixo.
 
@@ -169,7 +170,7 @@ runtgine status <run_id>            Exibe snapshot e eventos
 runtgine cancel <run_id>            Solicita cancelamento de um run
 runtgine graph snapshot             Imprime o Runtime Graph (JSON)
 runtgine graph refresh              Atualiza players/capabilities do Graph
-runtgine blast <task.json|task.yaml> Relatório de impacto (sem executar)
+runtgine blast <task.json|task.yaml> Relatório de impacto + affected (sem executar)
 runtgine pipeline run               Executa o pipeline de análise
 runtgine board poll                 Importa cards do GitHub
 runtgine tui                        Abre a Mission Control
