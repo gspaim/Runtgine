@@ -42,6 +42,7 @@ func NewRoot() *cobra.Command {
 	root.AddCommand(newApproveCmd(&workspace, &verbose, false))
 	root.AddCommand(newCancelCmd(&workspace, &verbose))
 	root.AddCommand(newGraphCmd(&workspace, &verbose))
+	root.AddCommand(newBlastCmd(&workspace, &verbose))
 	root.AddCommand(newPipelineCmd(&workspace, &verbose))
 	root.AddCommand(newBoardCmd(&workspace, &verbose))
 	root.AddCommand(newTUICmd(&workspace, &verbose))
@@ -311,6 +312,51 @@ func newGraphCmd(workspace *string, verbose *bool) *cobra.Command {
 		},
 	})
 	return cmd
+}
+
+func newBlastCmd(workspace *string, verbose *bool) *cobra.Command {
+	return &cobra.Command{
+		Use:   "blast <task.json|task.yaml>",
+		Short: "Print a deterministic impact report for a Task IR (no execute)",
+		Args:  cobra.ExactArgs(1),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			core, err := openCore(*workspace, *verbose)
+			if err != nil {
+				return err
+			}
+			defer core.Close()
+
+			raw, err := os.ReadFile(args[0])
+			if err != nil {
+				return err
+			}
+			jsonBytes, err := toJSON(args[0], raw)
+			if err != nil {
+				return err
+			}
+			if err := task.ValidateDocument(jsonBytes); err != nil {
+				return err
+			}
+			t, err := task.Parse(jsonBytes)
+			if err != nil {
+				return err
+			}
+			if t.Source.EntryPoint == "" {
+				t.Source.EntryPoint = "cli"
+			}
+			if t.Source.Ref == "" {
+				t.Source.Ref = filepath.Base(args[0])
+			}
+
+			rep, err := core.BlastTask(context.Background(), t)
+			if err != nil {
+				return err
+			}
+			enc := json.NewEncoder(os.Stdout)
+			enc.SetIndent("", "  ")
+			return enc.Encode(rep)
+		},
+	}
 }
 
 func newTUICmd(workspace *string, verbose *bool) *cobra.Command {
