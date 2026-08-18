@@ -37,7 +37,10 @@ branch:              feat/<NNN>-<slug>   (ou docs/ fix/ chore/)
 
 Exemplos válidos: `001-shell-player`, `017-intent-engine`, `019-graph-hits`.
 
-**Próximo id livre:** `024`.
+**Próximo id livre:** `025`.
+
+Mudança ativa: [`changes/024-resource-claims/`](changes/024-resource-claims/)
+(spec CONFIRMED; código = slice 12).
 
 ## Autoridade
 
@@ -69,5 +72,6 @@ Não codificar mudança cujo status em `04` não esteja **CONFIRMED**
 | `runtime-graph` | Graph estrutural + QueryHits |
 | `git-player` | Player `git.*` (status/diff/log/add/commit) |
 | `docker-player` | Player `docker.*` (ps/inspect/logs/run/build) |
-| `execution-policy` | allow/deny/HITL (`waiting_approval`) |
+| `execution-policy` | allow/deny/HITL (`waiting_approval`); ordem Policy→Claim em `024` |
 | `filesystem-player` | Player `fs.*` (read/write/list/stat) |
+| `resource-claims` | (delta ativo em `changes/024-resource-claims/`; merge após slice 12) |

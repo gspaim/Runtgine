@@ -36,7 +36,7 @@ P1: Intent Engine (NL), Runtime Graph, Context Engine completo,
 Player Router completo
 (SQLite para runs/events ja no MVP Core — ver G-13 CONFIRMED)
 
-P2: Execution Policies, Resource Claims, Blast Radius, NATS, cloud
+P2: Execution Policies (`22`), Resource Claims (`24` spec), Blast Radius (HYPOTHESIS), NATS, cloud
 
 P3: Biblioteca grande de Players deterministicos (Git, Docker, K8s...)
 

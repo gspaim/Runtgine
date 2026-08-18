@@ -28,7 +28,7 @@ Human Intent -> Intent Engine -> Task IR -> Validator -> Execution Plan -> Event
 | Context Engine | HYPOTHESIS | Monta contexto para cada Player |
 | Orchestrator | HYPOTHESIS | Coordena fluxo de execucao |
 | Execution Policy | CONFIRMED (v0) | allow/deny/approval-required; ver `22` |
-| Resource Claim | HYPOTHESIS | Bloqueio concorrente de recurso |
+| Resource Claim | CONFIRMED (v0) | Bloqueio concorrente; ver `24` |
 | Blast Radius | HYPOTHESIS | Impacto de uma mudanca |
 | Entry Point | CONFIRMED | Interface externa; nao e Player |
 
@@ -198,18 +198,23 @@ Default global: `allow`. Manifest pode declarar o verbo; `config.json`
 sobrescreve. `deny` rejeita na admissao; `approval-required` pausa o Run
 (`waiting_approval`) ate `ApproveRun`.
 
-Fora do v0: wildcards, Claims, Blast Radius, Human Player.
+Fora do motor de policy: wildcards, Blast Radius, Human Player.
+Resource Claims v0: ver [24-resource-claims-v0.md](24-resource-claims-v0.md).
 
 ---
 
 ## Resource Claim
 
-Status: HYPOTHESIS
+Status: CONFIRMED (v0) — ver [24-resource-claims-v0.md](24-resource-claims-v0.md).
 
-Bloqueio concorrente de recursos. Player A claims resource X.
-Recursos podem ser: file, repository, database, environment, deployment, workspace.
+Bloqueio concorrente exclusivo no Core (nao e Player). Kinds v0:
+`workspace` e `path`. O Runner deriva o claim de uma tabela automatica
+(`fs.write`, `git.add`/`commit`, `docker.build`, `docker.run` com
+mount). `shell.exec` nao claima. Conflito e fail-fast
+(`claim.conflict`); hold ate o Run terminal.
 
-Garante que dois Players nao modifiquem o mesmo recurso simultaneamente.
+Garante que dois Runs nao mutem o mesmo recurso simultaneamente.
+Blast Radius (analise de impacto) permanece HYPOTHESIS.
 
 ---
 

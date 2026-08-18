@@ -150,7 +150,7 @@ Daemon ausente / `docker` missing → `runtime.player_error` (não
 - GPU, devices, cgroup custom
 - Intent heuristics Docker (nice-to-have)
 - TUI dedicada / tab GRAPH
-- Claims / Blast Radius
+- Resource Claims (spec `24`, slice 12) / Blast Radius
 
 ---
 

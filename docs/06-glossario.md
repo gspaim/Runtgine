@@ -25,7 +25,7 @@
 | Project Knowledge | Conhecimento consolidado do projeto (evolucao possivel); HYPOTHESIS — distinto de Memory |
 | Project Memory | Memoria episodica entre runs/sessoes; HYPOTHESIS (ver `16`) |
 | Queue | Trabalho aguardando processamento |
-| Resource Claim | Bloqueio concorrente de recurso |
+| Resource Claim | Bloqueio concorrente exclusivo de `workspace`/`path` (Core; ver `24`) |
 | Run | Tentativa de execucao de uma Task aceita (tem run_id) |
 | Runner | Orchestrator minimo do MVP; valida, planeja e despacha steps |
 | Runtime Graph | Memoria estrutural: relacoes entre Players, Resources, Tasks |

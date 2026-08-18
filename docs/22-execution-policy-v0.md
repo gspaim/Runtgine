@@ -9,7 +9,8 @@ Pré-requisito: Core + Validator + Runner estáveis (slices 1–9).
 Consumidor seguinte: Docker Player ([23-docker-player-v0.md](23-docker-player-v0.md)).
 
 **Status deste doc: CONFIRMED (v0).** G-81..G-86 autorizam o slice 10
-de código. Resource Claims, Blast Radius e Human Player permanecem fora.
+de código. Blast Radius e Human Player permanecem fora. Resource Claims
+v0: [24-resource-claims-v0.md](24-resource-claims-v0.md) (G-93..G-98).
 
 **Pacote OpenSpec:** arquivado em
 [`openspec/changes/archive/2026-08-17-022-execution-policy/`](../openspec/changes/archive/2026-08-17-022-execution-policy/).
@@ -194,8 +195,8 @@ Sem aba nova. Seguir [14-tui-design.md](14-tui-design.md) e a skill TUI.
 
 **Status: CONFIRMED** (como exclusões)
 
-- Resource Claims (G-43)
-- Blast Radius (G-43)
+- Resource Claims — recorte em `24` (G-93..G-98); fora deste motor
+- Blast Radius (resto de G-43)
 - Wildcards de capability
 - Policy por input/path/argv (continua sandbox do Player)
 - Human Player / capabilities `approval.*`
