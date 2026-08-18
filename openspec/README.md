@@ -39,8 +39,9 @@ Exemplos válidos: `001-shell-player`, `017-intent-engine`, `019-graph-hits`.
 
 **Próximo id livre:** `027`.
 
-Mudança ativa: [`changes/026-tui-graph/`](changes/026-tui-graph/)
-(spec CONFIRMED; código = slice 14).
+Nenhuma mudança ativa. Último archive:
+[`changes/archive/2026-08-18-026-tui-graph/`](changes/archive/2026-08-18-026-tui-graph/)
+(TUI GRAPH v0; slice 14 feito).
 
 ## Autoridade
 
@@ -76,4 +77,4 @@ Não codificar mudança cujo status em `04` não esteja **CONFIRMED**
 | `filesystem-player` | Player `fs.*` (read/write/list/stat) |
 | `resource-claims` | Claims exclusivos `workspace`/`path`; auto-claim; `claim.conflict` |
 | `blast-radius` | Impact Report Task IR; `runtgine blast`; overlay vs claims |
-| `tui-graph` | (delta ativo em `changes/026-tui-graph/`; merge após slice 14) |
+| `tui-graph` | Aba GRAPH da TUI sobre `GetGraphSnapshot` |

@@ -112,7 +112,7 @@ Ver [09-mvp.md](09-mvp.md). Decisoes-chave:
 - Docker Player v0 (G-87..G-92; recorte G-41) — spec; codigo = slice 11; depende de 022
 - Resource Claims v0 (G-93..G-98; recorte G-43) — spec; codigo = slice 12 — feito
 - Blast Radius v0 (G-99..G-104; resto de G-43) — spec; codigo = slice 13 — feito
-- TUI GRAPH v0 (G-105..G-110) — spec; codigo = slice 14; altera `14` + skill
+- TUI GRAPH v0 (G-105..G-110) — spec; codigo = slice 14 — feito; altera `14` + skill
 
 ## Protocolo v0 — confirmado (sessao de fechamento)
 
@@ -349,7 +349,7 @@ Ver [25-blast-radius-v0.md](25-blast-radius-v0.md). Resto de G-43
 
 Ver [26-tui-graph-v0.md](26-tui-graph-v0.md). Aba da TUI sobre o Graph
 de `18`. Altera [14-tui-design.md](14-tui-design.md) e a skill.
-Codigo = slice 14.
+Slice 14 feito.
 
 | Item | Status | Notas |
 |---|---|---|

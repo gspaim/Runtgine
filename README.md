@@ -73,7 +73,7 @@ Task → Event → Queue → Player → Result
 Visão enxuta do que já está em `main`. **Atualizar esta seção em todo PR
 `release/*` → `main`** (e em PRs para `develop` quando o estágio mudar).
 
-**Agora:** MVP funcional (slices 1–13), sem release estável.
+**Agora:** MVP funcional (slices 1–14), sem release estável.
 
 | | Entrega |
 |---|---|
@@ -90,8 +90,9 @@ Visão enxuta do que já está em `main`. **Atualizar esta seção em todo PR
 | Feito | Slice 11 — Docker Player v0 (`docker.ps` / `inspect` / `logs` / `run` / `build`) |
 | Feito | Slice 12 — Resource Claims v0 (`24`, G-93..G-98; `claim.conflict`) |
 | Feito | Slice 13 — Blast Radius v0 (`25`, G-99..G-104; `runtgine blast`) |
-| Próximo | Slice 14 — TUI GRAPH v0 (`26`, G-105..G-110; spec CONFIRMED) |
-| Depois | Walk Blast←Graph (HYPOTHESIS); Project Memory (HYPOTHESIS); API HTTP; bus distribuído; desktop Wails |
+| Feito | Slice 14 — TUI GRAPH v0 (`26`, G-105..G-110; aba GRAPH) |
+| Próximo | Walk Blast←Graph (HYPOTHESIS); mais Players |
+| Depois | Project Memory (HYPOTHESIS); API HTTP; bus distribuído; desktop Wails |
 
 Detalhe do corte: [`docs/09-mvp.md`](docs/09-mvp.md). Limitações atuais abaixo.
 
@@ -267,6 +268,7 @@ A TUI **Constellation Mission Control** usa Bubble Tea, Lip Gloss e Bubbles:
 - `LIVE` — trajetória dos steps, progresso, Player e ContextPack;
 - `BOARD` — runs originados do GitHub em Intake, In Flight e Landed;
 - `EVENTS` — telemetria, filtro e payload JSON;
+- `GRAPH` — snapshot do Runtime Graph (nós/arestas, detalhe, filtro);
 - `CONFIG` — configuração efetiva read-only, com secrets mascarados.
 
 Atalhos principais:
@@ -277,8 +279,8 @@ Atalhos principais:
 | `j` / `k` ou setas | Navegar |
 | `enter` | Inspecionar run |
 | `c` | Solicitar cancelamento com confirmação |
-| `/` | Filtrar eventos |
-| `r` | Atualizar |
+| `/` | Filtrar eventos ou nós GRAPH |
+| `r` | Atualizar (em GRAPH: `RefreshGraph` + snapshot) |
 | `q` | Sair |
 
 A interface adapta-se a terminais largos, médios e estreitos, respeita

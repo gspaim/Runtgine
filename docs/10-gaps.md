@@ -227,7 +227,7 @@ Ate la, o Core deve rodar so com CLI + Shell.
 11. Docker Player — spec em `23` — G-87..G-92 CONFIRMED; codigo = slice 11 (apos 10)
 12. Resource Claims — spec em `24` — G-93..G-98 CONFIRMED; codigo = slice 12 — feito
 13. Blast Radius — spec em `25` — G-99..G-104 CONFIRMED; codigo = slice 13 — feito
-14. TUI GRAPH — spec em `26` — G-105..G-110 CONFIRMED; codigo = slice 14
+14. TUI GRAPH — spec em `26` — G-105..G-110 CONFIRMED; codigo = slice 14 — feito
 
 ## Criterio de “pronto para codar”
 
@@ -243,7 +243,7 @@ Ate la, o Core deve rodar so com CLI + Shell.
 **Docker Player (G-87..G-92): CONFIRMADO** — slice 11 feito.  
 **Resource Claims (G-93..G-98): CONFIRMADO** — slice 12 feito.  
 **Blast Radius (G-99..G-104): CONFIRMADO** — slice 13 feito.  
-**TUI GRAPH (G-105..G-110): CONFIRMADO** — spec; codigo = slice 14.
+**TUI GRAPH (G-105..G-110): CONFIRMADO** — slice 14 feito.
 
 Ordem pratica de codigo:
 1. Core CLI + Shell (+ SQLite) — slice 1 — feito
@@ -259,10 +259,10 @@ Ordem pratica de codigo:
 11. Docker Player v0 — slice 11 (G-87..G-92) — feito
 12. Resource Claims v0 — slice 12 (G-93..G-98) — feito
 13. Blast Radius v0 — slice 13 (G-99..G-104) — feito
-14. TUI GRAPH v0 — slice 14 (G-105..G-110) — spec CONFIRMED; codigo pendente
+14. TUI GRAPH v0 — slice 14 (G-105..G-110) — feito
 
 P3 restante (G-40 templates, G-44 MCP, G-45 HTTP).
 Project Memory (G-46/G-47) permanece HYPOTHESIS em `16` — nao codificar.
 Walk Blast←Graph permanece HYPOTHESIS. Aba TUI GRAPH: spec `26` (G-105..G-110);
-codigo = slice 14.
+slice 14 feito.
 Experimentos de sidecar (Fase A) nao exigem mudanca no Core.
