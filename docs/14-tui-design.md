@@ -218,10 +218,9 @@ Antes de criar ou alterar a TUI, ler:
 - Comando: `runtgine tui`
 - Stack: Charm v2 (`charm.land/bubbletea/v2`, `lipgloss/v2`, `bubbles/v2`)
 - Core APIs: `ListRuns`, `GetRun`, `ListRecentEvents`, `Subscribe`,
-  `CancelRun`, `ConfigSnapshot`; GRAPH (slice 14) acrescenta
-  `GetGraphSnapshot` e `RefreshGraph` — ver `26`
+  `CancelRun`, `ConfigSnapshot`, `GetGraphSnapshot`, `RefreshGraph`
 - Config permanece read-only; o snapshot nao expoe tokens ou API keys
 - Cancelamento exige confirmacao e persiste o estado de runs orfaos de um
   processo CLI anterior
-- Testes cobrem navegacao, resize, **seis** tabs (após slice 14), filtro,
+- Testes cobrem navegacao, resize, **seis** tabs, filtro GRAPH/EVENTS,
   cancelamento e `NO_COLOR`

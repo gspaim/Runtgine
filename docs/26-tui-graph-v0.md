@@ -12,11 +12,12 @@ Este PR **altera `14`** (sexta aba) e a skill
 `.cursor/skills/runtgine-tui-design/SKILL.md`.
 Walk Blast←Graph permanece fora (spec futura).
 
-**Status deste doc: CONFIRMED (v0).** G-105..G-110 autorizam o slice 14
-de código. Multiplexer, PTY, edição do Graph e Hits UI permanecem fora.
+**Status deste doc: CONFIRMED (v0).** G-105..G-110 implementados no
+slice 14. Multiplexer, PTY, edição do Graph e Hits UI permanecem fora.
 
-**Pacote OpenSpec:** ativo em
-[`openspec/changes/026-tui-graph/`](../openspec/changes/026-tui-graph/).
+**Pacote OpenSpec:** arquivado em
+[`openspec/changes/archive/2026-08-18-026-tui-graph/`](../openspec/changes/archive/2026-08-18-026-tui-graph/).
+Deltas mergeados em `openspec/specs/tui-graph/` e `openspec/specs/runtime-graph/`.
 Branch de implementação: `feat/026-tui-graph`.
 
 ---
@@ -172,14 +173,13 @@ Sem DSL `type:` obrigatória no v0 (EVENTS já tem a dela). Substring basta.
    `GetGraphSnapshot` e `RefreshGraph`.
 9. `go test ./internal/entrypoint/tui/...` cobre as seis abas e GRAPH.
 10. `go test ./...` e `go vet ./...` verdes.
-11. OpenSpec `026-tui-graph` arquivado após o **código** (slice 14),
-    não neste PR de spec.
+11. OpenSpec `026-tui-graph` arquivado após o **código** (slice 14).
 
 ---
 
 ## 5. Ordem do slice de código
 
-Bloqueado até G-105..G-110 CONFIRMED — este doc + `14` + skill (este PR):
+Implementado no slice 14:
 
 1. Estender `CoreAPI` + fakeCore com snapshot/refresh
 2. `tabGraph` + `tabNames` (seis)
