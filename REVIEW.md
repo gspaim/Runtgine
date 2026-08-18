@@ -121,7 +121,8 @@ Fase 1: MVP (Core Go, Event Bus, Shell, CLI, TUI, Board) — slices 1–4
 Fase 2: Graph Hits + Git/FS Players feitos; Execution Policy + Docker
 specs em `22`/`23` (slices 10–11); Project Memory so apos sair de HYPOTHESIS.
 Fase 3: Desktop (Wails)
-Fase 4: Infra (Claims v0 slice 12; Blast Radius v0 slice 13 feitos)
+Fase 4: Infra (Claims v0 slice 12; Blast Radius v0 slice 13 feitos;
+TUI GRAPH v0 spec `26` / G-105..G-110 — codigo = slice 14)
 Fase 5: Cloud (NATS, API, serverless)
 Fase 6: Ecossistema (biblioteca de Players)
 
@@ -138,4 +139,5 @@ Slices 1–9 implementados (Core → Intent → Graph → Git → Filesystem).
 **Docker Player v0: CONFIRMED + implementado** (`23`, G-87..G-92; slice 11).
 **Resource Claims v0: CONFIRMED + implementado** (`24`, G-93..G-98; slice 12).
 **Blast Radius v0: CONFIRMED + implementado** (`25`, G-99..G-104; slice 13).
-P3 restante: walk Blast←Graph / Memory (HYPOTHESIS) / TUI GRAPH.
+**TUI GRAPH v0: CONFIRMED** (`26`, G-105..G-110; codigo = slice 14).
+P3 restante: walk Blast←Graph / Project Memory (HYPOTHESIS).

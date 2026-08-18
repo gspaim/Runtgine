@@ -9,7 +9,8 @@ Ortogonal a: Event Store (temporal, G-13) e Project Memory (episódica, `16`).
 **Status deste doc: CONFIRMED (v0).** G-60..G-65 autorizam o corte deste
 slice. Integração ContextPack/Intent (`graph_hits`) está em
 [19-graph-hits-v0.md](19-graph-hits-v0.md) (**CONFIRMED** G-66..G-69).
-Aba TUI GRAPH permanece fora.
+Aba TUI GRAPH permanece fora deste corte estrutural — superfície em
+[26-tui-graph-v0.md](26-tui-graph-v0.md) (G-105..G-110; slice 14).
 
 Pré-requisitos de produto (ordem AGENTS): Core estável; Intent Engine v0
 especificado/implementado (`17`). Graph v0 **não** depende de Intent Engine
@@ -181,7 +182,7 @@ Este doc (`18`) cobre só o Graph estrutural (G-60..G-65). Hits,
 - Genome completo / indexação AST contínua
 - Multi-workspace / graph federado
 - NATS / sync distribuído
-- Aba TUI GRAPH (exige decisão em `14` + skill)
+- Aba TUI GRAPH — recorte em `26` (G-105..G-110); fora deste corte estrutural
 - Project Memory / validade operacional (`16`)
 - Policies / Blast Radius derivados do graph (Claims v0 e Core, spec `24`; Blast v0 e Core, spec `25`; nenhum dos dois deriva do Graph)
 - Substituir Registry ou Event Store
@@ -209,7 +210,7 @@ Hits no ContextPack/Intent: ver [19-graph-hits-v0.md](19-graph-hits-v0.md)
 3. Hooks no Runner + `RefreshFromRegistry` em `api.Open` — feito
 4. CLI `graph snapshot` / `graph refresh` — feito
 5. Graph Hits (`19`, G-66..G-69) — próximo slice de código
-6. Aba TUI GRAPH — só após decisão em `14` + skill
+6. Aba TUI GRAPH — spec `26`; codigo = slice 14
 
 ---
 

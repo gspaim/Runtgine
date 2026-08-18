@@ -70,7 +70,8 @@ Provide ANSI-256/ASCII fallbacks and honor `NO_COLOR`.
 2. `LIVE`
 3. `BOARD`
 4. `EVENTS`
-5. `CONFIG`
+5. `GRAPH`
+6. `CONFIG`
 
 Use one full-screen application. No overlapping shell windows.
 
@@ -93,6 +94,14 @@ run ID, and pipeline state. Do not create subtask cards in the MVP.
 ### EVENTS
 
 Show UTC, event type, run ID, step, Player, filter input, and JSON payload.
+
+### GRAPH
+
+Read-only workspace Runtime Graph (`GetGraphSnapshot`). Show node/edge
+counts, a `kind`+`id` list, and selected-node attrs plus incident edges.
+`r` calls `RefreshGraph` then reloads the snapshot. `/` filters kind/id
+(independent of EVENTS). Width `< 80`: vertical list only, no 2D canvas.
+Do not mix Blast or QueryHits into this tab.
 
 ### CONFIG
 
@@ -148,7 +157,7 @@ All views must survive resize events.
 
 - [ ] No direct Player calls
 - [ ] No duplicated runtime state as source of truth
-- [ ] All five tabs remain coherent
+- [ ] All six tabs remain coherent
 - [ ] Status has text/symbol, not color only
 - [ ] Narrow terminal fallback works
 - [ ] `NO_COLOR` works

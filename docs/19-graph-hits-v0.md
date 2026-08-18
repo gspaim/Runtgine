@@ -9,7 +9,8 @@ Pré-requisito: Runtime Graph v0 ([18-runtime-graph-v0.md](18-runtime-graph-v0.m
 G-60..G-65) **implementado e estável**.
 
 **Status deste doc: CONFIRMED (v0).** G-66..G-69 autorizam o slice de
-código seguinte. Aba TUI GRAPH permanece fora (exige `14` + skill).
+código seguinte. Aba TUI GRAPH: spec `26` (G-105..G-110); fora deste
+corte de Hits.
 
 **Pacote OpenSpec:** arquivado em
 [`openspec/changes/archive/2026-08-17-019-graph-hits/`](../openspec/changes/archive/2026-08-17-019-graph-hits/).
@@ -229,7 +230,7 @@ graph_hits (Task IR ≠ ContextPack).
 
 ## 4. Fora do v0
 
-- Aba TUI GRAPH (`14` + skill)
+- Aba TUI GRAPH (`26`, G-105..G-110; codigo = slice 14)
 - CLI `graph hits` (nice-to-have)
 - `memory_hits` / Project Memory (`16`)
 - Novos `node_kind` / `edge_kind`
