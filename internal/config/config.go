@@ -22,6 +22,14 @@ type Config struct {
 	AnthropicModel    string `json:"anthropic_model"`
 	GitHubToken       string `json:"-"`
 	DBPath            string `json:"-"`
+	ExecutionPolicy   policyfile `json:"execution_policy"`
+	PolicyDefaultEnv  string     `json:"-"`
+}
+
+// policyfile is the on-disk execution_policy object (G-82).
+type policyfile struct {
+	Default      string            `json:"default"`
+	Capabilities map[string]string `json:"capabilities"`
 }
 
 func Defaults() Config {
@@ -89,6 +97,17 @@ func mergeFile(dst *Config, src Config) {
 	if src.AnthropicModel != "" {
 		dst.AnthropicModel = src.AnthropicModel
 	}
+	if src.ExecutionPolicy.Default != "" {
+		dst.ExecutionPolicy.Default = src.ExecutionPolicy.Default
+	}
+	if len(src.ExecutionPolicy.Capabilities) > 0 {
+		if dst.ExecutionPolicy.Capabilities == nil {
+			dst.ExecutionPolicy.Capabilities = map[string]string{}
+		}
+		for k, v := range src.ExecutionPolicy.Capabilities {
+			dst.ExecutionPolicy.Capabilities[k] = v
+		}
+	}
 	// workspace_root in file is ignored if env/flag set; allow file to set if still default cwd-only? skip for safety
 }
 
@@ -121,6 +140,9 @@ func applyEnv(cfg *Config) {
 	}
 	if v := firstEnv("RUNTGINE_GITHUB_TOKEN", "GITHUB_TOKEN"); v != "" {
 		cfg.GitHubToken = v
+	}
+	if v := os.Getenv("RUNTGINE_POLICY_DEFAULT"); v != "" {
+		cfg.PolicyDefaultEnv = v
 	}
 }
 

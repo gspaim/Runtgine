@@ -14,6 +14,7 @@ import (
 	"github.com/gspaim/Runtgine/internal/core/api"
 	"github.com/gspaim/Runtgine/internal/core/event"
 	corepipe "github.com/gspaim/Runtgine/internal/core/pipeline"
+	"github.com/gspaim/Runtgine/internal/core/runner"
 	"github.com/gspaim/Runtgine/internal/core/store"
 	"github.com/gspaim/Runtgine/internal/core/task"
 	"github.com/gspaim/Runtgine/internal/entrypoint/board"
@@ -37,6 +38,8 @@ func NewRoot() *cobra.Command {
 	root.AddCommand(newRunCmd(&workspace, &verbose))
 	root.AddCommand(newIntentCmd(&workspace, &verbose))
 	root.AddCommand(newStatusCmd(&workspace, &verbose))
+	root.AddCommand(newApproveCmd(&workspace, &verbose, true))
+	root.AddCommand(newApproveCmd(&workspace, &verbose, false))
 	root.AddCommand(newCancelCmd(&workspace, &verbose))
 	root.AddCommand(newGraphCmd(&workspace, &verbose))
 	root.AddCommand(newPipelineCmd(&workspace, &verbose))
@@ -223,6 +226,34 @@ func newStatusCmd(workspace *string, verbose *bool) *cobra.Command {
 			enc := json.NewEncoder(os.Stdout)
 			enc.SetIndent("", "  ")
 			return enc.Encode(snap)
+		},
+	}
+}
+
+func newApproveCmd(workspace *string, verbose *bool, grant bool) *cobra.Command {
+	use, short, decision := "deny", "Deny a run waiting for approval", runner.DecisionDeny
+	if grant {
+		use, short, decision = "approve", "Approve a run waiting for HITL", runner.DecisionGrant
+	}
+	return &cobra.Command{
+		Use:   use + " <run_id>",
+		Short: short,
+		Args:  cobra.ExactArgs(1),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			core, err := openCore(*workspace, *verbose)
+			if err != nil {
+				return err
+			}
+			defer core.Close()
+			if err := core.ApproveRun(args[0], decision); err != nil {
+				return err
+			}
+			if grant {
+				fmt.Println("granted")
+			} else {
+				fmt.Println("denied")
+			}
+			return nil
 		},
 	}
 }

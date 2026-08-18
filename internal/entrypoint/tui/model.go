@@ -16,6 +16,7 @@ import (
 
 	"github.com/gspaim/Runtgine/internal/core/api"
 	"github.com/gspaim/Runtgine/internal/core/event"
+	"github.com/gspaim/Runtgine/internal/core/runner"
 	"github.com/gspaim/Runtgine/internal/core/task"
 )
 
@@ -37,6 +38,7 @@ type CoreAPI interface {
 	ConfigSnapshot() api.ConfigSnapshot
 	Subscribe(int) (<-chan event.Event, func())
 	CancelRun(string) error
+	ApproveRun(string, string) error
 }
 
 type Model struct {
@@ -69,6 +71,7 @@ type refreshMsg struct {
 
 type streamEventMsg event.Event
 type cancelMsg struct{ err error }
+type approveMsg struct{ err error }
 type tickMsg time.Time
 type streamClosedMsg struct{}
 
@@ -137,6 +140,9 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		return m, tea.Batch(nextTick(), m.refreshCmd())
 	case cancelMsg:
 		m.confirm = false
+		m.err = msg.err
+		return m, m.refreshCmd()
+	case approveMsg:
 		m.err = msg.err
 		return m, m.refreshCmd()
 	case spinner.TickMsg:
@@ -215,6 +221,18 @@ func (m Model) handleKey(msg tea.KeyPressMsg) (tea.Model, tea.Cmd) {
 		}
 		runID := m.runs[m.selected].RunID
 		return m, func() tea.Msg { return cancelMsg{err: m.core.CancelRun(runID)} }
+	case "a":
+		if !m.selectedWaiting() {
+			break
+		}
+		runID := m.runs[m.selected].RunID
+		return m, func() tea.Msg { return approveMsg{err: m.core.ApproveRun(runID, runner.DecisionGrant)} }
+	case "d":
+		if !m.selectedWaiting() {
+			break
+		}
+		runID := m.runs[m.selected].RunID
+		return m, func() tea.Msg { return approveMsg{err: m.core.ApproveRun(runID, runner.DecisionDeny)} }
 	}
 	return m, nil
 }
@@ -271,11 +289,18 @@ func (m Model) selectedActive() bool {
 		return false
 	}
 	switch m.runs[m.selected].Status {
-	case "accepted", "planned", "running":
+	case "accepted", "planned", "running", "waiting_approval":
 		return true
 	default:
 		return false
 	}
+}
+
+func (m Model) selectedWaiting() bool {
+	if len(m.runs) == 0 || m.selected >= len(m.runs) {
+		return false
+	}
+	return m.runs[m.selected].Status == "waiting_approval"
 }
 
 func (m Model) View() tea.View {
@@ -296,13 +321,19 @@ func (m Model) View() tea.View {
 
 func (m Model) renderHeader() string {
 	running := 0
+	waiting := 0
 	for _, run := range m.runs {
 		if run.Status == "running" {
 			running++
 		}
+		if run.Status == "waiting_approval" {
+			waiting++
+		}
 	}
 	signal := "local connected"
-	if running > 0 {
+	if waiting > 0 {
+		signal = fmt.Sprintf("%s %d waiting", m.spinner.View(), waiting)
+	} else if running > 0 {
 		signal = fmt.Sprintf("%s %d active", m.spinner.View(), running)
 	}
 	title := fmt.Sprintf("%s RUNTGINE / CONSTELLATION MISSION CONTROL", m.theme.Star())
@@ -357,7 +388,7 @@ func (m Model) renderRuns() string {
 			break
 		}
 		elapsed := run.UpdatedAt.Sub(run.CreatedAt)
-		if run.Status == "running" {
+		if run.Status == "running" || run.Status == "waiting_approval" {
 			elapsed = time.Since(run.CreatedAt)
 		}
 		line := fmt.Sprintf("%s %-12s %-14s %-40s %8s",
@@ -397,6 +428,10 @@ func (m Model) renderLive() string {
 	progressLine := fmt.Sprintf("progress %s %d/%d", m.progress.ViewAs(ratio), completed, len(t.Steps))
 	telemetry := latestTelemetry(m.snapshot.Events)
 	currentStep, player, capability, contextBytes := currentExecution(t, m.snapshot.Events, state)
+	if p := m.snapshot.PendingApproval; p != nil {
+		currentStep, capability, player = p.StepID, p.Capability, p.Player
+		contextBytes = "-"
+	}
 	detail := fmt.Sprintf("intent       %s\nsource       %s\ncurrent step %s\nplayer       %s\ncapability   %s\nContextPack  %s\ntelemetry    %s",
 		truncate(t.Intent.Summary, max(20, m.width-24)),
 		t.Source.EntryPoint, currentStep, player, capability, contextBytes, telemetry)
@@ -438,7 +473,7 @@ func (m Model) renderBoard() string {
 		switch run.Status {
 		case "accepted", "planned":
 			lane = "INTAKE"
-		case "running":
+		case "running", "waiting_approval":
 			lane = "IN FLIGHT"
 		}
 		lanes[lane] = append(lanes[lane], run)
@@ -542,6 +577,12 @@ func (m Model) renderFooter() string {
 	if m.theme.ASCII {
 		hint = "tab navigate | j/k select | enter inspect | c cancel | / filter | r refresh | q quit"
 	}
+	if m.selectedWaiting() {
+		hint = "tab/shift+tab navigate · j/k select · a approve · d deny · c cancel · q quit"
+		if m.theme.ASCII {
+			hint = "tab navigate | j/k select | a approve | d deny | c cancel | q quit"
+		}
+	}
 	if m.confirm {
 		hint = m.theme.Status("cancelled").Render("Confirm cancellation: press c again; esc aborts")
 	}
@@ -567,6 +608,8 @@ func stepStates(t task.Task, events []event.Event) map[string]string {
 			state[*e.StepID] = "succeeded"
 		case event.TypeStepFailed:
 			state[*e.StepID] = "failed"
+		case event.TypeRunWaitingApproval:
+			state[*e.StepID] = "waiting_approval"
 		}
 	}
 	return state
@@ -593,7 +636,7 @@ func currentExecution(
 ) (stepID, player, capability, contextSize string) {
 	stepID, player, capability, contextSize = "-", "-", "-", "-"
 	for _, step := range t.Steps {
-		if states[step.StepID] != "running" {
+		if states[step.StepID] != "running" && states[step.StepID] != "waiting_approval" {
 			continue
 		}
 		stepID, capability = step.StepID, step.Capability

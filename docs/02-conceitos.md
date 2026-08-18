@@ -27,7 +27,7 @@ Human Intent -> Intent Engine -> Task IR -> Validator -> Execution Plan -> Event
 | Runtime Graph | CONFIRMED (v0) | Memoria estrutural; ver `18` |
 | Context Engine | HYPOTHESIS | Monta contexto para cada Player |
 | Orchestrator | HYPOTHESIS | Coordena fluxo de execucao |
-| Execution Policy | HYPOTHESIS | Regras de seguranca/permissao |
+| Execution Policy | CONFIRMED (v0) | allow/deny/approval-required; ver `22` |
 | Resource Claim | HYPOTHESIS | Bloqueio concorrente de recurso |
 | Blast Radius | HYPOTHESIS | Impacto de uma mudanca |
 | Entry Point | CONFIRMED | Interface externa; nao e Player |
@@ -186,14 +186,19 @@ Criterios de escolha: capability, complexidade, custo, latencia, contexto, polic
 
 ## Execution Policy
 
-Status: HYPOTHESIS
+Status: CONFIRMED (v0) — ver [22-execution-policy-v0.md](22-execution-policy-v0.md).
 
-Regras de seguranca/permissao por Player ou acao:
+Regras de seguranca/permissao por **capability** exata, no Core (nao e Player):
 
-filesystem: read
-shell: deny
-network: deny
-production.deploy: approval-required
+```text
+allow | deny | approval-required
+```
+
+Default global: `allow`. Manifest pode declarar o verbo; `config.json`
+sobrescreve. `deny` rejeita na admissao; `approval-required` pausa o Run
+(`waiting_approval`) ate `ApproveRun`.
+
+Fora do v0: wildcards, Claims, Blast Radius, Human Player.
 
 ---
 

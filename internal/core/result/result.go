@@ -38,5 +38,8 @@ const (
 	CodePlayerError        = "runtime.player_error"
 	CodeTimeout            = "runtime.timeout"
 	CodeCancelled          = "runtime.cancelled"
-	CodeInternal           = "runtime.internal"
+	CodeInternal             = "runtime.internal"
+	CodePolicyDenied         = "policy.denied"
+	CodePolicyApprovalDenied = "policy.approval_denied"
+	CodePolicyNotWaiting     = "policy.not_waiting"
 )

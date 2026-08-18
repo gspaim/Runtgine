@@ -79,6 +79,7 @@ Footer:
 
 ```text
 tab/shift+tab navigate · enter inspect · c cancel · / filter · q quit
+(+ a approve · d deny when selected run is waiting_approval)
 ```
 
 ## Aba RUNS
@@ -94,6 +95,7 @@ Tabela de execucoes:
 Estados visuais:
 
 - running: amber;
+- waiting_approval: amber + label WAITING (HITL; teclas `a` grant / `d` deny);
 - succeeded: telemetry;
 - failed/cancelled: anomaly;
 - selected: trilho violeta + starlight.
@@ -107,6 +109,7 @@ Detalhe do Run selecionado:
 - ligacoes representam `depends_on`;
 - concluido = telemetry;
 - atual = amber com pulso discreto;
+- waiting_approval = amber + step gated visivel ate grant/deny;
 - pendente = starlight/muted;
 - progress bar;
 - Current Step (Player, capability, ContextPack);

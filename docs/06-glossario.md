@@ -13,7 +13,8 @@
 | Event | Algo aconteceu no sistema |
 | Event Bus | Transporte de eventos entre componentes |
 | Execution Plan | Plano especifico criado para UMA execucao |
-| Execution Policy | Regras de seguranca/permissao por Player/acao |
+| Execution Policy | Regras allow/deny/approval-required por capability (Core; ver `22`) |
+| HITL | Humano aprova/rejeita um Run em `waiting_approval` via Entry Point |
 | Intent Engine | Traduz intencao humana (NL) em Task IR |
 | Manifest | Declaracao de capabilities, entradas e saidas de um Player |
 | Memory Player | Player opcional com `memory.*`; OPEN QUESTION (ver `16` / G-47) |

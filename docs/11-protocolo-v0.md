@@ -236,6 +236,9 @@ O Runner resolve `capability` → `player` via Registry. Sem replanejamento dina
 | `run.succeeded` | Todos steps ok |
 | `run.failed` | Run abortado por falha |
 | `run.cancelled` | Cancelamento (se suportado; P2 pode adiar emissao) |
+| `run.waiting_approval` | Policy `approval-required`; pausa antes do Execute (G-83) |
+| `run.approval_granted` | `ApproveRun(grant)` |
+| `run.approval_denied` | `ApproveRun(deny)` |
 
 Payload de `task.rejected` / `step.failed` usa o Error model (§9).
 
@@ -249,10 +252,13 @@ Payload de `task.rejected` / `step.failed` usa o Error model (§9).
 accepted → planned → running → succeeded
                               ↘ failed
                               ↘ cancelled   (opcional no MVP)
+                              ↘ waiting_approval → running   (G-83; spec `22`)
+                                                 ↘ failed
+                                                 ↘ cancelled
 rejected   (terminal; sem run)
 ```
 
-Estados da Task (visao Entry Point): `accepted` | `rejected` | `running` | `succeeded` | `failed` | `cancelled`.
+Estados da Task (visao Entry Point): `accepted` | `rejected` | `running` | `succeeded` | `failed` | `cancelled` | `waiting_approval`.
 
 Um `run_id` por tentativa de execucao de uma task aceita.
 
@@ -301,6 +307,9 @@ Codigos iniciais:
 | `runtime.timeout` | Runner/Player |
 | `runtime.cancelled` | Runner |
 | `runtime.internal` | Core |
+| `policy.denied` | Execution Policy deny na admissao (G-82; spec `22`) |
+| `policy.approval_denied` | Humano recusou HITL (G-83) |
+| `policy.not_waiting` | `ApproveRun` sem Run em `waiting_approval` |
 
 ---
 
@@ -319,7 +328,10 @@ Responsabilidades v0:
 5. Publicar eventos
 6. Coletar Results
 
-**Nao faz no v0:** replanejamento, policies avancadas, background players, blast radius.
+**Nao faz no v0:** replanejamento, background players, blast radius,
+resource claims. Execution Policy v0 (allow/deny/HITL) esta em
+[22-execution-policy-v0.md](22-execution-policy-v0.md) — nao e o
+Orchestrator completo HYPOTHESIS.
 
 Relacao: Orchestrator HYPOTHESIS futuro pode absorver Runner.
 
@@ -367,6 +379,7 @@ SubmitTask(TaskIR) -> (run_id | ValidationError)
 GetRun(run_id) -> RunSnapshot
 Subscribe(filter) -> <-chan Event   // TUI/CLI status
 CancelRun(run_id) -> error          // pode ser stub no MVP
+ApproveRun(run_id, grant|deny) -> error  // G-84; spec `22`
 ```
 
 - Nao ha protocolo separado Board/CLI.

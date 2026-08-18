@@ -1,0 +1,8 @@
+schema: spec-driven
+created: 2026-08-17
+nnn: "022"
+slug: execution-policy
+docs_canonical: docs/22-execution-policy-v0.md
+gaps: [G-81, G-82, G-83, G-84, G-85, G-86]
+status: archived
+branch: feat/022-execution-policy
