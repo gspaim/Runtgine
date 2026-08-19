@@ -8,8 +8,8 @@ Dois andares:
 
 | Andar | Significado |
 |---|---|
-| **MVP realizado** | Já no código (slices 1–18) |
-| **MVP 1.0 magro** | Alvo imediato: fechar o loop NL → Player certo + contexto relevante |
+| **MVP realizado** | Já no código (slices 1–20, incluindo 1.0 magro) |
+| **MVP 1.0 magro** | Feito: NL → Player certo + semente `repo_hits` |
 
 A frase do produto é **intenção → execução verificável**. O runtime
 mínimo (Core + Shell + CLI/TUI + Board) já provou que o Core existe.
@@ -26,7 +26,7 @@ O 1.0 magro prova o loop sem `shell.exec` livre quando já há Player.
 
 ---
 
-## MVP realizado (slices 1–18)
+## MVP realizado (slices 1–20)
 
 Já implementado. Não voltar a listar estes itens como “fora do MVP”.
 
@@ -37,7 +37,7 @@ Já implementado. Não voltar a listar estes itens como “fora do MVP”.
 - CLI (`run`, `status`, `intent`, `graph`, `memory`, `blast`, …)
 - TUI Constellation (incluindo aba GRAPH)
 - Board GitHub Projects + pipeline vertical (`12`)
-- Intent Engine NL (`17`) — hoje sobretudo `shell.exec` / pipeline
+- Intent Engine NL (`17`) — heuristics shell / pipeline / Players (slice 19)
 - Runtime Graph + Graph Hits + Project Memory (`memory_hits`)
 
 ### Players determinísticos
@@ -54,20 +54,20 @@ Pipeline + LLM Players do cenário Board.
 
 ---
 
-## MVP 1.0 magro (alvo)
+## MVP 1.0 magro (feito)
 
 O que falta para o loop ser honesto:
 
 | Item | Gaps | Código |
 |---|---|---|
 | Heurísticas Intent → Players atuais | G-135..G-136 | slice 19 — feito |
-| Context Engine v0 (seed `repo_hits`) | G-137..G-139 | slice 20 |
+| Context Engine v0 (seed `repo_hits`) | G-137..G-139 | slice 20 — feito |
 
 Exclusões comuns: G-140.
 
 Doc canônico do Context Engine: [31-context-engine-v0.md](31-context-engine-v0.md).
 Intent: emenda em [17-intent-engine-v0.md](17-intent-engine-v0.md).
-OpenSpec: [`openspec/changes/031-mvp-1.0/`](../openspec/changes/031-mvp-1.0/).
+OpenSpec: [`openspec/changes/archive/2026-08-19-031-mvp-1.0/`](../openspec/changes/archive/2026-08-19-031-mvp-1.0/).
 
 ### 1. Heurísticas de Intent (slice 19)
 
@@ -144,16 +144,9 @@ UC-02 (CI/CD via HTTP) permanece **pós-1.0** (G-45). Até lá, CI usa CLI.
 ## Ordem de codigo (a partir daqui)
 
 1. Slice 19 — heurísticas Intent (G-135..G-136) — feito
-2. Slice 20 — Context Engine v0 (G-137..G-139) — após merge desta spec / slice 19
-3. Arquivar OpenSpec `031` após o código do 1.0
+2. Slice 20 — Context Engine v0 (G-137..G-139) — feito
+3. OpenSpec `031` arquivado — feito
 4. Depois: nova promoção em `04` (G-45, mais Players, Wails, …)
 
 Histórico do runtime mínimo (Task IR → Shell → CLI → TUI → Board →
 pipeline) está nos slices 1–4 / `11` / `12`. Não reabrir.
-
----
-
-## Criterio de “pronto para codar” o 1.0
-
-G-135..G-140 **CONFIRMED** neste doc + `04` (este PR de spec).
-Não implementar Go neste PR.

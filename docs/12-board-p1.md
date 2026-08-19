@@ -94,7 +94,7 @@ ContextPack v0 (G-24) + extensao Graph Hits (G-67, ver `19`):
 Regras: truncamento deterministico se exceder budget; montado pelo Core
 (`AssembleContext`) antes do LLM Player; nao e Intent Engine.
 `repo_hits` = intra-run (repo-search) **ou** semente do Graph quando
-vazio (Context Engine v0, `31`, slice 20). `graph_hits` = entre runs
+vazio (Context Engine v0, `31`, slice 20 feito). `graph_hits` = entre runs
 (estrutural). `memory_hits` = entre runs (episódico).
 
 ---

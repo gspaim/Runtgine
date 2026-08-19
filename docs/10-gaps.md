@@ -287,7 +287,7 @@ Ate la, o Core deve rodar so com CLI + Shell.
 16. HTTP Player — spec em `28` — G-117..G-122 CONFIRMED; codigo = slice 16 — feito
 17. Project Memory — spec em `29` — G-123..G-128 CONFIRMED; codigo = slice 17 — feito
 18. Test Player — spec em `30` — G-129..G-134 CONFIRMED; codigo = slice 18 — feito
-19. MVP 1.0 magro — spec em `09`/`31`/`17` — G-135..G-140 CONFIRMED; codigo = slices 19–20
+19. MVP 1.0 magro — spec em `09`/`31`/`17` — G-135..G-140 CONFIRMED; slices 19–20 feitos
 
 ## Criterio de “pronto para codar”
 
@@ -308,7 +308,7 @@ Ate la, o Core deve rodar so com CLI + Shell.
 **HTTP Player (G-117..G-122): CONFIRMADO** — slice 16 feito.  
 **Project Memory (G-123..G-128): CONFIRMADO** — slice 17 feito.  
 **Test Player (G-129..G-134): CONFIRMADO** — slice 18 feito.  
-**MVP 1.0 magro (G-135..G-140): CONFIRMADO** — spec; codigo = slices 19–20.
+**MVP 1.0 magro (G-135..G-140): CONFIRMADO** — slices 19–20 feitos.
 
 Ordem pratica de codigo:
 1. Core CLI + Shell (+ SQLite) — slice 1 — feito
@@ -330,10 +330,10 @@ Ordem pratica de codigo:
 17. Project Memory v0 — slice 17 (G-123..G-128) — feito (spec `29`)
 18. Test Player v0 — slice 18 (G-129..G-134) — feito (spec `30`)
 19. Intent player heuristics — slice 19 (G-135..G-136) — feito (spec `031`)
-20. Context Engine v0 — slice 20 (G-137..G-139) — pending (spec `031`)
+20. Context Engine v0 — slice 20 (G-137..G-139) — feito (spec `031`)
 
 P3 restante (G-40 templates, G-44 MCP, G-45 API HTTP; G-41 em andamento).
-MVP 1.0 magro: spec `09`/`31` (G-135..G-140); codigo = slices 19–20.
+MVP 1.0 magro: spec `09`/`31` (G-135..G-140); slices 19–20 feitos.
 Test Player corte v0: spec `30` (G-129..G-134); slice 18 feito.
 Project Memory corte v0: spec `29` (G-123..G-128); slice 17 feito.
 Esboço conceitual permanece em `16`.

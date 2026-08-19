@@ -13,10 +13,9 @@ Project Memory (`29`) — **consome** os dois. Não é a API HTTP (G-45).
 **Status deste doc: CONFIRMED (v0).** G-137..G-139 autorizam o
 slice 20. G-140 (exclusões) vale para o 1.0 magro inteiro.
 
-**Pacote OpenSpec:** ativo em
-[`openspec/changes/031-mvp-1.0/`](../openspec/changes/031-mvp-1.0/).
-Branch de implementação do código: após merge desta spec
-(`feat/031-mvp-1.0` / slice 20).
+**Pacote OpenSpec:** arquivado em
+[`openspec/changes/archive/2026-08-19-031-mvp-1.0/`](../openspec/changes/archive/2026-08-19-031-mvp-1.0/).
+Slice 20 feito.
 
 ---
 
@@ -72,8 +71,9 @@ Regras:
 Quando `repo_hits.paths` (e symbols) saírem vazios de
 `extractRepoHits`:
 
-1. Chamar `QueryHits` com o texto do `intent.summary` (mesmo budget
-   `max_files` / `graph_max_hits` já existente)
+1. Reutilizar o resultado de `QueryHits` já anexado em `graph_hits`
+   (mesmo budget `max_files` / `graph_max_hits`; **não** consultar
+   o Graph duas vezes)
 2. Copiar itens `kind=path` → `repo_hits.paths` (id do nó = path)
 3. Copiar itens `kind=symbol` → `repo_hits.symbols`
 4. Respeitar `budget.max_files`
@@ -114,18 +114,16 @@ Compartilhado com heurísticas de Intent (`09` / G-135..G-136):
 4. Nenhuma leitura de conteúdo de arquivo no assembler.
 5. `go test ./internal/core/contextpack/...` e `go test ./...` /
    `go vet ./...` verdes.
-6. OpenSpec `031` arquivado **após** slices 19 e 20 (código), não
-   neste PR de spec.
+6. OpenSpec `031` arquivado após slices 19 e 20 — feito.
 
 ---
 
 ## 5. Ordem do slice de código
 
-Bloqueado até G-135..G-140 CONFIRMED (este PR):
-
 1. Slice 19 — Intent player heuristics (`17` / G-135..G-136) — feito
-2. Slice 20 — semente `repo_hits` neste doc
-3. README Estágio: 1.0 magro feito; arquivar `031`
+2. Slice 20 — semente `repo_hits` neste doc — feito
+3. README Estágio: 1.0 magro feito; `031` arquivado — feito
+4. Depois: nova promoção em `04` (G-45, mais Players, Wails, …)
 
 ---
 

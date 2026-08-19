@@ -150,6 +150,7 @@ func (e *Engine) compileLLM(ctx context.Context, text, ep, ref string) (task.Tas
 			})
 		}
 		pack = contextpack.WithGraphHits(pack, items)
+		pack = contextpack.WithSeededRepoHits(pack, pack.GraphHits.Items)
 	}
 	if e.Memory != nil {
 		hits, err := e.Memory.Query(ctx, text, pack.Budget.MemoryMaxHits)

@@ -73,7 +73,7 @@ Task → Event → Queue → Player → Result
 Visão enxuta do que já está em `main`. **Atualizar esta seção em todo PR
 `release/*` → `main`** (e em PRs para `develop` quando o estágio mudar).
 
-**Agora:** MVP funcional (slices 1–17), sem release estável.
+**Agora:** MVP funcional (slices 1–20, 1.0 magro feito), sem release estável.
 
 | | Entrega |
 |---|---|
@@ -96,7 +96,9 @@ Visão enxuta do que já está em `main`. **Atualizar esta seção em todo PR
 | Feito | Slice 17 — Project Memory v0 (`29`, G-123..G-128; `runtgine memory`) |
 | Feito | Slice 18 — Test Player v0 (`30`, G-129..G-134; `test.go`) |
 | Feito | Slice 19 — Intent → Players (`031`, G-135..G-136; `test.go` / `git.status`) |
-| Próximo | Slice 20 — Context Engine v0 (`31`, G-137..G-139) |
+| Feito | Slice 20 — Context Engine v0 (`31`, G-137..G-139; semente `repo_hits`) |
+| Feito | MVP 1.0 magro (`09`/`031`, G-135..G-140) |
+| Próximo | G-45 / mais Players / Wails — nova promoção em `04` |
 
 Detalhe do corte: [`docs/09-mvp.md`](docs/09-mvp.md). Limitações atuais abaixo.
 
@@ -397,7 +399,7 @@ vulnerabilidade.
 | [HTTP Player](docs/28-http-player-v0.md) | Player `http.get` / `http.head` v0 (G-117..G-122; slice 16) |
 | [Project Memory](docs/29-project-memory-v0.md) | Memória episódica v0 (G-123..G-128; slice 17) |
 | [Test Player](docs/30-test-player-v0.md) | Player `test.go` v0 (G-129..G-134; slice 18) |
-| [Context Engine](docs/31-context-engine-v0.md) | Semente `repo_hits` v0 (G-137..G-139; slice 20 após spec 031) |
+| [Context Engine](docs/31-context-engine-v0.md) | Semente `repo_hits` v0 (G-137..G-139; slice 20) |
 | [OpenSpec](openspec/README.md) | Pacotes de mudança `NNN-slug` |
 | [TUI Design](docs/14-tui-design.md) | Constellation Mission Control |
 | [Git workflow](docs/15-git-workflow.md) | Branches, RC e releases |

@@ -1,6 +1,6 @@
 # ContextPack
 
-Status: comportamento atual (pós-slice 17 / Project Memory).
+Status: comportamento atual (pós-slice 20 / Context Engine v0).
 
 ## Requirements
 
@@ -14,7 +14,7 @@ hits, and budget.
 - GIVEN a run with at least one prior step output
 - WHEN AssembleContext runs for the next LLM step
 - THEN the pack includes `task`, `step`, `prior_outputs`, `repo_hits`, `graph_hits`, `memory_hits`, and `budget`
-- AND `repo_hits` are derived only from `pipeline.repo-search` outputs in this run
+- AND `repo_hits` come from `pipeline.repo-search` in this run when present
 
 ### Requirement: Budget truncates deterministically
 
@@ -67,4 +67,34 @@ and budget fields `memory_max_hits` (default 8) and `memory_max_chars`
 - GIVEN QueryMemory returns an error or no rows
 - WHEN AssembleContext runs for an LLM step
 - THEN `memory_hits.items` is `[]`
+- AND the Run continues
+
+### Requirement: Empty repo_hits are seeded from Graph path/symbol hits
+
+When AssembleContext (or the Intent LLM Completer pack) has empty
+`repo_hits` after intra-run extraction, the Core SHALL copy
+`QueryHits` items with `kind=path` into `repo_hits.paths` and
+`kind=symbol` into `repo_hits.symbols`, capped by `budget.max_files`.
+Existing repo-search hits MUST NOT be overwritten. Graph failure MUST
+leave `repo_hits` empty and MUST NOT fail the Run.
+
+#### Scenario: Seed from graph
+
+- GIVEN no `pipeline.repo-search` output in this Run
+- AND QueryHits returns a path hit `internal/core/intent/intent.go`
+- WHEN AssembleContext runs for an LLM step
+- THEN `repo_hits.paths` contains that path
+
+#### Scenario: Preserve repo-search
+
+- GIVEN `pipeline.repo-search` already filled `repo_hits`
+- WHEN AssembleContext runs
+- THEN those paths remain
+- AND Graph path hits are not merged in
+
+#### Scenario: Empty graph degrades
+
+- GIVEN QueryHits returns no path/symbol items
+- WHEN AssembleContext runs
+- THEN `repo_hits.paths` is empty
 - AND the Run continues

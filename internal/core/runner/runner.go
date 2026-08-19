@@ -410,6 +410,7 @@ func (r *Runner) execute(ctx context.Context, t task.Task, p plan.Plan, skipAppr
 		stepID := s.StepID
 		pack := contextpack.Assemble(t, s.StepID, s.Capability, priors)
 		pack = r.attachGraphHits(ctx, pack, t)
+		pack = contextpack.WithSeededRepoHits(pack, pack.GraphHits.Items)
 		pack = r.attachMemoryHits(ctx, pack, t)
 		packJSON, _ := contextpack.Marshal(pack)
 		_ = r.emit(p.RunID, t.TaskID, &stepID, event.TypeStepStarted, map[string]any{

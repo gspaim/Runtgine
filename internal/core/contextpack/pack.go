@@ -96,6 +96,43 @@ func Assemble(t task.Task, stepID, capability string, priors []store.StepOutput)
 	return p
 }
 
+// WithSeededRepoHits copies Graph path/symbol hits into repo_hits when
+// intra-run extraction left that field empty (G-138). Existing repo-search
+// hits are not overwritten.
+func WithSeededRepoHits(p Pack, items []GraphHit) Pack {
+	if len(p.RepoHits.Paths) > 0 || len(p.RepoHits.Symbols) > 0 {
+		return p
+	}
+	max := p.Budget.MaxFiles
+	if max <= 0 {
+		max = DefaultMaxFiles
+	}
+	var paths, symbols []string
+	seenP := map[string]bool{}
+	seenS := map[string]bool{}
+	for _, it := range items {
+		if it.ID == "" {
+			continue
+		}
+		switch it.Kind {
+		case "path":
+			if seenP[it.ID] || len(paths) >= max {
+				continue
+			}
+			seenP[it.ID] = true
+			paths = append(paths, it.ID)
+		case "symbol":
+			if seenS[it.ID] || len(symbols) >= max {
+				continue
+			}
+			seenS[it.ID] = true
+			symbols = append(symbols, it.ID)
+		}
+	}
+	p.RepoHits = RepoHits{Paths: paths, Symbols: symbols}
+	return p
+}
+
 // WithGraphHits attaches ranked structural hits and applies graph budgets.
 // Items should already be score-sorted (highest first); lowest scores are dropped first.
 func WithGraphHits(p Pack, items []GraphHit) Pack {
