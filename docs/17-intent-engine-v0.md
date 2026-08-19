@@ -45,7 +45,8 @@ CompileIntent(text, source) -> (TaskIR, method)
 SubmitIntent(text, source)  -> run_id   // CompileIntent + SubmitTask
 ```
 
-- `method`: `heuristic.shell` | `heuristic.pipeline` | `llm`
+- `method`: `heuristic.shell` | `heuristic.pipeline` | `heuristic.test` |
+  `heuristic.git` | `heuristic.docker` | `llm`
 - Entry point tipico: `cli` (ref opcional)
 - Pacote: `internal/core/intent`
 
@@ -58,11 +59,41 @@ SubmitIntent(text, source)  -> run_id   // CompileIntent + SubmitTask
 Ordem:
 
 1. Texto vazio → erro de validacao
-2. Padrao shell (prefixos `run `, `exec `, `echo `, `go `, `make `, `npm `, `./`, `$ ` ou argv simples) → Task com um step `shell.exec`
-3. Padrao de analise (`review`, `revisa`, `analisa`, `decompose`, `pipeline`, `estima`, `board`) → template `pipeline` linear (`12`)
-4. Caso contrario → caminho LLM (G-53)
+2. Padrao **Player** (G-135; MVP 1.0 magro) — ver tabela abaixo
+3. Padrao shell (prefixos `run `, `exec `, `echo `, `go `, `make `, `npm `, `./`, `$ ` ou argv simples) → Task com um step `shell.exec`
+4. Padrao de analise (`review`, `revisa`, `analisa`, `decompose`, `pipeline`, `estima`, `board`) → template `pipeline` linear (`12`)
+5. Caso contrario → caminho LLM (G-53)
 
 Shell argv: split whitespace simples (sem shell string / sem `sh -c`).
+`go test` **nao** cai no prefixo `go ` — Player heuristic ganha.
+
+---
+
+## G-135 — Heuristicas de Player (MVP 1.0 magro)
+
+**Status: CONFIRMED** — codigo = slice 19 (apos spec `031`).
+
+Antes de `matchShell`. Frases de alta confianca (PT/EN, case-insensitive):
+
+| NL | Capability | Method |
+|---|---|---|
+| `go test`, `roda os testes`, `rodar testes`, `run tests` | `test.go` | `heuristic.test` |
+| `git status` | `git.status` | `heuristic.git` |
+| `git diff` | `git.diff` | `heuristic.git` |
+| `git log` | `git.log` | `heuristic.git` |
+| `docker ps` | `docker.ps` | `heuristic.docker` |
+
+Fora desta tabela no v0: `git add/commit/push`, `http.get`, `fs.*`,
+`docker run/build`, pytest/npm. Inputs = defaults do Manifest.
+
+## G-136 — Metodos e soberania
+
+**Status: CONFIRMED** — codigo = slice 19.
+
+- `method` passa a incluir `heuristic.test` | `heuristic.git` |
+  `heuristic.docker` alem de `heuristic.shell` | `heuristic.pipeline` | `llm`
+- Caminho LLM (G-53) **nao** ganha `route` novo; continua `shell|pipeline`
+- Registry/Validator rejeitam capability inventada (inalterado)
 
 ---
 
@@ -109,7 +140,8 @@ runtgine intent "<nl>" [--dry-run] [--wait]
 - Multi-step planning rico alem de shell|pipeline
 - TUI input de NL
 - Intent Engine como Player (`intent.*`)
-- Consulta Graph nas heuristicas shell\|pipeline (so caminho LLM; ver `19`)
+- Consulta Graph nas heuristicas (so caminho LLM; ver `19`)
+- Heuristicas `git.add` / `commit` / `push`, `http.get`, `fs.*` (1.0 magro)
 
 Nota: Graph Hits no Completer LLM e ContextPack e o slice
 [19-graph-hits-v0.md](19-graph-hits-v0.md) (G-66..G-69), nao deste doc.

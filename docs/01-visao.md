@@ -23,8 +23,9 @@ Human Intent -> Intent Engine -> Task IR -> Validator ->
 Execution Plan -> Event Bus -> Orchestrator -> Capability Resolver
 -> Player Router -> Players -> Events -> Graph -> State
 
-No MVP, a entrada tipica e Task IR estruturado (CLI/Board), sem
-Intent Engine de linguagem natural.
+No MVP realizado, a entrada tipica e Task IR estruturado (CLI/Board)
+ou `runtgine intent` (NL). O 1.0 magro (ver `09`) adiciona heuristicas
+de Player e Context Engine v0; API HTTP (G-45) permanece fora.
 
 ## Arquitetura
 

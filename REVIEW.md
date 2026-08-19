@@ -36,18 +36,18 @@ Human Intent -> Intent Engine -> Task IR -> Validator ->
 Execution Plan -> Event Bus -> Orchestrator ->
 Capability Resolver -> Player Router -> Players -> Events -> Graph -> State
 
-No MVP: entrada estruturada (Task IR v0) via CLI/Board; Intent Engine NL
-v0 disponivel via `runtgine intent` (pos-Core).
+No MVP realizado: Task IR via CLI/Board e `runtgine intent`.
+O 1.0 magro (`09`) fecha heuristicas de Player + Context Engine v0.
 
 ## 4. Modelo Conceitual
 
 CONFIRMED: Task, Workflow, Execution Plan, Player, Capability,
 Manifest, Event, Queue, Event Bus, Entry Point != Player.
 
-HYPOTHESIS: Context Engine, Player Router,
-Background Player, Workflow Template.
+HYPOTHESIS: Player Router, Background Player, Workflow Template.
 
 CONFIRMED (v0): Intent Engine, Task IR, Task Validator (subset), Runtime Graph,
+Context Engine (semente `repo_hits`; `31`),
 Execution Policy + HITL (`22`), Docker Player (`23`), Resource Claims (`24`),
 Blast Radius (`25`).
 
@@ -148,4 +148,5 @@ Slices 1–9 implementados (Core → Intent → Graph → Git → Filesystem).
 **HTTP Player v0: CONFIRMED + implementado** (`28`, G-117..G-122; slice 16).
 **Project Memory v0: CONFIRMED + implementado** (`29`, G-123..G-128; slice 17).
 **Test Player v0: CONFIRMED + implementado** (`30`, G-129..G-134; slice 18).
-P3 restante: mais Players; G-45 API HTTP; G-44 MCP.
+**MVP 1.0 magro: CONFIRMED spec** (`09`/`31`, G-135..G-140; codigo = slices 19–20).
+P3 restante: G-45 API HTTP; G-44 MCP; NATS; Wails.

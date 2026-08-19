@@ -36,6 +36,7 @@ Autoridade de decisoes: [04-decisoes.md](04-decisoes.md).
 | 28 | 28-http-player-v0.md | HTTP Player v0 (**CONFIRMED**; G-117..G-122) |
 | 29 | 29-project-memory-v0.md | Project Memory v0 (**CONFIRMED**; G-123..G-128) |
 | 30 | 30-test-player-v0.md | Test Player v0 (**CONFIRMED**; G-129..G-134) |
+| 31 | 31-context-engine-v0.md | Context Engine v0 (**CONFIRMED**; G-137..G-139; MVP 1.0) |
 | — | [openspec/](../openspec/README.md) | Pacotes de mudança OpenSpec (`NNN-slug`) |
 
 ## Fontes historicas (raiz do repo)
@@ -60,4 +61,5 @@ Walk Blast←Graph (`27`, G-111..G-116) esta **CONFIRMED v0** (slice 15 feito).
 HTTP Player (`28`, G-117..G-122) esta **CONFIRMED v0** (slice 16 feito).
 Project Memory (`29`, G-123..G-128) esta **CONFIRMED v0** (slice 17 feito).
 Test Player (`30`, G-129..G-134) esta **CONFIRMED v0** (slice 18 feito).
-P3 restante: mais Players; G-45 API HTTP; G-44 MCP.
+MVP 1.0 magro (`09`, G-135..G-140) esta **CONFIRMED** (codigo = slices 19–20).
+P3 restante: G-45 API HTTP; G-44 MCP; NATS; Wails.
