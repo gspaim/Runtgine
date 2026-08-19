@@ -23,6 +23,7 @@ import (
 	dockerplayer "github.com/gspaim/Runtgine/internal/players/docker"
 	"github.com/gspaim/Runtgine/internal/players/filesystem"
 	gitplayer "github.com/gspaim/Runtgine/internal/players/git"
+	gotestplayer "github.com/gspaim/Runtgine/internal/players/gotest"
 	httpplayer "github.com/gspaim/Runtgine/internal/players/httpclient"
 	"github.com/gspaim/Runtgine/internal/players/llm"
 	pipeplayer "github.com/gspaim/Runtgine/internal/players/pipeline"
@@ -69,6 +70,10 @@ func Open(cfg config.Config, log *slog.Logger) (*Core, error) {
 		return nil, err
 	}
 	if err := reg.Register(httpplayer.New()); err != nil {
+		_ = st.Close()
+		return nil, err
+	}
+	if err := reg.Register(gotestplayer.New()); err != nil {
 		_ = st.Close()
 		return nil, err
 	}

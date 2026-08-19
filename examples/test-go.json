@@ -1,0 +1,22 @@
+{
+  "schema_version": "0.1.0",
+  "source": {
+    "entry_point": "cli",
+    "ref": "examples/test-go.json"
+  },
+  "intent": {
+    "summary": "Run Go tests via Test Player"
+  },
+  "steps": [
+    {
+      "step_id": "gotest",
+      "capability": "test.go",
+      "input": {
+        "packages": ["./internal/players/gotest"],
+        "timeout_ms": 120000,
+        "count": 1
+      },
+      "depends_on": []
+    }
+  ]
+}

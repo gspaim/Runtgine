@@ -39,10 +39,9 @@ Exemplos válidos: `001-shell-player`, `017-intent-engine`, `019-graph-hits`.
 
 **Próximo id livre:** `031`.
 
-Mudança ativa: [`changes/030-test-player/`](changes/030-test-player/)
-(Test Player v0; G-129..G-134; código = slice 18). Último archive:
-[`changes/archive/2026-08-19-029-project-memory/`](changes/archive/2026-08-19-029-project-memory/)
-(Project Memory v0; slice 17 feito).
+Nenhuma mudança ativa. Último archive:
+[`changes/archive/2026-08-19-030-test-player/`](changes/archive/2026-08-19-030-test-player/)
+(Test Player v0; G-129..G-134; slice 18 feito).
 
 ## Autoridade
 

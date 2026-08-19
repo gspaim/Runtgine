@@ -25,6 +25,7 @@ import (
 	dockplayer "github.com/gspaim/Runtgine/internal/players/docker"
 	"github.com/gspaim/Runtgine/internal/players/filesystem"
 	"github.com/gspaim/Runtgine/internal/players/git"
+	gotestplayer "github.com/gspaim/Runtgine/internal/players/gotest"
 	httpplayer "github.com/gspaim/Runtgine/internal/players/httpclient"
 	"github.com/gspaim/Runtgine/internal/players/shell"
 )
@@ -210,6 +211,14 @@ func (r *Runner) validateTaskIR(t task.Task) error {
 			}
 		case httpplayer.CapGet, httpplayer.CapHead:
 			if err := httpplayer.ValidateStaticInput(r.Workspace, s.Capability, s.Input); err != nil {
+				var ve result.Error
+				if errors.As(err, &ve) {
+					return r.reject(t.TaskID, ve.Code, ve.Message)
+				}
+				return r.reject(t.TaskID, result.CodeInvalidInput, err.Error())
+			}
+		case gotestplayer.CapGo:
+			if err := gotestplayer.ValidateStaticInput(r.Workspace, s.Capability, s.Input); err != nil {
 				var ve result.Error
 				if errors.As(err, &ve) {
 					return r.reject(t.TaskID, ve.Code, ve.Message)

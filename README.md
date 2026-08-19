@@ -94,8 +94,8 @@ Visão enxuta do que já está em `main`. **Atualizar esta seção em todo PR
 | Feito | Slice 15 — Walk Blast←Graph v0 (`27`, G-111..G-116; `affected`) |
 | Feito | Slice 16 — HTTP Player v0 (`28`, G-117..G-122; `http.get` / `http.head`) |
 | Feito | Slice 17 — Project Memory v0 (`29`, G-123..G-128; `runtgine memory`) |
-| Próximo | Slice 18 — Test Player v0 (`30`, G-129..G-134 CONFIRMED; código após merge) |
-| Depois | Mais Players; API HTTP (G-45); bus distribuído; desktop Wails |
+| Feito | Slice 18 — Test Player v0 (`30`, G-129..G-134; `test.go`) |
+| Próximo | Mais Players; API HTTP (G-45); bus distribuído; desktop Wails |
 
 Detalhe do corte: [`docs/09-mvp.md`](docs/09-mvp.md). Limitações atuais abaixo.
 
@@ -191,6 +191,9 @@ Exemplos:
 # HTTP Player (HTTPS GET — hits the network if executed)
 ./bin/runtgine run examples/http-get.json
 
+# Test Player (go test no workspace; -mod=readonly)
+./bin/runtgine run examples/test-go.json
+
 # Linguagem natural → Task IR → execução
 ./bin/runtgine intent "echo hello-intent"
 ./bin/runtgine intent "revisar a arquitetura do workspace" --dry-run
@@ -252,7 +255,7 @@ Fluxo real do MVP: **CLI/Board** montam `Task IR` e chamam `SubmitTask`. O **Val
 cmd/runtgine/             binário e CLI
 internal/config/          defaults, arquivo, env e flags
 internal/core/            Task, Event, Runner, Registry, Store, Graph e APIs
-internal/players/         Shell, Git, Filesystem, Pipeline e LLM Players
+internal/players/         Shell, Git, Filesystem, HTTP, Test, Pipeline e LLM Players
 internal/entrypoint/      CLI, Board e TUI
 examples/                 exemplos de Task IR
 docs/                     decisões e especificações oficiais
@@ -392,7 +395,7 @@ vulnerabilidade.
 | [Filesystem Player](docs/21-filesystem-player-v0.md) | Player `fs.*` v0 (G-75..G-80; slice 9) |
 | [HTTP Player](docs/28-http-player-v0.md) | Player `http.get` / `http.head` v0 (G-117..G-122; slice 16) |
 | [Project Memory](docs/29-project-memory-v0.md) | Memória episódica v0 (G-123..G-128; slice 17) |
-| [Test Player](docs/30-test-player-v0.md) | Player `test.go` v0 (G-129..G-134; slice 18 após spec) |
+| [Test Player](docs/30-test-player-v0.md) | Player `test.go` v0 (G-129..G-134; slice 18) |
 | [OpenSpec](openspec/README.md) | Pacotes de mudança `NNN-slug` |
 | [TUI Design](docs/14-tui-design.md) | Constellation Mission Control |
 | [Git workflow](docs/15-git-workflow.md) | Branches, RC e releases |

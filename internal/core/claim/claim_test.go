@@ -92,6 +92,10 @@ func TestRequiredTable(t *testing.T) {
 	if err != nil || ok {
 		t.Fatalf("http.get must not claim: ok=%v err=%v", ok, err)
 	}
+	_, ok, err = Required("test.go", json.RawMessage(`{"packages":["./..."]}`))
+	if err != nil || ok {
+		t.Fatalf("test.go must not claim: ok=%v err=%v", ok, err)
+	}
 	_, ok, err = Required("fs.read", json.RawMessage(`{"path":"notes.md"}`))
 	if err != nil || ok {
 		t.Fatalf("fs.read must not claim")

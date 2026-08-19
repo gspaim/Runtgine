@@ -131,6 +131,74 @@ func TestSubmitRejectsUnknownHTTPPost(t *testing.T) {
 	}
 }
 
+func TestSubmitRejectsUnknownTestPython(t *testing.T) {
+	core := openTestCore(t)
+	id, err := uuid.NewV7()
+	if err != nil {
+		t.Fatal(err)
+	}
+	tk := task.Task{
+		SchemaVersion: task.SchemaVersion,
+		TaskID:        id.String(),
+		Source:        task.Source{EntryPoint: "cli"},
+		Intent:        task.Intent{Summary: "pytest"},
+		Steps: []task.Step{{
+			StepID:     "s1",
+			Capability: "test.python",
+			Input:      json.RawMessage(`{}`),
+		}},
+	}
+	_, err = core.SubmitTask(context.Background(), tk)
+	if err == nil {
+		t.Fatal("expected rejection")
+	}
+	var ve result.Error
+	if !asValidation(err, &ve) || ve.Code != result.CodeUnknownCapability {
+		t.Fatalf("got %v", err)
+	}
+}
+
+func TestSubmitRejectsEscapingTestPackage(t *testing.T) {
+	core := openTestCore(t)
+	id, err := uuid.NewV7()
+	if err != nil {
+		t.Fatal(err)
+	}
+	tk := task.Task{
+		SchemaVersion: task.SchemaVersion,
+		TaskID:        id.String(),
+		Source:        task.Source{EntryPoint: "cli"},
+		Intent:        task.Intent{Summary: "escape tests"},
+		Steps: []task.Step{{
+			StepID:     "s1",
+			Capability: "test.go",
+			Input:      json.RawMessage(`{"packages":["../outside"]}`),
+		}},
+	}
+	_, err = core.SubmitTask(context.Background(), tk)
+	if err == nil {
+		t.Fatal("expected rejection")
+	}
+	var ve result.Error
+	if !asValidation(err, &ve) || ve.Code != result.CodeInvalidInput {
+		t.Fatalf("got %v", err)
+	}
+
+	id2, err := uuid.NewV7()
+	if err != nil {
+		t.Fatal(err)
+	}
+	tk.TaskID = id2.String()
+	tk.Steps[0].Input = json.RawMessage(`{"packages":["./..."],"exec":"/bin/true"}`)
+	_, err = core.SubmitTask(context.Background(), tk)
+	if err == nil {
+		t.Fatal("expected extra property rejection")
+	}
+	if !asValidation(err, &ve) || ve.Code != result.CodeInvalidInput {
+		t.Fatalf("extra property got %v", err)
+	}
+}
+
 func TestSubmitRejectsHTTPCleartextAndAuth(t *testing.T) {
 	core := openTestCore(t)
 	id, err := uuid.NewV7()

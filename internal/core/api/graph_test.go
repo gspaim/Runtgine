@@ -35,6 +35,12 @@ func TestGraphRefreshOnOpen(t *testing.T) {
 	if !snapshotHas(snap, graph.KindCapability, "http.get") || !snapshotHas(snap, graph.KindCapability, "http.head") {
 		t.Fatal("missing http.get/http.head")
 	}
+	if !snapshotHas(snap, graph.KindPlayer, "test") {
+		t.Fatal("missing test player")
+	}
+	if !snapshotHas(snap, graph.KindCapability, "test.go") {
+		t.Fatal("missing test.go")
+	}
 }
 
 func TestGraphSyncFromSuccessfulRun(t *testing.T) {

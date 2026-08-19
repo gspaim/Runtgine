@@ -15,7 +15,7 @@ context: |
   Out of scope until promoted: NATS, Wails MVP, MCP, HTTP API (G-45
   server), Blast-from-GRAPH (TUI node → blast), Memory Player. Project
   Memory v0 is CONFIRMED in docs/29 (slice 17 done). Test
-  Player v0 is CONFIRMED in docs/30 (slice 18 pending). HTTP
+  Player v0 is CONFIRMED in docs/30 (slice 18 done). HTTP
   Player v0 is CONFIRMED in docs/28 (slice 16 done). Walk Blast←Graph
   v0 is CONFIRMED in docs/27 (slice 15 done). TUI GRAPH v0
   is CONFIRMED in docs/26 (slice 14 done). Blast Radius v0 is CONFIRMED in
