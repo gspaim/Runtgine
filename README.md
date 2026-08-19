@@ -73,7 +73,7 @@ Task → Event → Queue → Player → Result
 Visão enxuta do que já está em `main`. **Atualizar esta seção em todo PR
 `release/*` → `main`** (e em PRs para `develop` quando o estágio mudar).
 
-**Agora:** MVP funcional (slices 1–16), sem release estável.
+**Agora:** MVP funcional (slices 1–17), sem release estável.
 
 | | Entrega |
 |---|---|
@@ -93,8 +93,8 @@ Visão enxuta do que já está em `main`. **Atualizar esta seção em todo PR
 | Feito | Slice 14 — TUI GRAPH v0 (`26`, G-105..G-110; aba GRAPH) |
 | Feito | Slice 15 — Walk Blast←Graph v0 (`27`, G-111..G-116; `affected`) |
 | Feito | Slice 16 — HTTP Player v0 (`28`, G-117..G-122; `http.get` / `http.head`) |
-| Próximo | Slice 17 — Project Memory v0 (`29`, G-123..G-128 CONFIRMED; código após merge) |
-| Depois | Mais Players; API HTTP (G-45); bus distribuído; desktop Wails |
+| Feito | Slice 17 — Project Memory v0 (`29`, G-123..G-128; `runtgine memory`) |
+| Próximo | Mais Players; API HTTP (G-45); bus distribuído; desktop Wails |
 
 Detalhe do corte: [`docs/09-mvp.md`](docs/09-mvp.md). Limitações atuais abaixo.
 
@@ -171,6 +171,7 @@ runtgine status <run_id>            Exibe snapshot e eventos
 runtgine cancel <run_id>            Solicita cancelamento de um run
 runtgine graph snapshot             Imprime o Runtime Graph (JSON)
 runtgine graph refresh              Atualiza players/capabilities do Graph
+runtgine memory list|query|record|supersede|archive  Project Memory (JSON)
 runtgine blast <task.json|task.yaml> Relatório de impacto + affected (sem executar)
 runtgine pipeline run               Executa o pipeline de análise
 runtgine board poll                 Importa cards do GitHub
@@ -203,6 +204,10 @@ Exemplos:
 
 # Runtime Graph (memória estrutural do workspace)
 ./bin/runtgine graph snapshot
+
+# Project Memory (episódios; não é Player)
+./bin/runtgine memory record --kind decision --title "Use SQLite for memory"
+./bin/runtgine memory query "sqlite"
 
 # Abrir a interface interativa
 ./bin/runtgine tui
@@ -340,6 +345,7 @@ partir do workspace já selecionado.
 | `RUNTGINE_ANTHROPIC_API_KEY` / `ANTHROPIC_API_KEY` | Credencial Anthropic |
 | `RUNTGINE_ANTHROPIC_MODEL` | Modelo Anthropic |
 | `RUNTGINE_GITHUB_TOKEN` / `GITHUB_TOKEN` | Credencial GitHub |
+| `RUNTGINE_MEMORY_CAPTURE` | `off` (default) ou `failures` |
 | `NO_COLOR` | Desabilita cores na TUI |
 | `RUNTGINE_ASCII` | Força glifos ASCII na TUI |
 

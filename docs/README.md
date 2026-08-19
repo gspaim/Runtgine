@@ -57,5 +57,5 @@ Blast Radius (`25`, G-99..G-104) esta **CONFIRMED v0** (slice 13 feito).
 TUI GRAPH (`26`, G-105..G-110) esta **CONFIRMED v0** (slice 14 feito).
 Walk Blast←Graph (`27`, G-111..G-116) esta **CONFIRMED v0** (slice 15 feito).
 HTTP Player (`28`, G-117..G-122) esta **CONFIRMED v0** (slice 16 feito).
-Project Memory (`29`, G-123..G-128) esta **CONFIRMED v0** (codigo = slice 17).
+Project Memory (`29`, G-123..G-128) esta **CONFIRMED v0** (slice 17 feito).
 P3 restante: mais Players; G-45 API HTTP; G-44 MCP.

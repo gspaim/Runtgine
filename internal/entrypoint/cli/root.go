@@ -13,6 +13,7 @@ import (
 	"github.com/gspaim/Runtgine/internal/config"
 	"github.com/gspaim/Runtgine/internal/core/api"
 	"github.com/gspaim/Runtgine/internal/core/event"
+	"github.com/gspaim/Runtgine/internal/core/memory"
 	corepipe "github.com/gspaim/Runtgine/internal/core/pipeline"
 	"github.com/gspaim/Runtgine/internal/core/runner"
 	"github.com/gspaim/Runtgine/internal/core/store"
@@ -42,6 +43,7 @@ func NewRoot() *cobra.Command {
 	root.AddCommand(newApproveCmd(&workspace, &verbose, false))
 	root.AddCommand(newCancelCmd(&workspace, &verbose))
 	root.AddCommand(newGraphCmd(&workspace, &verbose))
+	root.AddCommand(newMemoryCmd(&workspace, &verbose))
 	root.AddCommand(newBlastCmd(&workspace, &verbose))
 	root.AddCommand(newPipelineCmd(&workspace, &verbose))
 	root.AddCommand(newBoardCmd(&workspace, &verbose))
@@ -312,6 +314,142 @@ func newGraphCmd(workspace *string, verbose *bool) *cobra.Command {
 		},
 	})
 	return cmd
+}
+
+func newMemoryCmd(workspace *string, verbose *bool) *cobra.Command {
+	cmd := &cobra.Command{Use: "memory", Short: "Project Memory (episodic, not a Player)"}
+
+	list := &cobra.Command{
+		Use:   "list",
+		Short: "List episodes as JSON",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			core, err := openCore(*workspace, *verbose)
+			if err != nil {
+				return err
+			}
+			defer core.Close()
+			kind, _ := cmd.Flags().GetString("kind")
+			validity, _ := cmd.Flags().GetString("validity")
+			rows, err := core.MemoryList(context.Background(), memory.Filter{Kind: kind, Validity: validity})
+			if err != nil {
+				return err
+			}
+			return writeJSON(os.Stdout, rows)
+		},
+	}
+	list.Flags().String("kind", "", "filter kind")
+	list.Flags().String("validity", "", "filter validity")
+	cmd.AddCommand(list)
+
+	query := &cobra.Command{
+		Use:   "query <text>",
+		Short: "Lexical query of active episodes",
+		Args:  cobra.ExactArgs(1),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			core, err := openCore(*workspace, *verbose)
+			if err != nil {
+				return err
+			}
+			defer core.Close()
+			limit, _ := cmd.Flags().GetInt("limit")
+			hits, err := core.MemoryQuery(context.Background(), args[0], limit)
+			if err != nil {
+				return err
+			}
+			return writeJSON(os.Stdout, hits)
+		},
+	}
+	query.Flags().Int("limit", 0, "max hits (default 8)")
+	cmd.AddCommand(query)
+
+	record := &cobra.Command{
+		Use:   "record",
+		Short: "Record an active episode",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			core, err := openCore(*workspace, *verbose)
+			if err != nil {
+				return err
+			}
+			defer core.Close()
+			ep, err := core.MemoryRecord(context.Background(), episodeFlags(cmd))
+			if err != nil {
+				return err
+			}
+			return writeJSON(os.Stdout, ep)
+		},
+	}
+	bindEpisodeFlags(record)
+	cmd.AddCommand(record)
+
+	supersede := &cobra.Command{
+		Use:   "supersede <id>",
+		Short: "Mark an episode superseded and record a successor",
+		Args:  cobra.ExactArgs(1),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			core, err := openCore(*workspace, *verbose)
+			if err != nil {
+				return err
+			}
+			defer core.Close()
+			ep, err := core.MemorySupersede(context.Background(), args[0], episodeFlags(cmd))
+			if err != nil {
+				return err
+			}
+			return writeJSON(os.Stdout, ep)
+		},
+	}
+	bindEpisodeFlags(supersede)
+	cmd.AddCommand(supersede)
+
+	cmd.AddCommand(&cobra.Command{
+		Use:   "archive <id>",
+		Short: "Archive an episode (no physical delete)",
+		Args:  cobra.ExactArgs(1),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			core, err := openCore(*workspace, *verbose)
+			if err != nil {
+				return err
+			}
+			defer core.Close()
+			ep, err := core.MemoryArchive(context.Background(), args[0])
+			if err != nil {
+				return err
+			}
+			return writeJSON(os.Stdout, ep)
+		},
+	})
+	return cmd
+}
+
+func bindEpisodeFlags(cmd *cobra.Command) {
+	cmd.Flags().String("kind", "", "decision|failure|handoff|preference")
+	cmd.Flags().String("title", "", "episode title")
+	cmd.Flags().String("body", "", "episode body")
+	cmd.Flags().String("run-id", "", "optional run id")
+	cmd.Flags().String("task-id", "", "optional task id")
+	_ = cmd.MarkFlagRequired("kind")
+	_ = cmd.MarkFlagRequired("title")
+}
+
+func episodeFlags(cmd *cobra.Command) memory.EpisodeInput {
+	kind, _ := cmd.Flags().GetString("kind")
+	title, _ := cmd.Flags().GetString("title")
+	body, _ := cmd.Flags().GetString("body")
+	runID, _ := cmd.Flags().GetString("run-id")
+	taskID, _ := cmd.Flags().GetString("task-id")
+	return memory.EpisodeInput{
+		Kind:   kind,
+		Title:  title,
+		Body:   body,
+		RunID:  runID,
+		TaskID: taskID,
+	}
+}
+
+func writeJSON(w *os.File, v any) error {
+	enc := json.NewEncoder(w)
+	enc.SetIndent("", "  ")
+	return enc.Encode(v)
 }
 
 func newBlastCmd(workspace *string, verbose *bool) *cobra.Command {

@@ -9,6 +9,7 @@ import (
 
 	"github.com/gspaim/Runtgine/internal/core/contextpack"
 	"github.com/gspaim/Runtgine/internal/core/graph"
+	"github.com/gspaim/Runtgine/internal/core/memory"
 	corepipe "github.com/gspaim/Runtgine/internal/core/pipeline"
 	"github.com/gspaim/Runtgine/internal/core/result"
 	"github.com/gspaim/Runtgine/internal/core/task"
@@ -26,11 +27,17 @@ type HitsQuerier interface {
 	QueryHits(ctx context.Context, q graph.Query) graph.Hits
 }
 
+// MemoryQuerier is optional Project Memory for the LLM compile path (G-126).
+type MemoryQuerier interface {
+	Query(ctx context.Context, text string, limit int) ([]memory.Hit, error)
+}
+
 // Engine compiles natural language into Task IR v0 (G-50..G-53).
 // It is not a Player and never bypasses the Validator.
 type Engine struct {
 	Completer llm.Completer
-	Graph     HitsQuerier // optional; only used on LLM path
+	Graph     HitsQuerier   // optional; only used on LLM path
+	Memory    MemoryQuerier // optional; only used on LLM path
 }
 
 func New(c llm.Completer) *Engine {
@@ -106,12 +113,15 @@ func (e *Engine) compileLLM(ctx context.Context, text, ep, ref string) (task.Tas
 		Task: contextpack.TaskView{Summary: text, Notes: "intent.compile"},
 		Step: contextpack.StepView{StepID: "intent", Capability: "intent.compile"},
 		Budget: contextpack.Budget{
-			MaxChars:      contextpack.DefaultMaxChars,
-			MaxFiles:      contextpack.DefaultMaxFiles,
-			GraphMaxHits:  contextpack.DefaultGraphMaxHits,
-			GraphMaxChars: contextpack.DefaultGraphMaxChars,
+			MaxChars:       contextpack.DefaultMaxChars,
+			MaxFiles:       contextpack.DefaultMaxFiles,
+			GraphMaxHits:   contextpack.DefaultGraphMaxHits,
+			GraphMaxChars:  contextpack.DefaultGraphMaxChars,
+			MemoryMaxHits:  contextpack.DefaultMemoryMaxHits,
+			MemoryMaxChars: contextpack.DefaultMemoryMaxChars,
 		},
-		GraphHits: contextpack.GraphHits{Items: []contextpack.GraphHit{}},
+		GraphHits:  contextpack.GraphHits{Items: []contextpack.GraphHit{}},
+		MemoryHits: contextpack.MemoryHits{Items: []contextpack.MemoryHit{}},
 	}
 	if e.Graph != nil {
 		hits := e.Graph.QueryHits(ctx, graph.Query{
@@ -126,6 +136,25 @@ func (e *Engine) compileLLM(ctx context.Context, text, ep, ref string) (task.Tas
 			})
 		}
 		pack = contextpack.WithGraphHits(pack, items)
+	}
+	if e.Memory != nil {
+		hits, err := e.Memory.Query(ctx, text, pack.Budget.MemoryMaxHits)
+		if err != nil {
+			pack = contextpack.WithMemoryHits(pack, nil)
+		} else {
+			items := make([]contextpack.MemoryHit, 0, len(hits))
+			for _, h := range hits {
+				items = append(items, contextpack.MemoryHit{
+					ID:       h.ID,
+					Kind:     h.Kind,
+					Validity: h.Validity,
+					Title:    h.Title,
+					Snippet:  memory.Snippet(h.Body),
+					Score:    h.Score,
+				})
+			}
+			pack = contextpack.WithMemoryHits(pack, items)
+		}
 	}
 
 	var last error

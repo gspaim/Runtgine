@@ -14,6 +14,7 @@ import (
 	"github.com/gspaim/Runtgine/internal/core/contextpack"
 	"github.com/gspaim/Runtgine/internal/core/event"
 	"github.com/gspaim/Runtgine/internal/core/graph"
+	"github.com/gspaim/Runtgine/internal/core/memory"
 	corepipe "github.com/gspaim/Runtgine/internal/core/pipeline"
 	"github.com/gspaim/Runtgine/internal/core/plan"
 	"github.com/gspaim/Runtgine/internal/core/policy"
@@ -34,16 +35,24 @@ type GraphBridge interface {
 	QueryHits(ctx context.Context, q graph.Query) graph.Hits
 }
 
+// MemoryBridge is optional Project Memory (G-125..G-127).
+type MemoryBridge interface {
+	Query(ctx context.Context, text string, limit int) ([]memory.Hit, error)
+	Record(ctx context.Context, in memory.EpisodeInput) (memory.Episode, error)
+}
+
 type Runner struct {
-	Reg        *registry.Registry
-	Bus        event.Bus
-	Store      *store.Store
-	Workspace  string
-	LLMBackend string
-	Log        *slog.Logger
-	Graph      GraphBridge
-	Policy     policy.Table
-	Claims     *claim.Service
+	Reg           *registry.Registry
+	Bus           event.Bus
+	Store         *store.Store
+	Workspace     string
+	LLMBackend    string
+	Log           *slog.Logger
+	Graph         GraphBridge
+	Memory        MemoryBridge
+	MemoryCapture string
+	Policy        policy.Table
+	Claims        *claim.Service
 
 	mu       sync.Mutex
 	cancels  map[string]context.CancelFunc
@@ -101,6 +110,7 @@ func (r *Runner) SubmitChild(ctx context.Context, t task.Task, parentRunID strin
 	})
 	if err != nil {
 		_ = r.Store.UpdateRunStatus(ctx, rid, store.StatusFailed, store.FormatErr(err))
+		r.captureFailure(ctx, rid, t.TaskID, t.Intent.Summary, err)
 		return SubmitResult{}, err
 	}
 	_ = r.Store.UpdateRunStatus(ctx, rid, store.StatusPlanned, "")
@@ -277,6 +287,9 @@ func (r *Runner) Approve(ctx context.Context, runID, decision string) error {
 		_ = r.Store.ClearPendingApproval(ctx, runID)
 		_ = r.Store.UpdateRunStatus(ctx, runID, store.StatusFailed, store.FormatErr(err))
 		_ = r.emit(runID, run.TaskID, nil, event.TypeRunFailed, map[string]any{"error": err.Error()})
+		var denied task.Task
+		_ = json.Unmarshal(taskJSON, &denied)
+		r.captureFailure(ctx, runID, run.TaskID, denied.Intent.Summary, err)
 		r.releaseClaims(runID, run.TaskID)
 		r.syncGraph(runID)
 		return nil
@@ -330,7 +343,7 @@ func (r *Runner) execute(ctx context.Context, t task.Task, p plan.Plan, skipAppr
 
 	order, err := task.TopoOrder(t.Steps)
 	if err != nil {
-		r.fail(ctx, p, err)
+		r.fail(ctx, p, t, err)
 		return
 	}
 	byID := map[string]plan.Step{}
@@ -359,13 +372,13 @@ func (r *Runner) execute(ctx context.Context, t task.Task, p plan.Plan, skipAppr
 
 		manifest, perr := policy.ParseVerb(r.Reg.ManifestPolicy(s.Capability))
 		if perr != nil {
-			r.fail(ctx, p, result.Runtime(result.CodeInternal, perr.Error(), false, nil))
+			r.fail(ctx, p, t, result.Runtime(result.CodeInternal, perr.Error(), false, nil))
 			return
 		}
 		verb := r.Policy.Verb(s.Capability, manifest)
 		if verb == policy.Deny {
 			err := policy.DeniedError(s.Capability)
-			r.fail(ctx, p, err)
+			r.fail(ctx, p, t, err)
 			return
 		}
 		if verb == policy.ApprovalRequired && sid != skipApprovalFor {
@@ -381,13 +394,14 @@ func (r *Runner) execute(ctx context.Context, t task.Task, p plan.Plan, skipAppr
 		}
 
 		if err := r.acquireStep(ctx, p, t, s); err != nil {
-			r.fail(ctx, p, err)
+			r.fail(ctx, p, t, err)
 			return
 		}
 
 		stepID := s.StepID
 		pack := contextpack.Assemble(t, s.StepID, s.Capability, priors)
 		pack = r.attachGraphHits(ctx, pack, t)
+		pack = r.attachMemoryHits(ctx, pack, t)
 		packJSON, _ := contextpack.Marshal(pack)
 		_ = r.emit(p.RunID, t.TaskID, &stepID, event.TypeStepStarted, map[string]any{
 			"capability":    s.Capability,
@@ -399,7 +413,7 @@ func (r *Runner) execute(ctx context.Context, t task.Task, p plan.Plan, skipAppr
 		if !ok {
 			err := result.Runtime(result.CodeInternal, "player missing: "+s.Player, false, nil)
 			_ = r.emit(p.RunID, t.TaskID, &stepID, event.TypeStepFailed, map[string]any{"error": err.Error()})
-			r.fail(ctx, p, err)
+			r.fail(ctx, p, t, err)
 			return
 		}
 
@@ -446,7 +460,7 @@ func (r *Runner) execute(ctx context.Context, t task.Task, p plan.Plan, skipAppr
 					"duration_ms": time.Since(start).Milliseconds(),
 					"attempts":    attempt,
 				})
-				r.fail(ctx, p, lastErr)
+				r.fail(ctx, p, t, lastErr)
 				return
 			}
 			r.Log.Warn("step retry", "run_id", p.RunID, "step_id", stepID, "attempt", attempt, "err", lastErr)
@@ -461,9 +475,10 @@ func (r *Runner) execute(ctx context.Context, t task.Task, p plan.Plan, skipAppr
 	r.syncGraph(p.RunID)
 }
 
-func (r *Runner) fail(ctx context.Context, p plan.Plan, err error) {
+func (r *Runner) fail(ctx context.Context, p plan.Plan, t task.Task, err error) {
 	_ = r.Store.UpdateRunStatus(ctx, p.RunID, store.StatusFailed, store.FormatErr(err))
 	_ = r.emit(p.RunID, p.TaskID, nil, event.TypeRunFailed, map[string]any{"error": err.Error()})
+	r.captureFailure(ctx, p.RunID, t.TaskID, t.Intent.Summary, err)
 	r.releaseClaims(p.RunID, p.TaskID)
 	r.syncGraph(p.RunID)
 }
@@ -512,6 +527,60 @@ func (r *Runner) attachGraphHits(ctx context.Context, pack contextpack.Pack, t t
 		})
 	}
 	return contextpack.WithGraphHits(pack, items)
+}
+
+func (r *Runner) attachMemoryHits(ctx context.Context, pack contextpack.Pack, t task.Task) contextpack.Pack {
+	if r.Memory == nil {
+		return pack
+	}
+	text := strings.TrimSpace(t.Intent.Summary)
+	if pack.Step.Capability != "" {
+		if text != "" {
+			text += " "
+		}
+		text += pack.Step.Capability
+	}
+	hits, err := r.Memory.Query(ctx, text, pack.Budget.MemoryMaxHits)
+	if err != nil {
+		r.Log.Warn("memory query failed", "err", err)
+		return contextpack.WithMemoryHits(pack, nil)
+	}
+	items := make([]contextpack.MemoryHit, 0, len(hits))
+	for _, h := range hits {
+		items = append(items, contextpack.MemoryHit{
+			ID:       h.ID,
+			Kind:     h.Kind,
+			Validity: h.Validity,
+			Title:    h.Title,
+			Snippet:  memory.Snippet(h.Body),
+			Score:    h.Score,
+		})
+	}
+	return contextpack.WithMemoryHits(pack, items)
+}
+
+func (r *Runner) captureFailure(ctx context.Context, runID, taskID, summary string, failErr error) {
+	if r.Memory == nil || r.MemoryCapture != memory.CaptureFailures {
+		return
+	}
+	title := memory.ClampTitle(summary)
+	if title == "" {
+		title = "run failed"
+	}
+	body := ""
+	if failErr != nil {
+		body = memory.ClampBody(failErr.Error())
+	}
+	_, err := r.Memory.Record(ctx, memory.EpisodeInput{
+		Kind:   memory.KindFailure,
+		Title:  title,
+		Body:   body,
+		RunID:  runID,
+		TaskID: taskID,
+	})
+	if err != nil {
+		r.Log.Warn("memory capture failed", "run_id", runID, "err", err)
+	}
 }
 
 func (r *Runner) acquireStep(ctx context.Context, p plan.Plan, t task.Task, s plan.Step) error {

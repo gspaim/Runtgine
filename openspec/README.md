@@ -39,10 +39,9 @@ Exemplos válidos: `001-shell-player`, `017-intent-engine`, `019-graph-hits`.
 
 **Próximo id livre:** `030`.
 
-Mudança ativa: [`changes/029-project-memory/`](changes/029-project-memory/)
-(Project Memory v0; G-123..G-128; código = slice 17). Último archive:
-[`changes/archive/2026-08-19-028-http-player/`](changes/archive/2026-08-19-028-http-player/)
-(HTTP Player v0; slice 16 feito).
+Nenhuma mudança ativa. Último archive:
+[`changes/archive/2026-08-19-029-project-memory/`](changes/archive/2026-08-19-029-project-memory/)
+(Project Memory v0; G-123..G-128; slice 17 feito).
 
 ## Autoridade
 
@@ -69,7 +68,7 @@ Não codificar mudança cujo status em `04` não esteja **CONFIRMED**
 
 | Domain | Cobre |
 |---|---|
-| `contextpack` | AssembleContext / ContextPack (+ graph_hits) |
+| `contextpack` | AssembleContext / ContextPack (+ graph_hits, memory_hits) |
 | `intent-engine` | NL → Task IR |
 | `runtime-graph` | Graph estrutural + QueryHits |
 | `git-player` | Player `git.*` (status/diff/log/add/commit) |
@@ -81,3 +80,4 @@ Não codificar mudança cujo status em `04` não esteja **CONFIRMED**
 | `tui-graph` | Aba GRAPH da TUI sobre `GetGraphSnapshot` |
 | `blast-graph-walk` | 1 hop `mentions` no Blast Report (`affected`) |
 | `http-player` | Player `http.*` (GET/HEAD HTTPS) |
+| `project-memory` | Provider episódico + `memory_hits` (não é Player) |

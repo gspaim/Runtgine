@@ -10,12 +10,12 @@ Esboco conceitual: [16-project-memory.md](16-project-memory.md)
 (`16` permanece histórico; este doc é o corte).
 Não é MCP ([G-44](10-gaps.md)). Não é Memory Player. Não é Knowledge.
 
-**Status deste doc: CONFIRMED (v0).** G-123..G-128 autorizam o slice 17
-de código. MCP, embeddings, TUI e `memory.*` permanecem fora.
+**Status deste doc: CONFIRMED (v0).** G-123..G-128. Slice 17 feito.
+MCP, embeddings, TUI e `memory.*` permanecem fora.
 
-**Pacote OpenSpec:** ativo em
-[`openspec/changes/029-project-memory/`](../openspec/changes/029-project-memory/).
-Branch de implementação: `feat/029-project-memory`.
+**Pacote OpenSpec:** arquivado em
+[`openspec/changes/archive/2026-08-19-029-project-memory/`](../openspec/changes/archive/2026-08-19-029-project-memory/).
+Spec atual: [`openspec/specs/project-memory/`](../openspec/specs/project-memory/).
 
 ---
 
@@ -208,14 +208,13 @@ Sem captura automática de `run.succeeded` no v0 (ruído).
 7. `memory.capture=off` (default) não grava em `run.failed`.
 8. `go test ./internal/core/memory/...` e `go test ./...` / `go vet`
    verdes.
-9. OpenSpec `029-project-memory` arquivado após o **código** (slice 17),
-   não neste PR de spec.
+9. OpenSpec `029-project-memory` arquivado após o **código** (slice 17).
 
 ---
 
 ## 5. Ordem do slice de código
 
-Bloqueado até G-123..G-128 CONFIRMED — este doc + `04` (este PR):
+Bloqueado até G-123..G-128 CONFIRMED — este doc + `04` (feito):
 
 1. Pacote `internal/core/memory` + tabela SQLite
 2. API Core + CLI `runtgine memory`

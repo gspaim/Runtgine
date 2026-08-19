@@ -11,20 +11,31 @@ import (
 // Config holds runtime settings.
 // Precedence (P2 G-38): defaults < file < env < flags (flags applied by CLI).
 type Config struct {
-	WorkspaceRoot     string `json:"workspace_root"`
-	LogLevel          string `json:"log_level"`
-	MaxConcurrentRuns int    `json:"max_concurrent_runs"`
-	LLMBackend        string `json:"llm_backend"` // openai-compat | anthropic
-	LLMAPIKey         string `json:"-"`
-	LLMBaseURL        string `json:"llm_base_url"`
-	LLMModel          string `json:"llm_model"`
-	AnthropicAPIKey   string `json:"-"`
-	AnthropicModel    string `json:"anthropic_model"`
-	GitHubToken       string `json:"-"`
-	DBPath            string `json:"-"`
+	WorkspaceRoot     string     `json:"workspace_root"`
+	LogLevel          string     `json:"log_level"`
+	MaxConcurrentRuns int        `json:"max_concurrent_runs"`
+	LLMBackend        string     `json:"llm_backend"` // openai-compat | anthropic
+	LLMAPIKey         string     `json:"-"`
+	LLMBaseURL        string     `json:"llm_base_url"`
+	LLMModel          string     `json:"llm_model"`
+	AnthropicAPIKey   string     `json:"-"`
+	AnthropicModel    string     `json:"anthropic_model"`
+	GitHubToken       string     `json:"-"`
+	DBPath            string     `json:"-"`
 	ExecutionPolicy   policyfile `json:"execution_policy"`
 	PolicyDefaultEnv  string     `json:"-"`
+	Memory            Memory     `json:"memory"`
 }
+
+// Memory is the on-disk memory object (G-127).
+type Memory struct {
+	Capture string `json:"capture"`
+}
+
+const (
+	MemoryCaptureOff      = "off"
+	MemoryCaptureFailures = "failures"
+)
 
 // policyfile is the on-disk execution_policy object (G-82).
 type policyfile struct {
@@ -42,6 +53,7 @@ func Defaults() Config {
 		LogLevel:          "info",
 		MaxConcurrentRuns: 4,
 		LLMBackend:        "openai-compat",
+		Memory:            Memory{Capture: MemoryCaptureOff},
 	}
 }
 
@@ -73,6 +85,15 @@ func Load(workspaceOverride string) (Config, error) {
 	}
 
 	applyEnv(&cfg)
+
+	if cfg.Memory.Capture == "" {
+		cfg.Memory.Capture = MemoryCaptureOff
+	}
+	switch cfg.Memory.Capture {
+	case MemoryCaptureOff, MemoryCaptureFailures:
+	default:
+		return cfg, fmt.Errorf("memory.capture: want off|failures, got %q", cfg.Memory.Capture)
+	}
 
 	cfg.DBPath = filepath.Join(cfg.WorkspaceRoot, ".runtgine", "runtgine.db")
 	return cfg, nil
@@ -107,6 +128,9 @@ func mergeFile(dst *Config, src Config) {
 		for k, v := range src.ExecutionPolicy.Capabilities {
 			dst.ExecutionPolicy.Capabilities[k] = v
 		}
+	}
+	if src.Memory.Capture != "" {
+		dst.Memory.Capture = src.Memory.Capture
 	}
 	// workspace_root in file is ignored if env/flag set; allow file to set if still default cwd-only? skip for safety
 }
@@ -143,6 +167,9 @@ func applyEnv(cfg *Config) {
 	}
 	if v := os.Getenv("RUNTGINE_POLICY_DEFAULT"); v != "" {
 		cfg.PolicyDefaultEnv = v
+	}
+	if v := os.Getenv("RUNTGINE_MEMORY_CAPTURE"); v != "" {
+		cfg.Memory.Capture = v
 	}
 }
 

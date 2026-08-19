@@ -88,12 +88,13 @@ ContextPack v0 (G-24) + extensao Graph Hits (G-67, ver `19`):
 - `prior_outputs` — outputs das etapas anteriores do mesmo run
 - `repo_hits` — paths/symbols do `pipeline.repo-search` (capados)
 - `graph_hits` — hits estruturais do Runtime Graph (**slice 7**; `19`)
-- `budget` — max_chars / max_files + graph_max_hits / graph_max_chars
+- `memory_hits` — episódios `active` do Project Memory (**slice 17**; `29`)
+- `budget` — max_chars / max_files + graph_max_hits / graph_max_chars + memory_max_hits / memory_max_chars
 
 Regras: truncamento deterministico se exceder budget; montado pelo Core
 (`AssembleContext`) antes do LLM Player; nao e Intent Engine.
-`repo_hits` = intra-run; `graph_hits` = entre runs (estrutural).
-`memory_hits` v0: spec `29` (G-123..G-128); codigo = slice 17.
+`repo_hits` = intra-run; `graph_hits` = entre runs (estrutural);
+`memory_hits` = entre runs (episódico).
 
 ---
 

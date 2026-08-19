@@ -263,7 +263,7 @@ Ate la, o Core deve rodar so com CLI + Shell.
 14. TUI GRAPH — spec em `26` — G-105..G-110 CONFIRMED; codigo = slice 14 — feito
 15. Walk Blast←Graph — spec em `27` — G-111..G-116 CONFIRMED; codigo = slice 15 — feito
 16. HTTP Player — spec em `28` — G-117..G-122 CONFIRMED; codigo = slice 16 — feito
-17. Project Memory — spec em `29` — G-123..G-128 CONFIRMED; codigo = slice 17
+17. Project Memory — spec em `29` — G-123..G-128 CONFIRMED; codigo = slice 17 — feito
 
 ## Criterio de “pronto para codar”
 
@@ -282,7 +282,7 @@ Ate la, o Core deve rodar so com CLI + Shell.
 **TUI GRAPH (G-105..G-110): CONFIRMADO** — slice 14 feito.  
 **Walk Blast←Graph (G-111..G-116): CONFIRMADO** — slice 15 feito.  
 **HTTP Player (G-117..G-122): CONFIRMADO** — slice 16 feito.  
-**Project Memory (G-123..G-128): CONFIRMADO** — spec; codigo = slice 17.
+**Project Memory (G-123..G-128): CONFIRMADO** — slice 17 feito.
 
 Ordem pratica de codigo:
 1. Core CLI + Shell (+ SQLite) — slice 1 — feito
@@ -301,10 +301,10 @@ Ordem pratica de codigo:
 14. TUI GRAPH v0 — slice 14 (G-105..G-110) — feito
 15. Walk Blast←Graph v0 — slice 15 (G-111..G-116) — feito
 16. HTTP Player v0 — slice 16 (G-117..G-122) — feito
-17. Project Memory v0 — slice 17 (G-123..G-128) — pending (spec `29`)
+17. Project Memory v0 — slice 17 (G-123..G-128) — feito (spec `29`)
 
 P3 restante (G-40 templates, G-44 MCP, G-45 API HTTP).
-Project Memory corte v0: spec `29` (G-123..G-128); codigo = slice 17.
+Project Memory corte v0: spec `29` (G-123..G-128); slice 17 feito.
 Esboço conceitual permanece em `16`.
 Walk Blast←Graph: spec `27` (G-111..G-116); slice 15 feito.
 HTTP Player: spec `28` (G-117..G-122); slice 16 feito.
