@@ -67,6 +67,9 @@ HTTP Player: `docs/28-http-player-v0.md` + archive
 Project Memory: `docs/29-project-memory-v0.md` + archive
 `openspec/changes/archive/2026-08-19-029-project-memory/` — CONFIRMED v0
 (G-123..G-128); slice 17 feito (esboco em `16`; nao e MCP / Memory Player).
+Test Player: `docs/30-test-player-v0.md` + change
+`openspec/changes/030-test-player/` — CONFIRMED v0 (G-129..G-134);
+codigo = slice 18 (nao e pytest/npm; nao e G-45).
 Skill obrigatoria para TUI: `.cursor/skills/runtgine-tui-design/SKILL.md`.
 
 ## Ordem de trabalho
@@ -94,7 +97,8 @@ Skill obrigatoria para TUI: `.cursor/skills/runtgine-tui-design/SKILL.md`.
 21. Walk Blast←Graph — CONFIRMED v0 em `27` + OpenSpec archive `027-blast-graph-walk` — feito
 22. HTTP Player — CONFIRMED v0 em `28` + OpenSpec archive `028-http-player` — feito
 23. Project Memory — CONFIRMED v0 em `29` + OpenSpec archive `029-project-memory` — feito
-24. Mais Players — so apos nova promocao em `04`
+24. Test Player — CONFIRMED v0 em `30` + OpenSpec `030-test-player` — spec; codigo = slice 18
+25. Mais Players — so apos nova promocao em `04`
 
 ## Conceitos chave (nao confundir)
 

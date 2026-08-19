@@ -104,7 +104,7 @@ Ate la, o Core deve rodar so com CLI + Shell.
 | ID | Gap |
 |---|---|
 | G-40 | Workflow Templates loading (nativo vs repo externo) — ver `08` |
-| G-41 | Biblioteca ampla de Players | Em andamento — Git (`20`), Filesystem (`21`), Docker (`23`), HTTP (`28`) v0 feitos |
+| G-41 | Biblioteca ampla de Players | Em andamento — Git (`20`), Filesystem (`21`), Docker (`23`), HTTP (`28`), Test (`30`) v0 (Test = spec; codigo = slice 18) |
 | G-42 | Human-in-the-loop / Approvals | **CONFIRMED v0** — recorte G-81..G-86 em `22` |
 | G-43 | Resource Claims / Blast Radius | **Claims CONFIRMED v0** — `24`. **Blast CONFIRMED v0** — `25`. **Walk Blast←Graph CONFIRMED v0** — recorte G-111..G-116 em `27` |
 | G-44 | MCP integration — candidato a transporte futuro da Project Memory (fora do v0 `29`) |
@@ -243,6 +243,17 @@ Ate la, o Core deve rodar so com CLI + Shell.
 | G-127 | Captura | **CONFIRMED** — default off; opt-in failures |
 | G-128 | Exclusões v0 | **CONFIRMED** — Player, MCP, RAG, TUI, Knowledge |
 
+## Test Player (recorte G-41) — CONFIRMED v0
+
+| ID | Gap | Notas |
+|---|---|---|
+| G-129 | Papel / pacote `test` | **CONFIRMED** — ver `30-test-player-v0.md` |
+| G-130 | Capabilities v0 | **CONFIRMED** — `test.go` |
+| G-131 | Sandbox / argv | **CONFIRMED** — `-mod=readonly`; allowlist |
+| G-132 | Falha vs sucesso | **CONFIRMED** — teste vermelho falha o Run |
+| G-133 | Registry + Graph | **CONFIRMED** — sem claim/blast |
+| G-134 | Exclusões v0 | **CONFIRMED** — pytest/npm, race, G-45, MCP |
+
 ---
 
 ## Ordem para fechar gaps
@@ -264,6 +275,7 @@ Ate la, o Core deve rodar so com CLI + Shell.
 15. Walk Blast←Graph — spec em `27` — G-111..G-116 CONFIRMED; codigo = slice 15 — feito
 16. HTTP Player — spec em `28` — G-117..G-122 CONFIRMED; codigo = slice 16 — feito
 17. Project Memory — spec em `29` — G-123..G-128 CONFIRMED; codigo = slice 17 — feito
+18. Test Player — spec em `30` — G-129..G-134 CONFIRMED; codigo = slice 18
 
 ## Criterio de “pronto para codar”
 
@@ -282,7 +294,8 @@ Ate la, o Core deve rodar so com CLI + Shell.
 **TUI GRAPH (G-105..G-110): CONFIRMADO** — slice 14 feito.  
 **Walk Blast←Graph (G-111..G-116): CONFIRMADO** — slice 15 feito.  
 **HTTP Player (G-117..G-122): CONFIRMADO** — slice 16 feito.  
-**Project Memory (G-123..G-128): CONFIRMADO** — slice 17 feito.
+**Project Memory (G-123..G-128): CONFIRMADO** — slice 17 feito.  
+**Test Player (G-129..G-134): CONFIRMADO** — spec; codigo = slice 18.
 
 Ordem pratica de codigo:
 1. Core CLI + Shell (+ SQLite) — slice 1 — feito
@@ -302,8 +315,10 @@ Ordem pratica de codigo:
 15. Walk Blast←Graph v0 — slice 15 (G-111..G-116) — feito
 16. HTTP Player v0 — slice 16 (G-117..G-122) — feito
 17. Project Memory v0 — slice 17 (G-123..G-128) — feito (spec `29`)
+18. Test Player v0 — slice 18 (G-129..G-134) — pending (spec `30`)
 
-P3 restante (G-40 templates, G-44 MCP, G-45 API HTTP).
+P3 restante (G-40 templates, G-44 MCP, G-45 API HTTP; G-41 em andamento).
+Test Player corte v0: spec `30` (G-129..G-134); codigo = slice 18.
 Project Memory corte v0: spec `29` (G-123..G-128); slice 17 feito.
 Esboço conceitual permanece em `16`.
 Walk Blast←Graph: spec `27` (G-111..G-116); slice 15 feito.

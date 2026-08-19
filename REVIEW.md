@@ -125,7 +125,8 @@ Fase 4: Infra (Claims v0 slice 12; Blast Radius v0 slice 13 feitos;
 TUI GRAPH v0 spec `26` / G-105..G-110 — slice 14 feito;
 Walk Blast←Graph v0 spec `27` / G-111..G-116 — slice 15 feito;
 HTTP Player v0 spec `28` / G-117..G-122 — slice 16 feito;
-Project Memory v0 spec `29` / G-123..G-128 — slice 17 feito)
+Project Memory v0 spec `29` / G-123..G-128 — slice 17 feito;
+Test Player v0 spec `30` / G-129..G-134 — codigo = slice 18)
 Fase 5: Cloud (NATS, API, serverless)
 Fase 6: Ecossistema (biblioteca de Players)
 
@@ -146,4 +147,5 @@ Slices 1–9 implementados (Core → Intent → Graph → Git → Filesystem).
 **Walk Blast←Graph v0: CONFIRMED + implementado** (`27`, G-111..G-116; slice 15).
 **HTTP Player v0: CONFIRMED + implementado** (`28`, G-117..G-122; slice 16).
 **Project Memory v0: CONFIRMED + implementado** (`29`, G-123..G-128; slice 17).
+**Test Player v0: CONFIRMED spec** (`30`, G-129..G-134; codigo = slice 18).
 P3 restante: mais Players; G-45 API HTTP; G-44 MCP.
