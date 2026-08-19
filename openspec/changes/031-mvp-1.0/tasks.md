@@ -14,11 +14,11 @@ change) e merge em `develop`.
 
 ## 1. Slice 19 — Intent heuristics
 
-- [ ] 1.1 `matchPlayer` antes de `matchShell`
-- [ ] 1.2 `go test` / `roda os testes` → `test.go` (não `shell.exec`)
-- [ ] 1.3 `git status|diff|log`, `docker ps`
-- [ ] 1.4 Métodos `heuristic.test|git|docker`; testes de Compile
-- [ ] 1.5 README Estágio: Slice 19 Feito (1.0 ainda aberto)
+- [x] 1.1 `matchPlayer` antes de `matchShell`
+- [x] 1.2 `go test` / `roda os testes` → `test.go` (não `shell.exec`)
+- [x] 1.3 `git status|diff|log`, `docker ps`
+- [x] 1.4 Métodos `heuristic.test|git|docker`; testes de Compile
+- [x] 1.5 README Estágio: Slice 19 Feito (1.0 ainda aberto)
 
 ## 2. Slice 20 — Context Engine v0
 

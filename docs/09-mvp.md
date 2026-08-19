@@ -60,7 +60,7 @@ O que falta para o loop ser honesto:
 
 | Item | Gaps | Código |
 |---|---|---|
-| Heurísticas Intent → Players atuais | G-135..G-136 | slice 19 |
+| Heurísticas Intent → Players atuais | G-135..G-136 | slice 19 — feito |
 | Context Engine v0 (seed `repo_hits`) | G-137..G-139 | slice 20 |
 
 Exclusões comuns: G-140.
@@ -143,8 +143,8 @@ UC-02 (CI/CD via HTTP) permanece **pós-1.0** (G-45). Até lá, CI usa CLI.
 
 ## Ordem de codigo (a partir daqui)
 
-1. Slice 19 — heurísticas Intent (G-135..G-136) — após merge desta spec
-2. Slice 20 — Context Engine v0 (G-137..G-139) — após 19 ou em paralelo de pacote
+1. Slice 19 — heurísticas Intent (G-135..G-136) — feito
+2. Slice 20 — Context Engine v0 (G-137..G-139) — após merge desta spec / slice 19
 3. Arquivar OpenSpec `031` após o código do 1.0
 4. Depois: nova promoção em `04` (G-45, mais Players, Wails, …)
 

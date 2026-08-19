@@ -329,7 +329,7 @@ Ordem pratica de codigo:
 16. HTTP Player v0 — slice 16 (G-117..G-122) — feito
 17. Project Memory v0 — slice 17 (G-123..G-128) — feito (spec `29`)
 18. Test Player v0 — slice 18 (G-129..G-134) — feito (spec `30`)
-19. Intent player heuristics — slice 19 (G-135..G-136) — pending (spec `031`)
+19. Intent player heuristics — slice 19 (G-135..G-136) — feito (spec `031`)
 20. Context Engine v0 — slice 20 (G-137..G-139) — pending (spec `031`)
 
 P3 restante (G-40 templates, G-44 MCP, G-45 API HTTP; G-41 em andamento).

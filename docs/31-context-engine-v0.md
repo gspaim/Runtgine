@@ -123,7 +123,7 @@ Compartilhado com heurísticas de Intent (`09` / G-135..G-136):
 
 Bloqueado até G-135..G-140 CONFIRMED (este PR):
 
-1. Slice 19 — Intent player heuristics (`17` / G-135..G-136)
+1. Slice 19 — Intent player heuristics (`17` / G-135..G-136) — feito
 2. Slice 20 — semente `repo_hits` neste doc
 3. README Estágio: 1.0 magro feito; arquivar `031`
 

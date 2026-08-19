@@ -19,6 +19,9 @@ import (
 const (
 	MethodHeuristicShell    = "heuristic.shell"
 	MethodHeuristicPipeline = "heuristic.pipeline"
+	MethodHeuristicTest     = "heuristic.test"
+	MethodHeuristicGit      = "heuristic.git"
+	MethodHeuristicDocker   = "heuristic.docker"
 	MethodLLM               = "llm"
 )
 
@@ -68,6 +71,17 @@ func (e *Engine) Compile(ctx context.Context, req Request) (CompileResult, error
 		ep = "cli"
 	}
 
+	if hit, ok := matchPlayer(text); ok {
+		extra := map[string]any{}
+		if hit.method == MethodHeuristicGit {
+			extra["workdir"] = "."
+		}
+		tk, err := playerTask(text, hit.capability, ep, req.Ref, extra)
+		if err != nil {
+			return CompileResult{}, err
+		}
+		return CompileResult{Task: tk, Method: hit.method}, nil
+	}
 	if argv, ok := matchShell(text); ok {
 		tk, err := shellTask(text, argv, ep, req.Ref)
 		if err != nil {
@@ -195,6 +209,63 @@ func (e *Engine) compileLLM(ctx context.Context, text, ep, ref string) (task.Tas
 		last = result.Runtime(result.CodePlayerError, "intent compile failed", true, nil)
 	}
 	return task.Task{}, last
+}
+
+func playerTask(summary, capability, ep, ref string, input map[string]any) (task.Task, error) {
+	id, err := task.NewID()
+	if err != nil {
+		return task.Task{}, err
+	}
+	if input == nil {
+		input = map[string]any{}
+	}
+	raw, err := json.Marshal(input)
+	if err != nil {
+		return task.Task{}, err
+	}
+	return task.Task{
+		SchemaVersion: task.SchemaVersion,
+		TaskID:        id,
+		CreatedAt:     time.Now().UTC(),
+		Source:        task.Source{EntryPoint: ep, Ref: ref},
+		Intent:        task.Intent{Summary: summarize(summary), Notes: summary},
+		Steps: []task.Step{{
+			StepID:     "s1",
+			Capability: capability,
+			Input:      raw,
+		}},
+		Metadata: map[string]any{"intent_engine": "v0"},
+	}, nil
+}
+
+type playerHit struct {
+	capability string
+	method     string
+}
+
+func matchPlayer(text string) (playerHit, bool) {
+	n := normalizeNL(text)
+	switch {
+	case hasPhrase(n, "go test"), hasPhrase(n, "roda os testes"), hasPhrase(n, "rodar testes"), hasPhrase(n, "run tests"):
+		return playerHit{capability: "test.go", method: MethodHeuristicTest}, true
+	case hasPhrase(n, "git status"):
+		return playerHit{capability: "git.status", method: MethodHeuristicGit}, true
+	case hasPhrase(n, "git diff"):
+		return playerHit{capability: "git.diff", method: MethodHeuristicGit}, true
+	case hasPhrase(n, "git log"):
+		return playerHit{capability: "git.log", method: MethodHeuristicGit}, true
+	case hasPhrase(n, "docker ps"):
+		return playerHit{capability: "docker.ps", method: MethodHeuristicDocker}, true
+	}
+	return playerHit{}, false
+}
+
+func normalizeNL(s string) string {
+	return strings.Join(strings.Fields(strings.ToLower(s)), " ")
+}
+
+func hasPhrase(normalized, phrase string) bool {
+	return strings.Contains(" "+normalized+" ", " "+phrase+" ")
 }
 
 func shellTask(summary string, argv []string, ep, ref string) (task.Task, error) {

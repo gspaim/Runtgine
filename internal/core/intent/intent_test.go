@@ -61,6 +61,81 @@ func TestCompileLLMFallbackShell(t *testing.T) {
 	}
 }
 
+func TestCompilePlayerHeuristics(t *testing.T) {
+	e := intent.New(llm.HeuristicCompleter{})
+	cases := []struct {
+		text, method, cap string
+	}{
+		{"go test", intent.MethodHeuristicTest, "test.go"},
+		{"go test ./...", intent.MethodHeuristicTest, "test.go"},
+		{"roda os testes", intent.MethodHeuristicTest, "test.go"},
+		{"rodar testes", intent.MethodHeuristicTest, "test.go"},
+		{"run tests", intent.MethodHeuristicTest, "test.go"},
+		{"git status", intent.MethodHeuristicGit, "git.status"},
+		{"git diff", intent.MethodHeuristicGit, "git.diff"},
+		{"git log", intent.MethodHeuristicGit, "git.log"},
+		{"docker ps", intent.MethodHeuristicDocker, "docker.ps"},
+	}
+	for _, tc := range cases {
+		t.Run(tc.text, func(t *testing.T) {
+			res, err := e.Compile(context.Background(), intent.Request{Text: tc.text})
+			if err != nil {
+				t.Fatal(err)
+			}
+			if res.Method != tc.method {
+				t.Fatalf("method=%s want %s", res.Method, tc.method)
+			}
+			if len(res.Task.Steps) != 1 || res.Task.Steps[0].Capability != tc.cap {
+				t.Fatalf("steps=%v", res.Task.Steps)
+			}
+		})
+	}
+}
+
+func TestCompileGoTestBeatsShellPrefix(t *testing.T) {
+	e := intent.New(llm.HeuristicCompleter{})
+	res, err := e.Compile(context.Background(), intent.Request{Text: "go test -count 1"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if res.Method != intent.MethodHeuristicTest || res.Task.Steps[0].Capability != "test.go" {
+		t.Fatalf("method=%s cap=%s", res.Method, res.Task.Steps[0].Capability)
+	}
+}
+
+func TestCompileGoBuildStillShell(t *testing.T) {
+	e := intent.New(llm.HeuristicCompleter{})
+	res, err := e.Compile(context.Background(), intent.Request{Text: "go build"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if res.Method != intent.MethodHeuristicShell || res.Task.Steps[0].Capability != "shell.exec" {
+		t.Fatalf("method=%s cap=%s", res.Method, res.Task.Steps[0].Capability)
+	}
+}
+
+func TestCompileGitPushStillShell(t *testing.T) {
+	e := intent.New(llm.HeuristicCompleter{})
+	res, err := e.Compile(context.Background(), intent.Request{Text: "git push"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if res.Method != intent.MethodHeuristicShell || res.Task.Steps[0].Capability != "shell.exec" {
+		t.Fatalf("method=%s cap=%s", res.Method, res.Task.Steps[0].Capability)
+	}
+}
+
+func TestCompilePlayerBeatsPipelineKeyword(t *testing.T) {
+	e := intent.New(llm.HeuristicCompleter{})
+	res, err := e.Compile(context.Background(), intent.Request{Text: "run tests then review the architecture"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if res.Method != intent.MethodHeuristicTest || res.Task.Steps[0].Capability != "test.go" {
+		t.Fatalf("method=%s cap=%s", res.Method, res.Task.Steps[0].Capability)
+	}
+}
+
 func TestCompileEmptyRejected(t *testing.T) {
 	e := intent.New(nil)
 	_, err := e.Compile(context.Background(), intent.Request{Text: "  "})

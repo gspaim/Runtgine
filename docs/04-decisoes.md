@@ -73,7 +73,7 @@ Ver [09-mvp.md](09-mvp.md). Decisoes-chave:
 | CLI + TUI minimas no MVP | CONFIRMED | Superficies, nao produto |
 | Board no MVP | CONFIRMED | Primeiro Entry Point de produto |
 | Entrada estruturada (Task IR v0) no MVP | CONFIRMED | Sem depender de Intent Engine NL |
-| Intent Engine NL v0 (pos-Core) | CONFIRMED | Ver `17`; heuristicas Player = slice 19 (G-135..G-136) |
+| Intent Engine NL v0 (pos-Core) | CONFIRMED | Ver `17`; heuristicas Player = slice 19 feito (G-135..G-136) |
 | Context Engine v0 no 1.0 magro | CONFIRMED | Ver `31`; codigo = slice 20 (G-137..G-139) |
 | API HTTP (G-45) fora do 1.0 | CONFIRMED | CLI cobre CI ate nova promocao |
 | Wails fora do MVP / 1.0 | CONFIRMED | Fase 3 |
@@ -430,7 +430,7 @@ Codigo = slices 19–20 apos este spec. Nao e G-45; nao e NATS/Wails/MCP.
 
 | Item | Status | Notas |
 |---|---|---|
-| G-135 Heuristicas Player no Intent | CONFIRMED | `test.go` / `git.status|diff|log` / `docker.ps` antes de shell |
+| G-135 Heuristicas Player no Intent | CONFIRMED | slice 19 feito; `test.go` / git status|diff|log / `docker.ps` |
 | G-136 Metodos + soberania | CONFIRMED | `heuristic.test|git|docker`; LLM route inalterado |
 | G-137 Papel Context Engine | CONFIRMED | assembler; nao e Player |
 | G-138 Semente `repo_hits` | CONFIRMED | QueryHits path/symbol se vazio; nao pisa repo-search |

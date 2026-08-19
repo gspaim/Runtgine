@@ -148,5 +148,5 @@ Slices 1–9 implementados (Core → Intent → Graph → Git → Filesystem).
 **HTTP Player v0: CONFIRMED + implementado** (`28`, G-117..G-122; slice 16).
 **Project Memory v0: CONFIRMED + implementado** (`29`, G-123..G-128; slice 17).
 **Test Player v0: CONFIRMED + implementado** (`30`, G-129..G-134; slice 18).
-**MVP 1.0 magro: CONFIRMED spec** (`09`/`31`, G-135..G-140; codigo = slices 19–20).
+**MVP 1.0 magro: CONFIRMED** (`09`/`31`, G-135..G-140; slice 19 feito; slice 20 pending).
 P3 restante: G-45 API HTTP; G-44 MCP; NATS; Wails.
