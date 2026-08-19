@@ -151,6 +151,9 @@ HTTP Player, Claude Player, GPT Player, Human Approval Player.
 HTTP Player v0 (`28`, G-117..G-122): cliente HTTPS `http.get` /
 `http.head`. Nao e a API HTTP do runtime (G-45).
 
+Test Player v0 (`30`, G-129..G-134): `test.go` (`go test` no workspace).
+Nao e pytest/npm.
+
 Muitos Players deterministicos sao estrategicos — aumentam utilidade
 sem IA, reduzem custo, aumentam confiabilidade. A visao e ter uma
 biblioteca grande de Players deterministicos.

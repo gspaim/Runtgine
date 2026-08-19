@@ -56,6 +56,7 @@ Status: CONFIRMED | HYPOTHESIS | OPEN QUESTION | REJECTED
 | Blast Graph Walk | CONFIRMED (v0) | 1 hop mentions; ver `27-blast-graph-walk-v0.md` |
 | TUI GRAPH tab | CONFIRMED (v0) | Aba read-only; ver `26-tui-graph-v0.md` + `14` |
 | HTTP Player | CONFIRMED (v0) | Cliente GET/HEAD HTTPS; ver `28-http-player-v0.md` |
+| Test Player | CONFIRMED (v0) | `test.go` no workspace; ver `30-test-player-v0.md` |
 | Many deterministic Players | CONFIRMED | Estrategico |
 | Runtgine + Chorus | CONFIRMED | Complementares |
 | Event Bus in-process (MVP) | CONFIRMED | Canais Go |
@@ -119,6 +120,7 @@ Ver [09-mvp.md](09-mvp.md). Decisoes-chave:
 - Walk Blast←Graph v0 (G-111..G-116) — spec; codigo = slice 15 — feito
 - HTTP Player v0 (G-117..G-122; recorte G-41) — spec; codigo = slice 16 — feito
 - Project Memory v0 (G-123..G-128; recorte G-46/G-47) — spec; codigo = slice 17 — feito
+- Test Player v0 (G-129..G-134; recorte G-41) — spec; codigo = slice 18
 
 ## Protocolo v0 — confirmado (sessao de fechamento)
 
@@ -400,6 +402,21 @@ Nao e a API HTTP do Runtgine (G-45 permanece P3).
 | G-120 Cliente / sandbox | CONFIRMED | TLS verify on; RoundTripper injetavel; sem curl |
 | G-121 Registry + Graph | CONFIRMED | `api.Open`; sem claim/blast; `examples/http-get.json` |
 | G-122 Exclusoes v0 | CONFIRMED | POST, auth, `http://`, G-45, MCP, Memory |
+
+## Test Player — CONFIRMED v0
+
+Ver [30-test-player-v0.md](30-test-player-v0.md). Recorte de G-41
+(`go test` no workspace). Codigo = slice 18 apos este spec.
+Nao e pytest/npm; nao e G-45.
+
+| Item | Status | Notas |
+|---|---|---|
+| G-129 Papel / pacote `test` | CONFIRMED | `internal/players/gotest`; Player deterministic |
+| G-130 Capabilities v0 | CONFIRMED | `test.go` so |
+| G-131 Sandbox / argv | CONFIRMED | allowlist; `-mod=readonly`; `-json` |
+| G-132 Falha vs sucesso | CONFIRMED | exit != 0 → `runtime.player_error` |
+| G-133 Registry + Graph | CONFIRMED | `api.Open`; sem claim/blast; `examples/test-go.json` |
+| G-134 Exclusoes v0 | CONFIRMED | outros runners, `-race`, fuzz, G-45, MCP |
 
 ## Git / release — fluxo de branches
 

@@ -94,7 +94,8 @@ Visão enxuta do que já está em `main`. **Atualizar esta seção em todo PR
 | Feito | Slice 15 — Walk Blast←Graph v0 (`27`, G-111..G-116; `affected`) |
 | Feito | Slice 16 — HTTP Player v0 (`28`, G-117..G-122; `http.get` / `http.head`) |
 | Feito | Slice 17 — Project Memory v0 (`29`, G-123..G-128; `runtgine memory`) |
-| Próximo | Mais Players; API HTTP (G-45); bus distribuído; desktop Wails |
+| Próximo | Slice 18 — Test Player v0 (`30`, G-129..G-134 CONFIRMED; código após merge) |
+| Depois | Mais Players; API HTTP (G-45); bus distribuído; desktop Wails |
 
 Detalhe do corte: [`docs/09-mvp.md`](docs/09-mvp.md). Limitações atuais abaixo.
 
@@ -390,7 +391,8 @@ vulnerabilidade.
 | [Git Player](docs/20-git-player-v0.md) | Player `git.*` v0 (G-70..G-74; slice 8) |
 | [Filesystem Player](docs/21-filesystem-player-v0.md) | Player `fs.*` v0 (G-75..G-80; slice 9) |
 | [HTTP Player](docs/28-http-player-v0.md) | Player `http.get` / `http.head` v0 (G-117..G-122; slice 16) |
-| [Project Memory](docs/29-project-memory-v0.md) | Memória episódica v0 (G-123..G-128; slice 17 após spec) |
+| [Project Memory](docs/29-project-memory-v0.md) | Memória episódica v0 (G-123..G-128; slice 17) |
+| [Test Player](docs/30-test-player-v0.md) | Player `test.go` v0 (G-129..G-134; slice 18 após spec) |
 | [OpenSpec](openspec/README.md) | Pacotes de mudança `NNN-slug` |
 | [TUI Design](docs/14-tui-design.md) | Constellation Mission Control |
 | [Git workflow](docs/15-git-workflow.md) | Branches, RC e releases |

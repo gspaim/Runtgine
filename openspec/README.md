@@ -37,11 +37,12 @@ branch:              feat/<NNN>-<slug>   (ou docs/ fix/ chore/)
 
 Exemplos válidos: `001-shell-player`, `017-intent-engine`, `019-graph-hits`.
 
-**Próximo id livre:** `030`.
+**Próximo id livre:** `031`.
 
-Nenhuma mudança ativa. Último archive:
+Mudança ativa: [`changes/030-test-player/`](changes/030-test-player/)
+(Test Player v0; G-129..G-134; código = slice 18). Último archive:
 [`changes/archive/2026-08-19-029-project-memory/`](changes/archive/2026-08-19-029-project-memory/)
-(Project Memory v0; G-123..G-128; slice 17 feito).
+(Project Memory v0; slice 17 feito).
 
 ## Autoridade
 
@@ -81,3 +82,4 @@ Não codificar mudança cujo status em `04` não esteja **CONFIRMED**
 | `blast-graph-walk` | 1 hop `mentions` no Blast Report (`affected`) |
 | `http-player` | Player `http.*` (GET/HEAD HTTPS) |
 | `project-memory` | Provider episódico + `memory_hits` (não é Player) |
+| `test-player` | Player `test.go` (`go test` no workspace; spec 030) |

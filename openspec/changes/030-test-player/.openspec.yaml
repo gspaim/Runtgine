@@ -1,0 +1,9 @@
+schema: spec-driven
+created: 2026-08-19
+nnn: "030"
+slug: test-player
+docs_canonical: docs/30-test-player-v0.md
+gaps: [G-129, G-130, G-131, G-132, G-133, G-134]
+status: active
+branch: feat/030-test-player
+depends_on: ["028-http-player", "029-project-memory"]

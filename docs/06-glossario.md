@@ -32,4 +32,5 @@
 | Task | Intencao/pedido do usuario |
 | Task IR | Representacao intermediaria validavel de uma task |
 | Task Validator | Valida capabilities, inputs, schemas, policies antes de executar |
+| Test Player | Player deterministico `test.go` (Go); CONFIRMED v0 (ver `30`) |
 | Workflow | Estrutura reutilizavel de execucao |

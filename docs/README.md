@@ -35,6 +35,7 @@ Autoridade de decisoes: [04-decisoes.md](04-decisoes.md).
 | 27 | 27-blast-graph-walk-v0.md | Walk Blast←Graph v0 (**CONFIRMED**; G-111..G-116) |
 | 28 | 28-http-player-v0.md | HTTP Player v0 (**CONFIRMED**; G-117..G-122) |
 | 29 | 29-project-memory-v0.md | Project Memory v0 (**CONFIRMED**; G-123..G-128) |
+| 30 | 30-test-player-v0.md | Test Player v0 (**CONFIRMED**; G-129..G-134) |
 | — | [openspec/](../openspec/README.md) | Pacotes de mudança OpenSpec (`NNN-slug`) |
 
 ## Fontes historicas (raiz do repo)
@@ -58,4 +59,5 @@ TUI GRAPH (`26`, G-105..G-110) esta **CONFIRMED v0** (slice 14 feito).
 Walk Blast←Graph (`27`, G-111..G-116) esta **CONFIRMED v0** (slice 15 feito).
 HTTP Player (`28`, G-117..G-122) esta **CONFIRMED v0** (slice 16 feito).
 Project Memory (`29`, G-123..G-128) esta **CONFIRMED v0** (slice 17 feito).
+Test Player (`30`, G-129..G-134) esta **CONFIRMED v0** (codigo = slice 18).
 P3 restante: mais Players; G-45 API HTTP; G-44 MCP.
