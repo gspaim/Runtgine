@@ -71,8 +71,8 @@ Test Player: `docs/30-test-player-v0.md` + archive
 `openspec/changes/archive/2026-08-19-030-test-player/` — CONFIRMED v0
 (G-129..G-134); slice 18 feito (nao e pytest/npm; nao e G-45).
 MVP 1.0 magro: `docs/09-mvp.md` + `docs/31-context-engine-v0.md` +
-change `openspec/changes/031-mvp-1.0/` — CONFIRMED (G-135..G-140);
-codigo = slices 19–20 (nao e G-45 / NATS / Wails / MCP).
+archive `openspec/changes/archive/2026-08-19-031-mvp-1.0/` — CONFIRMED
+(G-135..G-140); slices 19–20 feitos (nao e G-45 / NATS / Wails / MCP).
 Skill obrigatoria para TUI: `.cursor/skills/runtgine-tui-design/SKILL.md`.
 
 ## Ordem de trabalho
@@ -101,7 +101,7 @@ Skill obrigatoria para TUI: `.cursor/skills/runtgine-tui-design/SKILL.md`.
 22. HTTP Player — CONFIRMED v0 em `28` + OpenSpec archive `028-http-player` — feito
 23. Project Memory — CONFIRMED v0 em `29` + OpenSpec archive `029-project-memory` — feito
 24. Test Player — CONFIRMED v0 em `30` + OpenSpec archive `030-test-player` — feito
-25. MVP 1.0 magro — CONFIRMED em `09`/`31` + OpenSpec `031-mvp-1.0` — slice 19 feito; slice 20 pending
+25. MVP 1.0 magro — CONFIRMED em `09`/`31` + archive `031-mvp-1.0` — slices 19–20 feitos
 26. Depois — G-45 / mais Players / Wails — so apos nova promocao em `04`
 
 ## Conceitos chave (nao confundir)

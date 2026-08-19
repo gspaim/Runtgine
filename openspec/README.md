@@ -37,12 +37,9 @@ branch:              feat/<NNN>-<slug>   (ou docs/ fix/ chore/)
 
 Exemplos válidos: `001-shell-player`, `017-intent-engine`, `019-graph-hits`.
 
-**Próximo id livre:** `032`.
-
-Mudança ativa: [`changes/031-mvp-1.0/`](changes/031-mvp-1.0/)
-(MVP 1.0 magro; G-135..G-140; código = slices 19–20). Último archive:
-[`changes/archive/2026-08-19-030-test-player/`](changes/archive/2026-08-19-030-test-player/)
-(Test Player v0; slice 18 feito).
+**Próximo id livre:** `032`. Mudança ativa: nenhuma. Último archive:
+[`changes/archive/2026-08-19-031-mvp-1.0/`](changes/archive/2026-08-19-031-mvp-1.0/)
+(MVP 1.0 magro; G-135..G-140; slices 19–20 feitos).
 
 ## Autoridade
 
@@ -69,8 +66,8 @@ Não codificar mudança cujo status em `04` não esteja **CONFIRMED**
 
 | Domain | Cobre |
 |---|---|
-| `contextpack` | AssembleContext / ContextPack (+ graph_hits, memory_hits; semente repo_hits = 031) |
-| `intent-engine` | NL → Task IR (+ heuristicas Player = 031) |
+| `contextpack` | AssembleContext / ContextPack (+ graph_hits, memory_hits; semente repo_hits = slice 20) |
+| `intent-engine` | NL → Task IR (+ heuristicas Player = slice 19) |
 | `runtime-graph` | Graph estrutural + QueryHits |
 | `git-player` | Player `git.*` (status/diff/log/add/commit) |
 | `docker-player` | Player `docker.*` (ps/inspect/logs/run/build) |

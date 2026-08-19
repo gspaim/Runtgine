@@ -1,6 +1,6 @@
 # Intent Engine
 
-Status: comportamento atual (Intent Engine v0 + Graph Hits G-69).
+Status: comportamento atual (Intent Engine v0 + player heuristics G-135 + Graph Hits G-69).
 
 ## Requirements
 
@@ -16,12 +16,32 @@ bypass Validator or Registry.
 
 ### Requirement: Deterministic heuristics first
 
-The Engine SHALL try shell then pipeline heuristics before the LLM Completer.
+The Engine SHALL try **player** heuristics, then shell, then pipeline,
+before the LLM Completer. Player phrases in the MVP 1.0 table
+(`test.go`, `git.status|diff|log`, `docker.ps`) MUST win over generic
+shell prefixes (`go `, argv `git`).
 
-#### Scenario: Shell heuristic
+#### Scenario: go test is not shell
+
+- GIVEN text `go test`
+- WHEN `CompileIntent` runs
+- THEN method is `heuristic.test`
+- AND the Task has one `test.go` step
+- AND it MUST NOT be `shell.exec`
+
+#### Scenario: git status
+
+- GIVEN text `git status`
+- WHEN `CompileIntent` runs
+- THEN method is `heuristic.git`
+- AND the capability is `git.status`
+
+#### Scenario: Shell heuristic still works
+
 - GIVEN text `echo hello-intent`
 - WHEN `CompileIntent` runs
-- THEN method is `heuristic.shell` and the Task has one `shell.exec` step
+- THEN method is `heuristic.shell`
+- AND the Task has one `shell.exec` step
 
 #### Scenario: Pipeline heuristic
 - GIVEN text containing analysis keywords (e.g. `revisar`)
@@ -32,11 +52,12 @@ The Engine SHALL try shell then pipeline heuristics before the LLM Completer.
 
 When the Intent Engine uses the LLM Completer path, it SHALL call
 `QueryHits` with the NL text and attach results as `graph_hits` on the
-Completer ContextPack. Heuristic shell and pipeline paths MUST NOT call
-QueryHits.
+Completer ContextPack. When `repo_hits` is empty it SHALL seed paths
+and symbols from those hits. Heuristic shell, pipeline, and player
+paths MUST NOT call QueryHits.
 
 #### Scenario: LLM path queries graph
-- GIVEN NL text that does not match shell or pipeline heuristics
+- GIVEN NL text that does not match shell, pipeline, or player heuristics
 - AND the Completer is invoked
 - WHEN compile runs
 - THEN QueryHits is called with Text set to the NL input

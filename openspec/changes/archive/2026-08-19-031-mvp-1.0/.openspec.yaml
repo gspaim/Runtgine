@@ -5,6 +5,6 @@ slug: mvp-1.0
 docs_canonical: docs/09-mvp.md
 docs_extra: [docs/31-context-engine-v0.md, docs/17-intent-engine-v0.md]
 gaps: [G-135, G-136, G-137, G-138, G-139, G-140]
-status: active
+status: archived
 branch: feat/031-mvp-1.0
 depends_on: ["030-test-player"]

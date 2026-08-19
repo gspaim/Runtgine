@@ -74,10 +74,10 @@ Ver [09-mvp.md](09-mvp.md). Decisoes-chave:
 | Board no MVP | CONFIRMED | Primeiro Entry Point de produto |
 | Entrada estruturada (Task IR v0) no MVP | CONFIRMED | Sem depender de Intent Engine NL |
 | Intent Engine NL v0 (pos-Core) | CONFIRMED | Ver `17`; heuristicas Player = slice 19 feito (G-135..G-136) |
-| Context Engine v0 no 1.0 magro | CONFIRMED | Ver `31`; codigo = slice 20 (G-137..G-139) |
+| Context Engine v0 no 1.0 magro | CONFIRMED | Ver `31`; slice 20 feito (G-137..G-139) |
 | API HTTP (G-45) fora do 1.0 | CONFIRMED | CLI cobre CI ate nova promocao |
 | Wails fora do MVP / 1.0 | CONFIRMED | Fase 3 |
-| Escopo detalhado em 09-mvp.md | CONFIRMED | Realizado (1–18) + 1.0 magro |
+| Escopo detalhado em 09-mvp.md | CONFIRMED | Realizado (slices 1–20; 1.0 magro feito) |
 
 ## Modelo conceitual
 
@@ -123,7 +123,7 @@ Ver [09-mvp.md](09-mvp.md). Decisoes-chave:
 - HTTP Player v0 (G-117..G-122; recorte G-41) — spec; codigo = slice 16 — feito
 - Project Memory v0 (G-123..G-128; recorte G-46/G-47) — spec; codigo = slice 17 — feito
 - Test Player v0 (G-129..G-134; recorte G-41) — spec; codigo = slice 18 — feito
-- MVP 1.0 magro (G-135..G-140) — spec `09`/`31`/`17`; codigo = slices 19–20
+- MVP 1.0 magro (G-135..G-140) — spec `09`/`31`/`17`; slices 19–20 feitos
 
 ## Protocolo v0 — confirmado (sessao de fechamento)
 
@@ -426,14 +426,14 @@ Nao e pytest/npm; nao e G-45.
 Ver [09-mvp.md](09-mvp.md). Heuristicas Intent em
 [17-intent-engine-v0.md](17-intent-engine-v0.md). Context Engine em
 [31-context-engine-v0.md](31-context-engine-v0.md).
-Codigo = slices 19–20 apos este spec. Nao e G-45; nao e NATS/Wails/MCP.
+Codigo = slices 19–20 feitos. Nao e G-45; nao e NATS/Wails/MCP.
 
 | Item | Status | Notas |
 |---|---|---|
 | G-135 Heuristicas Player no Intent | CONFIRMED | slice 19 feito; `test.go` / git status|diff|log / `docker.ps` |
 | G-136 Metodos + soberania | CONFIRMED | `heuristic.test|git|docker`; LLM route inalterado |
-| G-137 Papel Context Engine | CONFIRMED | assembler; nao e Player |
-| G-138 Semente `repo_hits` | CONFIRMED | QueryHits path/symbol se vazio; nao pisa repo-search |
+| G-137 Papel Context Engine | CONFIRMED | slice 20 feito; assembler; nao e Player |
+| G-138 Semente `repo_hits` | CONFIRMED | slice 20 feito; QueryHits path/symbol se vazio; nao pisa repo-search |
 | G-139 Ranking / pack | CONFIRMED | sem walk, embeddings, file body |
 | G-140 Exclusoes 1.0 | CONFIRMED | G-45, NATS, Wails, MCP, Router, templates |
 

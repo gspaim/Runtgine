@@ -1,10 +1,9 @@
 # Tasks: 031-mvp-1.0
 
-Código = slices 19–20. **Não implementar Go neste PR de spec.**
-Marcar 1.x / 2.x só depois de G-135..G-140 CONFIRMED em `04` (este
-change) e merge em `develop`.
+Spec 031 (G-135..G-140). Código = slices 19–20. Implementado e arquivado após
+merge da spec em `develop`.
 
-## 0. Spec (este PR)
+## 0. Spec (PR #37)
 
 - [x] 0.1 Reescrever `docs/09-mvp.md` (realizado vs 1.0 magro)
 - [x] 0.2 `docs/31-context-engine-v0.md` (G-137..G-140)
@@ -22,9 +21,9 @@ change) e merge em `develop`.
 
 ## 2. Slice 20 — Context Engine v0
 
-- [ ] 2.1 Semente `repo_hits` a partir de QueryHits path/symbol
-- [ ] 2.2 Não pisar repo-search; Graph vazio não falha o Run
-- [ ] 2.3 Intent LLM pack também semeia se vazio
-- [ ] 2.4 `go test ./...` e `go vet ./...`
-- [ ] 2.5 README Estágio: 1.0 magro Feito
-- [ ] 2.6 Archive this change into `openspec/specs/`
+- [x] 2.1 Semente `repo_hits` a partir de QueryHits path/symbol
+- [x] 2.2 Não pisar repo-search; Graph vazio não falha o Run
+- [x] 2.3 Intent LLM pack também semeia se vazio
+- [x] 2.4 `go test ./...` e `go vet ./...`
+- [x] 2.5 README Estágio: 1.0 magro Feito
+- [x] 2.6 Archive this change into `openspec/specs/`

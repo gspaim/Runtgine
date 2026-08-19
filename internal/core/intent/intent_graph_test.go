@@ -88,6 +88,9 @@ func TestLLMPathQueriesGraph(t *testing.T) {
 	if len(cap.last.GraphHits.Items) != 1 || cap.last.GraphHits.Items[0].ID != "from-graph.go" {
 		t.Fatalf("pack hits=%v", cap.last.GraphHits.Items)
 	}
+	if len(cap.last.RepoHits.Paths) != 1 || cap.last.RepoHits.Paths[0] != "from-graph.go" {
+		t.Fatalf("seeded repo_hits=%v", cap.last.RepoHits)
+	}
 }
 
 type countingMemory struct {

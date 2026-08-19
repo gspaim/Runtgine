@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"testing"
 
+	"github.com/gspaim/Runtgine/internal/core/store"
 	"github.com/gspaim/Runtgine/internal/core/task"
 )
 
@@ -42,6 +43,56 @@ func TestAssembleIncludesEmptyGraphHits(t *testing.T) {
 	}
 	if _, ok := budget["memory_max_hits"]; !ok {
 		t.Fatal("missing memory_max_hits")
+	}
+}
+
+func TestWithSeededRepoHitsFromGraph(t *testing.T) {
+	p := Assemble(task.Task{TaskID: "t"}, "s", "pipeline.tech-review", nil)
+	p = WithSeededRepoHits(p, []GraphHit{
+		{Kind: "path", ID: "internal/core/intent/intent.go", Reason: "keyword", Score: 5},
+		{Kind: "symbol", ID: "func Compile", Reason: "keyword", Score: 4},
+		{Kind: "capability", ID: "test.go", Reason: "keyword", Score: 3},
+		{Kind: "path", ID: "internal/core/intent/intent.go", Reason: "mentions", Score: 2},
+	})
+	if len(p.RepoHits.Paths) != 1 || p.RepoHits.Paths[0] != "internal/core/intent/intent.go" {
+		t.Fatalf("paths=%v", p.RepoHits.Paths)
+	}
+	if len(p.RepoHits.Symbols) != 1 || p.RepoHits.Symbols[0] != "func Compile" {
+		t.Fatalf("symbols=%v", p.RepoHits.Symbols)
+	}
+}
+
+func TestWithSeededRepoHitsPreservesRepoSearch(t *testing.T) {
+	priors := []store.StepOutput{{
+		Capability: "pipeline.repo-search",
+		Output:     json.RawMessage(`{"paths":["from-search.go"],"symbols":["Old"]}`),
+	}}
+	p := Assemble(task.Task{TaskID: "t", Intent: task.Intent{Summary: "s"}}, "s1", "pipeline.tech-review", priors)
+	p = WithSeededRepoHits(p, []GraphHit{
+		{Kind: "path", ID: "from-graph.go", Reason: "keyword", Score: 9},
+	})
+	if len(p.RepoHits.Paths) != 1 || p.RepoHits.Paths[0] != "from-search.go" {
+		t.Fatalf("paths=%v", p.RepoHits.Paths)
+	}
+}
+
+func TestWithSeededRepoHitsEmptyGraph(t *testing.T) {
+	p := Assemble(task.Task{TaskID: "t"}, "s", "c", nil)
+	p = WithSeededRepoHits(p, nil)
+	if len(p.RepoHits.Paths) != 0 || len(p.RepoHits.Symbols) != 0 {
+		t.Fatalf("repo_hits=%+v", p.RepoHits)
+	}
+}
+
+func TestWithSeededRepoHitsRespectsMaxFiles(t *testing.T) {
+	p := Assemble(task.Task{TaskID: "t"}, "s", "c", nil)
+	p.Budget.MaxFiles = 1
+	p = WithSeededRepoHits(p, []GraphHit{
+		{Kind: "path", ID: "a.go", Score: 2},
+		{Kind: "path", ID: "b.go", Score: 1},
+	})
+	if len(p.RepoHits.Paths) != 1 || p.RepoHits.Paths[0] != "a.go" {
+		t.Fatalf("paths=%v", p.RepoHits.Paths)
 	}
 }
 

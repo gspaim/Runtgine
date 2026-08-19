@@ -126,7 +126,8 @@ TUI GRAPH v0 spec `26` / G-105..G-110 — slice 14 feito;
 Walk Blast←Graph v0 spec `27` / G-111..G-116 — slice 15 feito;
 HTTP Player v0 spec `28` / G-117..G-122 — slice 16 feito;
 Project Memory v0 spec `29` / G-123..G-128 — slice 17 feito;
-Test Player v0 spec `30` / G-129..G-134 — slice 18 feito)
+Test Player v0 spec `30` / G-129..G-134 — slice 18 feito;
+Intent heuristics slice 19 / Context Engine slice 20 — 1.0 magro feito)
 Fase 5: Cloud (NATS, API, serverless)
 Fase 6: Ecossistema (biblioteca de Players)
 
@@ -148,5 +149,5 @@ Slices 1–9 implementados (Core → Intent → Graph → Git → Filesystem).
 **HTTP Player v0: CONFIRMED + implementado** (`28`, G-117..G-122; slice 16).
 **Project Memory v0: CONFIRMED + implementado** (`29`, G-123..G-128; slice 17).
 **Test Player v0: CONFIRMED + implementado** (`30`, G-129..G-134; slice 18).
-**MVP 1.0 magro: CONFIRMED** (`09`/`31`, G-135..G-140; slice 19 feito; slice 20 pending).
+**MVP 1.0 magro: CONFIRMED + implementado** (`09`/`31`, G-135..G-140; slices 19–20).
 P3 restante: G-45 API HTTP; G-44 MCP; NATS; Wails.
