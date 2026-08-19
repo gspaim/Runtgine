@@ -56,6 +56,7 @@ type Report struct {
 	Risk            Risk             `json:"risk"`
 	Conflicts       []Conflict       `json:"conflicts"`
 	Images          []string         `json:"images"`
+	Affected        []Affected       `json:"affected"`
 }
 
 // Analyze builds a G-100 report from Task steps and optional active claims.
@@ -68,6 +69,7 @@ func Analyze(steps []task.Step, active []store.ResourceClaim) (Report, error) {
 		Risk:            RiskNone,
 		Conflicts:       []Conflict{},
 		Images:          []string{},
+		Affected:        []Affected{},
 	}
 	seenCap := map[string]bool{}
 	seenClaim := map[string]bool{}

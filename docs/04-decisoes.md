@@ -115,7 +115,7 @@ Ver [09-mvp.md](09-mvp.md). Decisoes-chave:
 - Resource Claims v0 (G-93..G-98; recorte G-43) — spec; codigo = slice 12 — feito
 - Blast Radius v0 (G-99..G-104; resto de G-43) — spec; codigo = slice 13 — feito
 - TUI GRAPH v0 (G-105..G-110) — spec; codigo = slice 14 — feito; altera `14` + skill
-- Walk Blast←Graph v0 (G-111..G-116) — spec; codigo = slice 15
+- Walk Blast←Graph v0 (G-111..G-116) — spec; codigo = slice 15 — feito
 
 ## Protocolo v0 — confirmado (sessao de fechamento)
 
@@ -367,7 +367,7 @@ Slice 14 feito.
 
 Ver [27-blast-graph-walk-v0.md](27-blast-graph-walk-v0.md). 1 hop
 `mentions` inbound a partir de `touches` path do Blast (`25`).
-Codigo = slice 15. Nao e QueryHits; nao dispara a partir da aba GRAPH.
+Codigo = slice 15 — feito. Nao e QueryHits; nao dispara a partir da aba GRAPH.
 
 | Item | Status | Notas |
 |---|---|---|

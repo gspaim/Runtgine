@@ -336,7 +336,8 @@ Responsabilidades v0:
 **Nao faz no Runner v0:** replanejamento, background players, auto-blast.
 Blast Radius on-demand (`BlastTask` / `runtgine blast`) esta em
 [25-blast-radius-v0.md](25-blast-radius-v0.md) — nao entra neste
-pipeline. Execution Policy v0 (allow/deny/HITL) esta em
+pipeline. Walk 1-hop `affected` esta em
+[27-blast-graph-walk-v0.md](27-blast-graph-walk-v0.md). Execution Policy v0 (allow/deny/HITL) esta em
 [22-execution-policy-v0.md](22-execution-policy-v0.md). Resource Claims
 v0 esta em [24-resource-claims-v0.md](24-resource-claims-v0.md) — nao e
 o Orchestrator completo HYPOTHESIS.

@@ -144,7 +144,20 @@ func (c *Core) BlastTask(ctx context.Context, t task.Task) (blast.Report, error)
 		}
 		active = rows
 	}
-	return blast.Analyze(t.Steps, active)
+	rep, err := blast.Analyze(t.Steps, active)
+	if err != nil {
+		return blast.Report{}, err
+	}
+	var snap graph.Snapshot
+	var snapErr error
+	if c.Graph != nil {
+		snap, snapErr = c.Graph.Snapshot(ctx)
+		if snapErr != nil && c.Log != nil {
+			c.Log.Warn("blast graph walk skipped", "err", snapErr)
+		}
+	}
+	blast.ApplyWalk(&rep, snap, snapErr)
+	return rep, nil
 }
 
 // CompileIntent translates natural language into Task IR (G-51).

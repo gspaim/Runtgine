@@ -75,8 +75,11 @@ func TestAnalyzeHelloEmpty(t *testing.T) {
 	if len(rep.Capabilities) != 1 || rep.Capabilities[0] != "shell.exec" {
 		t.Fatalf("caps=%v", rep.Capabilities)
 	}
-	if rep.Conflicts == nil || rep.Images == nil {
+	if rep.Conflicts == nil || rep.Images == nil || rep.Affected == nil {
 		t.Fatal("empty slices must be non-nil")
+	}
+	if len(rep.Affected) != 0 {
+		t.Fatalf("affected=%v", rep.Affected)
 	}
 }
 

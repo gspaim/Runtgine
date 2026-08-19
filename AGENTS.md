@@ -58,9 +58,9 @@ Blast Radius: `docs/25-blast-radius-v0.md` + archive
 TUI GRAPH: `docs/26-tui-graph-v0.md` + archive
 `openspec/changes/archive/2026-08-18-026-tui-graph/` — CONFIRMED v0
 (G-105..G-110); slice 14 feito.
-Walk Blast←Graph: `docs/27-blast-graph-walk-v0.md` + change
-`openspec/changes/027-blast-graph-walk/` — CONFIRMED v0 (G-111..G-116);
-codigo = slice 15.
+Walk Blast←Graph: `docs/27-blast-graph-walk-v0.md` + archive
+`openspec/changes/archive/2026-08-18-027-blast-graph-walk/` — CONFIRMED v0
+(G-111..G-116); slice 15 feito.
 Skill obrigatoria para TUI: `.cursor/skills/runtgine-tui-design/SKILL.md`.
 
 ## Ordem de trabalho
@@ -85,7 +85,7 @@ Skill obrigatoria para TUI: `.cursor/skills/runtgine-tui-design/SKILL.md`.
 18. Resource Claims — CONFIRMED v0 em `24` + OpenSpec archive `024-resource-claims` — feito
 19. Blast Radius — CONFIRMED v0 em `25` + OpenSpec archive `025-blast-radius` — feito
 20. TUI GRAPH — CONFIRMED v0 em `26` + OpenSpec archive `026-tui-graph` — feito
-21. Walk Blast←Graph — CONFIRMED v0 em `27` + OpenSpec `027-blast-graph-walk` — spec; codigo = slice 15
+21. Walk Blast←Graph — CONFIRMED v0 em `27` + OpenSpec archive `027-blast-graph-walk` — feito
 22. Mais Players / Project Memory — so apos nova promocao em `04`
 
 ## Conceitos chave (nao confundir)
