@@ -6,7 +6,7 @@
 | Blast Radius | Analise de impacto deterministica de uma Task IR (touches + predicted claims; ver `25`) |
 | Capability | O que um Player sabe fazer. Ex: deployment.update |
 | Chorus | Protocolo/comunicacao entre componentes (complementar ao Runtgine) |
-| Context Engine | Monta contexto relevante para cada Player |
+| Context Engine | Assembler do ContextPack; CONFIRMED v0 (semente `repo_hits`; ver `31`) |
 | ContextPack | Pacote de contexto por step (G-24); inclui `graph_hits` e `memory_hits` v0 (`29`) |
 | Deterministic-first | Preferir execucao deterministica a IA |
 | Entry Point | Interface com o mundo externo (CLI, TUI, Board, API…). Nao e Player |

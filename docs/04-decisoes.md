@@ -47,7 +47,7 @@ Status: CONFIRMED | HYPOTHESIS | OPEN QUESTION | REJECTED
 | Task IR | CONFIRMED (v0) | Schema em 11-protocolo-v0; NL via Intent Engine v0 |
 | Task Validator | CONFIRMED (v0) | Subset MVP: capabilities, inputs, schemas; ver 11 |
 | Runtime Graph | CONFIRMED (v0) | Memoria estrutural; ver `18-runtime-graph-v0.md` |
-| Context Engine | HYPOTHESIS | Monta contexto relevante |
+| Context Engine | CONFIRMED (v0) | Semente `repo_hits`; ver `31-context-engine-v0.md` |
 | Project Memory | CONFIRMED (v0) | Episodica; ver `29-project-memory-v0.md` |
 | Player Router | HYPOTHESIS | Roteia por capability + custo |
 | Execution Policy | CONFIRMED (v0) | allow/deny/approval-required; ver `22-execution-policy-v0.md` |
@@ -73,9 +73,11 @@ Ver [09-mvp.md](09-mvp.md). Decisoes-chave:
 | CLI + TUI minimas no MVP | CONFIRMED | Superficies, nao produto |
 | Board no MVP | CONFIRMED | Primeiro Entry Point de produto |
 | Entrada estruturada (Task IR v0) no MVP | CONFIRMED | Sem depender de Intent Engine NL |
-| Intent Engine NL v0 (pos-Core) | CONFIRMED | Ver `17-intent-engine-v0.md`; fora do corte MVP inicial |
-| Wails fora do MVP | CONFIRMED | Fase 3 |
-| Escopo detalhado em 09-mvp.md | CONFIRMED | Prevalece sobre rascunhos |
+| Intent Engine NL v0 (pos-Core) | CONFIRMED | Ver `17`; heuristicas Player = slice 19 (G-135..G-136) |
+| Context Engine v0 no 1.0 magro | CONFIRMED | Ver `31`; codigo = slice 20 (G-137..G-139) |
+| API HTTP (G-45) fora do 1.0 | CONFIRMED | CLI cobre CI ate nova promocao |
+| Wails fora do MVP / 1.0 | CONFIRMED | Fase 3 |
+| Escopo detalhado em 09-mvp.md | CONFIRMED | Realizado (1–18) + 1.0 magro |
 
 ## Modelo conceitual
 
@@ -91,7 +93,7 @@ Ver [09-mvp.md](09-mvp.md). Decisoes-chave:
 | Task IR | CONFIRMED (v0) | Schema em 11-protocolo-v0 |
 | Task Validator | HYPOTHESIS | Valida antes de executar |
 | Runtime Graph | CONFIRMED (v0) | Memoria estrutural; ver `18-runtime-graph-v0.md` |
-| Context Engine | HYPOTHESIS | Monta contexto relevante |
+| Context Engine | CONFIRMED (v0) | Semente `repo_hits`; ver `31-context-engine-v0.md` |
 | Project Memory | CONFIRMED (v0) | Episodica; ver `29-project-memory-v0.md` |
 
 ## Decisoes CONFIRMED (visao geral)
@@ -107,7 +109,7 @@ Ver [09-mvp.md](09-mvp.md). Decisoes-chave:
 - Runtgine + Chorus complementares
 - Nativo (nao Electron); GPUI/Tauri/Rust-Core rejeitados para o caminho atual
 - Biblioteca grande de Players deterministicos (visao)
-- MVP: Core + Shell + CLI/TUI + Board (ver 09-mvp.md)
+- MVP realizado (slices 1–18) + 1.0 magro (G-135..G-140; ver `09`)
 - Runtime Graph v0 (G-60..G-65)
 - Graph Hits v0 (G-66..G-69; ContextPack + Intent)
 - Git Player v0 (G-70..G-74; recorte G-41)
@@ -121,6 +123,7 @@ Ver [09-mvp.md](09-mvp.md). Decisoes-chave:
 - HTTP Player v0 (G-117..G-122; recorte G-41) — spec; codigo = slice 16 — feito
 - Project Memory v0 (G-123..G-128; recorte G-46/G-47) — spec; codigo = slice 17 — feito
 - Test Player v0 (G-129..G-134; recorte G-41) — spec; codigo = slice 18 — feito
+- MVP 1.0 magro (G-135..G-140) — spec `09`/`31`/`17`; codigo = slices 19–20
 
 ## Protocolo v0 — confirmado (sessao de fechamento)
 
@@ -417,6 +420,22 @@ Nao e pytest/npm; nao e G-45.
 | G-132 Falha vs sucesso | CONFIRMED | exit != 0 → `runtime.player_error` |
 | G-133 Registry + Graph | CONFIRMED | `api.Open`; sem claim/blast; `examples/test-go.json` |
 | G-134 Exclusoes v0 | CONFIRMED | outros runners, `-race`, fuzz, G-45, MCP |
+
+## MVP 1.0 magro — CONFIRMED v0
+
+Ver [09-mvp.md](09-mvp.md). Heuristicas Intent em
+[17-intent-engine-v0.md](17-intent-engine-v0.md). Context Engine em
+[31-context-engine-v0.md](31-context-engine-v0.md).
+Codigo = slices 19–20 apos este spec. Nao e G-45; nao e NATS/Wails/MCP.
+
+| Item | Status | Notas |
+|---|---|---|
+| G-135 Heuristicas Player no Intent | CONFIRMED | `test.go` / `git.status|diff|log` / `docker.ps` antes de shell |
+| G-136 Metodos + soberania | CONFIRMED | `heuristic.test|git|docker`; LLM route inalterado |
+| G-137 Papel Context Engine | CONFIRMED | assembler; nao e Player |
+| G-138 Semente `repo_hits` | CONFIRMED | QueryHits path/symbol se vazio; nao pisa repo-search |
+| G-139 Ranking / pack | CONFIRMED | sem walk, embeddings, file body |
+| G-140 Exclusoes 1.0 | CONFIRMED | G-45, NATS, Wails, MCP, Router, templates |
 
 ## Git / release — fluxo de branches
 

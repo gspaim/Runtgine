@@ -25,7 +25,7 @@ Human Intent -> Intent Engine -> Task IR -> Validator -> Execution Plan -> Event
 | Task IR | CONFIRMED (v0) | Schema em 11-protocolo-v0; NL via Intent Engine v0 |
 | Task Validator | HYPOTHESIS | Valida antes de executar |
 | Runtime Graph | CONFIRMED (v0) | Memoria estrutural; ver `18` |
-| Context Engine | HYPOTHESIS | Monta contexto para cada Player |
+| Context Engine | CONFIRMED (v0) | Semente `repo_hits`; ver `31` |
 | Orchestrator | HYPOTHESIS | Coordena fluxo de execucao |
 | Execution Policy | CONFIRMED (v0) | allow/deny/approval-required; ver `22` |
 | Resource Claim | CONFIRMED (v0) | Bloqueio concorrente; ver `24` |
@@ -167,21 +167,18 @@ consegue fornece-la?
 
 ## Context Engine
 
-Status: HYPOTHESIS
+Status: CONFIRMED (v0) — ver [31-context-engine-v0.md](31-context-engine-v0.md).
 
-O LLM nao recebe todo o projeto. O Context Engine monta:
-- Task
-- Relevant Events
-- Relevant Symbols
-- Relevant Resources
-- Previous Decisions
-- Current State
+O LLM nao recebe todo o projeto. O assembler do ContextPack monta
+task/step, `prior_outputs`, `repo_hits`, `graph_hits`, `memory_hits`
+e budget. Se `repo_hits` estiver vazio (sem `pipeline.repo-search`
+neste Run), o v0 semeia paths/symbols a partir de `QueryHits`.
 
-Isso reduz tokens e melhora a qualidade da execucao.
+Fora do v0 (ainda o “completo” de `03`): stream global de events,
+current state rico, embeddings, dump do repositorio.
 
-Project Memory v0 (`29`, G-123..G-128) alimenta o ContextPack com
-`memory_hits` operacionais (`active`). Nao substitui o Context Engine
-completo (ainda HYPOTHESIS).
+Project Memory v0 (`29`) alimenta `memory_hits` (`active`). Graph Hits
+(`19`) alimenta `graph_hits`. Nao confundir os tres.
 
 ---
 

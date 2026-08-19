@@ -11,34 +11,36 @@ isso criando uma camada comum de execucao e orquestracao.
 - Dev: usa CLI/TUI para tarefas do dia a dia
 - Tech Lead: gerencia board e workflows
 - QA: executa pipelines de teste
-- DevOps: automatiza deploy e infra
+- DevOps: automatiza deploy e infra (CLI no 1.0; API HTTP = G-45)
 - LLM Player especializado: recebe contexto montado pelo Context Engine
 
 ## Casos de uso
 
 UC-01: Usuario fornece Task IR (JSON/YAML) via CLI -> Validator valida
--> Execution Plan -> Players executam (Shell e/ou LLM)
+-> Execution Plan -> Players executam (Shell e/ou LLM e/ou Git/FS/…)
 
 UC-02: CI/CD pipeline com Players deterministicos + LLM para diagnostico
+— **pos-1.0** via G-45; ate la a CI chama a CLI
 
 UC-03: Task de board Kanban passa por decomposition e routing
 
-UC-04 (pos-MVP Core): Usuario escreve intencao em linguagem natural ->
-Intent Engine traduz -> Task IR -> Validator -> execucao
+UC-04: Usuario escreve intencao em linguagem natural -> Intent Engine
+traduz -> Task IR -> Validator -> execucao (heuristicas Player no 1.0)
 
 ## Requisitos
 
-P0 (MVP — ver `09-mvp.md`):
-Task IR v0, Validator basico, Event Bus in-process, Player Registry,
-Shell Player, CLI/TUI minima, Board Integration + pipeline vertical basico
+P0 (MVP realizado — slices 1–18; ver `09-mvp.md`):
+Task IR v0, Validator, Event Bus, Registry, Shell + Git/FS/Docker/HTTP/Test,
+CLI/TUI, Board + pipeline, Intent NL, Graph, Memory, Policy/HITL, Claims, Blast
 
-P1: Intent Engine (NL), Runtime Graph, Context Engine completo,
-Player Router completo
-(SQLite para runs/events ja no MVP Core — ver G-13 CONFIRMED)
+P1 (MVP 1.0 magro — G-135..G-140):
+Heuristicas Intent → `test.go` / `git.status|diff|log` / `docker.ps`;
+Context Engine v0 (semente `repo_hits` a partir do Graph)
 
-P2: Execution Policies (`22`), Resource Claims (`24`), Blast Radius (`25` spec), NATS, cloud
+P2: API HTTP (G-45); mais Players; Wails (Fase 3)
 
-P3: Biblioteca grande de Players deterministicos (Git, Docker, K8s...)
+P3: NATS (G-36 DEFERRED), MCP (G-44), Workflow Templates (G-40),
+Player Router completo, Memory Player (G-47), K8s/Terraform/PostgreSQL
 
 ## Escopo detalhado do MVP
 
