@@ -8,12 +8,13 @@ Autoridade de status: [04-decisoes.md](04-decisoes.md).
 Não é o Test Player genérico (pytest/npm). Não é Coverage UI.
 Não é MCP ([G-44](10-gaps.md)). Não é a API HTTP (G-45).
 
-**Status deste doc: CONFIRMED (v0).** G-129..G-134 autorizam o slice 18
-de código. Outros runners e `-race` permanecem fora.
+**Status deste doc: CONFIRMED (v0).** G-129..G-134 implementados no
+slice 18. Outros runners e `-race` permanecem fora.
 
-**Pacote OpenSpec:** ativo em
-[`openspec/changes/030-test-player/`](../openspec/changes/030-test-player/).
-Branch de implementação: `feat/030-test-player`.
+**Pacote OpenSpec:** arquivado em
+[`openspec/changes/archive/2026-08-19-030-test-player/`](../openspec/changes/archive/2026-08-19-030-test-player/).
+Deltas mergeados em `openspec/specs/test-player/`. Branch de implementação:
+`feat/030-test-player`.
 
 ---
 
@@ -162,20 +163,19 @@ Run — é a verificação.
    injetado.
 7. `go test ./internal/players/gotest/...` e `go test ./...` /
    `go vet ./...` verdes.
-8. OpenSpec `030-test-player` arquivado após o **código** (slice 18),
-   não neste PR de spec.
+8. OpenSpec `030-test-player` arquivado após o **código** (slice 18).
 
 ---
 
 ## 5. Ordem do slice de código
 
-Bloqueado até G-129..G-134 CONFIRMED — este doc + `04` (este PR):
+Bloqueado até G-129..G-134 CONFIRMED — feito neste slice:
 
 1. Pacote `internal/players/gotest` + Manifest + `ValidateStaticInput`
 2. Executor injetável; parse `-json`; truncamento de `log`
 3. Registrar no Core; exemplo `examples/test-go.json`
 4. Testes fake pass/fail; README Estágio: Slice 18
-5. Arquivar OpenSpec `030` após o merge do código
+5. Arquivar OpenSpec `030` após o código
 
 ---
 

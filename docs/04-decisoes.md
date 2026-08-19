@@ -120,7 +120,7 @@ Ver [09-mvp.md](09-mvp.md). Decisoes-chave:
 - Walk Blast←Graph v0 (G-111..G-116) — spec; codigo = slice 15 — feito
 - HTTP Player v0 (G-117..G-122; recorte G-41) — spec; codigo = slice 16 — feito
 - Project Memory v0 (G-123..G-128; recorte G-46/G-47) — spec; codigo = slice 17 — feito
-- Test Player v0 (G-129..G-134; recorte G-41) — spec; codigo = slice 18
+- Test Player v0 (G-129..G-134; recorte G-41) — spec; codigo = slice 18 — feito
 
 ## Protocolo v0 — confirmado (sessao de fechamento)
 
@@ -406,7 +406,7 @@ Nao e a API HTTP do Runtgine (G-45 permanece P3).
 ## Test Player — CONFIRMED v0
 
 Ver [30-test-player-v0.md](30-test-player-v0.md). Recorte de G-41
-(`go test` no workspace). Codigo = slice 18 apos este spec.
+(`go test` no workspace). Codigo = slice 18 — feito.
 Nao e pytest/npm; nao e G-45.
 
 | Item | Status | Notas |
