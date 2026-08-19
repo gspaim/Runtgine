@@ -37,9 +37,10 @@ branch:              feat/<NNN>-<slug>   (ou docs/ fix/ chore/)
 
 Exemplos válidos: `001-shell-player`, `017-intent-engine`, `019-graph-hits`.
 
-**Próximo id livre:** `028`.
+**Próximo id livre:** `029`.
 
-Nenhuma mudança ativa. Último archive:
+Mudança ativa: [`changes/028-http-player/`](changes/028-http-player/)
+(HTTP Player v0; G-117..G-122; código = slice 16). Último archive:
 [`changes/archive/2026-08-18-027-blast-graph-walk/`](changes/archive/2026-08-18-027-blast-graph-walk/)
 (Walk Blast←Graph v0; slice 15 feito).
 
