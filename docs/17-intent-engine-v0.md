@@ -71,7 +71,7 @@ Shell argv: split whitespace simples (sem shell string / sem `sh -c`).
 
 ## G-135 — Heuristicas de Player (MVP 1.0 magro)
 
-**Status: CONFIRMED** — codigo = slice 19 (apos spec `031`).
+**Status: CONFIRMED** — codigo = slice 19 (feito).
 
 Antes de `matchShell`. Frases de alta confianca (PT/EN, case-insensitive):
 
@@ -88,7 +88,7 @@ Fora desta tabela no v0: `git add/commit/push`, `http.get`, `fs.*`,
 
 ## G-136 — Metodos e soberania
 
-**Status: CONFIRMED** — codigo = slice 19.
+**Status: CONFIRMED** — codigo = slice 19 (feito).
 
 - `method` passa a incluir `heuristic.test` | `heuristic.git` |
   `heuristic.docker` alem de `heuristic.shell` | `heuristic.pipeline` | `llm`

@@ -95,8 +95,8 @@ Visão enxuta do que já está em `main`. **Atualizar esta seção em todo PR
 | Feito | Slice 16 — HTTP Player v0 (`28`, G-117..G-122; `http.get` / `http.head`) |
 | Feito | Slice 17 — Project Memory v0 (`29`, G-123..G-128; `runtgine memory`) |
 | Feito | Slice 18 — Test Player v0 (`30`, G-129..G-134; `test.go`) |
-| Próximo | Slice 19 — Intent → Players (`031`, G-135..G-136; após merge da spec) |
-| Depois | Slice 20 — Context Engine v0 (`31`, G-137..G-139); então G-45 / Wails |
+| Feito | Slice 19 — Intent → Players (`031`, G-135..G-136; `test.go` / `git.status`) |
+| Próximo | Slice 20 — Context Engine v0 (`31`, G-137..G-139) |
 
 Detalhe do corte: [`docs/09-mvp.md`](docs/09-mvp.md). Limitações atuais abaixo.
 

@@ -51,3 +51,17 @@ func TestSubmitIntentShell(t *testing.T) {
 	}
 	t.Fatal("timeout")
 }
+
+func TestCompileIntentGoTest(t *testing.T) {
+	core := openTestCore(t)
+	tk, method, err := core.CompileIntent(context.Background(), "go test", "cli", "test")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if method != intent.MethodHeuristicTest {
+		t.Fatalf("method=%s", method)
+	}
+	if len(tk.Steps) != 1 || tk.Steps[0].Capability != "test.go" {
+		t.Fatalf("steps=%v", tk.Steps)
+	}
+}

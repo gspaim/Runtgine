@@ -33,6 +33,22 @@ func (c *captureCompleter) Complete(_ context.Context, pack contextpack.Pack, _ 
 	return json.RawMessage(`{"summary":"hi","route":"shell","shell_command":["echo","hi"]}`), nil
 }
 
+func TestHeuristicPlayerDoesNotQueryGraph(t *testing.T) {
+	g := &countingGraph{}
+	e := intent.New(llm.HeuristicCompleter{})
+	e.Graph = g
+	res, err := e.Compile(context.Background(), intent.Request{Text: "go test"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if res.Method != intent.MethodHeuristicTest {
+		t.Fatalf("method=%s", res.Method)
+	}
+	if g.n.Load() != 0 {
+		t.Fatalf("QueryHits called %d times", g.n.Load())
+	}
+}
+
 func TestHeuristicShellDoesNotQueryGraph(t *testing.T) {
 	g := &countingGraph{}
 	m := &countingMemory{}
