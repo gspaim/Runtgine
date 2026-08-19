@@ -107,10 +107,10 @@ Ate la, o Core deve rodar so com CLI + Shell.
 | G-41 | Biblioteca ampla de Players | Em andamento — Git (`20`), Filesystem (`21`), Docker (`23`), HTTP (`28`) v0 feitos |
 | G-42 | Human-in-the-loop / Approvals | **CONFIRMED v0** — recorte G-81..G-86 em `22` |
 | G-43 | Resource Claims / Blast Radius | **Claims CONFIRMED v0** — `24`. **Blast CONFIRMED v0** — `25`. **Walk Blast←Graph CONFIRMED v0** — recorte G-111..G-116 em `27` |
-| G-44 | MCP integration — candidato a transporte da Fase B de Project Memory (`16`) |
+| G-44 | MCP integration — candidato a transporte futuro da Project Memory (fora do v0 `29`) |
 | G-45 | API HTTP / webhooks | Servidor do runtime — distinto do HTTP Player cliente (`28`) |
-| G-46 | Project Memory (conceito + ContextPack + validade + hierarquia) — **HYPOTHESIS**; ver `16` |
-| G-47 | Modelo de acesso Memory Provider vs Memory Player — Provider **HYPOTHESIS**; Player **OPEN QUESTION**; ver `16` |
+| G-46 | Project Memory (conceito + ContextPack + validade + hierarquia) | **CONFIRMED v0** — recorte G-123..G-128 em `29`; esboço em `16` |
+| G-47 | Modelo de acesso Memory Provider vs Memory Player — Provider **CONFIRMED v0** (`29`); Player **OPEN QUESTION** (fora do v0) |
 
 ---
 
@@ -232,6 +232,17 @@ Ate la, o Core deve rodar so com CLI + Shell.
 | G-121 | Registry + Graph | **CONFIRMED** — sem claim/blast |
 | G-122 | Exclusões v0 | **CONFIRMED** — POST, auth, G-45, MCP, Memory |
 
+## Project Memory (recorte G-46/G-47) — CONFIRMED v0
+
+| ID | Gap | Notas |
+|---|---|---|
+| G-123 | Papel / pacote `memory` | **CONFIRMED** — ver `29-project-memory-v0.md` |
+| G-124 | Episódio + validade | **CONFIRMED** — kinds 4; validade explícita |
+| G-125 | API + CLI | **CONFIRMED** — Query lexical; sem embeddings |
+| G-126 | ContextPack `memory_hits` | **CONFIRMED** — abaixo de graph_hits |
+| G-127 | Captura | **CONFIRMED** — default off; opt-in failures |
+| G-128 | Exclusões v0 | **CONFIRMED** — Player, MCP, RAG, TUI, Knowledge |
+
 ---
 
 ## Ordem para fechar gaps
@@ -252,6 +263,7 @@ Ate la, o Core deve rodar so com CLI + Shell.
 14. TUI GRAPH — spec em `26` — G-105..G-110 CONFIRMED; codigo = slice 14 — feito
 15. Walk Blast←Graph — spec em `27` — G-111..G-116 CONFIRMED; codigo = slice 15 — feito
 16. HTTP Player — spec em `28` — G-117..G-122 CONFIRMED; codigo = slice 16 — feito
+17. Project Memory — spec em `29` — G-123..G-128 CONFIRMED; codigo = slice 17
 
 ## Criterio de “pronto para codar”
 
@@ -269,7 +281,8 @@ Ate la, o Core deve rodar so com CLI + Shell.
 **Blast Radius (G-99..G-104): CONFIRMADO** — slice 13 feito.  
 **TUI GRAPH (G-105..G-110): CONFIRMADO** — slice 14 feito.  
 **Walk Blast←Graph (G-111..G-116): CONFIRMADO** — slice 15 feito.  
-**HTTP Player (G-117..G-122): CONFIRMADO** — slice 16 feito.
+**HTTP Player (G-117..G-122): CONFIRMADO** — slice 16 feito.  
+**Project Memory (G-123..G-128): CONFIRMADO** — spec; codigo = slice 17.
 
 Ordem pratica de codigo:
 1. Core CLI + Shell (+ SQLite) — slice 1 — feito
@@ -288,9 +301,11 @@ Ordem pratica de codigo:
 14. TUI GRAPH v0 — slice 14 (G-105..G-110) — feito
 15. Walk Blast←Graph v0 — slice 15 (G-111..G-116) — feito
 16. HTTP Player v0 — slice 16 (G-117..G-122) — feito
+17. Project Memory v0 — slice 17 (G-123..G-128) — pending (spec `29`)
 
 P3 restante (G-40 templates, G-44 MCP, G-45 API HTTP).
-Project Memory (G-46/G-47) permanece HYPOTHESIS em `16` — nao codificar.
+Project Memory corte v0: spec `29` (G-123..G-128); codigo = slice 17.
+Esboço conceitual permanece em `16`.
 Walk Blast←Graph: spec `27` (G-111..G-116); slice 15 feito.
 HTTP Player: spec `28` (G-117..G-122); slice 16 feito.
 Aba TUI GRAPH: spec `26` — slice 14 feito.

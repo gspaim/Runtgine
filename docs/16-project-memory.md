@@ -6,10 +6,10 @@ Memória **episódica** / de projeto entre runs e entre “agentes”
 Inventário: [10-gaps.md](10-gaps.md) (G-46, G-47; depende de G-44).
 Autoridade de status: [04-decisoes.md](04-decisoes.md).
 
-**Status deste doc: OPEN / HYPOTHESIS.** Não autoriza código.
-Não promove contratos a API definitiva. Não é RAG genérico.
-Referência externa de inspiração (não dependência):
-[akitaonrails/ai-memory](https://github.com/akitaonrails/ai-memory).
+**Status deste doc: OPEN / HYPOTHESIS (esboço).** Não é o corte v0.
+Corte implementável: [29-project-memory-v0.md](29-project-memory-v0.md)
+(G-123..G-128 **CONFIRMED**; código = slice 17). Este arquivo permanece
+histórico / conceitual (fases A–D, MCP, Knowledge).
 
 ---
 

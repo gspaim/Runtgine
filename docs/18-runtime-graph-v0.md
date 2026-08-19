@@ -4,7 +4,7 @@ Memória **estrutural** do workspace: o que existe e como se relaciona.
 
 Inventário: [10-gaps.md](10-gaps.md) (G-60+).
 Autoridade de status: [04-decisoes.md](04-decisoes.md).
-Ortogonal a: Event Store (temporal, G-13) e Project Memory (episódica, `16`).
+Ortogonal a: Event Store (temporal, G-13) e Project Memory (episódica, `29`).
 
 **Status deste doc: CONFIRMED (v0).** G-60..G-65 autorizam o corte deste
 slice. Integração ContextPack/Intent (`graph_hits`) está em
@@ -47,7 +47,7 @@ Sem isso:
 |---|---|---|
 | Temporal | Event Store / SQLite — fatos de lifecycle | CONFIRMED |
 | **Estrutural** | **Runtime Graph — nós e arestas** | **CONFIRMED (v0)** |
-| Episódica | Project Memory — decisões/handoffs | HYPOTHESIS (`16`) |
+| Episódica | Project Memory — decisões/handoffs | CONFIRMED v0 (`29`) |
 
 Regras:
 

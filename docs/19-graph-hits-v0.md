@@ -17,8 +17,8 @@ fora deste corte de Hits.
 Deltas mergeados em `openspec/specs/`. Branch de implementação:
 `cursor/019-graph-hits-0ac1` (equiv. `feat/019-graph-hits`).
 
-Ortogonal a: Project Memory / `memory_hits` ([16-project-memory.md](16-project-memory.md)
-— HYPOTHESIS; não misturar).
+Ortogonal a: Project Memory / `memory_hits` ([29-project-memory-v0.md](29-project-memory-v0.md)
+— CONFIRMED v0; esboço em `16`).
 
 ---
 
@@ -53,7 +53,7 @@ Falta:
 |---|---|
 | `repo_hits` | Hits **desta** run (repo-search) — inalterado |
 | **`graph_hits`** | Hits **estruturais** do Graph do workspace — **este doc** |
-| `memory_hits` | Episódicos / Project Memory — **fora** (HYPOTHESIS em `16`) |
+| `memory_hits` | Episódicos / Project Memory — corte em `29` (não neste slice) |
 
 Regras:
 

@@ -37,9 +37,10 @@ branch:              feat/<NNN>-<slug>   (ou docs/ fix/ chore/)
 
 Exemplos válidos: `001-shell-player`, `017-intent-engine`, `019-graph-hits`.
 
-**Próximo id livre:** `029`.
+**Próximo id livre:** `030`.
 
-Nenhuma mudança ativa. Último archive:
+Mudança ativa: [`changes/029-project-memory/`](changes/029-project-memory/)
+(Project Memory v0; G-123..G-128; código = slice 17). Último archive:
 [`changes/archive/2026-08-19-028-http-player/`](changes/archive/2026-08-19-028-http-player/)
 (HTTP Player v0; slice 16 feito).
 
