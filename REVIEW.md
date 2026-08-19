@@ -119,13 +119,13 @@ CLI -> TUI -> Board -> Context -> LLM pipeline -> Router.
 Fase 0: Documentacao
 Fase 1: MVP (Core Go, Event Bus, Shell, CLI, TUI, Board) — slices 1–4
 Fase 2: Graph Hits + Git/FS Players feitos; Execution Policy + Docker
-specs em `22`/`23` (slices 10–11); Project Memory so apos sair de HYPOTHESIS.
+specs em `22`/`23` (slices 10–11); Project Memory v0 em `29` (slice 17 feito).
 Fase 3: Desktop (Wails)
 Fase 4: Infra (Claims v0 slice 12; Blast Radius v0 slice 13 feitos;
 TUI GRAPH v0 spec `26` / G-105..G-110 — slice 14 feito;
 Walk Blast←Graph v0 spec `27` / G-111..G-116 — slice 15 feito;
 HTTP Player v0 spec `28` / G-117..G-122 — slice 16 feito;
-Project Memory v0 spec `29` / G-123..G-128 — codigo = slice 17)
+Project Memory v0 spec `29` / G-123..G-128 — slice 17 feito)
 Fase 5: Cloud (NATS, API, serverless)
 Fase 6: Ecossistema (biblioteca de Players)
 
@@ -145,5 +145,5 @@ Slices 1–9 implementados (Core → Intent → Graph → Git → Filesystem).
 **TUI GRAPH v0: CONFIRMED + implementado** (`26`, G-105..G-110; slice 14).
 **Walk Blast←Graph v0: CONFIRMED + implementado** (`27`, G-111..G-116; slice 15).
 **HTTP Player v0: CONFIRMED + implementado** (`28`, G-117..G-122; slice 16).
-**Project Memory v0: CONFIRMED spec** (`29`, G-123..G-128; codigo = slice 17).
+**Project Memory v0: CONFIRMED + implementado** (`29`, G-123..G-128; slice 17).
 P3 restante: mais Players; G-45 API HTTP; G-44 MCP.

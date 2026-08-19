@@ -8,10 +8,12 @@ import (
 )
 
 const (
-	DefaultMaxChars      = 12000
-	DefaultMaxFiles      = 40
-	DefaultGraphMaxHits  = 20
-	DefaultGraphMaxChars = 4000
+	DefaultMaxChars       = 12000
+	DefaultMaxFiles       = 40
+	DefaultGraphMaxHits   = 20
+	DefaultGraphMaxChars  = 4000
+	DefaultMemoryMaxHits  = 8
+	DefaultMemoryMaxChars = 2000
 )
 
 type Pack struct {
@@ -20,6 +22,7 @@ type Pack struct {
 	PriorOutputs []store.StepOutput `json:"prior_outputs"`
 	RepoHits     RepoHits           `json:"repo_hits"`
 	GraphHits    GraphHits          `json:"graph_hits"`
+	MemoryHits   MemoryHits         `json:"memory_hits"`
 	Budget       Budget             `json:"budget"`
 }
 
@@ -50,11 +53,26 @@ type GraphHits struct {
 	Items []GraphHit `json:"items"`
 }
 
+type MemoryHit struct {
+	ID       string `json:"id"`
+	Kind     string `json:"kind"`
+	Validity string `json:"validity"`
+	Title    string `json:"title"`
+	Snippet  string `json:"snippet"`
+	Score    int    `json:"score"`
+}
+
+type MemoryHits struct {
+	Items []MemoryHit `json:"items"`
+}
+
 type Budget struct {
-	MaxChars      int `json:"max_chars"`
-	MaxFiles      int `json:"max_files"`
-	GraphMaxHits  int `json:"graph_max_hits"`
-	GraphMaxChars int `json:"graph_max_chars"`
+	MaxChars       int `json:"max_chars"`
+	MaxFiles       int `json:"max_files"`
+	GraphMaxHits   int `json:"graph_max_hits"`
+	GraphMaxChars  int `json:"graph_max_chars"`
+	MemoryMaxHits  int `json:"memory_max_hits"`
+	MemoryMaxChars int `json:"memory_max_chars"`
 }
 
 func Assemble(t task.Task, stepID, capability string, priors []store.StepOutput) Pack {
@@ -63,11 +81,14 @@ func Assemble(t task.Task, stepID, capability string, priors []store.StepOutput)
 		Step:         StepView{StepID: stepID, Capability: capability},
 		PriorOutputs: priors,
 		GraphHits:    GraphHits{Items: []GraphHit{}},
+		MemoryHits:   MemoryHits{Items: []MemoryHit{}},
 		Budget: Budget{
-			MaxChars:      DefaultMaxChars,
-			MaxFiles:      DefaultMaxFiles,
-			GraphMaxHits:  DefaultGraphMaxHits,
-			GraphMaxChars: DefaultGraphMaxChars,
+			MaxChars:       DefaultMaxChars,
+			MaxFiles:       DefaultMaxFiles,
+			GraphMaxHits:   DefaultGraphMaxHits,
+			GraphMaxChars:  DefaultGraphMaxChars,
+			MemoryMaxHits:  DefaultMemoryMaxHits,
+			MemoryMaxChars: DefaultMemoryMaxChars,
 		},
 	}
 	p.RepoHits = extractRepoHits(priors, p.Budget)
@@ -92,6 +113,26 @@ func WithGraphHits(p Pack, items []GraphHit) Pack {
 	}
 	items = trimGraphHitsByChars(items, p.Budget.GraphMaxChars)
 	p.GraphHits = GraphHits{Items: items}
+	return p
+}
+
+// WithMemoryHits attaches ranked episodic hits and applies memory budgets.
+// Items should already be score-sorted (highest first); lowest scores are dropped first.
+func WithMemoryHits(p Pack, items []MemoryHit) Pack {
+	if p.Budget.MemoryMaxHits <= 0 {
+		p.Budget.MemoryMaxHits = DefaultMemoryMaxHits
+	}
+	if p.Budget.MemoryMaxChars <= 0 {
+		p.Budget.MemoryMaxChars = DefaultMemoryMaxChars
+	}
+	if items == nil {
+		items = []MemoryHit{}
+	}
+	if len(items) > p.Budget.MemoryMaxHits {
+		items = items[:p.Budget.MemoryMaxHits]
+	}
+	items = trimMemoryHitsByChars(items, p.Budget.MemoryMaxChars)
+	p.MemoryHits = MemoryHits{Items: items}
 	return p
 }
 
@@ -156,6 +197,23 @@ func trimGraphHitsByChars(items []GraphHit, maxChars int) []GraphHit {
 		}
 	}
 	return []GraphHit{}
+}
+
+func trimMemoryHitsByChars(items []MemoryHit, maxChars int) []MemoryHit {
+	if maxChars <= 0 || len(items) == 0 {
+		return items
+	}
+	for n := len(items); n > 0; n-- {
+		slice := items[:n]
+		b, err := json.Marshal(slice)
+		if err != nil {
+			return slice
+		}
+		if len(b) <= maxChars {
+			return slice
+		}
+	}
+	return []MemoryHit{}
 }
 
 func capStrings(in []string, n int) []string {

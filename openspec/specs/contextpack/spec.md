@@ -1,18 +1,19 @@
 # ContextPack
 
-Status: comportamento atual (pós-slice 7 / Graph Hits).
+Status: comportamento atual (pós-slice 17 / Project Memory).
 
 ## Requirements
 
 ### Requirement: AssembleContext builds intra-run pack
 
 The Core SHALL assemble a ContextPack before LLM Player `Complete` with
-task view, step view, prior step outputs, repo hits, graph hits, and budget.
+task view, step view, prior step outputs, repo hits, graph hits, memory
+hits, and budget.
 
 #### Scenario: Pack fields present
 - GIVEN a run with at least one prior step output
 - WHEN AssembleContext runs for the next LLM step
-- THEN the pack includes `task`, `step`, `prior_outputs`, `repo_hits`, `graph_hits`, and `budget`
+- THEN the pack includes `task`, `step`, `prior_outputs`, `repo_hits`, `graph_hits`, `memory_hits`, and `budget`
 - AND `repo_hits` are derived only from `pipeline.repo-search` outputs in this run
 
 ### Requirement: Budget truncates deterministically
@@ -52,3 +53,18 @@ first while leaving `repo_hits` and task/step identity intact.
 - GIVEN more graph hits than `graph_max_hits`
 - WHEN the pack is assembled
 - THEN only the highest-score items remain (ties broken by kind, id)
+
+### Requirement: ContextPack includes memory_hits
+
+The ContextPack SHALL include a `memory_hits` object with an `items`
+array of episodic hits `{id, kind, validity, title, snippet, score}`
+and budget fields `memory_max_hits` (default 8) and `memory_max_chars`
+(default 2000). Items in the pack MUST be `validity=active` only.
+`memory_hits` ranks below `graph_hits` in the truncation hierarchy.
+
+#### Scenario: Empty memory degrades
+
+- GIVEN QueryMemory returns an error or no rows
+- WHEN AssembleContext runs for an LLM step
+- THEN `memory_hits.items` is `[]`
+- AND the Run continues

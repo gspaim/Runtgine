@@ -32,7 +32,7 @@ not chat RAG. Sketch lives in `docs/16`; this change is the v0 cut.
 | Change id | `029-project-memory` |
 | Doc canônico | [`docs/29-project-memory-v0.md`](../../../docs/29-project-memory-v0.md) |
 | Gaps | G-123..G-128 **CONFIRMED** (recorte de G-46/G-47) |
-| Código | Ainda não — slice 17; **bloqueado** até este pacote + `04` |
+| Código | Slice 17 feito |
 
 ## Approach
 

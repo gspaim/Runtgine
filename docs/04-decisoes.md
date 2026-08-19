@@ -118,7 +118,7 @@ Ver [09-mvp.md](09-mvp.md). Decisoes-chave:
 - TUI GRAPH v0 (G-105..G-110) — spec; codigo = slice 14 — feito; altera `14` + skill
 - Walk Blast←Graph v0 (G-111..G-116) — spec; codigo = slice 15 — feito
 - HTTP Player v0 (G-117..G-122; recorte G-41) — spec; codigo = slice 16 — feito
-- Project Memory v0 (G-123..G-128; recorte G-46/G-47) — spec; codigo = slice 17
+- Project Memory v0 (G-123..G-128; recorte G-46/G-47) — spec; codigo = slice 17 — feito
 
 ## Protocolo v0 — confirmado (sessao de fechamento)
 
@@ -237,7 +237,7 @@ Ver [17-intent-engine-v0.md](17-intent-engine-v0.md).
 
 Ver [29-project-memory-v0.md](29-project-memory-v0.md). Recorte de
 G-46/G-47 (Provider local + ContextPack). Esboco em `16`.
-Codigo = slice 17 apos este spec. Nao e MCP (G-44). Nao e Player.
+Codigo = slice 17 feito. Nao e MCP (G-44). Nao e Player.
 
 | Item | Status | Notas |
 |---|---|---|

@@ -13,6 +13,7 @@ import (
 	"github.com/gspaim/Runtgine/internal/core/event"
 	"github.com/gspaim/Runtgine/internal/core/graph"
 	"github.com/gspaim/Runtgine/internal/core/intent"
+	"github.com/gspaim/Runtgine/internal/core/memory"
 	"github.com/gspaim/Runtgine/internal/core/policy"
 	"github.com/gspaim/Runtgine/internal/core/registry"
 	"github.com/gspaim/Runtgine/internal/core/result"
@@ -37,6 +38,7 @@ type Core struct {
 	Runner *runner.Runner
 	Intent *intent.Engine
 	Graph  *graph.Service
+	Memory *memory.Service
 	Log    *slog.Logger
 }
 
@@ -83,6 +85,7 @@ func Open(cfg config.Config, log *slog.Logger) (*Core, error) {
 		return nil, err
 	}
 	g := graph.New(st, log)
+	mem := memory.New(st, log)
 	tab, err := policy.Compile(policy.FileConfig{
 		Default:      cfg.ExecutionPolicy.Default,
 		Capabilities: cfg.ExecutionPolicy.Capabilities,
@@ -93,6 +96,8 @@ func Open(cfg config.Config, log *slog.Logger) (*Core, error) {
 	}
 	r := runner.New(reg, bus, st, cfg.WorkspaceRoot, cfg.LLMBackend, cfg.MaxConcurrentRuns, log)
 	r.Graph = g
+	r.Memory = mem
+	r.MemoryCapture = cfg.Memory.Capture
 	r.Policy = tab
 	claims := claim.New(st)
 	if err := claims.SweepOrphans(context.Background()); err != nil {
@@ -108,6 +113,7 @@ func Open(cfg config.Config, log *slog.Logger) (*Core, error) {
 	}
 	eng := intent.New(completer)
 	eng.Graph = g
+	eng.Memory = mem
 	return &Core{
 		Cfg:    cfg,
 		Reg:    reg,
@@ -116,6 +122,7 @@ func Open(cfg config.Config, log *slog.Logger) (*Core, error) {
 		Runner: r,
 		Intent: eng,
 		Graph:  g,
+		Memory: mem,
 		Log:    log,
 	}, nil
 }
@@ -375,6 +382,26 @@ func (c *Core) RefreshGraph(ctx context.Context) error {
 
 func (c *Core) QueryGraphNeighbors(ctx context.Context, kind, id, edgeKind, direction string) ([]graph.Node, error) {
 	return c.Graph.QueryNeighbors(ctx, kind, id, edgeKind, direction)
+}
+
+func (c *Core) MemoryRecord(ctx context.Context, in memory.EpisodeInput) (memory.Episode, error) {
+	return c.Memory.Record(ctx, in)
+}
+
+func (c *Core) MemoryList(ctx context.Context, f memory.Filter) ([]memory.Episode, error) {
+	return c.Memory.List(ctx, f)
+}
+
+func (c *Core) MemoryQuery(ctx context.Context, text string, limit int) ([]memory.Hit, error) {
+	return c.Memory.Query(ctx, text, limit)
+}
+
+func (c *Core) MemorySupersede(ctx context.Context, oldID string, in memory.EpisodeInput) (memory.Episode, error) {
+	return c.Memory.Supersede(ctx, oldID, in)
+}
+
+func (c *Core) MemoryArchive(ctx context.Context, id string) (memory.Episode, error) {
+	return c.Memory.Archive(ctx, id)
 }
 
 func (c *Core) syncGraph(runID string) {

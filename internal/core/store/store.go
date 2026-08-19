@@ -149,6 +149,19 @@ CREATE TABLE IF NOT EXISTS resource_claims (
 );
 CREATE UNIQUE INDEX IF NOT EXISTS idx_resource_claims_active
   ON resource_claims(kind, key) WHERE released_at IS NULL;
+CREATE TABLE IF NOT EXISTS project_memory (
+  id TEXT PRIMARY KEY,
+  kind TEXT NOT NULL,
+  validity TEXT NOT NULL,
+  title TEXT NOT NULL,
+  body TEXT NOT NULL DEFAULT '',
+  created_at TEXT NOT NULL,
+  run_id TEXT NOT NULL DEFAULT '',
+  task_id TEXT NOT NULL DEFAULT '',
+  successor_id TEXT NOT NULL DEFAULT ''
+);
+CREATE INDEX IF NOT EXISTS idx_project_memory_validity ON project_memory(validity);
+CREATE INDEX IF NOT EXISTS idx_project_memory_created ON project_memory(created_at, id);
 `)
 	if err != nil {
 		return err

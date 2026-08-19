@@ -64,9 +64,9 @@ Walk Blast←Graph: `docs/27-blast-graph-walk-v0.md` + archive
 HTTP Player: `docs/28-http-player-v0.md` + archive
 `openspec/changes/archive/2026-08-19-028-http-player/` — CONFIRMED v0
 (G-117..G-122); slice 16 feito (nao e G-45 API HTTP).
-Project Memory: `docs/29-project-memory-v0.md` + change
-`openspec/changes/029-project-memory/` — CONFIRMED v0 (G-123..G-128);
-codigo = slice 17 (esboco em `16`; nao e MCP / Memory Player).
+Project Memory: `docs/29-project-memory-v0.md` + archive
+`openspec/changes/archive/2026-08-19-029-project-memory/` — CONFIRMED v0
+(G-123..G-128); slice 17 feito (esboco em `16`; nao e MCP / Memory Player).
 Skill obrigatoria para TUI: `.cursor/skills/runtgine-tui-design/SKILL.md`.
 
 ## Ordem de trabalho
@@ -93,7 +93,7 @@ Skill obrigatoria para TUI: `.cursor/skills/runtgine-tui-design/SKILL.md`.
 20. TUI GRAPH — CONFIRMED v0 em `26` + OpenSpec archive `026-tui-graph` — feito
 21. Walk Blast←Graph — CONFIRMED v0 em `27` + OpenSpec archive `027-blast-graph-walk` — feito
 22. HTTP Player — CONFIRMED v0 em `28` + OpenSpec archive `028-http-player` — feito
-23. Project Memory — CONFIRMED v0 em `29` + OpenSpec `029-project-memory` — spec; codigo = slice 17
+23. Project Memory — CONFIRMED v0 em `29` + OpenSpec archive `029-project-memory` — feito
 24. Mais Players — so apos nova promocao em `04`
 
 ## Conceitos chave (nao confundir)
