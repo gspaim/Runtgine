@@ -148,6 +148,9 @@ Exemplos: Git Player, Filesystem Player, Shell Player, Docker Player,
 K8s Player, Terraform Player, PostgreSQL Player, Test Player,
 HTTP Player, Claude Player, GPT Player, Human Approval Player.
 
+HTTP Player v0 (`28`, G-117..G-122): cliente HTTPS `http.get` /
+`http.head`. Nao e a API HTTP do runtime (G-45).
+
 Muitos Players deterministicos sao estrategicos — aumentam utilidade
 sem IA, reduzem custo, aumentam confiabilidade. A visao e ter uma
 biblioteca grande de Players deterministicos.

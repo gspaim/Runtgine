@@ -92,8 +92,8 @@ Visão enxuta do que já está em `main`. **Atualizar esta seção em todo PR
 | Feito | Slice 13 — Blast Radius v0 (`25`, G-99..G-104; `runtgine blast`) |
 | Feito | Slice 14 — TUI GRAPH v0 (`26`, G-105..G-110; aba GRAPH) |
 | Feito | Slice 15 — Walk Blast←Graph v0 (`27`, G-111..G-116; `affected`) |
-| Próximo | Mais Players; Project Memory (HYPOTHESIS) |
-| Depois | API HTTP; bus distribuído; desktop Wails |
+| Próximo | Slice 16 — HTTP Player v0 (`28`, G-117..G-122 CONFIRMED; código após merge) |
+| Depois | Mais Players; Project Memory (HYPOTHESIS); API HTTP (G-45) |
 
 Detalhe do corte: [`docs/09-mvp.md`](docs/09-mvp.md). Limitações atuais abaixo.
 

@@ -55,6 +55,7 @@ Status: CONFIRMED | HYPOTHESIS | OPEN QUESTION | REJECTED
 | Blast Radius | CONFIRMED (v0) | Relatorio Task IR; ver `25-blast-radius-v0.md` |
 | Blast Graph Walk | CONFIRMED (v0) | 1 hop mentions; ver `27-blast-graph-walk-v0.md` |
 | TUI GRAPH tab | CONFIRMED (v0) | Aba read-only; ver `26-tui-graph-v0.md` + `14` |
+| HTTP Player | CONFIRMED (v0) | Cliente GET/HEAD HTTPS; ver `28-http-player-v0.md` |
 | Many deterministic Players | CONFIRMED | Estrategico |
 | Runtgine + Chorus | CONFIRMED | Complementares |
 | Event Bus in-process (MVP) | CONFIRMED | Canais Go |
@@ -116,6 +117,7 @@ Ver [09-mvp.md](09-mvp.md). Decisoes-chave:
 - Blast Radius v0 (G-99..G-104; resto de G-43) — spec; codigo = slice 13 — feito
 - TUI GRAPH v0 (G-105..G-110) — spec; codigo = slice 14 — feito; altera `14` + skill
 - Walk Blast←Graph v0 (G-111..G-116) — spec; codigo = slice 15 — feito
+- HTTP Player v0 (G-117..G-122; recorte G-41) — spec; codigo = slice 16
 
 ## Protocolo v0 — confirmado (sessao de fechamento)
 
@@ -377,6 +379,21 @@ Codigo = slice 15 — feito. Nao e QueryHits; nao dispara a partir da aba GRAPH.
 | G-114 Campo `affected` | CONFIRMED | Aditivo; `risk` intacto; schema `0.1.0` |
 | G-115 Superficie | CONFIRMED | Mesmo `BlastTask` / CLI; sem TUI |
 | G-116 Exclusoes v0 | CONFIRMED | GRAPH→blast, multi-hop, gate, Hits |
+
+## HTTP Player — CONFIRMED v0
+
+Ver [28-http-player-v0.md](28-http-player-v0.md). Recorte de G-41
+(cliente HTTPS de leitura). Codigo = slice 16 apos este spec.
+Nao e a API HTTP do Runtgine (G-45 permanece P3).
+
+| Item | Status | Notas |
+|---|---|---|
+| G-117 Papel / pacote `http` | CONFIRMED | `internal/players/httpclient`; Player deterministic |
+| G-118 Capabilities v0 | CONFIRMED | `http.get`, `http.head`; allowlist de headers |
+| G-119 URL / destino | CONFIRMED | `https` so; deny link-local e metadata |
+| G-120 Cliente / sandbox | CONFIRMED | TLS verify on; RoundTripper injetavel; sem curl |
+| G-121 Registry + Graph | CONFIRMED | `api.Open`; sem claim/blast; `examples/http-get.json` |
+| G-122 Exclusoes v0 | CONFIRMED | POST, auth, `http://`, G-45, MCP, Memory |
 
 ## Git / release — fluxo de branches
 

@@ -61,6 +61,9 @@ TUI GRAPH: `docs/26-tui-graph-v0.md` + archive
 Walk Blast←Graph: `docs/27-blast-graph-walk-v0.md` + archive
 `openspec/changes/archive/2026-08-18-027-blast-graph-walk/` — CONFIRMED v0
 (G-111..G-116); slice 15 feito.
+HTTP Player: `docs/28-http-player-v0.md` + change
+`openspec/changes/028-http-player/` — CONFIRMED v0 (G-117..G-122);
+codigo = slice 16 (nao e G-45 API HTTP).
 Skill obrigatoria para TUI: `.cursor/skills/runtgine-tui-design/SKILL.md`.
 
 ## Ordem de trabalho
@@ -86,7 +89,8 @@ Skill obrigatoria para TUI: `.cursor/skills/runtgine-tui-design/SKILL.md`.
 19. Blast Radius — CONFIRMED v0 em `25` + OpenSpec archive `025-blast-radius` — feito
 20. TUI GRAPH — CONFIRMED v0 em `26` + OpenSpec archive `026-tui-graph` — feito
 21. Walk Blast←Graph — CONFIRMED v0 em `27` + OpenSpec archive `027-blast-graph-walk` — feito
-22. Mais Players / Project Memory — so apos nova promocao em `04`
+22. HTTP Player — CONFIRMED v0 em `28` + OpenSpec `028-http-player` — spec; codigo = slice 16
+23. Mais Players / Project Memory — so apos nova promocao em `04`
 
 ## Conceitos chave (nao confundir)
 
