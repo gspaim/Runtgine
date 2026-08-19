@@ -73,7 +73,7 @@ Task → Event → Queue → Player → Result
 Visão enxuta do que já está em `main`. **Atualizar esta seção em todo PR
 `release/*` → `main`** (e em PRs para `develop` quando o estágio mudar).
 
-**Agora:** MVP funcional (slices 1–15), sem release estável.
+**Agora:** MVP funcional (slices 1–16), sem release estável.
 
 | | Entrega |
 |---|---|
@@ -92,8 +92,9 @@ Visão enxuta do que já está em `main`. **Atualizar esta seção em todo PR
 | Feito | Slice 13 — Blast Radius v0 (`25`, G-99..G-104; `runtgine blast`) |
 | Feito | Slice 14 — TUI GRAPH v0 (`26`, G-105..G-110; aba GRAPH) |
 | Feito | Slice 15 — Walk Blast←Graph v0 (`27`, G-111..G-116; `affected`) |
-| Próximo | Slice 16 — HTTP Player v0 (`28`, G-117..G-122 CONFIRMED; código após merge) |
-| Depois | Mais Players; Project Memory (HYPOTHESIS); API HTTP (G-45) |
+| Feito | Slice 16 — HTTP Player v0 (`28`, G-117..G-122; `http.get` / `http.head`) |
+| Próximo | Mais Players; Project Memory (HYPOTHESIS) |
+| Depois | API HTTP (G-45); bus distribuído; desktop Wails |
 
 Detalhe do corte: [`docs/09-mvp.md`](docs/09-mvp.md). Limitações atuais abaixo.
 
@@ -184,6 +185,9 @@ Exemplos:
 
 # Filesystem Player
 ./bin/runtgine run examples/fs-read.json
+
+# HTTP Player (HTTPS GET — hits the network if executed)
+./bin/runtgine run examples/http-get.json
 
 # Linguagem natural → Task IR → execução
 ./bin/runtgine intent "echo hello-intent"
@@ -379,6 +383,7 @@ vulnerabilidade.
 | [Graph Hits](docs/19-graph-hits-v0.md) | `graph_hits` / QueryHits (G-66..G-69; slice 7) |
 | [Git Player](docs/20-git-player-v0.md) | Player `git.*` v0 (G-70..G-74; slice 8) |
 | [Filesystem Player](docs/21-filesystem-player-v0.md) | Player `fs.*` v0 (G-75..G-80; slice 9) |
+| [HTTP Player](docs/28-http-player-v0.md) | Player `http.get` / `http.head` v0 (G-117..G-122; slice 16) |
 | [OpenSpec](openspec/README.md) | Pacotes de mudança `NNN-slug` |
 | [TUI Design](docs/14-tui-design.md) | Constellation Mission Control |
 | [Git workflow](docs/15-git-workflow.md) | Branches, RC e releases |

@@ -29,6 +29,12 @@ func TestGraphRefreshOnOpen(t *testing.T) {
 	if !snapshotEdge(snap, graph.EdgeProvides, graph.KindPlayer, "shell", graph.KindCapability, "shell.exec") {
 		t.Fatal("missing provides")
 	}
+	if !snapshotHas(snap, graph.KindPlayer, "http") {
+		t.Fatal("missing http player")
+	}
+	if !snapshotHas(snap, graph.KindCapability, "http.get") || !snapshotHas(snap, graph.KindCapability, "http.head") {
+		t.Fatal("missing http.get/http.head")
+	}
 }
 
 func TestGraphSyncFromSuccessfulRun(t *testing.T) {

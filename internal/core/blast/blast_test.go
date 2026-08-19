@@ -16,6 +16,10 @@ func TestTouchedAndRequiredTables(t *testing.T) {
 	if err != nil || len(hits) != 0 {
 		t.Fatalf("shell: %v %v", hits, err)
 	}
+	hits, err = Touched("http.get", json.RawMessage(`{"url":"https://example.com/"}`))
+	if err != nil || len(hits) != 0 {
+		t.Fatalf("http.get: %v %v", hits, err)
+	}
 	hits, err = Touched("fs.read", json.RawMessage(`{"path":"a.txt"}`))
 	if err != nil || len(hits) != 1 || hits[0].Mode != ModeRead || hits[0].Resource.Key != "a.txt" {
 		t.Fatalf("fs.read: %+v err=%v", hits, err)

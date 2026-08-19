@@ -8,13 +8,14 @@ Autoridade de status: [04-decisoes.md](04-decisoes.md).
 Não é a API HTTP do Runtgine ([G-45](10-gaps.md) permanece P3).
 Não é MCP ([G-44](10-gaps.md)). Não é Project Memory (`16`).
 
-**Status deste doc: CONFIRMED (v0).** G-117..G-122 autorizam o slice 16
-de código. POST, `http://` claro, Authorization e download-para-arquivo
+**Status deste doc: CONFIRMED (v0).** G-117..G-122 implementados no
+slice 16. POST, `http://` claro, Authorization e download-para-arquivo
 permanecem fora.
 
-**Pacote OpenSpec:** ativo em
-[`openspec/changes/028-http-player/`](../openspec/changes/028-http-player/).
-Branch de implementação: `feat/028-http-player`.
+**Pacote OpenSpec:** arquivado em
+[`openspec/changes/archive/2026-08-19-028-http-player/`](../openspec/changes/archive/2026-08-19-028-http-player/).
+Deltas mergeados em `openspec/specs/http-player/`. Branch de implementação:
+`feat/028-http-player`.
 
 ---
 
@@ -172,20 +173,19 @@ omitidas (não vazar `set-cookie`).
    de rede documentado; `go test ./internal/players/httpclient/...`
    verde **offline**.
 9. `go test ./...` e `go vet ./...` verdes.
-10. OpenSpec `028-http-player` arquivado após o **código** (slice 16),
-    não neste PR de spec.
+10. OpenSpec `028-http-player` arquivado após o **código** (slice 16).
 
 ---
 
 ## 5. Ordem do slice de código
 
-Bloqueado até G-117..G-122 CONFIRMED — este doc + `04` (este PR):
+Feito no slice 16:
 
 1. Pacote `internal/players/httpclient` + Manifest
 2. `ValidateStaticInput` + Dial/redirect policy
 3. Registrar no Core; exemplo `examples/http-get.json`
 4. Testes com `RoundTripper` fake; README Estágio: Slice 16
-5. Arquivar OpenSpec `028` após o merge do código
+5. Arquivar OpenSpec `028` após o código
 
 ---
 
