@@ -12,8 +12,9 @@ context: |
   feat/NNN-slug branches (docs/15-git-workflow.md).
   Package layout: internal/core/*, internal/players/*, internal/entrypoint/*.
   Tests: go test ./... ; go vet ./... ; CGO_ENABLED=0 ok.
-  Out of scope until promoted: Project Memory (docs/16), NATS, Wails MVP,
-  MCP, HTTP API (G-45 server), Blast-from-GRAPH (TUI node → blast). HTTP
+  Out of scope until promoted: NATS, Wails MVP, MCP, HTTP API (G-45
+  server), Blast-from-GRAPH (TUI node → blast), Memory Player. Project
+  Memory v0 is CONFIRMED in docs/29 (slice 17 pending). HTTP
   Player v0 is CONFIRMED in docs/28 (slice 16 done). Walk Blast←Graph
   v0 is CONFIRMED in docs/27 (slice 15 done). TUI GRAPH v0
   is CONFIRMED in docs/26 (slice 14 done). Blast Radius v0 is CONFIRMED in

@@ -176,6 +176,10 @@ O LLM nao recebe todo o projeto. O Context Engine monta:
 
 Isso reduz tokens e melhora a qualidade da execucao.
 
+Project Memory v0 (`29`, G-123..G-128) alimenta o ContextPack com
+`memory_hits` operacionais (`active`). Nao substitui o Context Engine
+completo (ainda HYPOTHESIS).
+
 ---
 
 ## Player Router

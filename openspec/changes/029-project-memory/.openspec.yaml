@@ -1,0 +1,9 @@
+schema: spec-driven
+created: 2026-08-19
+nnn: "029"
+slug: project-memory
+docs_canonical: docs/29-project-memory-v0.md
+gaps: [G-123, G-124, G-125, G-126, G-127, G-128]
+status: active
+branch: feat/029-project-memory
+depends_on: ["019-graph-hits"]

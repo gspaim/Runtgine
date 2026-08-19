@@ -48,7 +48,7 @@ Status: CONFIRMED | HYPOTHESIS | OPEN QUESTION | REJECTED
 | Task Validator | CONFIRMED (v0) | Subset MVP: capabilities, inputs, schemas; ver 11 |
 | Runtime Graph | CONFIRMED (v0) | Memoria estrutural; ver `18-runtime-graph-v0.md` |
 | Context Engine | HYPOTHESIS | Monta contexto relevante |
-| Project Memory | HYPOTHESIS | Memoria episodica / de projeto; ver `16` |
+| Project Memory | CONFIRMED (v0) | Episodica; ver `29-project-memory-v0.md` |
 | Player Router | HYPOTHESIS | Roteia por capability + custo |
 | Execution Policy | CONFIRMED (v0) | allow/deny/approval-required; ver `22-execution-policy-v0.md` |
 | Resource Claim | CONFIRMED (v0) | Bloqueio concorrente; ver `24-resource-claims-v0.md` |
@@ -91,7 +91,7 @@ Ver [09-mvp.md](09-mvp.md). Decisoes-chave:
 | Task Validator | HYPOTHESIS | Valida antes de executar |
 | Runtime Graph | CONFIRMED (v0) | Memoria estrutural; ver `18-runtime-graph-v0.md` |
 | Context Engine | HYPOTHESIS | Monta contexto relevante |
-| Project Memory | HYPOTHESIS | Memoria episodica / de projeto; ver `16` |
+| Project Memory | CONFIRMED (v0) | Episodica; ver `29-project-memory-v0.md` |
 
 ## Decisoes CONFIRMED (visao geral)
 
@@ -118,6 +118,7 @@ Ver [09-mvp.md](09-mvp.md). Decisoes-chave:
 - TUI GRAPH v0 (G-105..G-110) — spec; codigo = slice 14 — feito; altera `14` + skill
 - Walk Blast←Graph v0 (G-111..G-116) — spec; codigo = slice 15 — feito
 - HTTP Player v0 (G-117..G-122; recorte G-41) — spec; codigo = slice 16 — feito
+- Project Memory v0 (G-123..G-128; recorte G-46/G-47) — spec; codigo = slice 17
 
 ## Protocolo v0 — confirmado (sessao de fechamento)
 
@@ -232,25 +233,30 @@ Ver [17-intent-engine-v0.md](17-intent-engine-v0.md).
 | G-53 Caminho LLM + heuristic offline | CONFIRMED | Reusa Completer; intermediario JSON |
 | G-54 CLI `--dry-run` / `--wait` | CONFIRMED | Mesmo SubmitTask/Validator |
 
-## Project Memory (P3) — HYPOTHESIS
+## Project Memory — CONFIRMED v0
 
-Ver [16-project-memory.md](16-project-memory.md). Esboco reforçado (revisao
-conceitual); **nao autoriza codigo**. Nada abaixo e CONFIRMED.
+Ver [29-project-memory-v0.md](29-project-memory-v0.md). Recorte de
+G-46/G-47 (Provider local + ContextPack). Esboco em `16`.
+Codigo = slice 17 apos este spec. Nao e MCP (G-44). Nao e Player.
+
+| Item | Status | Notas |
+|---|---|---|
+| G-123 Papel / pacote `memory` | CONFIRMED | Core Provider; `internal/core/memory` |
+| G-124 Episodio + validade | CONFIRMED | kinds 4; `active`/`superseded`/`archived` |
+| G-125 API + CLI | CONFIRMED | Record/List/Query/Supersede/Archive; lexical |
+| G-126 ContextPack `memory_hits` | CONFIRMED | budget 8 / 2000; abaixo de graph_hits |
+| G-127 Captura | CONFIRMED | default `off`; opt-in `failures` |
+| G-128 Exclusoes v0 | CONFIRMED | Player, MCP, RAG, TUI, Knowledge |
+
+Rejeicoes (inalteradas vs `16`):
 
 | Decisao | Status | Notas |
 |---|---|---|
-| Project Memory (episodica / de projeto) | HYPOTHESIS | Continuacao entre runs no mesmo projeto (G-46) |
-| Tres memorias: temporal / estrutural / episodica | HYPOTHESIS | Event Store ≠ Runtime Graph ≠ Project Memory |
-| Fato historico ≠ status operacional (validade) | HYPOTHESIS | Candidatos: `active`/`superseded`/`archived` ou layers operational/historical |
-| Memory ≠ Knowledge (evolucao possivel) | HYPOTHESIS | Episodio vs consolidado; sem novo subsystem agora |
-| Memory Provider → ContextPack | HYPOTHESIS | Default conceitual de acesso (AssembleContext) |
-| Integracao inicial via sidecar / MCP | HYPOTHESIS | Fases A/B experimentais; depende G-44 se MCP |
-| Extensao ContextPack (`memory_hits` + budget + hierarquia) | HYPOTHESIS | Rascunho experimental; prioridade menor que task/estado atual |
-| Memory Player (`memory.*`) | OPEN QUESTION | So se steps do Plan exigirem; ver G-47 |
-| Embutir ai-memory (Rust) no Core | REJECTED | Dominio e stack ortogonais; sidecar/Provider apenas |
-| Memoria como autoridade de execucao | REJECTED | Sugere contexto; nunca capability/policy/Validator bypass |
+| Embutir ai-memory (Rust) no Core | REJECTED | Dominio e stack ortogonais |
+| Memoria como autoridade de execucao | REJECTED | Sugere contexto; lista negativa |
 | Supersession silenciosa via LLM no Core | REJECTED | Validade so com opt-in explicito |
-| RAG generico / indexar transcripts como produto | REJECTED | Compile observations; nao chat retrieval |
+| RAG generico / indexar transcripts | REJECTED | Compile observations |
+| Memory Player (`memory.*`) | OPEN QUESTION | Fora do v0; G-47 Player permanece aberto |
 
 ## Runtime Graph — CONFIRMED v0
 

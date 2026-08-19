@@ -7,7 +7,7 @@
 | Capability | O que um Player sabe fazer. Ex: deployment.update |
 | Chorus | Protocolo/comunicacao entre componentes (complementar ao Runtgine) |
 | Context Engine | Monta contexto relevante para cada Player |
-| ContextPack | Pacote de contexto por step (G-24); candidato a `memory_hits` com budget/hierarquia |
+| ContextPack | Pacote de contexto por step (G-24); inclui `graph_hits` e `memory_hits` v0 (`29`) |
 | Deterministic-first | Preferir execucao deterministica a IA |
 | Entry Point | Interface com o mundo externo (CLI, TUI, Board, API…). Nao e Player |
 | Event | Algo aconteceu no sistema |
@@ -17,13 +17,13 @@
 | HITL | Humano aprova/rejeita um Run em `waiting_approval` via Entry Point |
 | Intent Engine | Traduz intencao humana (NL) em Task IR |
 | Manifest | Declaracao de capabilities, entradas e saidas de um Player |
-| Memory Player | Player opcional com `memory.*`; OPEN QUESTION (ver `16` / G-47) |
-| Memory Provider | Fonte de memoria consultada pelo AssembleContext / Context Engine; HYPOTHESIS |
+| Memory Player | Player opcional com `memory.*`; OPEN QUESTION (fora do v0; ver `29` / G-128) |
+| Memory Provider | Fonte de memoria consultada pelo AssembleContext; CONFIRMED v0 local SQLite (`29`) |
 | Orchestrator | Coordena o fluxo de execucao |
 | Player | Entidade capaz de fornecer capabilities |
 | Player Router | Seleciona o melhor Player para uma capability |
 | Project Knowledge | Conhecimento consolidado do projeto (evolucao possivel); HYPOTHESIS — distinto de Memory |
-| Project Memory | Memoria episodica entre runs/sessoes; HYPOTHESIS (ver `16`) |
+| Project Memory | Memoria episodica entre runs/sessoes; CONFIRMED v0 (ver `29`; esboco `16`) |
 | Queue | Trabalho aguardando processamento |
 | Resource Claim | Bloqueio concorrente exclusivo de `workspace`/`path` (Core; ver `24`) |
 | Run | Tentativa de execucao de uma Task aceita (tem run_id) |
