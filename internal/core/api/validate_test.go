@@ -8,11 +8,11 @@ import (
 	"path/filepath"
 	"testing"
 
+	"github.com/google/uuid"
 	"github.com/gspaim/Runtgine/internal/config"
 	"github.com/gspaim/Runtgine/internal/core/api"
 	"github.com/gspaim/Runtgine/internal/core/result"
 	"github.com/gspaim/Runtgine/internal/core/task"
-	"github.com/google/uuid"
 )
 
 func openTestCore(t *testing.T) *api.Core {
@@ -101,6 +101,74 @@ func TestSubmitAcceptsHelloShape(t *testing.T) {
 	}
 	if runID == "" {
 		t.Fatal("empty run id")
+	}
+}
+
+func TestSubmitRejectsUnknownHTTPPost(t *testing.T) {
+	core := openTestCore(t)
+	id, err := uuid.NewV7()
+	if err != nil {
+		t.Fatal(err)
+	}
+	tk := task.Task{
+		SchemaVersion: task.SchemaVersion,
+		TaskID:        id.String(),
+		Source:        task.Source{EntryPoint: "cli"},
+		Intent:        task.Intent{Summary: "http post"},
+		Steps: []task.Step{{
+			StepID:     "s1",
+			Capability: "http.post",
+			Input:      json.RawMessage(`{"url":"https://example.com/"}`),
+		}},
+	}
+	_, err = core.SubmitTask(context.Background(), tk)
+	if err == nil {
+		t.Fatal("expected rejection")
+	}
+	var ve result.Error
+	if !asValidation(err, &ve) || ve.Code != result.CodeUnknownCapability {
+		t.Fatalf("got %v", err)
+	}
+}
+
+func TestSubmitRejectsHTTPCleartextAndAuth(t *testing.T) {
+	core := openTestCore(t)
+	id, err := uuid.NewV7()
+	if err != nil {
+		t.Fatal(err)
+	}
+	tk := task.Task{
+		SchemaVersion: task.SchemaVersion,
+		TaskID:        id.String(),
+		Source:        task.Source{EntryPoint: "cli"},
+		Intent:        task.Intent{Summary: "http cleartext"},
+		Steps: []task.Step{{
+			StepID:     "s1",
+			Capability: "http.get",
+			Input:      json.RawMessage(`{"url":"http://example.com/"}`),
+		}},
+	}
+	_, err = core.SubmitTask(context.Background(), tk)
+	if err == nil {
+		t.Fatal("expected rejection")
+	}
+	var ve result.Error
+	if !asValidation(err, &ve) || ve.Code != result.CodeInvalidInput {
+		t.Fatalf("got %v", err)
+	}
+
+	id2, err := uuid.NewV7()
+	if err != nil {
+		t.Fatal(err)
+	}
+	tk.TaskID = id2.String()
+	tk.Steps[0].Input = json.RawMessage(`{"url":"https://example.com/","headers":{"Authorization":"Bearer x"}}`)
+	_, err = core.SubmitTask(context.Background(), tk)
+	if err == nil {
+		t.Fatal("expected auth rejection")
+	}
+	if !asValidation(err, &ve) || ve.Code != result.CodeInvalidInput {
+		t.Fatalf("auth got %v", err)
 	}
 }
 

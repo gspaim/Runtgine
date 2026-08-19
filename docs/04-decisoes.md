@@ -117,7 +117,7 @@ Ver [09-mvp.md](09-mvp.md). Decisoes-chave:
 - Blast Radius v0 (G-99..G-104; resto de G-43) — spec; codigo = slice 13 — feito
 - TUI GRAPH v0 (G-105..G-110) — spec; codigo = slice 14 — feito; altera `14` + skill
 - Walk Blast←Graph v0 (G-111..G-116) — spec; codigo = slice 15 — feito
-- HTTP Player v0 (G-117..G-122; recorte G-41) — spec; codigo = slice 16
+- HTTP Player v0 (G-117..G-122; recorte G-41) — spec; codigo = slice 16 — feito
 
 ## Protocolo v0 — confirmado (sessao de fechamento)
 
@@ -383,7 +383,7 @@ Codigo = slice 15 — feito. Nao e QueryHits; nao dispara a partir da aba GRAPH.
 ## HTTP Player — CONFIRMED v0
 
 Ver [28-http-player-v0.md](28-http-player-v0.md). Recorte de G-41
-(cliente HTTPS de leitura). Codigo = slice 16 apos este spec.
+(cliente HTTPS de leitura). Codigo = slice 16 — feito.
 Nao e a API HTTP do Runtgine (G-45 permanece P3).
 
 | Item | Status | Notas |

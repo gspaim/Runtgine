@@ -39,10 +39,9 @@ Exemplos válidos: `001-shell-player`, `017-intent-engine`, `019-graph-hits`.
 
 **Próximo id livre:** `029`.
 
-Mudança ativa: [`changes/028-http-player/`](changes/028-http-player/)
-(HTTP Player v0; G-117..G-122; código = slice 16). Último archive:
-[`changes/archive/2026-08-18-027-blast-graph-walk/`](changes/archive/2026-08-18-027-blast-graph-walk/)
-(Walk Blast←Graph v0; slice 15 feito).
+Nenhuma mudança ativa. Último archive:
+[`changes/archive/2026-08-19-028-http-player/`](changes/archive/2026-08-19-028-http-player/)
+(HTTP Player v0; slice 16 feito).
 
 ## Autoridade
 
@@ -80,3 +79,4 @@ Não codificar mudança cujo status em `04` não esteja **CONFIRMED**
 | `blast-radius` | Impact Report Task IR; `runtgine blast`; overlay vs claims |
 | `tui-graph` | Aba GRAPH da TUI sobre `GetGraphSnapshot` |
 | `blast-graph-walk` | 1 hop `mentions` no Blast Report (`affected`) |
+| `http-player` | Player `http.*` (GET/HEAD HTTPS) |

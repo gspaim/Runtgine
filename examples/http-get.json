@@ -1,0 +1,25 @@
+{
+  "schema_version": "0.1.0",
+  "source": {
+    "entry_point": "cli",
+    "ref": "examples/http-get.json"
+  },
+  "intent": {
+    "summary": "GET example.com via HTTP Player (HTTPS)"
+  },
+  "steps": [
+    {
+      "step_id": "get",
+      "capability": "http.get",
+      "input": {
+        "url": "https://example.com/",
+        "headers": {
+          "Accept": "text/html"
+        },
+        "timeout_ms": 15000,
+        "max_bytes": 65536
+      },
+      "depends_on": []
+    }
+  ]
+}
