@@ -184,11 +184,14 @@ Project Memory v0 (`29`) alimenta `memory_hits` (`active`). Graph Hits
 
 ## Player Router
 
-Status: HYPOTHESIS
+Status: CONFIRMED (v0 spec) — ver [33-evolution-v0.md](33-evolution-v0.md) (G-147..G-152).
+Implementação: slice 22 (pendente).
 
 Task -> Required Capability -> Player Candidates -> Router -> best Player
 
-Criterios de escolha: capability, complexidade, custo, latencia, contexto, policy.
+Criterios de escolha v0: capability, effort/difficulty (pipeline), regras
+`llm_routing`, provider/model configuravel. Criterios futuros: custo, latencia,
+benchmarks curados (input humano na config).
 
 ---
 
