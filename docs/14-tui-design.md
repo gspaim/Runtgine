@@ -33,8 +33,8 @@ A TUI e uma superficie sobre o Core:
 - Lip Gloss
 - Bubbles
 
-O desktop futuro continua Wails + Svelte. A TUI valida a linguagem de
-interacao antes do desktop.
+O desktop futuro continua Wails + Svelte + shadcn-svelte. A TUI valida a linguagem de
+interacao antes do desktop. View **INTENT** no Wails espelha a aba INTENT (`32`).
 
 ## Sistema visual
 
@@ -72,15 +72,44 @@ workspace ~/proj · local ●
 Tabs:
 
 ```text
-[ RUNS ] [ LIVE ] [ BOARD ] [ EVENTS ] [ GRAPH ] [ CONFIG ]
+[ INTENT ] [ RUNS ] [ LIVE ] [ BOARD ] [ EVENTS ] [ GRAPH ] [ CONFIG ]
 ```
+
+INTENT e a primeira aba (Entry Point visual). Spec: [32-intent-surface-v0.md](32-intent-surface-v0.md).
 
 Footer:
 
 ```text
 tab/shift+tab navigate · enter inspect · c cancel · / filter · q quit
 (+ a approve · d deny when selected run is waiting_approval)
+(+ Ctrl+p preview · Ctrl+Enter submit on INTENT tab)
 ```
+
+## Aba INTENT
+
+Superficie de Entry Point (Mission Brief). Nao e chatbot — compila intencao
+em Task IR e submete Run via Core (`CompileIntent` / `SubmitIntent`).
+
+Mostra:
+
+- campo NL multilinha (ou modo JSON Task IR);
+- preview Task IR + `method` (`heuristic.*` | `llm`);
+- erros de compilacao/Validator;
+- historico curto da sessao (ultimas submissoes: `run_id` + resumo).
+
+Fluxo v0:
+
+1. operador digita NL (ou cola JSON);
+2. `Ctrl+p` → preview (`CompileIntent`, source `tui`);
+3. `Ctrl+Enter` → submit (`SubmitIntent`) → `run_id`;
+4. TUI seleciona run e abre **LIVE**.
+
+Regras:
+
+- nunca chama Player direto;
+- mesma soberania Validator/Registry que CLI `runtgine intent`;
+- sem thread conversacional infinita;
+- HITL continua em LIVE/RUNS (`a`/`d`), nao nesta aba.
 
 ## Aba RUNS
 
@@ -196,15 +225,16 @@ Secrets sempre mascarados.
 - atalhos mostrados no footer;
 - animacoes opcionais e desativaveis.
 
-## Fora do MVP da TUI
+## Fora do MVP da TUI (implementacao pendente)
 
+- aba **INTENT** (slice 21; spec confirmada em `32`) — docs prontas, codigo depois;
 - tuios / terminal multiplexer;
 - PTY interativo embutido;
 - edicao rica de config;
 - Runtime Graph “completo” (genome, AST contínuo, grafo federado);
 - walk Blast←Graph na TUI;
 - acesso web/SSH;
-- Wails.
+- Wails (Fase 3; inclui INTENT desktop espelhando `32`).
 
 ## Skill
 
@@ -222,5 +252,5 @@ Antes de criar ou alterar a TUI, ler:
 - Config permanece read-only; o snapshot nao expoe tokens ou API keys
 - Cancelamento exige confirmacao e persiste o estado de runs orfaos de um
   processo CLI anterior
-- Testes cobrem navegacao, resize, **seis** tabs, filtro GRAPH/EVENTS,
-  cancelamento e `NO_COLOR`
+- Testes cobrem navegacao, resize, **seis** tabs (slice 3–14; **sete** apos slice 21 INTENT),
+  filtro GRAPH/EVENTS, cancelamento e `NO_COLOR`

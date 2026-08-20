@@ -204,7 +204,7 @@ Ver [14-tui-design.md](14-tui-design.md).
 |---|---|---|
 | Sistema visual Constellation Mission Control | CONFIRMED | Mission Control + constelacoes |
 | Bubble Tea + Lip Gloss + Bubbles | CONFIRMED | TUI moderna e responsiva |
-| Tabs Runs / Live / Board / Events / Config | CONFIRMED | Estrutura principal |
+| Tabs Intent / Runs / Live / Board / Events / Graph / Config | CONFIRMED | Sete abas; INTENT = Entry Point visual (G-142) |
 | Tema espacial e visual, nao dominio | CONFIRMED | Manter Task/Run/Step/Event/Player |
 | TUI usa apenas APIs do Core | CONFIRMED | Nunca chama Player diretamente |
 | Charm stack v2 via `charm.land/*` | IMPLEMENTED | Requer Go 1.25+ |
@@ -436,6 +436,21 @@ Codigo = slices 19–20 feitos. Nao e G-45; nao e NATS/Wails/MCP.
 | G-138 Semente `repo_hits` | CONFIRMED | slice 20 feito; QueryHits path/symbol se vazio; nao pisa repo-search |
 | G-139 Ranking / pack | CONFIRMED | sem walk, embeddings, file body |
 | G-140 Exclusoes 1.0 | CONFIRMED | G-45, NATS, Wails, MCP, Router, templates |
+
+## Intent Surface — CONFIRMED v0
+
+Ver [32-intent-surface-v0.md](32-intent-surface-v0.md). Superficie visual de
+Entry Point (Mission Brief / aba INTENT). Compilador = Intent Engine (`17`).
+Codigo TUI = slice 21; Wails INTENT = Fase 3.
+
+| Item | Status | Notas |
+|---|---|---|
+| G-141 Papel / Mission Brief | CONFIRMED | Entry Point visual; nao chatbot |
+| G-142 TUI aba INTENT | CONFIRMED | Primeira aba; NL + preview + submit |
+| G-143 Fluxo Core | CONFIRMED | `CompileIntent` / `SubmitIntent`; source `tui`\|`wails` |
+| G-144 Wails INTENT | CONFIRMED | Fase 3; shadcn-svelte; mesma semantica |
+| G-145 Exclusoes v0 | CONFIRMED | Sem thread chat; sem Player; sem transcript RAG |
+| G-146 Criterios de pronto | CONFIRMED | Preview Ctrl+p; submit → LIVE |
 
 ## Git / release — fluxo de branches
 

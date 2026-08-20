@@ -134,11 +134,18 @@ runtgine intent "<nl>" [--dry-run] [--wait]
 
 ---
 
-## Fora do v0
+## Superficie visual (Intent Surface v0)
+
+**Status: CONFIRMED** — ver [32-intent-surface-v0.md](32-intent-surface-v0.md).
+
+- Aba **INTENT** na TUI (slice 21) e view equivalente no Wails (Fase 3)
+- Reusa `CompileIntent` / `SubmitIntent`; source `tui` | `wails`
+- Nao e chatbot; preview Task IR antes de submit
+
+## Fora do v0 (Intent Engine)
 
 - Workflow Templates / SDD auto-sizing
 - Multi-step planning rico alem de shell|pipeline
-- TUI input de NL
 - Intent Engine como Player (`intent.*`)
 - Consulta Graph nas heuristicas (so caminho LLM; ver `19`)
 - Heuristicas `git.add` / `commit` / `push`, `http.get`, `fs.*` (1.0 magro)

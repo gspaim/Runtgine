@@ -37,7 +37,10 @@ branch:              feat/<NNN>-<slug>   (ou docs/ fix/ chore/)
 
 Exemplos válidos: `001-shell-player`, `017-intent-engine`, `019-graph-hits`.
 
-**Próximo id livre:** `032`. Mudança ativa: nenhuma. Último archive:
+**Próximo id livre:** `033`. Mudança ativa:
+[`changes/032-intent-surface/`](changes/032-intent-surface/)
+(Intent Surface / aba INTENT; G-141..G-146; slice 21 TUI + Wails Fase 3).
+Último archive:
 [`changes/archive/2026-08-19-031-mvp-1.0/`](changes/archive/2026-08-19-031-mvp-1.0/)
 (MVP 1.0 magro; G-135..G-140; slices 19–20 feitos).
 
@@ -80,3 +83,4 @@ Não codificar mudança cujo status em `04` não esteja **CONFIRMED**
 | `http-player` | Player `http.*` (GET/HEAD HTTPS) |
 | `project-memory` | Provider episódico + `memory_hits` (não é Player) |
 | `test-player` | Player `test.go` (`go test` no workspace; spec 030) |
+| `intent-surface` | Aba INTENT TUI + Wails Mission Brief (spec 032; delta em change) |

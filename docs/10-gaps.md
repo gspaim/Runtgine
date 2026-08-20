@@ -265,6 +265,17 @@ Ate la, o Core deve rodar so com CLI + Shell.
 | G-139 | Ranking / pack | **CONFIRMED** — sem walk / embeddings / file body |
 | G-140 | Exclusões 1.0 | **CONFIRMED** — G-45, NATS, Wails, MCP, Router |
 
+## Intent Surface — CONFIRMED v0
+
+| ID | Gap | Notas |
+|---|---|---|
+| G-141 | Papel Mission Brief | **CONFIRMED** — ver `32-intent-surface-v0.md` |
+| G-142 | TUI aba INTENT | **CONFIRMED** — primeira aba; NL + preview + submit |
+| G-143 | Fluxo Core | **CONFIRMED** — `CompileIntent` / `SubmitIntent` |
+| G-144 | Wails INTENT | **CONFIRMED** — Fase 3; shadcn-svelte |
+| G-145 | Exclusões v0 | **CONFIRMED** — não chatbot; sem Player; sem transcript RAG |
+| G-146 | Critérios de pronto | **CONFIRMED** — Ctrl+p preview; submit → LIVE |
+
 ---
 
 ## Ordem para fechar gaps
@@ -288,6 +299,7 @@ Ate la, o Core deve rodar so com CLI + Shell.
 17. Project Memory — spec em `29` — G-123..G-128 CONFIRMED; codigo = slice 17 — feito
 18. Test Player — spec em `30` — G-129..G-134 CONFIRMED; codigo = slice 18 — feito
 19. MVP 1.0 magro — spec em `09`/`31`/`17` — G-135..G-140 CONFIRMED; slices 19–20 feitos
+20. Intent Surface — spec em `32` — G-141..G-146 CONFIRMED; código = slice 21 (TUI) + Wails Fase 3
 
 ## Criterio de “pronto para codar”
 
