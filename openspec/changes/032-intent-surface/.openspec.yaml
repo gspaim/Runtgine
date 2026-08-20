@@ -1,0 +1,11 @@
+schema: spec-driven
+created: 2026-08-20
+nnn: "032"
+slug: intent-surface
+docs_canonical: docs/32-intent-surface-v0.md
+gaps: [G-141, G-142, G-143, G-144, G-145, G-146]
+status: active
+branch: feat/032-intent-surface
+depends_on: ["017-intent-engine"]
+code_slice_tui: 21
+code_slice_wails: fase-3

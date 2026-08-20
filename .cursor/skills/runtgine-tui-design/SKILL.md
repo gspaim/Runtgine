@@ -66,14 +66,26 @@ Provide ANSI-256/ASCII fallbacks and honor `NO_COLOR`.
 
 ## Required tabs
 
-1. `RUNS`
-2. `LIVE`
-3. `BOARD`
-4. `EVENTS`
-5. `GRAPH`
-6. `CONFIG`
+1. `INTENT`
+2. `RUNS`
+3. `LIVE`
+4. `BOARD`
+5. `EVENTS`
+6. `GRAPH`
+7. `CONFIG`
 
 Use one full-screen application. No overlapping shell windows.
+
+INTENT is the visual Entry Point (Mission Brief). Spec: `docs/32-intent-surface-v0.md`.
+Not a chatbot — compile NL/JSON to Task IR and submit via Core APIs.
+
+### INTENT
+
+- Multiline NL input (or JSON Task IR mode toggle).
+- Preview panel: Task IR + `method` via `CompileIntent` (`Ctrl+p`).
+- Submit via `SubmitIntent` (`Ctrl+Enter`); on success select run and switch to LIVE.
+- Session history cap (~10 entries: run_id + summary); no long transcript persistence.
+- Never call Players directly.
 
 ### RUNS
 
@@ -122,6 +134,8 @@ Default keymap:
 | `d` | deny selected run in `waiting_approval` (Core `ApproveRun` deny) |
 | `/` | filter |
 | `r` | refresh |
+| `Ctrl+p` | preview intent (INTENT tab only) |
+| `Ctrl+Enter` | submit intent (INTENT tab only) |
 | `q` | quit |
 
 Keep key hints visible in the footer.
@@ -157,7 +171,7 @@ All views must survive resize events.
 
 - [ ] No direct Player calls
 - [ ] No duplicated runtime state as source of truth
-- [ ] All six tabs remain coherent
+- [ ] All seven tabs remain coherent
 - [ ] Status has text/symbol, not color only
 - [ ] Narrow terminal fallback works
 - [ ] `NO_COLOR` works

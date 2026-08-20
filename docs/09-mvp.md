@@ -133,7 +133,7 @@ UC-02 (CI/CD via HTTP) permanece **pós-1.0** (G-45). Até lá, CI usa CLI.
 | Entry Point | 1.0 magro | Notas |
 |---|---|---|
 | CLI | sim | Task IR + `runtgine intent` |
-| TUI | sim | Observação; sem NL na TUI neste corte |
+| TUI | sim | Observação hoje; aba **INTENT** confirmada em `32` (slice 21) |
 | Board (GitHub Projects) | sim | Entry Point ≠ Player |
 | API HTTP | não | G-45 |
 | Desktop (Wails) | não | Fase 3 |
@@ -146,7 +146,8 @@ UC-02 (CI/CD via HTTP) permanece **pós-1.0** (G-45). Até lá, CI usa CLI.
 1. Slice 19 — heurísticas Intent (G-135..G-136) — feito
 2. Slice 20 — Context Engine v0 (G-137..G-139) — feito
 3. OpenSpec `031` arquivado — feito
-4. Depois: nova promoção em `04` (G-45, mais Players, Wails, …)
+4. Slice 21 — Intent Surface TUI (G-141..G-146; ver `32`)
+5. Depois: nova promoção em `04` (G-45, mais Players, Wails Fase 3 incl. INTENT desktop, …)
 
 Histórico do runtime mínimo (Task IR → Shell → CLI → TUI → Board →
 pipeline) está nos slices 1–4 / `11` / `12`. Não reabrir.

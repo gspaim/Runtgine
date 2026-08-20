@@ -37,6 +37,7 @@ Autoridade de decisoes: [04-decisoes.md](04-decisoes.md).
 | 29 | 29-project-memory-v0.md | Project Memory v0 (**CONFIRMED**; G-123..G-128) |
 | 30 | 30-test-player-v0.md | Test Player v0 (**CONFIRMED**; G-129..G-134) |
 | 31 | 31-context-engine-v0.md | Context Engine v0 (**CONFIRMED**; G-137..G-139; slice 20 feito) |
+| 32 | 32-intent-surface-v0.md | Intent Surface / aba INTENT (**CONFIRMED**; G-141..G-146; slice 21 + Wails Fase 3) |
 | — | [openspec/](../openspec/README.md) | Pacotes de mudança OpenSpec (`NNN-slug`) |
 
 ## Fontes historicas (raiz do repo)
@@ -62,4 +63,5 @@ HTTP Player (`28`, G-117..G-122) esta **CONFIRMED v0** (slice 16 feito).
 Project Memory (`29`, G-123..G-128) esta **CONFIRMED v0** (slice 17 feito).
 Test Player (`30`, G-129..G-134) esta **CONFIRMED v0** (slice 18 feito).
 MVP 1.0 magro (`09`, G-135..G-140) esta **CONFIRMED** (slices 19–20 feitos).
+Intent Surface (`32`, G-141..G-146) esta **CONFIRMED** (slice 21 TUI + Wails Fase 3; codigo pendente).
 P3 restante: G-45 API HTTP; G-44 MCP; NATS; Wails.

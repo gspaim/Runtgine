@@ -17,6 +17,9 @@ do Impact Report é a spec [27-blast-graph-walk-v0.md](27-blast-graph-walk-v0.md
 **Status deste doc: CONFIRMED (v0).** G-105..G-110 implementados no
 slice 14. Multiplexer, PTY, edição do Graph e Hits UI permanecem fora.
 
+**Nota (032):** a ordem de tabs passou a incluir **INTENT** como primeira aba;
+ver [32-intent-surface-v0.md](32-intent-surface-v0.md). Este doc descreve só a aba GRAPH.
+
 **Pacote OpenSpec:** arquivado em
 [`openspec/changes/archive/2026-08-18-026-tui-graph/`](../openspec/changes/archive/2026-08-18-026-tui-graph/).
 Deltas mergeados em `openspec/specs/tui-graph/` e `openspec/specs/runtime-graph/`.
