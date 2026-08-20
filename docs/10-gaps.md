@@ -276,6 +276,17 @@ Ate la, o Core deve rodar so com CLI + Shell.
 | G-145 | Exclusões v0 | **CONFIRMED** — não chatbot; sem Player; sem transcript RAG |
 | G-146 | Critérios de pronto | **CONFIRMED** — Ctrl+p preview; submit → LIVE |
 
+## Evolution v0 — CONFIRMED (spec)
+
+| ID | Gap | Notas |
+|---|---|---|
+| G-147 | Player Router v0 | **CONFIRMED** — ver `33-evolution-v0.md` |
+| G-148 | Multi-provider / routing | **CONFIRMED** — config + effort/difficulty |
+| G-149 | Playbooks v0 | **CONFIRMED** — skills projeto; `playbook_hits` |
+| G-150 | Lessons / Postmortem | **CONFIRMED** — HITL; Memory + patch playbook |
+| G-151 | Exclusões evolution | **CONFIRMED** — não agent framework |
+| G-152 | Slices 22–24 | **CONFIRMED** — Router → Playbooks → Lessons |
+
 ---
 
 ## Ordem para fechar gaps
@@ -300,6 +311,7 @@ Ate la, o Core deve rodar so com CLI + Shell.
 18. Test Player — spec em `30` — G-129..G-134 CONFIRMED; codigo = slice 18 — feito
 19. MVP 1.0 magro — spec em `09`/`31`/`17` — G-135..G-140 CONFIRMED; slices 19–20 feitos
 20. Intent Surface — spec em `32` — G-141..G-146 CONFIRMED; código = slice 21 (TUI) + Wails Fase 3
+21. Evolution v0 — spec em `33` — G-147..G-152 CONFIRMED; código = slices 22–24 (Router, Playbooks, Lessons)
 
 ## Criterio de “pronto para codar”
 

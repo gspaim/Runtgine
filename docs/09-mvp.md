@@ -116,7 +116,8 @@ Sem walk do workspace, sem embeddings, sem corpo de arquivo no pack.
 | NATS / bus distribuído (G-36) | DEFERRED; um processo basta |
 | Wails / desktop | Fase 3; TUI já é superfície |
 | MCP (G-44) | Runtgine não é alternativa a MCP |
-| Player Router completo | Uma capability ≈ um Player no v0 |
+| Player Router completo | Fora do 1.0; spec v0 em `33` (slice 22) |
+| Playbooks / Lessons / multi-model LLM | Fora do 1.0; spec v0 em `33` (slices 23–24) |
 | Workflow Templates / TLC SDD (`08`) | Task ≠ Workflow; motor novo |
 | Plugin system / event sourcing | Plataforma, não prova |
 | Memory Player (G-47) | Provider já existe; Player OPEN |
@@ -147,7 +148,8 @@ UC-02 (CI/CD via HTTP) permanece **pós-1.0** (G-45). Até lá, CI usa CLI.
 2. Slice 20 — Context Engine v0 (G-137..G-139) — feito
 3. OpenSpec `031` arquivado — feito
 4. Slice 21 — Intent Surface TUI (G-141..G-146; ver `32`)
-5. Depois: nova promoção em `04` (G-45, mais Players, Wails Fase 3 incl. INTENT desktop, …)
+5. Slices 22–24 — Evolution v0 (G-147..G-152; ver `33`): Router, Playbooks, Lessons
+6. Depois: nova promoção em `04` (G-45, mais Players, Wails Fase 3 incl. INTENT desktop, …)
 
 Histórico do runtime mínimo (Task IR → Shell → CLI → TUI → Board →
 pipeline) está nos slices 1–4 / `11` / `12`. Não reabrir.

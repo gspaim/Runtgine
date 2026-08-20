@@ -1,0 +1,10 @@
+schema: spec-driven
+created: 2026-08-20
+nnn: "033"
+slug: evolution-v0
+docs_canonical: docs/33-evolution-v0.md
+gaps: [G-147, G-148, G-149, G-150, G-151, G-152]
+status: active
+branch: feat/033-evolution-v0
+depends_on: ["017-intent-engine", "029-project-memory", "031-context-engine"]
+code_slices: [22, 23, 24]

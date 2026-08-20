@@ -49,7 +49,7 @@ Status: CONFIRMED | HYPOTHESIS | OPEN QUESTION | REJECTED
 | Runtime Graph | CONFIRMED (v0) | Memoria estrutural; ver `18-runtime-graph-v0.md` |
 | Context Engine | CONFIRMED (v0) | Semente `repo_hits`; ver `31-context-engine-v0.md` |
 | Project Memory | CONFIRMED (v0) | Episodica; ver `29-project-memory-v0.md` |
-| Player Router | HYPOTHESIS | Roteia por capability + custo |
+| Player Router | CONFIRMED (v0 spec) | Multi-model routing; ver `33-evolution-v0.md` (G-147); código slice 22 |
 | Execution Policy | CONFIRMED (v0) | allow/deny/approval-required; ver `22-execution-policy-v0.md` |
 | Resource Claim | CONFIRMED (v0) | Bloqueio concorrente; ver `24-resource-claims-v0.md` |
 | Blast Radius | CONFIRMED (v0) | Relatorio Task IR; ver `25-blast-radius-v0.md` |
@@ -451,6 +451,21 @@ Codigo TUI = slice 21; Wails INTENT = Fase 3.
 | G-144 Wails INTENT | CONFIRMED | Fase 3; shadcn-svelte; mesma semantica |
 | G-145 Exclusoes v0 | CONFIRMED | Sem thread chat; sem Player; sem transcript RAG |
 | G-146 Criterios de pronto | CONFIRMED | Preview Ctrl+p; submit → LIVE |
+
+## Evolution v0 — CONFIRMED (Router, Playbooks, Lessons)
+
+Ver [33-evolution-v0.md](33-evolution-v0.md). P3: roteamento LLM multi-provider,
+playbooks de projeto, loop Lessons pós-falha com HITL. **Não** é framework de
+agentes. Código = slices 22–24 (pendente).
+
+| Item | Status | Notas |
+|---|---|---|
+| G-147 Player Router v0 | CONFIRMED | Effort/difficulty/capability → provider/model |
+| G-148 Multi-provider config | CONFIRMED | `llm_providers` + `llm_routing`; benchmarks = input humano |
+| G-149 Playbooks v0 | CONFIRMED | `.runtgine/playbooks/`; `playbook_hits` |
+| G-150 Lessons / Postmortem v0 | CONFIRMED | Proposta em `run.failed`; HITL antes de Memory/playbook |
+| G-151 Exclusoes v0 | CONFIRMED | Sem Agent registry; sem promoção silenciosa; sem chat RAG |
+| G-152 Ordem slices 22–24 | CONFIRMED | Router → Playbooks → Lessons |
 
 ## Git / release — fluxo de branches
 

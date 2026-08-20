@@ -7,6 +7,10 @@ deterministicos, Players necessarios e criterios de validacao.
 Playbooks (skills) sao documentacao executavel que acompanha o
 template. O Intent Engine consulta ambos para gerar Execution Plans.
 
+**Corte implementavel v0 (Playbooks only):** [33-evolution-v0.md](33-evolution-v0.md)
+(G-149). Workflow Templates completos permanecem HYPOTHESIS neste doc.
+Lessons / auto-melhoria: G-150 em `33` (slice 24).
+
 ---
 
 ## TLC Spec-Driven (referencia)
