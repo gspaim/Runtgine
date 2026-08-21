@@ -7,15 +7,15 @@
 - [x] `docs/README.md`, `AGENTS.md`, `README.md`, `REVIEW.md`
 - [x] OpenSpec `035-wails-v0`
 
-## Slice 27 — app + INTENT/LIVE (future)
+## Slice 27 — app + INTENT/LIVE
 
-- [ ] Wails v3 scaffold under `internal/entrypoint/desktop`
-- [ ] Pin `github.com/wailsapp/wails/v3` beta tag in `go.mod`
-- [ ] CLI `runtgine desktop`
-- [ ] Wails v3 service over `api.Core` (Intent, Submit, GetRun, Subscribe, Cancel, Approve)
-- [ ] Task IR enum `wails` for `source.entry_point`
-- [ ] INTENT view: preview without Run; submit → LIVE
-- [ ] Service tests with fake Core; `go test ./...` without display
+- [x] Wails v3 scaffold under `internal/entrypoint/desktop`
+- [x] Pin `github.com/wailsapp/wails/v3` beta tag in `go.mod`
+- [x] CLI `runtgine desktop`
+- [x] Wails v3 service over `api.Core` (Intent, Submit, GetRun, Subscribe, Cancel, Approve)
+- [x] Task IR enum `wails` for `source.entry_point`
+- [x] INTENT view: preview without Run; submit → LIVE
+- [x] Service tests with fake Core; `go test ./...` without display
 - [ ] Manual smoke of the window (not CI-gated)
 
 ## Slice 28 — remaining views (future)

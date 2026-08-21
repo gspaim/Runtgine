@@ -6,7 +6,7 @@ import (
 )
 
 var validEntryPoints = map[string]bool{
-	"cli": true, "tui": true, "board": true, "api": true, "http": true, "other": true,
+	"cli": true, "tui": true, "board": true, "api": true, "http": true, "wails": true, "other": true,
 }
 
 // IdentityValidate checks schema_version and UUID v7 task_id after Parse.
@@ -29,7 +29,7 @@ func StructuralValidate(t Task) error {
 		return fmt.Errorf("intent.summary is required")
 	}
 	if !validEntryPoints[t.Source.EntryPoint] {
-		return fmt.Errorf("source.entry_point must be one of cli|tui|board|api|http|other")
+		return fmt.Errorf("source.entry_point must be one of cli|tui|board|api|http|wails|other")
 	}
 	if len(t.Steps) == 0 {
 		return fmt.Errorf("steps must contain at least one step")
