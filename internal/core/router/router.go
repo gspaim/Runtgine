@@ -76,13 +76,13 @@ func matchScore(m config.RoutingMatch, req Request) (int, bool) {
 		if m.Capability != req.Capability {
 			return 0, false
 		}
-		score += 8
+		score += 1000
 	}
 	if m.CapabilityPrefix != "" {
 		if !strings.HasPrefix(req.Capability, m.CapabilityPrefix) {
 			return 0, false
 		}
-		score += 4
+		score += 100 + len(m.CapabilityPrefix)
 	}
 	if len(m.EffortIn) > 0 {
 		ok := false
@@ -95,7 +95,7 @@ func matchScore(m config.RoutingMatch, req Request) (int, bool) {
 		if !ok {
 			return 0, false
 		}
-		score += 2
+		score += 10
 	}
 	if m.DifficultyGTE > 0 {
 		if req.Difficulty < m.DifficultyGTE {
