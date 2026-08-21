@@ -1,0 +1,11 @@
+schema: spec-driven
+created: 2026-08-21
+nnn: "034"
+slug: http-api
+docs_canonical: docs/34-http-api-v0.md
+gaps: [G-153, G-154, G-155, G-156, G-157, G-158]
+status: active
+branch: feat/034-http-api
+depends_on: ["011-protocolo-v0", "017-intent-engine", "028-http-player"]
+code_slices: [25, 26]
+closes: G-45

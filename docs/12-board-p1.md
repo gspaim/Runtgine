@@ -14,7 +14,8 @@ Necessario antes de implementar o Entry Point Board.
 **Status: CONFIRMED**
 
 - Board = Entry Point **adapter** (nao Player)
-- Transporte MVP: **polling** (webhook pos-MVP)
+- Transporte MVP: **polling** (webhook **inbound** GitHub permanece
+  pos-MVP; webhooks **outbound** de Run = spec `34` G-156, slice 26)
 - Auth: GitHub token via env/config (`GITHUB_TOKEN`)
 - Mapeamento minimo do card:
   - titulo → `intent.summary`

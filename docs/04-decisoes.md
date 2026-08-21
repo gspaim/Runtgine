@@ -62,6 +62,7 @@ Status: CONFIRMED | HYPOTHESIS | OPEN QUESTION | REJECTED
 | Event Bus in-process (MVP) | CONFIRMED | Canais Go |
 | Nativo (nao Electron) | CONFIRMED | Wails |
 | Runner v0 | CONFIRMED | Orchestrator minimo do MVP |
+| HTTP API v0 | CONFIRMED (spec) | Entry Point `runtgine serve`; ver `34`; slices 25–26 |
 
 ## MVP (corte canônico)
 
@@ -75,7 +76,7 @@ Ver [09-mvp.md](09-mvp.md). Decisoes-chave:
 | Entrada estruturada (Task IR v0) no MVP | CONFIRMED | Sem depender de Intent Engine NL |
 | Intent Engine NL v0 (pos-Core) | CONFIRMED | Ver `17`; heuristicas Player = slice 19 feito (G-135..G-136) |
 | Context Engine v0 no 1.0 magro | CONFIRMED | Ver `31`; slice 20 feito (G-137..G-139) |
-| API HTTP (G-45) fora do 1.0 | CONFIRMED | CLI cobre CI ate nova promocao |
+| API HTTP (G-45) fora do 1.0 | CONFIRMED | Spec v0 em `34`; codigo slices 25–26; 1.0 magro continua CLI |
 | Wails fora do MVP / 1.0 | CONFIRMED | Fase 3 |
 | Escopo detalhado em 09-mvp.md | CONFIRMED | Realizado (slices 1–20; 1.0 magro feito) |
 
@@ -124,6 +125,9 @@ Ver [09-mvp.md](09-mvp.md). Decisoes-chave:
 - Project Memory v0 (G-123..G-128; recorte G-46/G-47) — spec; codigo = slice 17 — feito
 - Test Player v0 (G-129..G-134; recorte G-41) — spec; codigo = slice 18 — feito
 - MVP 1.0 magro (G-135..G-140) — spec `09`/`31`/`17`; slices 19–20 feitos
+- Intent Surface v0 (G-141..G-146) — spec `32`; codigo = slice 21
+- Evolution v0 (G-147..G-152) — spec `33`; codigo = slices 22–24
+- HTTP API v0 (G-153..G-158; recorte G-45) — spec `34`; codigo = slices 25–26
 
 ## Protocolo v0 — confirmado (sessao de fechamento)
 
@@ -395,7 +399,7 @@ Codigo = slice 15 — feito. Nao e QueryHits; nao dispara a partir da aba GRAPH.
 
 Ver [28-http-player-v0.md](28-http-player-v0.md). Recorte de G-41
 (cliente HTTPS de leitura). Codigo = slice 16 — feito.
-Nao e a API HTTP do Runtgine (G-45 permanece P3).
+Nao e a API HTTP do Runtgine (G-45 recorte v0 em `34`).
 
 | Item | Status | Notas |
 |---|---|---|
@@ -466,6 +470,21 @@ agentes. Código = slices 22–24 (pendente).
 | G-150 Lessons / Postmortem v0 | CONFIRMED | Proposta em `run.failed`; HITL antes de Memory/playbook |
 | G-151 Exclusoes v0 | CONFIRMED | Sem Agent registry; sem promoção silenciosa; sem chat RAG |
 | G-152 Ordem slices 22–24 | CONFIRMED | Router → Playbooks → Lessons |
+
+## HTTP API — CONFIRMED v0 (Entry Point)
+
+Ver [34-http-api-v0.md](34-http-api-v0.md). Recorte de G-45: servidor
+do runtime (CI/UC-02), **não** o HTTP Player cliente (`28`). Código =
+slices 25–26 (pendente). Independente das slices 21–24.
+
+| Item | Status | Notas |
+|---|---|---|
+| G-153 Papel / pacote `httpapi` | CONFIRMED | Entry Point; `runtgine serve`; `source=http` |
+| G-154 Listen / auth | CONFIRMED | Loopback `:7420`; Bearer; recusa non-loopback sem token |
+| G-155 Rotas REST + SSE | CONFIRMED | Tasks, Intent, Runs, cancel, HITL, blast; `/v0/` |
+| G-156 Webhooks outbound | CONFIRMED | Eventos terminais; HTTPS; não falha o Run |
+| G-157 Exclusoes v0 | CONFIRMED | Sem inbound GitHub; sem TLS no binário; sem Graph REST |
+| G-158 Ordem slices 25–26 | CONFIRMED | Serve → webhooks |
 
 ## Git / release — fluxo de branches
 

@@ -5,7 +5,8 @@ rede com contrato `http.get` / `http.head`, sem `shell.exec`/`curl`.
 
 Inventário: [10-gaps.md](10-gaps.md) (G-117+; recorte de G-41).
 Autoridade de status: [04-decisoes.md](04-decisoes.md).
-Não é a API HTTP do Runtgine ([G-45](10-gaps.md) permanece P3).
+Não é a API HTTP do Runtgine ([G-45](10-gaps.md) recorte v0 em
+[`34-http-api-v0.md`](34-http-api-v0.md)).
 Não é MCP ([G-44](10-gaps.md)). Não é Project Memory (`16`).
 
 **Status deste doc: CONFIRMED (v0).** G-117..G-122 implementados no
@@ -27,7 +28,7 @@ política de URL e telemetria de capability.
 
 O Runtgine já tem Players locais (Shell, Git, FS, Docker). Falta o
 primeiro Player de **rede em leitura**. A API *servidor* do runtime
-(G-45) é outro produto.
+(G-45) é outro produto — spec [`34`](34-http-api-v0.md).
 
 ---
 

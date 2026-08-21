@@ -12,13 +12,14 @@ context: |
   feat/NNN-slug branches (docs/15-git-workflow.md).
   Package layout: internal/core/*, internal/players/*, internal/entrypoint/*.
   Tests: go test ./... ; go vet ./... ; CGO_ENABLED=0 ok.
-  Out of scope until promoted: NATS, Wails MVP, MCP, HTTP API (G-45
-  server), Blast-from-GRAPH (TUI node → blast), Memory Player. MVP 1.0
-  skinny is CONFIRMED and done in docs/09 (G-135..G-140; slices 19–20).
+  Out of scope until promoted: NATS, Wails MVP, MCP, Memory Player,
+  Blast-from-GRAPH (TUI node → blast). MVP 1.0 skinny is CONFIRMED and
+  done in docs/09 (G-135..G-140; slices 19–20). HTTP API v0 is CONFIRMED
+  in docs/34 (G-153..G-158; slices 25–26 not started) — do not confuse
+  with HTTP Player v0 (docs/28, slice 16 done; client GET/HEAD).
   Context Engine v0 is CONFIRMED in docs/31 (slice 20 done). Project
   Memory v0 is CONFIRMED in docs/29 (slice 17 done). Test
-  Player v0 is CONFIRMED in docs/30 (slice 18 done). HTTP
-  Player v0 is CONFIRMED in docs/28 (slice 16 done). Walk Blast←Graph
+  Player v0 is CONFIRMED in docs/30 (slice 18 done). Walk Blast←Graph
   v0 is CONFIRMED in docs/27 (slice 15 done). TUI GRAPH v0
   is CONFIRMED in docs/26 (slice 14 done). Blast Radius v0 is CONFIRMED in
   docs/25 (slice 13 done). Resource Claims v0 is CONFIRMED in docs/24

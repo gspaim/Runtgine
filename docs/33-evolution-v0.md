@@ -204,6 +204,7 @@ Rejeições:
 | Memory Player (`memory.*`) | G-47 OPEN; Provider basta no v0 |
 | Workflow Template engine completo | Escopo `08`; Playbooks são recorte |
 | NATS / MCP / Wails | Outros tracks P3 |
+| HTTP API / `runtgine serve` | Spec `34` (G-45); não é Evolution |
 
 ### G-152 — Ordem de implementação e critérios
 

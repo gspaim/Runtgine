@@ -455,6 +455,8 @@ internal/players/
 internal/entrypoint/
   cli/
   tui/                 # depois do CLI
+  board/
+  httpapi/             # G-45 / spec 34; slice 25
 pkg/protocol/          # tipos/schemas publicos estaveis (opcional cedo)
 schemas/               # JSON Schema files
 docs/
