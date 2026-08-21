@@ -37,6 +37,12 @@ func TestAssembleIncludesEmptyGraphHits(t *testing.T) {
 	if _, ok := m["memory_hits"]; !ok {
 		t.Fatal("missing memory_hits")
 	}
+	if _, ok := m["playbook_hits"]; !ok {
+		t.Fatal("missing playbook_hits")
+	}
+	if p.PlaybookHits.Items == nil || len(p.PlaybookHits.Items) != 0 {
+		t.Fatalf("playbook items=%v", p.PlaybookHits.Items)
+	}
 	budget, ok := m["budget"].(map[string]any)
 	if !ok {
 		t.Fatal("missing budget")

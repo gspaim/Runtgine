@@ -8,12 +8,14 @@ import (
 )
 
 const (
-	DefaultMaxChars       = 12000
-	DefaultMaxFiles       = 40
-	DefaultGraphMaxHits   = 20
-	DefaultGraphMaxChars  = 4000
-	DefaultMemoryMaxHits  = 8
-	DefaultMemoryMaxChars = 2000
+	DefaultMaxChars         = 12000
+	DefaultMaxFiles         = 40
+	DefaultGraphMaxHits     = 20
+	DefaultGraphMaxChars    = 4000
+	DefaultMemoryMaxHits    = 8
+	DefaultMemoryMaxChars   = 2000
+	DefaultPlaybookMaxHits  = 2
+	DefaultPlaybookMaxChars = 1500
 )
 
 type Pack struct {
@@ -23,6 +25,7 @@ type Pack struct {
 	RepoHits     RepoHits           `json:"repo_hits"`
 	GraphHits    GraphHits          `json:"graph_hits"`
 	MemoryHits   MemoryHits         `json:"memory_hits"`
+	PlaybookHits PlaybookHits       `json:"playbook_hits"`
 	Budget       Budget             `json:"budget"`
 }
 
@@ -66,13 +69,25 @@ type MemoryHits struct {
 	Items []MemoryHit `json:"items"`
 }
 
+type PlaybookHit struct {
+	ID      string `json:"id"`
+	Title   string `json:"title"`
+	Snippet string `json:"snippet"`
+}
+
+type PlaybookHits struct {
+	Items []PlaybookHit `json:"items"`
+}
+
 type Budget struct {
-	MaxChars       int `json:"max_chars"`
-	MaxFiles       int `json:"max_files"`
-	GraphMaxHits   int `json:"graph_max_hits"`
-	GraphMaxChars  int `json:"graph_max_chars"`
-	MemoryMaxHits  int `json:"memory_max_hits"`
-	MemoryMaxChars int `json:"memory_max_chars"`
+	MaxChars         int `json:"max_chars"`
+	MaxFiles         int `json:"max_files"`
+	GraphMaxHits     int `json:"graph_max_hits"`
+	GraphMaxChars    int `json:"graph_max_chars"`
+	MemoryMaxHits    int `json:"memory_max_hits"`
+	MemoryMaxChars   int `json:"memory_max_chars"`
+	PlaybookMaxHits  int `json:"playbook_max_hits"`
+	PlaybookMaxChars int `json:"playbook_max_chars"`
 }
 
 func Assemble(t task.Task, stepID, capability string, priors []store.StepOutput) Pack {
@@ -82,13 +97,16 @@ func Assemble(t task.Task, stepID, capability string, priors []store.StepOutput)
 		PriorOutputs: priors,
 		GraphHits:    GraphHits{Items: []GraphHit{}},
 		MemoryHits:   MemoryHits{Items: []MemoryHit{}},
+		PlaybookHits: PlaybookHits{Items: []PlaybookHit{}},
 		Budget: Budget{
-			MaxChars:       DefaultMaxChars,
-			MaxFiles:       DefaultMaxFiles,
-			GraphMaxHits:   DefaultGraphMaxHits,
-			GraphMaxChars:  DefaultGraphMaxChars,
-			MemoryMaxHits:  DefaultMemoryMaxHits,
-			MemoryMaxChars: DefaultMemoryMaxChars,
+			MaxChars:         DefaultMaxChars,
+			MaxFiles:         DefaultMaxFiles,
+			GraphMaxHits:     DefaultGraphMaxHits,
+			GraphMaxChars:    DefaultGraphMaxChars,
+			MemoryMaxHits:    DefaultMemoryMaxHits,
+			MemoryMaxChars:   DefaultMemoryMaxChars,
+			PlaybookMaxHits:  DefaultPlaybookMaxHits,
+			PlaybookMaxChars: DefaultPlaybookMaxChars,
 		},
 	}
 	p.RepoHits = extractRepoHits(priors, p.Budget)
@@ -258,6 +276,33 @@ func capStrings(in []string, n int) []string {
 		return in
 	}
 	return in[:n]
+}
+
+func WithPlaybookHits(p Pack, items []PlaybookHit) Pack {
+	if p.Budget.PlaybookMaxHits <= 0 {
+		p.Budget.PlaybookMaxHits = DefaultPlaybookMaxHits
+	}
+	if p.Budget.PlaybookMaxChars <= 0 {
+		p.Budget.PlaybookMaxChars = DefaultPlaybookMaxChars
+	}
+	if items == nil {
+		items = []PlaybookHit{}
+	}
+	if len(items) > p.Budget.PlaybookMaxHits {
+		items = items[:p.Budget.PlaybookMaxHits]
+	}
+	used := 0
+	out := items[:0]
+	for _, it := range items {
+		n := len(it.Snippet)
+		if used+n > p.Budget.PlaybookMaxChars {
+			break
+		}
+		out = append(out, it)
+		used += n
+	}
+	p.PlaybookHits = PlaybookHits{Items: out}
+	return p
 }
 
 func Marshal(p Pack) (json.RawMessage, error) {

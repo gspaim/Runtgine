@@ -48,6 +48,7 @@ func NewRoot() *cobra.Command {
 	root.AddCommand(newPipelineCmd(&workspace, &verbose))
 	root.AddCommand(newBoardCmd(&workspace, &verbose))
 	root.AddCommand(newTUICmd(&workspace, &verbose))
+	root.AddCommand(newLessonsCmd(&workspace, &verbose))
 	return root
 }
 
@@ -632,4 +633,61 @@ func toJSON(path string, raw []byte) ([]byte, error) {
 	default:
 		return raw, nil
 	}
+}
+
+func newLessonsCmd(workspace *string, verbose *bool) *cobra.Command {
+	cmd := &cobra.Command{Use: "lessons", Short: "HITL postmortem proposals (G-150)"}
+
+	list := &cobra.Command{
+		Use:   "list",
+		Short: "List lesson proposals as JSON",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			core, err := openCore(*workspace, *verbose)
+			if err != nil {
+				return err
+			}
+			defer core.Close()
+			status, _ := cmd.Flags().GetString("status")
+			rows, err := core.ListLessons(context.Background(), status)
+			if err != nil {
+				return err
+			}
+			return writeJSON(os.Stdout, rows)
+		},
+	}
+	list.Flags().String("status", "", "filter pending|approved|rejected")
+	cmd.AddCommand(list)
+
+	cmd.AddCommand(&cobra.Command{
+		Use:   "approve <id>",
+		Short: "Promote a pending proposal into Project Memory",
+		Args:  cobra.ExactArgs(1),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			core, err := openCore(*workspace, *verbose)
+			if err != nil {
+				return err
+			}
+			defer core.Close()
+			ep, err := core.ApproveLesson(context.Background(), args[0])
+			if err != nil {
+				return err
+			}
+			return writeJSON(os.Stdout, ep)
+		},
+	})
+
+	cmd.AddCommand(&cobra.Command{
+		Use:   "reject <id>",
+		Short: "Discard a pending proposal (no Memory write)",
+		Args:  cobra.ExactArgs(1),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			core, err := openCore(*workspace, *verbose)
+			if err != nil {
+				return err
+			}
+			defer core.Close()
+			return core.RejectLesson(context.Background(), args[0])
+		},
+	})
+	return cmd
 }

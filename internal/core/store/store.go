@@ -162,6 +162,17 @@ CREATE TABLE IF NOT EXISTS project_memory (
 );
 CREATE INDEX IF NOT EXISTS idx_project_memory_validity ON project_memory(validity);
 CREATE INDEX IF NOT EXISTS idx_project_memory_created ON project_memory(created_at, id);
+CREATE TABLE IF NOT EXISTS lesson_proposals (
+  id TEXT PRIMARY KEY,
+  run_id TEXT NOT NULL,
+  task_id TEXT NOT NULL DEFAULT '',
+  kind TEXT NOT NULL,
+  title TEXT NOT NULL,
+  body TEXT NOT NULL DEFAULT '',
+  status TEXT NOT NULL,
+  created_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_lesson_proposals_status ON lesson_proposals(status, created_at);
 `)
 	if err != nil {
 		return err
