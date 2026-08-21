@@ -19,6 +19,7 @@ import (
 	"github.com/gspaim/Runtgine/internal/core/store"
 	"github.com/gspaim/Runtgine/internal/core/task"
 	"github.com/gspaim/Runtgine/internal/entrypoint/board"
+	"github.com/gspaim/Runtgine/internal/entrypoint/httpapi"
 	tuientry "github.com/gspaim/Runtgine/internal/entrypoint/tui"
 	"github.com/spf13/cobra"
 	"gopkg.in/yaml.v3"
@@ -49,6 +50,7 @@ func NewRoot() *cobra.Command {
 	root.AddCommand(newBoardCmd(&workspace, &verbose))
 	root.AddCommand(newTUICmd(&workspace, &verbose))
 	root.AddCommand(newLessonsCmd(&workspace, &verbose))
+	root.AddCommand(newServeCmd(&workspace, &verbose))
 	return root
 }
 
@@ -689,5 +691,26 @@ func newLessonsCmd(workspace *string, verbose *bool) *cobra.Command {
 			return core.RejectLesson(context.Background(), args[0])
 		},
 	})
+	return cmd
+}
+
+func newServeCmd(workspace *string, verbose *bool) *cobra.Command {
+	var listen string
+	cmd := &cobra.Command{
+		Use:   "serve",
+		Short: "HTTP API Entry Point (G-153)",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			core, err := openCore(*workspace, *verbose)
+			if err != nil {
+				return err
+			}
+			defer core.Close()
+			if listen != "" {
+				core.Cfg.API.Listen = listen
+			}
+			return httpapi.Serve(core)
+		},
+	}
+	cmd.Flags().StringVar(&listen, "listen", "", "bind address (default: config api.listen / 127.0.0.1:7420)")
 	return cmd
 }

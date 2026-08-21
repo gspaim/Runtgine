@@ -21,7 +21,7 @@ type Task struct {
 }
 
 type Source struct {
-	EntryPoint string `json:"entry_point"` // cli|tui|board|api|other
+	EntryPoint string `json:"entry_point"` // cli|tui|board|api|http|other
 	Ref        string `json:"ref,omitempty"`
 }
 
