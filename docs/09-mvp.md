@@ -114,7 +114,7 @@ Sem walk do workspace, sem embeddings, sem corpo de arquivo no pack.
 |---|---|
 | API HTTP / webhooks (G-45) | Superfície CI; não fecha o loop local |
 | NATS / bus distribuído (G-36) | DEFERRED; um processo basta |
-| Wails / desktop | Fase 3; TUI já é superfície |
+| Wails / desktop | Fase 3; spec `35`; TUI já é superfície |
 | MCP (G-44) | Runtgine não é alternativa a MCP |
 | Player Router completo | Fora do 1.0; spec v0 em `33` (slice 22) |
 | Playbooks / Lessons / multi-model LLM | Fora do 1.0; spec v0 em `33` (slices 23–24) |
@@ -138,7 +138,7 @@ UC-02 (CI/CD via HTTP) é **pós-1.0**: spec [34-http-api-v0.md](34-http-api-v0.
 | TUI | sim | Inclui aba **INTENT** (`32`, slice 21) |
 | Board (GitHub Projects) | sim | Entry Point ≠ Player |
 | API HTTP | sim (pós-1.0) | `runtgine serve` (`34`, slices 25–26) |
-| Desktop (Wails) | não | Fase 3 |
+| Desktop (Wails) | spec `35` | Fora do 1.0 magro; slices 27–28 |
 | Web | não | Futuro |
 
 ---
@@ -151,7 +151,8 @@ UC-02 (CI/CD via HTTP) é **pós-1.0**: spec [34-http-api-v0.md](34-http-api-v0.
 4. Slice 21 — Intent Surface TUI (G-141..G-146; ver `32`) — feito
 5. Slices 22–24 — Evolution v0 (G-147..G-152; ver `33`) — feito
 6. Slices 25–26 — HTTP API v0 (G-153..G-158; ver `34`) — feito
-7. Depois: nova promoção em `04` (mais Players, Wails Fase 3 incl. INTENT desktop, MCP, …)
+7. Depois: Desktop Wails v0 (G-159..G-165; ver `35`) — slices 27–28
+8. Depois: MCP (G-44), mais Players (G-41), templates (`08`) — nova promoção
 
 Histórico do runtime mínimo (Task IR → Shell → CLI → TUI → Board →
 pipeline) está nos slices 1–4 / `11` / `12`. Não reabrir.

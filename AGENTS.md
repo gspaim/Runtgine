@@ -75,7 +75,7 @@ archive `openspec/changes/archive/2026-08-19-031-mvp-1.0/` — CONFIRMED
 (G-135..G-140); slices 19–20 feitos (nao e G-45 / NATS / Wails / MCP).
 Intent Surface: `docs/32-intent-surface-v0.md` + archive
 `openspec/changes/archive/2026-08-21-032-intent-surface/` — CONFIRMED
-(G-141..G-146); slice 21 TUI feito; Wails Fase 3 pendente.
+(G-141..G-146); slice 21 TUI feito; Wails = spec `35`.
 Evolution v0: `docs/33-evolution-v0.md` + archive
 `openspec/changes/archive/2026-08-21-033-evolution-v0/` — CONFIRMED
 (G-147..G-152); slices 22–24 feitas.
@@ -83,6 +83,9 @@ HTTP API: `docs/34-http-api-v0.md` + archive
 `openspec/changes/archive/2026-08-21-034-http-api/` — CONFIRMED
 (G-153..G-158); slices 25–26 feitas (`runtgine serve` + webhooks outbound;
 nao e HTTP Player `28`).
+Desktop Wails: `docs/35-wails-v0.md` +
+`openspec/changes/035-wails-v0/` — CONFIRMED
+(G-159..G-165); slices 27–28 (codigo pendente; Wails v3).
 Skill obrigatoria para TUI: `.cursor/skills/runtgine-tui-design/SKILL.md`.
 
 ## Ordem de trabalho
@@ -112,10 +115,11 @@ Skill obrigatoria para TUI: `.cursor/skills/runtgine-tui-design/SKILL.md`.
 23. Project Memory — CONFIRMED v0 em `29` + OpenSpec archive `029-project-memory` — feito
 24. Test Player — CONFIRMED v0 em `30` + OpenSpec archive `030-test-player` — feito
 25. MVP 1.0 magro — CONFIRMED em `09`/`31` + archive `031-mvp-1.0` — slices 19–20 feitos
-26. Intent Surface — CONFIRMED v0 em `32` + archive `032-intent-surface` — slice 21 TUI feito; Wails Fase 3
+26. Intent Surface — CONFIRMED v0 em `32` + archive `032-intent-surface` — slice 21 TUI feito; Wails = spec `35`
 27. Evolution v0 — CONFIRMED em `33` + archive `033-evolution-v0` — slices 22–24 feitas
 28. HTTP API — CONFIRMED em `34` + archive `034-http-api` — slices 25–26 feitas
-29. Depois — Wails Fase 3 / MCP / mais Players — so apos nova promocao em `04`
+29. Desktop Wails — CONFIRMED v0 em `35` + OpenSpec `035-wails-v0` — slices 27–28 (codigo pendente)
+30. Depois — MCP / mais Players / templates — so apos nova promocao em `04`
 
 ## Conceitos chave (nao confundir)
 
@@ -133,6 +137,7 @@ Skill obrigatoria para TUI: `.cursor/skills/runtgine-tui-design/SKILL.md`.
 - Nao confundir Runtgine com Chorus
 - Nao pular o Validator (filosofia de compilador)
 - Nao construir UI rica (Wails) antes do Core + CLI/TUI funcionarem
+  (ja funcionam; codigo desktop so apos spec `35`)
 - Nao usar brainstorm/conversas-empryo como fonte de stack (Rust/GPUI estao REJECTED)
 - Protocolo v0 P0 esta CONFIRMED em `04-decisoes` / `11` — Core liberado
 - Nao implementar gaps P1 (Board/LLM) sem especificar contratos (G-20+)

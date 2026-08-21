@@ -138,7 +138,7 @@ runtgine intent "<nl>" [--dry-run] [--wait]
 
 **Status: CONFIRMED** — ver [32-intent-surface-v0.md](32-intent-surface-v0.md).
 
-- Aba **INTENT** na TUI (slice 21) e view equivalente no Wails (Fase 3)
+- Aba **INTENT** na TUI (slice 21) e view equivalente no Wails (spec `35`)
 - Reusa `CompileIntent` / `SubmitIntent`; source `tui` | `wails`
 - Nao e chatbot; preview Task IR antes de submit
 

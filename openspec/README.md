@@ -37,12 +37,11 @@ branch:              feat/<NNN>-<slug>   (ou docs/ fix/ chore/)
 
 Exemplos válidos: `001-shell-player`, `017-intent-engine`, `019-graph-hits`.
 
-**Próximo id livre:** `035`. Sem mudanças ativas.
+**Próximo id livre:** `036`. Mudança ativa:
+[`035-wails-v0/`](changes/035-wails-v0/) (slices 27–28).
 Último archive:
 [`changes/archive/2026-08-21-034-http-api/`](changes/archive/2026-08-21-034-http-api/)
-(HTTP API v0; G-153..G-158; slices 25–26). Também:
-[`032-intent-surface`](changes/archive/2026-08-21-032-intent-surface/) (slice 21 TUI),
-[`033-evolution-v0`](changes/archive/2026-08-21-033-evolution-v0/) (slices 22–24).
+(HTTP API v0; G-153..G-158; slices 25–26).
 
 ## Autoridade
 
@@ -83,6 +82,7 @@ Não codificar mudança cujo status em `04` não esteja **CONFIRMED**
 | `http-player` | Player `http.*` (GET/HEAD HTTPS) |
 | `project-memory` | Provider episódico + `memory_hits` (não é Player) |
 | `test-player` | Player `test.go` (`go test` no workspace; spec 030) |
-| `intent-surface` | Aba INTENT TUI (slice 21; Wails Fase 3 ainda fora) |
+| `intent-surface` | Aba INTENT TUI (slice 21; desktop = spec `35`) |
 | `evolution-v0` | Player Router + Playbooks + Lessons (slices 22–24) |
 | `http-api` | Entry Point HTTP `runtgine serve` + webhooks outbound (slices 25–26) |
+| `wails-v0` | Entry Point desktop Wails v3 (spec 035; slices 27–28; delta em change) |

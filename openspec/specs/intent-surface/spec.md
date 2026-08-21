@@ -1,6 +1,6 @@
 # Intent Surface
 
-Status: comportamento atual (pós-slice 21 / TUI INTENT). Wails INTENT permanece Fase 3.
+Status: comportamento atual (pós-slice 21 / TUI INTENT). Wails INTENT = spec `35` (slices 27–28).
 
 ## Requirements
 
@@ -53,7 +53,7 @@ The TUI SHALL include INTENT as the first tab in order:
 
 ### Requirement: Wails INTENT view
 
-The Wails desktop (Fase 3) SHALL mirror TUI INTENT semantics using Core APIs
+The Wails desktop (spec `35`) SHALL mirror TUI INTENT semantics using Core APIs
 and shadcn-svelte components with Constellation tokens.
 
 #### Scenario: Wails submit source
