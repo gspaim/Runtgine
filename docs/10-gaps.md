@@ -336,7 +336,7 @@ Ate la, o Core deve rodar so com CLI + Shell.
 20. Intent Surface — spec em `32` — G-141..G-146 CONFIRMED; TUI slice 21 feito; Wails = spec `35`
 21. Evolution v0 — spec em `33` — G-147..G-152 CONFIRMED; slices 22–24 feitas
 22. HTTP API — spec em `34` — G-153..G-158 CONFIRMED; slices 25–26 feitas
-23. Desktop Wails — spec em `35` — G-159..G-165 CONFIRMED; slice 27 feito; 28 pendente
+23. Desktop Wails — spec em `35` — G-159..G-165 CONFIRMED; slices 27–28 feitas
 
 ## Criterio de “pronto para codar”
 
@@ -359,7 +359,7 @@ Ate la, o Core deve rodar so com CLI + Shell.
 **Test Player (G-129..G-134): CONFIRMADO** — slice 18 feito.  
 **MVP 1.0 magro (G-135..G-140): CONFIRMADO** — slices 19–20 feitos.
 **HTTP API (G-153..G-158): CONFIRMADO** — spec `34`; slices 25–26 feitas.
-**Desktop Wails (G-159..G-165): CONFIRMADO** — spec `35`; slice 27 feito; 28 pendente.
+**Desktop Wails (G-159..G-165): CONFIRMADO** — spec `35`; slices 27–28 feitas.
 
 Ordem pratica de codigo:
 1. Core CLI + Shell (+ SQLite) — slice 1 — feito
@@ -385,9 +385,9 @@ Ordem pratica de codigo:
 21. Intent Surface TUI — slice 21 (G-141..G-146) — feito (spec `32`)
 22. Evolution v0 — slices 22–24 (G-147..G-152) — feito (spec `33`)
 23. HTTP API v0 — slices 25–26 (G-153..G-158) — feito (spec `34`)
-24. Desktop Wails v0 — slice 27 feito; slice 28 pendente (G-159..G-165) — spec `35`
+24. Desktop Wails v0 — slices 27–28 feitas (G-159..G-165) — spec `35`
 
-P3 restante (G-40 templates, G-44 MCP; G-41 em andamento; Wails spec `35` / slice 28).
+P3 restante (G-40 templates, G-44 MCP; G-41 em andamento).
 MVP 1.0 magro: spec `09`/`31` (G-135..G-140); slices 19–20 feitos.
 Test Player corte v0: spec `30` (G-129..G-134); slice 18 feito.
 Project Memory corte v0: spec `29` (G-123..G-128); slice 17 feito.

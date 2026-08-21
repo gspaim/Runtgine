@@ -152,7 +152,7 @@ UC-02 (CI/CD via HTTP) é **pós-1.0**: spec [34-http-api-v0.md](34-http-api-v0.
 5. Slices 22–24 — Evolution v0 (G-147..G-152; ver `33`) — feito
 6. Slices 25–26 — HTTP API v0 (G-153..G-158; ver `34`) — feito
 7. Desktop Wails v0 slice 27 (INTENT/LIVE) — feito (ver `35`)
-8. Slice 28 — demais views desktop
+8. Slice 28 — demais views desktop + Lessons HITL — feito
 9. Depois: MCP (G-44), mais Players (G-41), templates (`08`) — nova promoção
 
 Histórico do runtime mínimo (Task IR → Shell → CLI → TUI → Board →

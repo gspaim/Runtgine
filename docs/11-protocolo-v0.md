@@ -457,7 +457,7 @@ internal/entrypoint/
   tui/                 # depois do CLI
   board/
   httpapi/             # G-45 / spec 34; slice 25 feito
-  desktop/             # G-159 / spec 35; slice 27 feito
+  desktop/             # G-159 / spec 35; slices 27–28 feitas
 pkg/protocol/          # tipos/schemas publicos estaveis (opcional cedo)
 schemas/               # JSON Schema files
 docs/

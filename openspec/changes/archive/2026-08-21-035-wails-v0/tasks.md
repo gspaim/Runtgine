@@ -18,9 +18,9 @@
 - [x] Service tests with fake Core; `go test ./...` without display
 - [ ] Manual smoke of the window (not CI-gated)
 
-## Slice 28 — remaining views (future)
+## Slice 28 — remaining views
 
-- [ ] RUNS, BOARD, EVENTS, GRAPH, CONFIG
-- [ ] Lessons HITL in the UI
-- [ ] CONFIG hides secrets
-- [ ] `go test ./...` / `go vet ./...` green
+- [x] RUNS, BOARD, EVENTS, GRAPH, CONFIG
+- [x] Lessons HITL in the UI
+- [x] CONFIG hides secrets
+- [x] `go test ./...` / `go vet ./...` green

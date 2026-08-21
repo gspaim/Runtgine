@@ -9,6 +9,9 @@ import (
 
 	"github.com/gspaim/Runtgine/internal/core/api"
 	"github.com/gspaim/Runtgine/internal/core/event"
+	"github.com/gspaim/Runtgine/internal/core/graph"
+	"github.com/gspaim/Runtgine/internal/core/lessons"
+	"github.com/gspaim/Runtgine/internal/core/memory"
 	"github.com/gspaim/Runtgine/internal/core/result"
 	"github.com/gspaim/Runtgine/internal/core/task"
 )
@@ -22,6 +25,11 @@ type fakeCore struct {
 	stream       chan event.Event
 	runs         []api.RunSummary
 	snapshot     api.RunSnapshot
+	events       []event.Event
+	config       api.ConfigSnapshot
+	graph        graph.Snapshot
+	graphRefresh int
+	lessonRows   []lessons.Proposal
 }
 
 func (f *fakeCore) CompileIntent(_ context.Context, text, ep, _ string) (task.Task, string, error) {
@@ -89,6 +97,62 @@ func (f *fakeCore) Subscribe(int) (<-chan event.Event, func()) {
 func (f *fakeCore) CancelRun(string) error { return nil }
 
 func (f *fakeCore) ApproveRun(string, string) error { return nil }
+
+func (f *fakeCore) ListRecentEvents(context.Context, int) ([]event.Event, error) {
+	return f.events, nil
+}
+
+func (f *fakeCore) ConfigSnapshot() api.ConfigSnapshot {
+	return f.config
+}
+
+func (f *fakeCore) GetGraphSnapshot(context.Context) (graph.Snapshot, error) {
+	return f.graph, nil
+}
+
+func (f *fakeCore) RefreshGraph(context.Context) error {
+	f.graphRefresh++
+	return nil
+}
+
+func (f *fakeCore) ListLessons(_ context.Context, status string) ([]lessons.Proposal, error) {
+	if status == "" {
+		return f.lessonRows, nil
+	}
+	out := make([]lessons.Proposal, 0)
+	for _, row := range f.lessonRows {
+		if row.Status == status {
+			out = append(out, row)
+		}
+	}
+	return out, nil
+}
+
+func (f *fakeCore) ApproveLesson(_ context.Context, id string) (memory.Episode, error) {
+	for i, row := range f.lessonRows {
+		if row.ID == id {
+			if row.Status != lessons.StatusPending {
+				return memory.Episode{}, result.Runtime(result.CodeInternal, "lesson is not pending", false, nil)
+			}
+			f.lessonRows[i].Status = lessons.StatusApproved
+			return memory.Episode{ID: "ep-" + id, Title: row.Title}, nil
+		}
+	}
+	return memory.Episode{}, result.Runtime(result.CodeNotFound, "lesson not found", false, nil)
+}
+
+func (f *fakeCore) RejectLesson(_ context.Context, id string) error {
+	for i, row := range f.lessonRows {
+		if row.ID == id {
+			if row.Status != lessons.StatusPending {
+				return result.Runtime(result.CodeInternal, "lesson is not pending", false, nil)
+			}
+			f.lessonRows[i].Status = lessons.StatusRejected
+			return nil
+		}
+	}
+	return result.Runtime(result.CodeNotFound, "lesson not found", false, nil)
+}
 
 type recEmit struct {
 	name string
@@ -193,6 +257,96 @@ func TestEventForward(t *testing.T) {
 	}
 	if rec.n == 0 || rec.name != eventName {
 		t.Fatalf("emits=%d name=%s", rec.n, rec.name)
+	}
+}
+
+func TestListBoardRunsFiltersSource(t *testing.T) {
+	core := &fakeCore{runs: []api.RunSummary{
+		{RunID: "run-wails-1", Status: "succeeded", Source: "wails", Summary: "git status"},
+		{RunID: "run-board-1", Status: "running", Source: "board", Summary: "from card"},
+		{RunID: "run-tui-1", Status: "failed", Source: "tui", Summary: "ls"},
+	}}
+	svc := NewService(core)
+	rows, err := svc.ListBoardRuns(20)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(rows) != 1 || rows[0].RunID != "run-board-1" {
+		t.Fatalf("board runs=%v", rows)
+	}
+}
+
+func TestConfigSnapshotOmitsSecrets(t *testing.T) {
+	core := &fakeCore{config: api.ConfigSnapshot{
+		WorkspaceRoot:     "/tmp/ws",
+		DBPath:            "/tmp/ws/.runtgine/runtgine.db",
+		LogLevel:          "info",
+		MaxConcurrentRuns: 2,
+		LLMBackend:        "openai",
+		LLMConnected:      true,
+		GitHubConnected:   false,
+		Precedence:        "defaults < config.json < env < CLI flags",
+	}}
+	svc := NewService(core)
+	snap := svc.ConfigSnapshot()
+	raw, err := json.Marshal(snap)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var fields map[string]any
+	if err := json.Unmarshal(raw, &fields); err != nil {
+		t.Fatal(err)
+	}
+	for k, v := range fields {
+		lk := strings.ToLower(k)
+		if strings.Contains(lk, "token") || strings.Contains(lk, "secret") || strings.HasSuffix(lk, "_key") || lk == "key" {
+			t.Fatalf("secret-like field %s=%v", k, v)
+		}
+	}
+	if _, ok := fields["llm_connected"]; !ok {
+		t.Fatalf("expected llm_connected bool, json=%s", raw)
+	}
+	if strings.Contains(string(raw), "sk-") || strings.Contains(strings.ToLower(string(raw)), "ghp_") {
+		t.Fatalf("looks like a leaked credential: %s", raw)
+	}
+}
+
+func TestEventsGraphLessonsWired(t *testing.T) {
+	core := &fakeCore{
+		events: []event.Event{{Type: event.TypeRunStarted, RunID: "run-wails-1"}},
+		graph:  graph.Snapshot{Nodes: []graph.Node{{Kind: "capability", ID: "git.status"}}},
+		lessonRows: []lessons.Proposal{
+			{ID: "les-1", Title: "Failure: git status", Status: lessons.StatusPending},
+		},
+	}
+	svc := NewService(core)
+	evs, err := svc.ListRecentEvents(10)
+	if err != nil || len(evs) != 1 {
+		t.Fatalf("events=%v err=%v", evs, err)
+	}
+	snap, err := svc.GetGraphSnapshot()
+	if err != nil || len(snap.Nodes) != 1 {
+		t.Fatalf("graph=%v err=%v", snap, err)
+	}
+	if err := svc.RefreshGraph(); err != nil || core.graphRefresh != 1 {
+		t.Fatalf("refresh err=%v n=%d", err, core.graphRefresh)
+	}
+	pending, err := svc.ListLessons(lessons.StatusPending)
+	if err != nil || len(pending) != 1 {
+		t.Fatalf("lessons=%v err=%v", pending, err)
+	}
+	if err := svc.ApproveLesson("les-1"); err != nil {
+		t.Fatal(err)
+	}
+	if core.lessonRows[0].Status != lessons.StatusApproved {
+		t.Fatalf("status=%s", core.lessonRows[0].Status)
+	}
+	core.lessonRows[0].Status = lessons.StatusPending
+	if err := svc.RejectLesson("les-1"); err != nil {
+		t.Fatal(err)
+	}
+	if core.lessonRows[0].Status != lessons.StatusRejected {
+		t.Fatalf("status=%s", core.lessonRows[0].Status)
 	}
 }
 
