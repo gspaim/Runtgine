@@ -85,4 +85,4 @@ Não codificar mudança cujo status em `04` não esteja **CONFIRMED**
 | `intent-surface` | Aba INTENT TUI (slice 21; desktop = spec `35`) |
 | `evolution-v0` | Player Router + Playbooks + Lessons (slices 22–24) |
 | `http-api` | Entry Point HTTP `runtgine serve` + webhooks outbound (slices 25–26) |
-| `wails-v0` | Entry Point desktop Wails v2 (spec 035; slices 27–28; delta em change) |
+| `wails-v0` | Entry Point desktop Wails v3 (spec 035; slices 27–28; delta em change) |

@@ -8,7 +8,7 @@ Inventário: [10-gaps.md](10-gaps.md) (G-141+).
 Autoridade de status: [04-decisoes.md](04-decisoes.md).
 Intent Engine (compilador): [17-intent-engine-v0.md](17-intent-engine-v0.md).
 TUI: [14-tui-design.md](14-tui-design.md) · Desktop: [35-wails-v0.md](35-wails-v0.md)
-(Wails v2 + Svelte + shadcn; [07-stack.md](07-stack.md)).
+(Wails v3 + Svelte + shadcn; [07-stack.md](07-stack.md)).
 
 **Status deste doc: CONFIRMED (v0).** Código TUI = slice 21 **feito**.
 Wails INTENT = spec [35](35-wails-v0.md) (slices 27–28; código pendente).

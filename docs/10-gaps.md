@@ -303,7 +303,7 @@ Ate la, o Core deve rodar so com CLI + Shell.
 | ID | Gap | Notas |
 |---|---|---|
 | G-159 | Papel / pacote `desktop` | **CONFIRMED** — ver `35-wails-v0.md` |
-| G-160 | Stack pin Wails v2 | **CONFIRMED** — Svelte 5 + shadcn-svelte; v3 fora |
+| G-160 | Stack pin Wails v3 | **CONFIRMED** — Svelte 5 + shadcn-svelte; v2 fora |
 | G-161 | App shell / sete views | **CONFIRMED** — INTENT primeiro |
 | G-162 | Bindings Core API | **CONFIRMED** — in-process; CI sem display |
 | G-163 | INTENT desktop | **CONFIRMED** — fecha G-144 |

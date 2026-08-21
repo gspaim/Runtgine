@@ -18,7 +18,7 @@ Status: CONFIRMED | HYPOTHESIS | OPEN QUESTION | REJECTED
 | Cobra | CONFIRMED | CLI |
 | Bubble Tea | CONFIRMED | TUI |
 | Lip Gloss + Bubbles | CONFIRMED | Estilizacao e componentes TUI |
-| Wails | CONFIRMED | Desktop (Go + Svelte); corte v0 em `35` (Wails **v2**) |
+| Wails | CONFIRMED | Desktop (Go + Svelte); corte v0 em `35` (Wails **v3** beta) |
 | Canal Go (Event Bus) | CONFIRMED | Pub/sub in-process |
 | JSON + JSON Schema | CONFIRMED | Protocolo e contratos |
 | SQLite (modernc.org/sqlite) | CONFIRMED | Persistencia local; pure Go |
@@ -63,7 +63,7 @@ Status: CONFIRMED | HYPOTHESIS | OPEN QUESTION | REJECTED
 | Nativo (nao Electron) | CONFIRMED | Wails |
 | Runner v0 | CONFIRMED | Orchestrator minimo do MVP |
 | HTTP API v0 | CONFIRMED + implementado | Entry Point `runtgine serve`; ver `34`; slices 25–26 |
-| Desktop Wails v0 | CONFIRMED (v0 spec) | Entry Point `runtgine desktop`; ver `35`; codigo slices 27–28 |
+| Desktop Wails v0 | CONFIRMED (v0 spec) | Entry Point `runtgine desktop`; Wails **v3**; ver `35`; codigo slices 27–28 |
 
 ## MVP (corte canônico)
 
@@ -78,7 +78,7 @@ Ver [09-mvp.md](09-mvp.md). Decisoes-chave:
 | Intent Engine NL v0 (pos-Core) | CONFIRMED | Ver `17`; heuristicas Player = slice 19 feito (G-135..G-136) |
 | Context Engine v0 no 1.0 magro | CONFIRMED | Ver `31`; slice 20 feito (G-137..G-139) |
 | API HTTP (G-45) fora do 1.0 | CONFIRMED | Spec v0 em `34`; slices 25–26 feitas; 1.0 magro continua CLI |
-| Wails fora do MVP / 1.0 | CONFIRMED | Fase 3; spec v0 em `35`; codigo slices 27–28 |
+| Wails fora do MVP / 1.0 | CONFIRMED | Fase 3; spec v0 em `35` (Wails **v3**); codigo slices 27–28 |
 | Escopo detalhado em 09-mvp.md | CONFIRMED | Realizado (slices 1–26; 1.0 magro + INTENT/Evolution/HTTP) |
 
 ## Modelo conceitual
@@ -492,16 +492,16 @@ slices 25–26 (feito). Independente das slices 21–24.
 
 Ver [35-wails-v0.md](35-wails-v0.md). Recorte de G-35 / G-144: janela
 nativa in-process sobre `api.Core`, **não** cliente da HTTP API (`34`).
-Código = slices 27–28 (pendente). Wails **v2** (v3 beta fora).
+Código = slices 27–28 (pendente). Wails **v3** (beta aceite; v2 fora).
 
 | Item | Status | Notas |
 |---|---|---|
 | G-159 Papel / pacote `desktop` | CONFIRMED | Entry Point; `runtgine desktop`; `source=wails` |
-| G-160 Stack pin | CONFIRMED | Wails v2 + Svelte 5 + shadcn-svelte; tokens `14` |
+| G-160 Stack pin | CONFIRMED | Wails v3 + Svelte 5 + shadcn-svelte; tokens `14` |
 | G-161 App shell / sete views | CONFIRMED | INTENT primeiro; uma janela |
-| G-162 Bindings Core API | CONFIRMED | Fachada; testes fake Core; CI sem display |
+| G-162 Bindings Core API | CONFIRMED | Service v3; testes fake Core; CI sem display |
 | G-163 INTENT desktop | CONFIRMED | Fecha G-144; preview sem Run |
-| G-164 Exclusoes v0 | CONFIRMED | Sem v3; sem HTTP client; sem chat; sem PTY |
+| G-164 Exclusoes v0 | CONFIRMED | Sem v2; sem HTTP client; sem chat; sem PTY; sem multi-window |
 | G-165 Ordem slices 27–28 | CONFIRMED | INTENT/LIVE → demais views |
 
 ## Git / release — fluxo de branches

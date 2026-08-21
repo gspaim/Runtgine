@@ -85,7 +85,7 @@ HTTP API: `docs/34-http-api-v0.md` + archive
 nao e HTTP Player `28`).
 Desktop Wails: `docs/35-wails-v0.md` +
 `openspec/changes/035-wails-v0/` — CONFIRMED
-(G-159..G-165); slices 27–28 (codigo pendente; Wails v2).
+(G-159..G-165); slices 27–28 (codigo pendente; Wails v3).
 Skill obrigatoria para TUI: `.cursor/skills/runtgine-tui-design/SKILL.md`.
 
 ## Ordem de trabalho

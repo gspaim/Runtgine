@@ -122,7 +122,7 @@ Fase 0: Documentacao
 Fase 1: MVP (Core Go, Event Bus, Shell, CLI, TUI, Board) — slices 1–4
 Fase 2: Graph Hits + Git/FS Players feitos; Execution Policy + Docker
 specs em `22`/`23` (slices 10–11); Project Memory v0 em `29` (slice 17 feito).
-Fase 3: Desktop (Wails v2; spec `35`; slices 27–28)
+Fase 3: Desktop (Wails v3; spec `35`; slices 27–28)
 Fase 4: Infra (Claims v0 slice 12; Blast Radius v0 slice 13 feitos;
 TUI GRAPH v0 spec `26` / G-105..G-110 — slice 14 feito;
 Walk Blast←Graph v0 spec `27` / G-111..G-116 — slice 15 feito;

@@ -9,12 +9,13 @@
 
 ## Slice 27 — app + INTENT/LIVE (future)
 
-- [ ] Wails v2 scaffold under `internal/entrypoint/desktop`
+- [ ] Wails v3 scaffold under `internal/entrypoint/desktop`
+- [ ] Pin `github.com/wailsapp/wails/v3` beta tag in `go.mod`
 - [ ] CLI `runtgine desktop`
-- [ ] Bindings over `api.Core` (Intent, Submit, GetRun, Subscribe, Cancel, Approve)
+- [ ] Wails v3 service over `api.Core` (Intent, Submit, GetRun, Subscribe, Cancel, Approve)
 - [ ] Task IR enum `wails` for `source.entry_point`
 - [ ] INTENT view: preview without Run; submit → LIVE
-- [ ] Binding tests with fake Core; `go test ./...` without display
+- [ ] Service tests with fake Core; `go test ./...` without display
 - [ ] Manual smoke of the window (not CI-gated)
 
 ## Slice 28 — remaining views (future)

@@ -33,7 +33,7 @@ A TUI e uma superficie sobre o Core:
 - Lip Gloss
 - Bubbles
 
-O desktop futuro continua Wails v2 + Svelte + shadcn-svelte (spec `35`).
+O desktop futuro continua Wails v3 + Svelte + shadcn-svelte (spec `35`).
 A TUI valida a linguagem de interacao antes do desktop. View **INTENT**
 no Wails espelha a aba INTENT (`32` / G-144).
 

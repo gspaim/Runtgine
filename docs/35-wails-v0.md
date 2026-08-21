@@ -35,8 +35,8 @@ reinventa o protocolo.
 | É | Não é |
 |---|---|
 | Entry Point adapter (`internal/entrypoint/desktop`) | Player |
-| Wails **v2** (stable) + Svelte 5 + shadcn-svelte | Wails v3 beta; Tauri; Electron |
-| Bindings Go → `api.Core` in-process | Cliente HTTP de `runtgine serve` |
+| Wails **v3** (beta aceite) + Svelte 5 + shadcn-svelte | Wails v2; Tauri; Electron |
+| Services Go → `api.Core` in-process | Cliente HTTP de `runtgine serve` |
 | Sete views alinhadas à TUI | Multiplexer / PTY / IDE |
 | `source.entry_point = "wails"` | Chatbot; thread LLM na UI |
 
@@ -67,14 +67,24 @@ Regras (inalteradas):
 
 | Peça | Corte v0 |
 |---|---|
-| Wails | **v2** (stable). Wails v3 (beta) **fora** do v0 |
-| Frontend | Svelte 5 + TypeScript + Vite (já G-35) |
+| Wails | **v3** (módulo `github.com/wailsapp/wails/v3`; CLI `wails3`) |
+| Frontend | Svelte 5 + TypeScript + Vite (já G-35; template `-t svelte`) |
 | Componentes | shadcn-svelte: Sidebar, Card, Badge, Scroll Area; Command ⌘K opcional |
 | Tokens | Constellation (`14`): Space, Panel, Starlight, Violet, Telemetry, Amber, Anomaly, Muted |
 | Tema | honrar `prefers-color-scheme`; sem inventar tokens fora de `14` |
+| Pin | tag beta corrente no `go.mod` no slice 27 (não dual-stack v2) |
 
-G-35 (Wails + Svelte) permanece. Este recorte só **trava a major** v2
-para não portar o v0 no meio de uma rewrite beta.
+G-35 (Wails + Svelte) permanece. O pin **v3** (em vez de v2 stable) é
+produto: a API desktop da v3 está estável o bastante para produção
+segundo o anúncio oficial da beta, e começar em v2 forçaria um port
+completo (lifecycle, services, bindings) antes do GA.
+
+v2 **não** entra neste recorte — nem como fallback, nem como
+implementação temporária. Churn de beta é aceite; o `go.mod` trava a
+revisão usada.
+
+Docs: https://v3.wails.io/ · CLI:
+`go install github.com/wailsapp/wails/v3/cmd/wails3@latest`.
 
 ### G-161 — App shell e navegação
 
@@ -88,12 +98,14 @@ INTENT é o Entry Point visual (Mission Brief, `32`). Após submit
 bem-sucedido → view LIVE com o `run_id` selecionado (G-144).
 
 Não há overlapping windows, tray app, nem “workspace switcher”.
+Wails v3 oferece multi-window; o v0 **não** usa.
 
 ### G-162 — Bindings (Core API)
 
 **Status: CONFIRMED**
 
-O backend Wails é uma fachada fina sobre `api.Core`. Métodos mínimos:
+O backend Wails é um **service** v3 (não o modelo `Bind` da v2):
+fachada fina sobre `api.Core`. Métodos mínimos:
 
 | Binding | Core |
 |---|---|
@@ -105,8 +117,8 @@ O backend Wails é uma fachada fina sobre `api.Core`. Métodos mínimos:
 | `GetGraphSnapshot` / `RefreshGraph` | aba GRAPH |
 | `ListLessons` / `ApproveLesson` / `RejectLesson` | HITL Lessons (slice 28 ok) |
 
-Subscribe: o binding emite eventos para o frontend (callback / event
-Wails). Não reimplementar o Event Bus.
+Subscribe: o service emite eventos Wails v3 (`runtgine:event`) com o
+JSON `event.Event`. Não reimplementar o Event Bus.
 
 Testes de binding: fake `api.Core` (mesmo espírito da TUI). CI **não**
 exige janela GUI.
@@ -135,11 +147,13 @@ Atalhos v0 (espelho TUI, adaptados a desktop):
 
 | Fica fora | Por quê |
 |---|---|
-| Wails v3 | Beta; v2 é o stable atual |
+| Wails v2 | Dual-stack / port posterior; o recorte é v3 |
 | Cliente de `runtgine serve` | Superfície local = in-process |
 | Chamar Player / pular Validator | Entry Point ≠ Player |
 | Thread de chat / RAG de transcript | `32` G-145 |
-| Multi-window / tray / auto-update | Explode o v0 |
+| Multi-window / tray / auto-update | Explode o v0 (v3 tem multi-window; não usamos) |
+| Mobile (iOS/Android) | Experimental na v3; fora do desktop v0 |
+| Server-mode Wails / plugins | Outro produto |
 | Assinatura de loja (App Store, etc.) | Distribuição depois |
 | Embed PTY / terminal multiplexer | Mesma regra da TUI |
 | MCP, NATS, Memory Player | Outros tracks |
@@ -152,7 +166,7 @@ Atalhos v0 (espelho TUI, adaptados a desktop):
 
 | Slice | Entrega | Depende de |
 |---|---|---|
-| **27** | Scaffold Wails v2 + bindings + views INTENT e LIVE | Core API, `32` G-144 |
+| **27** | Scaffold Wails v3 + service Core + views INTENT e LIVE | Core API, `32` G-144 |
 | **28** | RUNS, BOARD, EVENTS, GRAPH, CONFIG (+ Lessons HITL na UI) | Slice 27 |
 
 Critérios slice 27:

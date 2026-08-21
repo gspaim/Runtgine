@@ -4,7 +4,7 @@
 
 ### Requirement: Desktop Entry Point adapter
 
-The system SHALL expose the existing Core API through a Wails v2 desktop
+The system SHALL expose the existing Core API through a Wails v3 desktop
 app as an Entry Point. The app MUST NOT call Players directly and MUST
 NOT be an HTTP client of `runtgine serve`.
 
@@ -20,16 +20,18 @@ NOT be an HTTP client of `runtgine serve`.
 - **THEN** the app calls `CompileIntent` only
 - **AND** no Run is inserted
 
-### Requirement: Wails v2 pin
+### Requirement: Wails v3 pin
 
-The desktop v0 SHALL use Wails v2 (stable) and Svelte 5 + shadcn-svelte
-with Constellation tokens.
+The desktop v0 SHALL use Wails v3 (`github.com/wailsapp/wails/v3`) and
+Svelte 5 + shadcn-svelte with Constellation tokens. Wails v2 SHALL NOT
+be used.
 
-#### Scenario: Wails v3 out of v0
+#### Scenario: Major version
 
 - **WHEN** choosing the Wails major version
-- **THEN** the implementation uses v2
-- **AND** Wails v3 remains out of this cut
+- **THEN** the implementation uses v3
+- **AND** the exact beta tag is pinned in `go.mod` at slice 27
+- **AND** Wails v2 remains out of this cut
 
 ### Requirement: Seven views
 
@@ -40,16 +42,17 @@ The desktop SHALL offer the same seven views as the TUI, with INTENT first:
 
 - **WHEN** the app opens
 - **THEN** INTENT is the default view
+- **AND** a single window is used (v3 multi-window unused)
 
-### Requirement: Thin Core bindings
+### Requirement: Thin Core service
 
-Wails backend methods SHALL be a thin facade over `api.Core`. The desktop
-MUST NOT reimplement the Event Bus, Validator, or Player dispatch.
+Wails v3 service methods SHALL be a thin facade over `api.Core`. The
+desktop MUST NOT reimplement the Event Bus, Validator, or Player dispatch.
 
 #### Scenario: Preview uses CompileIntent
 
 - **WHEN** the operator requests preview
-- **THEN** the binding calls `CompileIntent` only
+- **THEN** the service calls `CompileIntent` only
 - **AND** unit tests use a fake Core without a display
 
 ### Requirement: Not HTTP client and not Player

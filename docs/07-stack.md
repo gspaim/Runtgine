@@ -9,7 +9,7 @@ Decisoes de tecnologia para o Runtgine.
 | Linguagem | Go | CONFIRMED |
 | CLI | Cobra | CONFIRMED |
 | TUI | Bubble Tea + Lip Gloss + Bubbles | CONFIRMED |
-| Desktop | Wails v2 (Go + Svelte 5) | CONFIRMED (corte v0 em `35`) |
+| Desktop | Wails v3 (Go + Svelte 5) | CONFIRMED (corte v0 em `35`) |
 | Event Bus | Canal Go (in-process) | CONFIRMED |
 | Serializacao | JSON + JSON Schema | CONFIRMED |
 | Store | SQLite (modernc.org/sqlite) | CONFIRMED |
@@ -41,8 +41,10 @@ Wails entrega mais rapido, com menos complexidade.
 Frontend opcional (Svelte, React, Vue) — a TUI cobre 80%
 dos casos, Wails cobre o resto.
 
-Corte v0: **Wails v2** (stable). Wails v3 (beta) fica fora —
-ver [35-wails-v0.md](35-wails-v0.md) (G-159..G-165).
+Corte v0: **Wails v3** (beta aceite). Começar na major nova evita
+portar o app depois; v2 fica fora deste recorte. Pin exacto no
+`go.mod` no slice 27. Ver [35-wails-v0.md](35-wails-v0.md)
+(G-159..G-165).
 
 ## Por que Canal Go (Event Bus)
 

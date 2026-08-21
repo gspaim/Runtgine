@@ -10,7 +10,8 @@ have only the terminal TUI.
 ## What Changes
 
 - Canonical `docs/35-wails-v0.md` (G-159..G-165 CONFIRMED)
-- Pin Wails **v2** (stable); Wails v3 beta out of v0
+- Pin Wails **v3** (beta aceite; API desktop considerada estável o
+  bastante para produção pela própria equipe Wails). Wails v2 fora.
 - Cross-refs in `04`, `07`, `09`, `10`, `01`, `05`, `11`, `13`, `14`, `17`, `32`, `34`
 - `docs/README.md`, `AGENTS.md`, `README.md` estágio, `REVIEW.md`
 - OpenSpec package `035-wails-v0`
@@ -23,6 +24,7 @@ have only the terminal TUI.
 - Core does not import `entrypoint`
 - No Wails project scaffold in this PR (slices 27–28 later)
 - MCP, NATS, extra Players
+- One window (v3 multi-window unused)
 
 ## Status / autoridade
 
@@ -37,7 +39,7 @@ have only the terminal TUI.
 
 Two implementation slices:
 
-1. **Slice 27** — Wails v2 app + Core bindings + INTENT + LIVE
+1. **Slice 27** — Wails v3 app + Core service + INTENT + LIVE
 2. **Slice 28** — remaining Constellation views + Lessons HITL UI
 
 ## Impact
