@@ -116,4 +116,53 @@ textarea { resize: vertical; }
 .ok { color: var(--telemetry); }
 .muted { color: var(--muted); }
 h1 { font-size: 1.15rem; margin: 0 0 0.4rem; }
-h2 { font-size: 0.95rem; color: var(--starlight); margin: 0 0 0.6rem; }
+h2 { font-size: 0.95rem; color: var(--starlight); margin: 1rem 0 0.6rem; }
+table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+th, td { text-align: left; padding: 0.4rem 0.5rem; border-bottom: 1px solid var(--border); }
+tr.click { cursor: pointer; }
+tr.click:hover { background: rgba(143, 184, 255, 0.08); }
+.filter {
+  background: var(--space);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.4rem 0.6rem;
+  min-width: 220px;
+}
+.lanes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.8rem; }
+.lane { background: var(--space); border: 1px solid var(--border); border-radius: 8px; padding: 0.7rem; }
+.cardlet {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.25rem;
+  width: 100%;
+  margin: 0.4rem 0;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.55rem 0.65rem;
+  text-align: left;
+}
+.kv { display: grid; grid-template-columns: 11rem 1fr; gap: 0.35rem 0.8rem; }
+dt { color: var(--muted); }
+dd { margin: 0; }
+.lesson {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.7rem;
+  margin: 0.6rem 0;
+  background: var(--space);
+}
+@media (max-width: 960px) {
+  .lanes { grid-template-columns: 1fr; }
+  .kv { grid-template-columns: 1fr; }
+}
+@media (prefers-color-scheme: light) {
+  :root {
+    --space: #f3f6ff;
+    --panel: #ffffff;
+    --text: #10182b;
+    --muted: #5b6b82;
+    --border: rgba(16, 26, 47, 0.14);
+  }
+}

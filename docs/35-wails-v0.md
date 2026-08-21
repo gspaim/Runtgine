@@ -9,10 +9,11 @@ Autoridade de status: [04-decisoes.md](04-decisoes.md).
 Stack: [07-stack.md](07-stack.md). Visual: [14-tui-design.md](14-tui-design.md).
 INTENT (semântica): [32-intent-surface-v0.md](32-intent-surface-v0.md) G-144.
 
-**Status deste doc: CONFIRMED (v0 spec).** Slice 27 **feito** (app + INTENT/LIVE).
-Slice 28 (demais views) pendente.
+**Status deste doc: CONFIRMED (v0 spec).** Slices 27–28 **feitas**
+(app + sete views + Lessons HITL).
 
-**Pacote OpenSpec:** [`openspec/changes/035-wails-v0/`](../openspec/changes/035-wails-v0/).
+**Pacote OpenSpec:** [`openspec/specs/wails-v0/spec.md`](../openspec/specs/wails-v0/spec.md)
+(archive [`openspec/changes/archive/2026-08-21-035-wails-v0/`](../openspec/changes/archive/2026-08-21-035-wails-v0/)).
 
 ---
 
@@ -166,7 +167,7 @@ Atalhos v0 (espelho TUI, adaptados a desktop):
 | Slice | Entrega | Depende de |
 |---|---|---|
 | **27** | Scaffold Wails v3 + service Core + views INTENT e LIVE | Core API, `32` G-144 |
-| **28** | RUNS, BOARD, EVENTS, GRAPH, CONFIG (+ Lessons HITL na UI) | Slice 27 |
+| **28** | RUNS, BOARD, EVENTS, GRAPH, CONFIG (+ Lessons HITL na UI) — **feito** | Slice 27 |
 
 Critérios slice 27:
 
@@ -201,12 +202,10 @@ Todas convergem para o mesmo protocolo (`11`).
 
 ## 5. Ordem de implementação
 
-1. Spec deste doc (G-159..G-165) — este PR.
-2. **Slice 27** — app + INTENT/LIVE.
-3. **Slice 28** — demais views.
+1. Spec deste doc (G-159..G-165) — feito.
+2. **Slice 27** — app + INTENT/LIVE — feito.
+3. **Slice 28** — demais views + Lessons HITL — feito.
 4. Depois: MCP (G-44), mais Players (G-41), templates (`08`) — nova promoção.
-
-Código Wails **não** entra neste PR de spec.
 
 ---
 
@@ -216,4 +215,4 @@ Código Wails **não** entra neste PR de spec.
 - TUI design / tokens: [14](14-tui-design.md)
 - Stack: [07](07-stack.md) · G-35 em [13](13-p2.md)
 - Core API: [11](11-protocolo-v0.md) §13 / §16
-- OpenSpec: [`openspec/changes/035-wails-v0/`](../openspec/changes/035-wails-v0/)
+- OpenSpec: [`openspec/specs/wails-v0/spec.md`](../openspec/specs/wails-v0/spec.md) · archive [`2026-08-21-035-wails-v0`](../openspec/changes/archive/2026-08-21-035-wails-v0/)

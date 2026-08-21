@@ -155,5 +155,5 @@ Slices 1–9 implementados (Core → Intent → Graph → Git → Filesystem).
 **Intent Surface v0: CONFIRMED + TUI implementada** (`32`, G-141..G-146; slice 21; Wails = spec `35`).
 **Evolution v0: CONFIRMED + implementado** (`33`, G-147..G-152; slices 22–24).
 **HTTP API v0: CONFIRMED + implementado** (`34`, G-153..G-158; slices 25–26).
-**Desktop Wails v0: CONFIRMED spec** (`35`, G-159..G-165; slices 27–28 pendentes).
+**Desktop Wails v0: CONFIRMED + implementado** (`35`, G-159..G-165; slices 27–28).
 P3 restante: G-44 MCP; NATS; G-41 mais Players.

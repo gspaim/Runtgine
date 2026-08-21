@@ -83,9 +83,9 @@ HTTP API: `docs/34-http-api-v0.md` + archive
 `openspec/changes/archive/2026-08-21-034-http-api/` — CONFIRMED
 (G-153..G-158); slices 25–26 feitas (`runtgine serve` + webhooks outbound;
 nao e HTTP Player `28`).
-Desktop Wails: `docs/35-wails-v0.md` +
-`openspec/changes/035-wails-v0/` — CONFIRMED
-(G-159..G-165); slice 27 feito; slice 28 pendente (Wails v3).
+Desktop Wails: `docs/35-wails-v0.md` + archive
+`openspec/changes/archive/2026-08-21-035-wails-v0/` — CONFIRMED
+(G-159..G-165); slices 27–28 feitas (Wails v3).
 Skill obrigatoria para TUI: `.cursor/skills/runtgine-tui-design/SKILL.md`.
 
 ## Ordem de trabalho
@@ -118,7 +118,7 @@ Skill obrigatoria para TUI: `.cursor/skills/runtgine-tui-design/SKILL.md`.
 26. Intent Surface — CONFIRMED v0 em `32` + archive `032-intent-surface` — slice 21 TUI feito; Wails = spec `35`
 27. Evolution v0 — CONFIRMED em `33` + archive `033-evolution-v0` — slices 22–24 feitas
 28. HTTP API — CONFIRMED em `34` + archive `034-http-api` — slices 25–26 feitas
-29. Desktop Wails — CONFIRMED v0 em `35` + OpenSpec `035-wails-v0` — slice 27 feito; slice 28 pendente
+29. Desktop Wails — CONFIRMED v0 em `35` + archive `035-wails-v0` — slices 27–28 feitas
 30. Depois — MCP / mais Players / templates — so apos nova promocao em `04`
 
 ## Conceitos chave (nao confundir)

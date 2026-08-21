@@ -63,7 +63,7 @@ Status: CONFIRMED | HYPOTHESIS | OPEN QUESTION | REJECTED
 | Nativo (nao Electron) | CONFIRMED | Wails |
 | Runner v0 | CONFIRMED | Orchestrator minimo do MVP |
 | HTTP API v0 | CONFIRMED + implementado | Entry Point `runtgine serve`; ver `34`; slices 25–26 |
-| Desktop Wails v0 | CONFIRMED (v0 spec) | Entry Point `runtgine desktop`; Wails **v3**; slice 27 feito |
+| Desktop Wails v0 | CONFIRMED + implementado | Entry Point `runtgine desktop`; Wails **v3**; slices 27–28 |
 
 ## MVP (corte canônico)
 
@@ -129,7 +129,7 @@ Ver [09-mvp.md](09-mvp.md). Decisoes-chave:
 - Intent Surface v0 (G-141..G-146) — spec `32`; TUI slice 21 feito; Wails = spec `35`
 - Evolution v0 (G-147..G-152) — spec `33`; slices 22–24 feitas
 - HTTP API v0 (G-153..G-158; recorte G-45) — spec `34`; slices 25–26 feitas
-- Desktop Wails v0 (G-159..G-165; recorte G-35/G-144) — spec `35`; slice 27 feito; 28 pendente
+- Desktop Wails v0 (G-159..G-165; recorte G-35/G-144) — spec `35`; slices 27–28 feitas
 
 ## Protocolo v0 — confirmado (sessao de fechamento)
 
@@ -447,7 +447,7 @@ Codigo = slices 19–20 feitos. Nao e G-45; nao e NATS/Wails/MCP.
 
 Ver [32-intent-surface-v0.md](32-intent-surface-v0.md). Superficie visual de
 Entry Point (Mission Brief / aba INTENT). Compilador = Intent Engine (`17`).
-Codigo TUI = slice 21 feito; Wails INTENT = spec `35` (slice 27 feito).
+Codigo TUI = slice 21 feito; Wails INTENT = spec `35` (slices 27–28 feitas).
 
 | Item | Status | Notas |
 |---|---|---|
@@ -492,7 +492,7 @@ slices 25–26 (feito). Independente das slices 21–24.
 
 Ver [35-wails-v0.md](35-wails-v0.md). Recorte de G-35 / G-144: janela
 nativa in-process sobre `api.Core`, **não** cliente da HTTP API (`34`).
-Código = slices 27–28 (slice 27 feito; 28 pendente). Wails **v3** (beta aceite; v2 fora).
+Código = slices 27–28 (feitas). Wails **v3** (beta aceite; v2 fora).
 
 | Item | Status | Notas |
 |---|---|---|
@@ -502,7 +502,7 @@ Código = slices 27–28 (slice 27 feito; 28 pendente). Wails **v3** (beta aceit
 | G-162 Bindings Core API | CONFIRMED | Service v3; testes fake Core; CI sem display |
 | G-163 INTENT desktop | CONFIRMED | Fecha G-144; preview sem Run |
 | G-164 Exclusoes v0 | CONFIRMED | Sem v2; sem HTTP client; sem chat; sem PTY; sem multi-window |
-| G-165 Ordem slices 27–28 | CONFIRMED | INTENT/LIVE (27 feito) → demais views |
+| G-165 Ordem slices 27–28 | CONFIRMED | INTENT/LIVE (27) → demais views (28); ambas feitas |
 
 ## Git / release — fluxo de branches
 

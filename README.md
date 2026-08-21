@@ -102,8 +102,8 @@ Visão enxuta do que já está em `main`. **Atualizar esta seção em todo PR
 | Feito | Slices 22–24 — Evolution v0 (`33`, G-147..G-152; Router, Playbooks, Lessons) |
 | Feito | Slices 25–26 — HTTP API v0 (`34`, G-153..G-158; `runtgine serve` + webhooks) |
 | Feito | Slice 27 — Desktop Wails v3 INTENT/LIVE (`35`, G-159..G-163; `runtgine desktop`) |
-| Spec | Slice 28 — demais views desktop (`35` G-161/G-165) |
-| Próximo código | Slice 28 |
+| Feito | Slice 28 — demais views desktop + Lessons HITL (`35` G-161/G-165) |
+| Próximo código | MCP / mais Players / templates — só após nova promoção em `04` |
 
 Detalhe do corte: [`docs/09-mvp.md`](docs/09-mvp.md). Limitações atuais abaixo.
 
