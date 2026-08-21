@@ -10,10 +10,10 @@ Intent Engine (compilador): [17-intent-engine-v0.md](17-intent-engine-v0.md).
 TUI: [14-tui-design.md](14-tui-design.md) · Desktop: Wails + Svelte + shadcn
 (Fase 3; [07-stack.md](07-stack.md)).
 
-**Status deste doc: CONFIRMED (v0).** Código **não** iniciado — TUI = slice 21;
-desktop Wails = Fase 3 (mesma spec de produto, implementação separada).
+**Status deste doc: CONFIRMED (v0).** Código TUI = slice 21 **feito**.
+Wails INTENT = Fase 3 (ainda não iniciado).
 
-**Pacote OpenSpec:** [`openspec/changes/032-intent-surface/`](../openspec/changes/032-intent-surface/).
+**Pacote OpenSpec:** [`openspec/changes/archive/2026-08-21-032-intent-surface/`](../openspec/changes/archive/2026-08-21-032-intent-surface/).
 
 ---
 
@@ -188,4 +188,4 @@ Não depende de HTTP API (`34` / G-45), NATS, nem novos Players.
 
 - Intent Engine API: [17](17-intent-engine-v0.md) G-51
 - TUI design system: [14](14-tui-design.md)
-- OpenSpec: [`openspec/changes/032-intent-surface/`](../openspec/changes/032-intent-surface/)
+- OpenSpec: [`openspec/changes/archive/2026-08-21-032-intent-surface/`](../openspec/changes/archive/2026-08-21-032-intent-surface/)

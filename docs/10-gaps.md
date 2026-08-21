@@ -321,9 +321,9 @@ Ate la, o Core deve rodar so com CLI + Shell.
 17. Project Memory — spec em `29` — G-123..G-128 CONFIRMED; codigo = slice 17 — feito
 18. Test Player — spec em `30` — G-129..G-134 CONFIRMED; codigo = slice 18 — feito
 19. MVP 1.0 magro — spec em `09`/`31`/`17` — G-135..G-140 CONFIRMED; slices 19–20 feitos
-20. Intent Surface — spec em `32` — G-141..G-146 CONFIRMED; código = slice 21 (TUI) + Wails Fase 3
-21. Evolution v0 — spec em `33` — G-147..G-152 CONFIRMED; código = slices 22–24 (Router, Playbooks, Lessons)
-22. HTTP API — spec em `34` — G-153..G-158 CONFIRMED; código = slices 25–26 (`serve` + webhooks)
+20. Intent Surface — spec em `32` — G-141..G-146 CONFIRMED; TUI slice 21 feito; Wails Fase 3
+21. Evolution v0 — spec em `33` — G-147..G-152 CONFIRMED; slices 22–24 feitas
+22. HTTP API — spec em `34` — G-153..G-158 CONFIRMED; slices 25–26 feitas
 
 ## Criterio de “pronto para codar”
 
@@ -345,7 +345,7 @@ Ate la, o Core deve rodar so com CLI + Shell.
 **Project Memory (G-123..G-128): CONFIRMADO** — slice 17 feito.  
 **Test Player (G-129..G-134): CONFIRMADO** — slice 18 feito.  
 **MVP 1.0 magro (G-135..G-140): CONFIRMADO** — slices 19–20 feitos.
-**HTTP API (G-153..G-158): CONFIRMADO** — spec `34`; codigo = slices 25–26.
+**HTTP API (G-153..G-158): CONFIRMADO** — spec `34`; slices 25–26 feitas.
 
 Ordem pratica de codigo:
 1. Core CLI + Shell (+ SQLite) — slice 1 — feito
@@ -368,8 +368,12 @@ Ordem pratica de codigo:
 18. Test Player v0 — slice 18 (G-129..G-134) — feito (spec `30`)
 19. Intent player heuristics — slice 19 (G-135..G-136) — feito (spec `031`)
 20. Context Engine v0 — slice 20 (G-137..G-139) — feito (spec `031`)
+21. Intent Surface TUI — slice 21 (G-141..G-146) — feito (spec `32`)
+22. Evolution v0 — slices 22–24 (G-147..G-152) — feito (spec `33`)
+23. HTTP API v0 — slices 25–26 (G-153..G-158) — feito (spec `34`)
 
-P3 restante (G-40 templates, G-44 MCP; G-41 em andamento; G-45 spec `34` / slices 25–26).
+P3 restante (G-40 templates, G-44 MCP; G-41 em andamento).
+Slices 21–26 feitas (INTENT TUI, Evolution, HTTP API).
 MVP 1.0 magro: spec `09`/`31` (G-135..G-140); slices 19–20 feitos.
 Test Player corte v0: spec `30` (G-129..G-134); slice 18 feito.
 Project Memory corte v0: spec `29` (G-123..G-128); slice 17 feito.

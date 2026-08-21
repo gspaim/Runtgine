@@ -10,16 +10,16 @@
 - [x] Skill runtgine-tui-design — seven tabs
 - [x] `openspec/changes/032-intent-surface/` package
 
-## Slice 21 — TUI INTENT (future)
+## Slice 21 — TUI INTENT (done)
 
-- [ ] Extend TUI `CoreAPI` with `CompileIntent` / `SubmitIntent`
-- [ ] Add `tabIntent`; reorder tabs per G-142
-- [ ] INTENT view: input, preview, error, session history (cap 10)
-- [ ] Keymap: `Ctrl+p`, `Ctrl+Enter`, `Esc`; footer hints
-- [ ] Submit success → select run + tab LIVE
-- [ ] JSON mode toggle (Task IR direct submit)
-- [ ] Unit tests: tab cycle, compile, submit, resize, NO_COLOR
-- [ ] `go test ./...` green
+- [x] Extend TUI `CoreAPI` with `CompileIntent` / `SubmitIntent`
+- [x] Add `tabIntent`; reorder tabs per G-142
+- [x] INTENT view: input, preview, error, session history (cap 10)
+- [x] Keymap: `Ctrl+p`, `Ctrl+Enter`, `Esc`; footer hints
+- [x] Submit success → select run + tab LIVE
+- [x] JSON mode toggle (Task IR direct submit)
+- [x] Unit tests: tab cycle, compile, submit, resize, NO_COLOR
+- [x] `go test ./...` green
 
 ## Fase 3 — Wails INTENT (future)
 

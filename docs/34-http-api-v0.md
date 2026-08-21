@@ -10,11 +10,9 @@ Protocolo: [11-protocolo-v0.md](11-protocolo-v0.md).
 HTTP Player (cliente GET/HEAD): [28-http-player-v0.md](28-http-player-v0.md).
 Board inbound continua polling: [12-board-p1.md](12-board-p1.md).
 
-**Status deste doc: CONFIRMED (v0 spec).** Código **não** iniciado.
-Duas fatias: slice 25 (`runtgine serve` + REST/SSE), slice 26
-(webhooks outbound de eventos terminais).
+**Status deste doc: CONFIRMED (v0 spec).** Código slices 25–26 **feito**.
 
-**Pacote OpenSpec:** [`openspec/changes/034-http-api/`](../openspec/changes/034-http-api/).
+**Pacote OpenSpec:** [`openspec/changes/archive/2026-08-21-034-http-api/`](../openspec/changes/archive/2026-08-21-034-http-api/).
 
 ---
 
@@ -250,4 +248,4 @@ Código HTTP **não** entra neste PR de spec.
 - Core API: [11](11-protocolo-v0.md) §13
 - Error model: [11](11-protocolo-v0.md) §9
 - HTTP Player (não confundir): [28](28-http-player-v0.md)
-- OpenSpec: [`openspec/changes/034-http-api/`](../openspec/changes/034-http-api/)
+- OpenSpec: [`openspec/changes/archive/2026-08-21-034-http-api/`](../openspec/changes/archive/2026-08-21-034-http-api/)

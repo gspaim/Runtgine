@@ -7,19 +7,19 @@
 - [x] `docs/README.md`, `AGENTS.md`, `README.md`, `REVIEW.md`
 - [x] OpenSpec `034-http-api`
 
-## Slice 25 — serve (future)
+## Slice 25 — serve (done)
 
-- [ ] Config `api.listen` / token env + boot guard (non-loopback)
-- [ ] Package `internal/entrypoint/httpapi` handler (stdlib)
-- [ ] CLI `runtgine serve`
-- [ ] Routes G-155 + Error model mapping
-- [ ] SSE for `GET /v0/runs/{id}/events`
-- [ ] Tests httptest: healthz, 401, hello, validation, preview
-- [ ] `go test ./...` / `go vet ./...` green
+- [x] Config `api.listen` / token env + boot guard (non-loopback)
+- [x] Package `internal/entrypoint/httpapi` handler (stdlib)
+- [x] CLI `runtgine serve`
+- [x] Routes G-155 + Error model mapping
+- [x] SSE for `GET /v0/runs/{id}/events`
+- [x] Tests httptest: healthz, 401, hello, validation, preview
+- [x] `go test ./...` / `go vet ./...` green
 
-## Slice 26 — webhooks (future)
+## Slice 26 — webhooks (done)
 
-- [ ] Config `webhooks[]` + `RUNTGINE_WEBHOOK_SECRET`
-- [ ] Dispatcher on terminal run events
-- [ ] HTTPS + link-local deny; timeout/retry/warn
-- [ ] Tests with fake RoundTripper; run state unchanged on 5xx
+- [x] Config `webhooks[]` + `RUNTGINE_WEBHOOK_SECRET`
+- [x] Dispatcher on terminal run events
+- [x] HTTPS + link-local deny; timeout/retry/warn
+- [x] Tests with fake RoundTripper; run state unchanged on 5xx

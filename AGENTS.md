@@ -73,16 +73,16 @@ Test Player: `docs/30-test-player-v0.md` + archive
 MVP 1.0 magro: `docs/09-mvp.md` + `docs/31-context-engine-v0.md` +
 archive `openspec/changes/archive/2026-08-19-031-mvp-1.0/` — CONFIRMED
 (G-135..G-140); slices 19–20 feitos (nao e G-45 / NATS / Wails / MCP).
-Intent Surface: `docs/32-intent-surface-v0.md` +
-`openspec/changes/032-intent-surface/` — CONFIRMED
-(G-141..G-146); slice 21 TUI + Wails Fase 3 (codigo pendente).
-Evolution v0: `docs/33-evolution-v0.md` +
-`openspec/changes/033-evolution-v0/` — CONFIRMED
-(G-147..G-152); slices 22–24 Router/Playbooks/Lessons (codigo pendente).
-HTTP API: `docs/34-http-api-v0.md` +
-`openspec/changes/034-http-api/` — CONFIRMED
-(G-153..G-158); slices 25–26 `runtgine serve` + webhooks outbound
-(codigo pendente; nao e HTTP Player `28`).
+Intent Surface: `docs/32-intent-surface-v0.md` + archive
+`openspec/changes/archive/2026-08-21-032-intent-surface/` — CONFIRMED
+(G-141..G-146); slice 21 TUI feito; Wails Fase 3 pendente.
+Evolution v0: `docs/33-evolution-v0.md` + archive
+`openspec/changes/archive/2026-08-21-033-evolution-v0/` — CONFIRMED
+(G-147..G-152); slices 22–24 feitas.
+HTTP API: `docs/34-http-api-v0.md` + archive
+`openspec/changes/archive/2026-08-21-034-http-api/` — CONFIRMED
+(G-153..G-158); slices 25–26 feitas (`runtgine serve` + webhooks outbound;
+nao e HTTP Player `28`).
 Skill obrigatoria para TUI: `.cursor/skills/runtgine-tui-design/SKILL.md`.
 
 ## Ordem de trabalho
@@ -112,9 +112,10 @@ Skill obrigatoria para TUI: `.cursor/skills/runtgine-tui-design/SKILL.md`.
 23. Project Memory — CONFIRMED v0 em `29` + OpenSpec archive `029-project-memory` — feito
 24. Test Player — CONFIRMED v0 em `30` + OpenSpec archive `030-test-player` — feito
 25. MVP 1.0 magro — CONFIRMED em `09`/`31` + archive `031-mvp-1.0` — slices 19–20 feitos
-26. Intent Surface — CONFIRMED v0 em `32` + OpenSpec `032-intent-surface` — slice 21 TUI + Wails Fase 3
-27. Evolution v0 — CONFIRMED em `33` + OpenSpec `033-evolution-v0` — slices 22–24 (Router, Playbooks, Lessons)
-28. Depois — G-45 / mais Players / Wails — so apos nova promocao em `04`
+26. Intent Surface — CONFIRMED v0 em `32` + archive `032-intent-surface` — slice 21 TUI feito; Wails Fase 3
+27. Evolution v0 — CONFIRMED em `33` + archive `033-evolution-v0` — slices 22–24 feitas
+28. HTTP API — CONFIRMED em `34` + archive `034-http-api` — slices 25–26 feitas
+29. Depois — Wails Fase 3 / MCP / mais Players — so apos nova promocao em `04`
 
 ## Conceitos chave (nao confundir)
 

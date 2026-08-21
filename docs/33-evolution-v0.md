@@ -10,10 +10,9 @@ Referências: [08-workflow-templates.md](08-workflow-templates.md),
 [12-board-p1.md](12-board-p1.md) (effort/difficulty), [16-project-memory.md](16-project-memory.md),
 [29-project-memory-v0.md](29-project-memory-v0.md), [02-conceitos.md](02-conceitos.md).
 
-**Status deste doc: CONFIRMED (v0 spec).** Código **não** iniciado.
-Três fatias futuras: slice 22 (Router), slice 23 (Playbooks), slice 24 (Lessons).
+**Status deste doc: CONFIRMED (v0 spec).** Código slices 22–24 **feito**.
 
-**Pacote OpenSpec:** [`openspec/changes/033-evolution-v0/`](../openspec/changes/033-evolution-v0/).
+**Pacote OpenSpec:** [`openspec/changes/archive/2026-08-21-033-evolution-v0/`](../openspec/changes/archive/2026-08-21-033-evolution-v0/).
 
 ---
 
@@ -276,4 +275,4 @@ Três memórias ([16](16-project-memory.md)):
 - Task Router atual: [12](12-board-p1.md) G-26
 - Effort/difficulty: `internal/players/pipeline` (`pipeline.effort`, `pipeline.difficulty`)
 - LLM config: `internal/config`, `internal/players/llm`
-- OpenSpec: [`openspec/changes/033-evolution-v0/`](../openspec/changes/033-evolution-v0/)
+- OpenSpec: [`openspec/changes/archive/2026-08-21-033-evolution-v0/`](../openspec/changes/archive/2026-08-21-033-evolution-v0/)

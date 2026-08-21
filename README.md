@@ -98,10 +98,10 @@ Visão enxuta do que já está em `main`. **Atualizar esta seção em todo PR
 | Feito | Slice 19 — Intent → Players (`031`, G-135..G-136; `test.go` / `git.status`) |
 | Feito | Slice 20 — Context Engine v0 (`31`, G-137..G-139; semente `repo_hits`) |
 | Feito | MVP 1.0 magro (`09`/`031`, G-135..G-140) |
-| Spec | Slice 21 — Intent Surface TUI (`32`, G-141..G-146) |
-| Spec | Slices 22–24 — Evolution v0 (`33`, G-147..G-152) |
-| Spec | Slices 25–26 — HTTP API v0 (`34`, G-153..G-158; `runtgine serve`) |
-| Próximo código | Slice 21 (TUI INTENT), depois 22–24, depois 25–26 |
+| Feito | Slice 21 — Intent Surface TUI (`32`, G-141..G-146; aba INTENT) |
+| Feito | Slices 22–24 — Evolution v0 (`33`, G-147..G-152; Router, Playbooks, Lessons) |
+| Feito | Slices 25–26 — HTTP API v0 (`34`, G-153..G-158; `runtgine serve` + webhooks) |
+| Próximo | Wails Fase 3 (INTENT desktop); G-44 MCP; mais Players (G-41) |
 
 Detalhe do corte: [`docs/09-mvp.md`](docs/09-mvp.md). Limitações atuais abaixo.
 
@@ -168,6 +168,13 @@ em:
 ```text
 <workspace>/.runtgine/runtgine.db
 ```
+
+### Superfícies extras
+
+- TUI: `./bin/runtgine tui` — aba INTENT (preview `Ctrl+p`, submit `Ctrl+Enter`).
+- HTTP API (loopback): `./bin/runtgine serve --listen 127.0.0.1:7420`
+- Playbooks de exemplo: copie `examples/playbooks/*.md` para `.runtgine/playbooks/`.
+- Lessons HITL: `runtgine lessons list` / `approve` / `reject` (opt-in `lessons.capture=failures`).
 
 ## CLI
 
@@ -403,6 +410,9 @@ vulnerabilidade.
 | [Project Memory](docs/29-project-memory-v0.md) | Memória episódica v0 (G-123..G-128; slice 17) |
 | [Test Player](docs/30-test-player-v0.md) | Player `test.go` v0 (G-129..G-134; slice 18) |
 | [Context Engine](docs/31-context-engine-v0.md) | Semente `repo_hits` v0 (G-137..G-139; slice 20) |
+| [Intent Surface](docs/32-intent-surface-v0.md) | Aba INTENT / Mission Brief (G-141..G-146; slice 21) |
+| [Evolution](docs/33-evolution-v0.md) | Router, Playbooks, Lessons (G-147..G-152; slices 22–24) |
+| [HTTP API](docs/34-http-api-v0.md) | `runtgine serve` + webhooks (G-153..G-158; slices 25–26) |
 | [OpenSpec](openspec/README.md) | Pacotes de mudança `NNN-slug` |
 | [TUI Design](docs/14-tui-design.md) | Constellation Mission Control |
 | [Git workflow](docs/15-git-workflow.md) | Branches, RC e releases |

@@ -126,7 +126,7 @@ Sem walk do workspace, sem embeddings, sem corpo de arquivo no pack.
 | Embeddings / RAG / dump do repositório no pack | Fora do Context Engine v0 |
 
 UC-02 (CI/CD via HTTP) é **pós-1.0**: spec [34-http-api-v0.md](34-http-api-v0.md)
-(G-153..G-158). Até o código das slices 25–26, CI usa CLI.
+(G-153..G-158); slices 25–26 feitas (`runtgine serve`).
 
 ---
 
@@ -135,9 +135,9 @@ UC-02 (CI/CD via HTTP) é **pós-1.0**: spec [34-http-api-v0.md](34-http-api-v0.
 | Entry Point | 1.0 magro | Notas |
 |---|---|---|
 | CLI | sim | Task IR + `runtgine intent` |
-| TUI | sim | Observação hoje; aba **INTENT** confirmada em `32` (slice 21) |
+| TUI | sim | Inclui aba **INTENT** (`32`, slice 21) |
 | Board (GitHub Projects) | sim | Entry Point ≠ Player |
-| API HTTP | spec `34` | Fora do 1.0 magro; slices 25–26 |
+| API HTTP | sim (pós-1.0) | `runtgine serve` (`34`, slices 25–26) |
 | Desktop (Wails) | não | Fase 3 |
 | Web | não | Futuro |
 
@@ -148,9 +148,9 @@ UC-02 (CI/CD via HTTP) é **pós-1.0**: spec [34-http-api-v0.md](34-http-api-v0.
 1. Slice 19 — heurísticas Intent (G-135..G-136) — feito
 2. Slice 20 — Context Engine v0 (G-137..G-139) — feito
 3. OpenSpec `031` arquivado — feito
-4. Slice 21 — Intent Surface TUI (G-141..G-146; ver `32`)
-5. Slices 22–24 — Evolution v0 (G-147..G-152; ver `33`): Router, Playbooks, Lessons
-6. Slices 25–26 — HTTP API v0 (G-153..G-158; ver `34`): `serve` + webhooks outbound
+4. Slice 21 — Intent Surface TUI (G-141..G-146; ver `32`) — feito
+5. Slices 22–24 — Evolution v0 (G-147..G-152; ver `33`) — feito
+6. Slices 25–26 — HTTP API v0 (G-153..G-158; ver `34`) — feito
 7. Depois: nova promoção em `04` (mais Players, Wails Fase 3 incl. INTENT desktop, MCP, …)
 
 Histórico do runtime mínimo (Task IR → Shell → CLI → TUI → Board →
