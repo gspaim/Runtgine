@@ -69,8 +69,10 @@ para o Public Protocol. Core e o produto. Interface e superficie.
 
 ## 6. Entry Points
 
-CLI (MVP), TUI (MVP), Board/Github (MVP), Wails (Fase 3),
-API (pos-MVP), Webhooks (futuro), Scheduler (futuro).
+CLI (MVP), TUI (MVP), Board/Github (MVP), HTTP API (spec `34`;
+slices 25–26), Wails (Fase 3), Scheduler (futuro).
+Webhook inbound GitHub permanece fora (Board = polling).
+Webhooks outbound de Run = G-156.
 Todos convergem para o mesmo protocolo interno.
 Entry Point != Player.
 
@@ -128,7 +130,7 @@ HTTP Player v0 spec `28` / G-117..G-122 — slice 16 feito;
 Project Memory v0 spec `29` / G-123..G-128 — slice 17 feito;
 Test Player v0 spec `30` / G-129..G-134 — slice 18 feito;
 Intent heuristics slice 19 / Context Engine slice 20 — 1.0 magro feito)
-Fase 5: Cloud (NATS, API, serverless)
+Fase 5: Cloud — HTTP API v0 spec `34` (slices 25–26); NATS DEFERRED; serverless depois
 Fase 6: Ecossistema (biblioteca de Players)
 
 ## 11. Status Geral
@@ -150,4 +152,7 @@ Slices 1–9 implementados (Core → Intent → Graph → Git → Filesystem).
 **Project Memory v0: CONFIRMED + implementado** (`29`, G-123..G-128; slice 17).
 **Test Player v0: CONFIRMED + implementado** (`30`, G-129..G-134; slice 18).
 **MVP 1.0 magro: CONFIRMED + implementado** (`09`/`31`, G-135..G-140; slices 19–20).
-P3 restante: G-45 API HTTP; G-44 MCP; NATS; Wails.
+**Intent Surface v0: CONFIRMED spec** (`32`, G-141..G-146; slice 21 pendente).
+**Evolution v0: CONFIRMED spec** (`33`, G-147..G-152; slices 22–24 pendentes).
+**HTTP API v0: CONFIRMED spec** (`34`, G-153..G-158; slices 25–26 pendentes).
+P3 restante: G-44 MCP; NATS; Wails; G-41 mais Players.

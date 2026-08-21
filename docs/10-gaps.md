@@ -108,7 +108,7 @@ Ate la, o Core deve rodar so com CLI + Shell.
 | G-42 | Human-in-the-loop / Approvals | **CONFIRMED v0** — recorte G-81..G-86 em `22` |
 | G-43 | Resource Claims / Blast Radius | **Claims CONFIRMED v0** — `24`. **Blast CONFIRMED v0** — `25`. **Walk Blast←Graph CONFIRMED v0** — recorte G-111..G-116 em `27` |
 | G-44 | MCP integration — candidato a transporte futuro da Project Memory (fora do v0 `29`) |
-| G-45 | API HTTP / webhooks | Servidor do runtime — distinto do HTTP Player cliente (`28`) |
+| G-45 | API HTTP / webhooks | **CONFIRMED v0** — recorte G-153..G-158 em `34`; distinto do HTTP Player (`28`) |
 | G-46 | Project Memory (conceito + ContextPack + validade + hierarquia) | **CONFIRMED v0** — recorte G-123..G-128 em `29`; esboço em `16` |
 | G-47 | Modelo de acesso Memory Provider vs Memory Player — Provider **CONFIRMED v0** (`29`); Player **OPEN QUESTION** (fora do v0) |
 
@@ -287,6 +287,17 @@ Ate la, o Core deve rodar so com CLI + Shell.
 | G-151 | Exclusões evolution | **CONFIRMED** — não agent framework |
 | G-152 | Slices 22–24 | **CONFIRMED** — Router → Playbooks → Lessons |
 
+## HTTP API (recorte G-45) — CONFIRMED v0
+
+| ID | Gap | Notas |
+|---|---|---|
+| G-153 | Papel / pacote `httpapi` | **CONFIRMED** — ver `34-http-api-v0.md` |
+| G-154 | Listen / auth | **CONFIRMED** — loopback; Bearer; boot guard |
+| G-155 | Rotas REST + SSE | **CONFIRMED** — Core API `11` §13 + Intent |
+| G-156 | Webhooks outbound | **CONFIRMED** — terminais; HTTPS; best-effort |
+| G-157 | Exclusões v0 | **CONFIRMED** — sem inbound GitHub; sem TLS no binário |
+| G-158 | Slices 25–26 | **CONFIRMED** — serve → webhooks |
+
 ---
 
 ## Ordem para fechar gaps
@@ -312,6 +323,7 @@ Ate la, o Core deve rodar so com CLI + Shell.
 19. MVP 1.0 magro — spec em `09`/`31`/`17` — G-135..G-140 CONFIRMED; slices 19–20 feitos
 20. Intent Surface — spec em `32` — G-141..G-146 CONFIRMED; código = slice 21 (TUI) + Wails Fase 3
 21. Evolution v0 — spec em `33` — G-147..G-152 CONFIRMED; código = slices 22–24 (Router, Playbooks, Lessons)
+22. HTTP API — spec em `34` — G-153..G-158 CONFIRMED; código = slices 25–26 (`serve` + webhooks)
 
 ## Criterio de “pronto para codar”
 
@@ -333,6 +345,7 @@ Ate la, o Core deve rodar so com CLI + Shell.
 **Project Memory (G-123..G-128): CONFIRMADO** — slice 17 feito.  
 **Test Player (G-129..G-134): CONFIRMADO** — slice 18 feito.  
 **MVP 1.0 magro (G-135..G-140): CONFIRMADO** — slices 19–20 feitos.
+**HTTP API (G-153..G-158): CONFIRMADO** — spec `34`; codigo = slices 25–26.
 
 Ordem pratica de codigo:
 1. Core CLI + Shell (+ SQLite) — slice 1 — feito
@@ -356,7 +369,7 @@ Ordem pratica de codigo:
 19. Intent player heuristics — slice 19 (G-135..G-136) — feito (spec `031`)
 20. Context Engine v0 — slice 20 (G-137..G-139) — feito (spec `031`)
 
-P3 restante (G-40 templates, G-44 MCP, G-45 API HTTP; G-41 em andamento).
+P3 restante (G-40 templates, G-44 MCP; G-41 em andamento; G-45 spec `34` / slices 25–26).
 MVP 1.0 magro: spec `09`/`31` (G-135..G-140); slices 19–20 feitos.
 Test Player corte v0: spec `30` (G-129..G-134); slice 18 feito.
 Project Memory corte v0: spec `29` (G-123..G-128); slice 17 feito.

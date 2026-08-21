@@ -79,6 +79,10 @@ Intent Surface: `docs/32-intent-surface-v0.md` +
 Evolution v0: `docs/33-evolution-v0.md` +
 `openspec/changes/033-evolution-v0/` — CONFIRMED
 (G-147..G-152); slices 22–24 Router/Playbooks/Lessons (codigo pendente).
+HTTP API: `docs/34-http-api-v0.md` +
+`openspec/changes/034-http-api/` — CONFIRMED
+(G-153..G-158); slices 25–26 `runtgine serve` + webhooks outbound
+(codigo pendente; nao e HTTP Player `28`).
 Skill obrigatoria para TUI: `.cursor/skills/runtgine-tui-design/SKILL.md`.
 
 ## Ordem de trabalho
@@ -148,8 +152,9 @@ Notas nao obvias para desenvolver aqui:
 
 - SQLite usa `modernc.org/sqlite` (Go puro): nao precisa de CGO nem de
   bibliotecas de sistema. `CGO_ENABLED=0` funciona.
-- Nao ha servico de longa duracao: e um binario CLI/TUI. Cada `runtgine run`
-  executa e encerra; nao ha servidor para deixar rodando.
+- Nao ha servico de longa duracao **hoje**: e um binario CLI/TUI. Cada
+  `runtgine run` executa e encerra. `runtgine serve` (HTTP API, spec `34`)
+  ainda nao esta implementado (slices 25–26).
 - Estado persistido em `<workspace>/.runtgine/runtgine.db` (gitignored). Para
   um estado limpo, apague `.runtgine/` entre execucoes.
 - `runtgine tui` exige um TTY interativo; nao roda em pipe/CI nao interativo.

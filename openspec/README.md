@@ -37,9 +37,10 @@ branch:              feat/<NNN>-<slug>   (ou docs/ fix/ chore/)
 
 Exemplos válidos: `001-shell-player`, `017-intent-engine`, `019-graph-hits`.
 
-**Próximo id livre:** `034`. Mudanças ativas:
+**Próximo id livre:** `035`. Mudanças ativas:
 [`032-intent-surface/`](changes/032-intent-surface/) (slice 21),
-[`033-evolution-v0/`](changes/033-evolution-v0/) (slices 22–24).
+[`033-evolution-v0/`](changes/033-evolution-v0/) (slices 22–24),
+[`034-http-api/`](changes/034-http-api/) (slices 25–26).
 Último archive:
 [`changes/archive/2026-08-19-031-mvp-1.0/`](changes/archive/2026-08-19-031-mvp-1.0/)
 (MVP 1.0 magro; G-135..G-140; slices 19–20 feitos).
@@ -85,3 +86,4 @@ Não codificar mudança cujo status em `04` não esteja **CONFIRMED**
 | `test-player` | Player `test.go` (`go test` no workspace; spec 030) |
 | `intent-surface` | Aba INTENT TUI + Wails Mission Brief (spec 032; delta em change) |
 | `evolution-v0` | Player Router + Playbooks + Lessons (spec 033; delta em change) |
+| `http-api` | Entry Point HTTP `runtgine serve` (spec 034; delta em change) |

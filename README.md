@@ -98,7 +98,10 @@ Visão enxuta do que já está em `main`. **Atualizar esta seção em todo PR
 | Feito | Slice 19 — Intent → Players (`031`, G-135..G-136; `test.go` / `git.status`) |
 | Feito | Slice 20 — Context Engine v0 (`31`, G-137..G-139; semente `repo_hits`) |
 | Feito | MVP 1.0 magro (`09`/`031`, G-135..G-140) |
-| Próximo | G-45 / mais Players / Wails — nova promoção em `04` |
+| Spec | Slice 21 — Intent Surface TUI (`32`, G-141..G-146) |
+| Spec | Slices 22–24 — Evolution v0 (`33`, G-147..G-152) |
+| Spec | Slices 25–26 — HTTP API v0 (`34`, G-153..G-158; `runtgine serve`) |
+| Próximo código | Slice 21 (TUI INTENT), depois 22–24, depois 25–26 |
 
 Detalhe do corte: [`docs/09-mvp.md`](docs/09-mvp.md). Limitações atuais abaixo.
 

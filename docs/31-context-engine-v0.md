@@ -96,7 +96,7 @@ Se `pipeline.repo-search` já preencheu `repo_hits`, **não** sobrescrever.
 
 Compartilhado com heurísticas de Intent (`09` / G-135..G-136):
 
-- G-45 API HTTP; G-44 MCP; G-36 NATS; Wails
+- G-45 API HTTP (spec `34`, fora do 1.0); G-44 MCP; G-36 NATS; Wails
 - Player Router; Workflow Templates; Memory Player
 - `http.post`, `git.push`, pytest/npm, Players de infra
 - Context Engine “completo” (`02`: relevant events globais, current
@@ -123,7 +123,7 @@ Compartilhado com heurísticas de Intent (`09` / G-135..G-136):
 1. Slice 19 — Intent player heuristics (`17` / G-135..G-136) — feito
 2. Slice 20 — semente `repo_hits` neste doc — feito
 3. README Estágio: 1.0 magro feito; `031` arquivado — feito
-4. Depois: nova promoção em `04` (G-45, mais Players, Wails, …)
+4. Depois: Intent Surface (`32`), Evolution (`33`), HTTP API (`34`)
 
 ---
 

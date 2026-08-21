@@ -125,7 +125,8 @@ Sem walk do workspace, sem embeddings, sem corpo de arquivo no pack.
 | pytest / npm / `-race` / K8s / Terraform / PostgreSQL | Outros recortes G-41 |
 | Embeddings / RAG / dump do repositório no pack | Fora do Context Engine v0 |
 
-UC-02 (CI/CD via HTTP) permanece **pós-1.0** (G-45). Até lá, CI usa CLI.
+UC-02 (CI/CD via HTTP) é **pós-1.0**: spec [34-http-api-v0.md](34-http-api-v0.md)
+(G-153..G-158). Até o código das slices 25–26, CI usa CLI.
 
 ---
 
@@ -136,7 +137,7 @@ UC-02 (CI/CD via HTTP) permanece **pós-1.0** (G-45). Até lá, CI usa CLI.
 | CLI | sim | Task IR + `runtgine intent` |
 | TUI | sim | Observação hoje; aba **INTENT** confirmada em `32` (slice 21) |
 | Board (GitHub Projects) | sim | Entry Point ≠ Player |
-| API HTTP | não | G-45 |
+| API HTTP | spec `34` | Fora do 1.0 magro; slices 25–26 |
 | Desktop (Wails) | não | Fase 3 |
 | Web | não | Futuro |
 
@@ -149,7 +150,8 @@ UC-02 (CI/CD via HTTP) permanece **pós-1.0** (G-45). Até lá, CI usa CLI.
 3. OpenSpec `031` arquivado — feito
 4. Slice 21 — Intent Surface TUI (G-141..G-146; ver `32`)
 5. Slices 22–24 — Evolution v0 (G-147..G-152; ver `33`): Router, Playbooks, Lessons
-6. Depois: nova promoção em `04` (G-45, mais Players, Wails Fase 3 incl. INTENT desktop, …)
+6. Slices 25–26 — HTTP API v0 (G-153..G-158; ver `34`): `serve` + webhooks outbound
+7. Depois: nova promoção em `04` (mais Players, Wails Fase 3 incl. INTENT desktop, MCP, …)
 
 Histórico do runtime mínimo (Task IR → Shell → CLI → TUI → Board →
 pipeline) está nos slices 1–4 / `11` / `12`. Não reabrir.

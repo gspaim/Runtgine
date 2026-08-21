@@ -180,7 +180,7 @@ Todas convergem para o mesmo protocolo ([11-protocolo-v0.md](11-protocolo-v0.md)
 1. **Slice 21** — TUI aba INTENT (`internal/entrypoint/tui`) + skill + testes.
 2. **Fase 3 Wails** — view INTENT espelhando G-143/G-144 (branch separada).
 
-Não depende de G-45 (API HTTP), NATS, nem novos Players.
+Não depende de HTTP API (`34` / G-45), NATS, nem novos Players.
 
 ---
 
