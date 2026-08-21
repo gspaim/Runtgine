@@ -18,7 +18,7 @@ Status: CONFIRMED | HYPOTHESIS | OPEN QUESTION | REJECTED
 | Cobra | CONFIRMED | CLI |
 | Bubble Tea | CONFIRMED | TUI |
 | Lip Gloss + Bubbles | CONFIRMED | Estilizacao e componentes TUI |
-| Wails | CONFIRMED | Desktop (Go + Svelte) |
+| Wails | CONFIRMED | Desktop (Go + Svelte); corte v0 em `35` (Wails **v2**) |
 | Canal Go (Event Bus) | CONFIRMED | Pub/sub in-process |
 | JSON + JSON Schema | CONFIRMED | Protocolo e contratos |
 | SQLite (modernc.org/sqlite) | CONFIRMED | Persistencia local; pure Go |
@@ -62,7 +62,8 @@ Status: CONFIRMED | HYPOTHESIS | OPEN QUESTION | REJECTED
 | Event Bus in-process (MVP) | CONFIRMED | Canais Go |
 | Nativo (nao Electron) | CONFIRMED | Wails |
 | Runner v0 | CONFIRMED | Orchestrator minimo do MVP |
-| HTTP API v0 | CONFIRMED (spec) | Entry Point `runtgine serve`; ver `34`; slices 25–26 |
+| HTTP API v0 | CONFIRMED + implementado | Entry Point `runtgine serve`; ver `34`; slices 25–26 |
+| Desktop Wails v0 | CONFIRMED (v0 spec) | Entry Point `runtgine desktop`; ver `35`; codigo slices 27–28 |
 
 ## MVP (corte canônico)
 
@@ -77,7 +78,7 @@ Ver [09-mvp.md](09-mvp.md). Decisoes-chave:
 | Intent Engine NL v0 (pos-Core) | CONFIRMED | Ver `17`; heuristicas Player = slice 19 feito (G-135..G-136) |
 | Context Engine v0 no 1.0 magro | CONFIRMED | Ver `31`; slice 20 feito (G-137..G-139) |
 | API HTTP (G-45) fora do 1.0 | CONFIRMED | Spec v0 em `34`; slices 25–26 feitas; 1.0 magro continua CLI |
-| Wails fora do MVP / 1.0 | CONFIRMED | Fase 3 |
+| Wails fora do MVP / 1.0 | CONFIRMED | Fase 3; spec v0 em `35`; codigo slices 27–28 |
 | Escopo detalhado em 09-mvp.md | CONFIRMED | Realizado (slices 1–26; 1.0 magro + INTENT/Evolution/HTTP) |
 
 ## Modelo conceitual
@@ -125,9 +126,10 @@ Ver [09-mvp.md](09-mvp.md). Decisoes-chave:
 - Project Memory v0 (G-123..G-128; recorte G-46/G-47) — spec; codigo = slice 17 — feito
 - Test Player v0 (G-129..G-134; recorte G-41) — spec; codigo = slice 18 — feito
 - MVP 1.0 magro (G-135..G-140) — spec `09`/`31`/`17`; slices 19–20 feitos
-- Intent Surface v0 (G-141..G-146) — spec `32`; TUI slice 21 feito; Wails Fase 3
+- Intent Surface v0 (G-141..G-146) — spec `32`; TUI slice 21 feito; Wails = spec `35`
 - Evolution v0 (G-147..G-152) — spec `33`; slices 22–24 feitas
 - HTTP API v0 (G-153..G-158; recorte G-45) — spec `34`; slices 25–26 feitas
+- Desktop Wails v0 (G-159..G-165; recorte G-35/G-144) — spec `35`; codigo = slices 27–28
 
 ## Protocolo v0 — confirmado (sessao de fechamento)
 
@@ -445,14 +447,14 @@ Codigo = slices 19–20 feitos. Nao e G-45; nao e NATS/Wails/MCP.
 
 Ver [32-intent-surface-v0.md](32-intent-surface-v0.md). Superficie visual de
 Entry Point (Mission Brief / aba INTENT). Compilador = Intent Engine (`17`).
-Codigo TUI = slice 21 feito; Wails INTENT = Fase 3.
+Codigo TUI = slice 21 feito; Wails INTENT = spec `35` (slices 27–28).
 
 | Item | Status | Notas |
 |---|---|---|
 | G-141 Papel / Mission Brief | CONFIRMED | Entry Point visual; nao chatbot |
 | G-142 TUI aba INTENT | CONFIRMED | Primeira aba; NL + preview + submit |
 | G-143 Fluxo Core | CONFIRMED | `CompileIntent` / `SubmitIntent`; source `tui`\|`wails` |
-| G-144 Wails INTENT | CONFIRMED | Fase 3; shadcn-svelte; mesma semantica |
+| G-144 Wails INTENT | CONFIRMED | Semântica em `32`; app desktop = spec `35` |
 | G-145 Exclusoes v0 | CONFIRMED | Sem thread chat; sem Player; sem transcript RAG |
 | G-146 Criterios de pronto | CONFIRMED | Preview Ctrl+p; submit → LIVE |
 
@@ -485,6 +487,22 @@ slices 25–26 (feito). Independente das slices 21–24.
 | G-156 Webhooks outbound | CONFIRMED | Eventos terminais; HTTPS; não falha o Run |
 | G-157 Exclusoes v0 | CONFIRMED | Sem inbound GitHub; sem TLS no binário; sem Graph REST |
 | G-158 Ordem slices 25–26 | CONFIRMED | Serve → webhooks |
+
+## Desktop Wails — CONFIRMED v0 (Entry Point)
+
+Ver [35-wails-v0.md](35-wails-v0.md). Recorte de G-35 / G-144: janela
+nativa in-process sobre `api.Core`, **não** cliente da HTTP API (`34`).
+Código = slices 27–28 (pendente). Wails **v2** (v3 beta fora).
+
+| Item | Status | Notas |
+|---|---|---|
+| G-159 Papel / pacote `desktop` | CONFIRMED | Entry Point; `runtgine desktop`; `source=wails` |
+| G-160 Stack pin | CONFIRMED | Wails v2 + Svelte 5 + shadcn-svelte; tokens `14` |
+| G-161 App shell / sete views | CONFIRMED | INTENT primeiro; uma janela |
+| G-162 Bindings Core API | CONFIRMED | Fachada; testes fake Core; CI sem display |
+| G-163 INTENT desktop | CONFIRMED | Fecha G-144; preview sem Run |
+| G-164 Exclusoes v0 | CONFIRMED | Sem v3; sem HTTP client; sem chat; sem PTY |
+| G-165 Ordem slices 27–28 | CONFIRMED | INTENT/LIVE → demais views |
 
 ## Git / release — fluxo de branches
 

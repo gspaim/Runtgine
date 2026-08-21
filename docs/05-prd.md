@@ -11,7 +11,7 @@ isso criando uma camada comum de execucao e orquestracao.
 - Dev: usa CLI/TUI para tarefas do dia a dia
 - Tech Lead: gerencia board e workflows
 - QA: executa pipelines de teste
-- DevOps: automatiza deploy e infra (CLI no 1.0; API HTTP = spec `34`)
+- DevOps: automatiza deploy e infra (CLI; API HTTP = `34`, slices 25–26 feitas)
 - LLM Player especializado: recebe contexto montado pelo Context Engine
 
 ## Casos de uso
@@ -20,8 +20,7 @@ UC-01: Usuario fornece Task IR (JSON/YAML) via CLI -> Validator valida
 -> Execution Plan -> Players executam (Shell e/ou LLM e/ou Git/FS/…)
 
 UC-02: CI/CD pipeline com Players deterministicos + LLM para diagnostico
-— **pos-1.0**; spec HTTP API v0 em `34` (G-153..G-158; slices 25–26).
-Ate o `runtgine serve`, a CI chama a CLI.
+— **pos-1.0**; HTTP API v0 em `34` (`runtgine serve`). Desktop = spec `35`.
 
 UC-03: Task de board Kanban passa por decomposition e routing
 
@@ -38,7 +37,7 @@ P1 (MVP 1.0 magro — G-135..G-140):
 Heuristicas Intent → `test.go` / `git.status|diff|log` / `docker.ps`;
 Context Engine v0 (semente `repo_hits` a partir do Graph)
 
-P2: API HTTP (G-45 / spec `34`); mais Players; Wails (Fase 3)
+P2: API HTTP (G-45 / spec `34`, feito); Desktop Wails (spec `35`); mais Players
 
 P3: NATS (G-36 DEFERRED), MCP (G-44), Workflow Templates (G-40),
 Memory Player (G-47), K8s/Terraform/PostgreSQL

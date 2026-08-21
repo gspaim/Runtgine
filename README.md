@@ -101,7 +101,8 @@ Visão enxuta do que já está em `main`. **Atualizar esta seção em todo PR
 | Feito | Slice 21 — Intent Surface TUI (`32`, G-141..G-146; aba INTENT) |
 | Feito | Slices 22–24 — Evolution v0 (`33`, G-147..G-152; Router, Playbooks, Lessons) |
 | Feito | Slices 25–26 — HTTP API v0 (`34`, G-153..G-158; `runtgine serve` + webhooks) |
-| Próximo | Wails Fase 3 (INTENT desktop); G-44 MCP; mais Players (G-41) |
+| Spec | Slices 27–28 — Desktop Wails v0 (`35`, G-159..G-165; `runtgine desktop`) |
+| Próximo código | Slice 27 (Wails INTENT/LIVE), depois 28 |
 
 Detalhe do corte: [`docs/09-mvp.md`](docs/09-mvp.md). Limitações atuais abaixo.
 
@@ -413,6 +414,7 @@ vulnerabilidade.
 | [Intent Surface](docs/32-intent-surface-v0.md) | Aba INTENT / Mission Brief (G-141..G-146; slice 21) |
 | [Evolution](docs/33-evolution-v0.md) | Router, Playbooks, Lessons (G-147..G-152; slices 22–24) |
 | [HTTP API](docs/34-http-api-v0.md) | `runtgine serve` + webhooks (G-153..G-158; slices 25–26) |
+| [Desktop Wails](docs/35-wails-v0.md) | `runtgine desktop` (G-159..G-165; slices 27–28) |
 | [OpenSpec](openspec/README.md) | Pacotes de mudança `NNN-slug` |
 | [TUI Design](docs/14-tui-design.md) | Constellation Mission Control |
 | [Git workflow](docs/15-git-workflow.md) | Branches, RC e releases |

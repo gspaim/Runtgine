@@ -226,7 +226,7 @@ Critérios slice 26:
 | Board (`12`) | Cards GitHub → Task IR; polling |
 | HTTP Player (`28`) | Step `http.get`/`head` **dentro** de um Run |
 | HTTP API (`34`) | Fora do Run: admitir/observar Runs via HTTP |
-| Wails | Fase 3; in-process, não cliente desta API no v0 |
+| Wails (`35`) | Fase 3 / slices 27–28; in-process, não cliente desta API no v0 |
 
 Todas convergem para o mesmo protocolo (`11`).
 

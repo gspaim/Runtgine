@@ -33,8 +33,9 @@ A TUI e uma superficie sobre o Core:
 - Lip Gloss
 - Bubbles
 
-O desktop futuro continua Wails + Svelte + shadcn-svelte. A TUI valida a linguagem de
-interacao antes do desktop. View **INTENT** no Wails espelha a aba INTENT (`32`).
+O desktop futuro continua Wails v2 + Svelte + shadcn-svelte (spec `35`).
+A TUI valida a linguagem de interacao antes do desktop. View **INTENT**
+no Wails espelha a aba INTENT (`32` / G-144).
 
 ## Sistema visual
 
@@ -234,7 +235,7 @@ Secrets sempre mascarados.
 - Runtime Graph “completo” (genome, AST contínuo, grafo federado);
 - walk Blast←Graph na TUI;
 - acesso web/SSH;
-- Wails (Fase 3; inclui INTENT desktop espelhando `32`).
+- Wails v0 (spec `35`; slices 27–28; inclui INTENT desktop espelhando `32`).
 
 ## Skill
 

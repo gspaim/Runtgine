@@ -2,16 +2,16 @@
 
 Superfície visual de **Entry Point** para compilar intenção em NL (ou Task IR
 JSON) e submeter Runs. Cobre a aba **INTENT** na TUI Constellation e a mesma
-experiência no desktop Wails (Fase 3).
+experiência no desktop Wails (spec [35](35-wails-v0.md); slices 27–28).
 
 Inventário: [10-gaps.md](10-gaps.md) (G-141+).
 Autoridade de status: [04-decisoes.md](04-decisoes.md).
 Intent Engine (compilador): [17-intent-engine-v0.md](17-intent-engine-v0.md).
-TUI: [14-tui-design.md](14-tui-design.md) · Desktop: Wails + Svelte + shadcn
-(Fase 3; [07-stack.md](07-stack.md)).
+TUI: [14-tui-design.md](14-tui-design.md) · Desktop: [35-wails-v0.md](35-wails-v0.md)
+(Wails v2 + Svelte + shadcn; [07-stack.md](07-stack.md)).
 
 **Status deste doc: CONFIRMED (v0).** Código TUI = slice 21 **feito**.
-Wails INTENT = Fase 3 (ainda não iniciado).
+Wails INTENT = spec [35](35-wails-v0.md) (slices 27–28; código pendente).
 
 **Pacote OpenSpec:** [`openspec/changes/archive/2026-08-21-032-intent-surface/`](../openspec/changes/archive/2026-08-21-032-intent-surface/).
 
@@ -111,9 +111,10 @@ input text + source ("tui" | "wails")
 CoreAPI na TUI (slice 21): estender interface com `CompileIntent` /
 `SubmitIntent` (já existem em `api.Core`).
 
-### G-144 — Desktop Wails (Fase 3)
+### G-144 — Desktop Wails (spec `35`)
 
-**Status: CONFIRMED**
+**Status: CONFIRMED** — app e corte em [35-wails-v0.md](35-wails-v0.md)
+(G-159..G-165; slices 27–28).
 
 Mesma semântica da aba TUI INTENT; stack [07-stack.md](07-stack.md):
 
@@ -154,7 +155,7 @@ Implementação Wails **não** bloqueia slice 21 da TUI.
 - Capability inventada → erro de Validator antes de executar.
 - Testes: model/update com fake Core; sem TTY interativo obrigatório em CI.
 
-**Wails (Fase 3):**
+**Wails (spec `35`, slices 27–28):**
 
 - Painel INTENT equivalente; submit → Live view.
 - Mesmos critérios de Validator/soberania.
@@ -178,7 +179,7 @@ Todas convergem para o mesmo protocolo ([11-protocolo-v0.md](11-protocolo-v0.md)
 ## 5. Ordem de implementação
 
 1. **Slice 21** — TUI aba INTENT (`internal/entrypoint/tui`) + skill + testes.
-2. **Fase 3 Wails** — view INTENT espelhando G-143/G-144 (branch separada).
+2. **Slices 27–28** — Desktop Wails (`35`) — view INTENT + demais views.
 
 Não depende de HTTP API (`34` / G-45), NATS, nem novos Players.
 
@@ -188,4 +189,5 @@ Não depende de HTTP API (`34` / G-45), NATS, nem novos Players.
 
 - Intent Engine API: [17](17-intent-engine-v0.md) G-51
 - TUI design system: [14](14-tui-design.md)
+- Desktop Wails: [35](35-wails-v0.md)
 - OpenSpec: [`openspec/changes/archive/2026-08-21-032-intent-surface/`](../openspec/changes/archive/2026-08-21-032-intent-surface/)

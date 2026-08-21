@@ -1,0 +1,11 @@
+schema: spec-driven
+created: 2026-08-21
+nnn: "035"
+slug: wails-v0
+docs_canonical: docs/35-wails-v0.md
+gaps: [G-159, G-160, G-161, G-162, G-163, G-164, G-165]
+status: active
+branch: feat/035-wails-v0
+depends_on: ["014-tui-design", "032-intent-surface"]
+code_slices: [27, 28]
+closes: G-144
