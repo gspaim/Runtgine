@@ -37,13 +37,12 @@ branch:              feat/<NNN>-<slug>   (ou docs/ fix/ chore/)
 
 Exemplos válidos: `001-shell-player`, `017-intent-engine`, `019-graph-hits`.
 
-**Próximo id livre:** `035`. Mudanças ativas:
-[`032-intent-surface/`](changes/032-intent-surface/) (slice 21),
-[`033-evolution-v0/`](changes/033-evolution-v0/) (slices 22–24),
-[`034-http-api/`](changes/034-http-api/) (slices 25–26).
+**Próximo id livre:** `035`. Sem mudanças ativas.
 Último archive:
-[`changes/archive/2026-08-19-031-mvp-1.0/`](changes/archive/2026-08-19-031-mvp-1.0/)
-(MVP 1.0 magro; G-135..G-140; slices 19–20 feitos).
+[`changes/archive/2026-08-21-034-http-api/`](changes/archive/2026-08-21-034-http-api/)
+(HTTP API v0; G-153..G-158; slices 25–26). Também:
+[`032-intent-surface`](changes/archive/2026-08-21-032-intent-surface/) (slice 21 TUI),
+[`033-evolution-v0`](changes/archive/2026-08-21-033-evolution-v0/) (slices 22–24).
 
 ## Autoridade
 
@@ -70,7 +69,7 @@ Não codificar mudança cujo status em `04` não esteja **CONFIRMED**
 
 | Domain | Cobre |
 |---|---|
-| `contextpack` | AssembleContext / ContextPack (+ graph_hits, memory_hits; semente repo_hits = slice 20) |
+| `contextpack` | AssembleContext / ContextPack (+ graph_hits, memory_hits, playbook_hits; semente repo_hits = slice 20) |
 | `intent-engine` | NL → Task IR (+ heuristicas Player = slice 19) |
 | `runtime-graph` | Graph estrutural + QueryHits |
 | `git-player` | Player `git.*` (status/diff/log/add/commit) |
@@ -84,6 +83,6 @@ Não codificar mudança cujo status em `04` não esteja **CONFIRMED**
 | `http-player` | Player `http.*` (GET/HEAD HTTPS) |
 | `project-memory` | Provider episódico + `memory_hits` (não é Player) |
 | `test-player` | Player `test.go` (`go test` no workspace; spec 030) |
-| `intent-surface` | Aba INTENT TUI + Wails Mission Brief (spec 032; delta em change) |
-| `evolution-v0` | Player Router + Playbooks + Lessons (spec 033; delta em change) |
-| `http-api` | Entry Point HTTP `runtgine serve` (spec 034; delta em change) |
+| `intent-surface` | Aba INTENT TUI (slice 21; Wails Fase 3 ainda fora) |
+| `evolution-v0` | Player Router + Playbooks + Lessons (slices 22–24) |
+| `http-api` | Entry Point HTTP `runtgine serve` + webhooks outbound (slices 25–26) |

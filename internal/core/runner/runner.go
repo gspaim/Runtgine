@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+	"github.com/gspaim/Runtgine/internal/config"
 	"github.com/gspaim/Runtgine/internal/core/claim"
 	"github.com/gspaim/Runtgine/internal/core/contextpack"
 	"github.com/gspaim/Runtgine/internal/core/event"
@@ -17,6 +18,7 @@ import (
 	"github.com/gspaim/Runtgine/internal/core/memory"
 	corepipe "github.com/gspaim/Runtgine/internal/core/pipeline"
 	"github.com/gspaim/Runtgine/internal/core/plan"
+	"github.com/gspaim/Runtgine/internal/core/playbooks"
 	"github.com/gspaim/Runtgine/internal/core/policy"
 	"github.com/gspaim/Runtgine/internal/core/registry"
 	"github.com/gspaim/Runtgine/internal/core/result"
@@ -42,18 +44,26 @@ type MemoryBridge interface {
 	Record(ctx context.Context, in memory.EpisodeInput) (memory.Episode, error)
 }
 
+// LessonSink is optional Lessons postmortem (G-150). Proposal only — no Memory write.
+type LessonSink interface {
+	OnRunFailed(ctx context.Context, runID, taskID, summary, errText string, events []event.Event) error
+}
+
 type Runner struct {
-	Reg           *registry.Registry
-	Bus           event.Bus
-	Store         *store.Store
-	Workspace     string
-	LLMBackend    string
-	Log           *slog.Logger
-	Graph         GraphBridge
-	Memory        MemoryBridge
-	MemoryCapture string
-	Policy        policy.Table
-	Claims        *claim.Service
+	Reg            *registry.Registry
+	Bus            event.Bus
+	Store          *store.Store
+	Workspace      string
+	LLMBackend     string
+	Log            *slog.Logger
+	Graph          GraphBridge
+	Memory         MemoryBridge
+	MemoryCapture  string
+	Playbooks      []playbooks.Playbook
+	Lessons        LessonSink
+	LessonsCapture string
+	Policy         policy.Table
+	Claims         *claim.Service
 
 	mu       sync.Mutex
 	cancels  map[string]context.CancelFunc
@@ -276,7 +286,7 @@ const (
 func (r *Runner) Approve(ctx context.Context, runID, decision string) error {
 	run, taskJSON, err := r.Store.GetRun(ctx, runID)
 	if err != nil {
-		return result.Runtime(result.CodeInternal, "run not found", false, nil)
+		return result.Runtime(result.CodeNotFound, "run not found", false, nil)
 	}
 	if run.Status != store.StatusWaitingApproval {
 		return policy.NotWaitingError()
@@ -412,6 +422,7 @@ func (r *Runner) execute(ctx context.Context, t task.Task, p plan.Plan, skipAppr
 		pack = r.attachGraphHits(ctx, pack, t)
 		pack = contextpack.WithSeededRepoHits(pack, pack.GraphHits.Items)
 		pack = r.attachMemoryHits(ctx, pack, t)
+		pack = r.attachPlaybookHits(pack)
 		packJSON, _ := contextpack.Marshal(pack)
 		_ = r.emit(p.RunID, t.TaskID, &stepID, event.TypeStepStarted, map[string]any{
 			"capability":    s.Capability,
@@ -569,7 +580,16 @@ func (r *Runner) attachMemoryHits(ctx context.Context, pack contextpack.Pack, t 
 	return contextpack.WithMemoryHits(pack, items)
 }
 
+func (r *Runner) attachPlaybookHits(pack contextpack.Pack) contextpack.Pack {
+	if len(r.Playbooks) == 0 {
+		return pack
+	}
+	hits := playbooks.Hits(r.Playbooks, pack.Step.Capability, pack.Budget.PlaybookMaxHits, pack.Budget.PlaybookMaxChars)
+	return contextpack.WithPlaybookHits(pack, hits)
+}
+
 func (r *Runner) captureFailure(ctx context.Context, runID, taskID, summary string, failErr error) {
+	r.captureLesson(ctx, runID, taskID, summary, failErr)
 	if r.Memory == nil || r.MemoryCapture != memory.CaptureFailures {
 		return
 	}
@@ -590,6 +610,24 @@ func (r *Runner) captureFailure(ctx context.Context, runID, taskID, summary stri
 	})
 	if err != nil {
 		r.Log.Warn("memory capture failed", "run_id", runID, "err", err)
+	}
+}
+
+func (r *Runner) captureLesson(ctx context.Context, runID, taskID, summary string, failErr error) {
+	if r.Lessons == nil || r.LessonsCapture != config.LessonsCaptureFailures {
+		return
+	}
+	errText := ""
+	if failErr != nil {
+		errText = failErr.Error()
+	}
+	events, err := r.Store.ListEvents(ctx, runID)
+	if err != nil {
+		r.Log.Warn("lesson events failed", "run_id", runID, "err", err)
+		events = nil
+	}
+	if err := r.Lessons.OnRunFailed(ctx, runID, taskID, summary, errText, events); err != nil {
+		r.Log.Warn("lesson capture failed", "run_id", runID, "err", err)
 	}
 }
 

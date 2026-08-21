@@ -49,7 +49,7 @@ Status: CONFIRMED | HYPOTHESIS | OPEN QUESTION | REJECTED
 | Runtime Graph | CONFIRMED (v0) | Memoria estrutural; ver `18-runtime-graph-v0.md` |
 | Context Engine | CONFIRMED (v0) | Semente `repo_hits`; ver `31-context-engine-v0.md` |
 | Project Memory | CONFIRMED (v0) | Episodica; ver `29-project-memory-v0.md` |
-| Player Router | CONFIRMED (v0 spec) | Multi-model routing; ver `33-evolution-v0.md` (G-147); código slice 22 |
+| Player Router | CONFIRMED + implementado | Multi-model routing; ver `33-evolution-v0.md` (G-147); slice 22 |
 | Execution Policy | CONFIRMED (v0) | allow/deny/approval-required; ver `22-execution-policy-v0.md` |
 | Resource Claim | CONFIRMED (v0) | Bloqueio concorrente; ver `24-resource-claims-v0.md` |
 | Blast Radius | CONFIRMED (v0) | Relatorio Task IR; ver `25-blast-radius-v0.md` |
@@ -76,9 +76,9 @@ Ver [09-mvp.md](09-mvp.md). Decisoes-chave:
 | Entrada estruturada (Task IR v0) no MVP | CONFIRMED | Sem depender de Intent Engine NL |
 | Intent Engine NL v0 (pos-Core) | CONFIRMED | Ver `17`; heuristicas Player = slice 19 feito (G-135..G-136) |
 | Context Engine v0 no 1.0 magro | CONFIRMED | Ver `31`; slice 20 feito (G-137..G-139) |
-| API HTTP (G-45) fora do 1.0 | CONFIRMED | Spec v0 em `34`; codigo slices 25–26; 1.0 magro continua CLI |
+| API HTTP (G-45) fora do 1.0 | CONFIRMED | Spec v0 em `34`; slices 25–26 feitas; 1.0 magro continua CLI |
 | Wails fora do MVP / 1.0 | CONFIRMED | Fase 3 |
-| Escopo detalhado em 09-mvp.md | CONFIRMED | Realizado (slices 1–20; 1.0 magro feito) |
+| Escopo detalhado em 09-mvp.md | CONFIRMED | Realizado (slices 1–26; 1.0 magro + INTENT/Evolution/HTTP) |
 
 ## Modelo conceitual
 
@@ -125,9 +125,9 @@ Ver [09-mvp.md](09-mvp.md). Decisoes-chave:
 - Project Memory v0 (G-123..G-128; recorte G-46/G-47) — spec; codigo = slice 17 — feito
 - Test Player v0 (G-129..G-134; recorte G-41) — spec; codigo = slice 18 — feito
 - MVP 1.0 magro (G-135..G-140) — spec `09`/`31`/`17`; slices 19–20 feitos
-- Intent Surface v0 (G-141..G-146) — spec `32`; codigo = slice 21
-- Evolution v0 (G-147..G-152) — spec `33`; codigo = slices 22–24
-- HTTP API v0 (G-153..G-158; recorte G-45) — spec `34`; codigo = slices 25–26
+- Intent Surface v0 (G-141..G-146) — spec `32`; TUI slice 21 feito; Wails Fase 3
+- Evolution v0 (G-147..G-152) — spec `33`; slices 22–24 feitas
+- HTTP API v0 (G-153..G-158; recorte G-45) — spec `34`; slices 25–26 feitas
 
 ## Protocolo v0 — confirmado (sessao de fechamento)
 
@@ -445,7 +445,7 @@ Codigo = slices 19–20 feitos. Nao e G-45; nao e NATS/Wails/MCP.
 
 Ver [32-intent-surface-v0.md](32-intent-surface-v0.md). Superficie visual de
 Entry Point (Mission Brief / aba INTENT). Compilador = Intent Engine (`17`).
-Codigo TUI = slice 21; Wails INTENT = Fase 3.
+Codigo TUI = slice 21 feito; Wails INTENT = Fase 3.
 
 | Item | Status | Notas |
 |---|---|---|
@@ -460,7 +460,7 @@ Codigo TUI = slice 21; Wails INTENT = Fase 3.
 
 Ver [33-evolution-v0.md](33-evolution-v0.md). P3: roteamento LLM multi-provider,
 playbooks de projeto, loop Lessons pós-falha com HITL. **Não** é framework de
-agentes. Código = slices 22–24 (pendente).
+agentes. Código = slices 22–24 (feito).
 
 | Item | Status | Notas |
 |---|---|---|
@@ -475,7 +475,7 @@ agentes. Código = slices 22–24 (pendente).
 
 Ver [34-http-api-v0.md](34-http-api-v0.md). Recorte de G-45: servidor
 do runtime (CI/UC-02), **não** o HTTP Player cliente (`28`). Código =
-slices 25–26 (pendente). Independente das slices 21–24.
+slices 25–26 (feito). Independente das slices 21–24.
 
 | Item | Status | Notas |
 |---|---|---|

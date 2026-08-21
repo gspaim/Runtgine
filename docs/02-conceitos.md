@@ -185,7 +185,7 @@ Project Memory v0 (`29`) alimenta `memory_hits` (`active`). Graph Hits
 ## Player Router
 
 Status: CONFIRMED (v0 spec) — ver [33-evolution-v0.md](33-evolution-v0.md) (G-147..G-152).
-Implementação: slice 22 (pendente).
+Implementação: slices 22–24 feitas.
 
 Task -> Required Capability -> Player Candidates -> Router -> best Player
 

@@ -13,7 +13,9 @@ import (
 	"github.com/gspaim/Runtgine/internal/core/event"
 	"github.com/gspaim/Runtgine/internal/core/graph"
 	"github.com/gspaim/Runtgine/internal/core/intent"
+	"github.com/gspaim/Runtgine/internal/core/lessons"
 	"github.com/gspaim/Runtgine/internal/core/memory"
+	"github.com/gspaim/Runtgine/internal/core/playbooks"
 	"github.com/gspaim/Runtgine/internal/core/policy"
 	"github.com/gspaim/Runtgine/internal/core/registry"
 	"github.com/gspaim/Runtgine/internal/core/result"
@@ -32,15 +34,16 @@ import (
 
 // Core is the Entry Point → Core API (G-07).
 type Core struct {
-	Cfg    config.Config
-	Reg    *registry.Registry
-	Bus    *event.MemoryBus
-	Store  *store.Store
-	Runner *runner.Runner
-	Intent *intent.Engine
-	Graph  *graph.Service
-	Memory *memory.Service
-	Log    *slog.Logger
+	Cfg     config.Config
+	Reg     *registry.Registry
+	Bus     *event.MemoryBus
+	Store   *store.Store
+	Runner  *runner.Runner
+	Intent  *intent.Engine
+	Graph   *graph.Service
+	Memory  *memory.Service
+	Lessons *lessons.Service
+	Log     *slog.Logger
 }
 
 func Open(cfg config.Config, log *slog.Logger) (*Core, error) {
@@ -77,10 +80,10 @@ func Open(cfg config.Config, log *slog.Logger) (*Core, error) {
 		_ = st.Close()
 		return nil, err
 	}
-	completer := llm.CompleterFromConfig(
+	completer := llm.NewSwitchCompleter(cfg, llm.CompleterFromConfig(
 		cfg.LLMBackend, cfg.LLMAPIKey, cfg.LLMBaseURL, cfg.LLMModel,
 		cfg.AnthropicAPIKey, cfg.AnthropicModel,
-	)
+	))
 	if err := reg.Register(pipeplayer.NewWithRefine(completer)); err != nil {
 		_ = st.Close()
 		return nil, err
@@ -91,6 +94,14 @@ func Open(cfg config.Config, log *slog.Logger) (*Core, error) {
 	}
 	g := graph.New(st, log)
 	mem := memory.New(st, log)
+	lsn := lessons.New(st, mem, log)
+	books, err := playbooks.Load(playbooks.Dir(cfg.WorkspaceRoot))
+	if err != nil {
+		if log != nil {
+			log.Warn("playbooks load failed", "err", err)
+		}
+		books = nil
+	}
 	tab, err := policy.Compile(policy.FileConfig{
 		Default:      cfg.ExecutionPolicy.Default,
 		Capabilities: cfg.ExecutionPolicy.Capabilities,
@@ -103,6 +114,9 @@ func Open(cfg config.Config, log *slog.Logger) (*Core, error) {
 	r.Graph = g
 	r.Memory = mem
 	r.MemoryCapture = cfg.Memory.Capture
+	r.Playbooks = books
+	r.Lessons = lsn
+	r.LessonsCapture = cfg.Lessons.Capture
 	r.Policy = tab
 	claims := claim.New(st)
 	if err := claims.SweepOrphans(context.Background()); err != nil {
@@ -120,15 +134,16 @@ func Open(cfg config.Config, log *slog.Logger) (*Core, error) {
 	eng.Graph = g
 	eng.Memory = mem
 	return &Core{
-		Cfg:    cfg,
-		Reg:    reg,
-		Bus:    bus,
-		Store:  st,
-		Runner: r,
-		Intent: eng,
-		Graph:  g,
-		Memory: mem,
-		Log:    log,
+		Cfg:     cfg,
+		Reg:     reg,
+		Bus:     bus,
+		Store:   st,
+		Runner:  r,
+		Intent:  eng,
+		Graph:   g,
+		Memory:  mem,
+		Lessons: lsn,
+		Log:     log,
 	}, nil
 }
 
@@ -255,7 +270,7 @@ func (c *Core) GetRun(ctx context.Context, runID string) (RunSnapshot, error) {
 	run, taskJSON, err := c.Store.GetRun(ctx, runID)
 	if err != nil {
 		if err == sql.ErrNoRows {
-			return RunSnapshot{}, result.Runtime(result.CodeInternal, "run not found", false, nil)
+			return RunSnapshot{}, result.Runtime(result.CodeNotFound, "run not found", false, nil)
 		}
 		return RunSnapshot{}, err
 	}
@@ -347,6 +362,9 @@ func (c *Core) CancelRun(runID string) error {
 	// A prior CLI process may have left a persisted non-terminal run without
 	// an in-memory cancel function. Mark that stale run cancelled.
 	run, _, err := c.Store.GetRun(context.Background(), runID)
+	if err == sql.ErrNoRows {
+		return result.Runtime(result.CodeNotFound, "run not found", false, nil)
+	}
 	if err != nil {
 		return err
 	}
@@ -407,6 +425,27 @@ func (c *Core) MemorySupersede(ctx context.Context, oldID string, in memory.Epis
 
 func (c *Core) MemoryArchive(ctx context.Context, id string) (memory.Episode, error) {
 	return c.Memory.Archive(ctx, id)
+}
+
+func (c *Core) ListLessons(ctx context.Context, status string) ([]lessons.Proposal, error) {
+	if c.Lessons == nil {
+		return nil, result.Runtime(result.CodeInternal, "lessons provider missing", false, nil)
+	}
+	return c.Lessons.List(ctx, status)
+}
+
+func (c *Core) ApproveLesson(ctx context.Context, id string) (memory.Episode, error) {
+	if c.Lessons == nil {
+		return memory.Episode{}, result.Runtime(result.CodeInternal, "lessons provider missing", false, nil)
+	}
+	return c.Lessons.Approve(ctx, id)
+}
+
+func (c *Core) RejectLesson(ctx context.Context, id string) error {
+	if c.Lessons == nil {
+		return result.Runtime(result.CodeInternal, "lessons provider missing", false, nil)
+	}
+	return c.Lessons.Reject(ctx, id)
 }
 
 func (c *Core) syncGraph(runID string) {

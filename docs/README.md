@@ -37,9 +37,9 @@ Autoridade de decisoes: [04-decisoes.md](04-decisoes.md).
 | 29 | 29-project-memory-v0.md | Project Memory v0 (**CONFIRMED**; G-123..G-128) |
 | 30 | 30-test-player-v0.md | Test Player v0 (**CONFIRMED**; G-129..G-134) |
 | 31 | 31-context-engine-v0.md | Context Engine v0 (**CONFIRMED**; G-137..G-139; slice 20 feito) |
-| 32 | 32-intent-surface-v0.md | Intent Surface / aba INTENT (**CONFIRMED**; G-141..G-146; slice 21 + Wails Fase 3) |
-| 33 | 33-evolution-v0.md | Evolution v0: Router, Playbooks, Lessons (**CONFIRMED**; G-147..G-152; slices 22–24) |
-| 34 | 34-http-api-v0.md | HTTP API v0 / `runtgine serve` (**CONFIRMED**; G-153..G-158; slices 25–26) |
+| 32 | 32-intent-surface-v0.md | Intent Surface / aba INTENT (**CONFIRMED**; G-141..G-146; slice 21 TUI feito; Wails Fase 3) |
+| 33 | 33-evolution-v0.md | Evolution v0: Router, Playbooks, Lessons (**CONFIRMED**; G-147..G-152; slices 22–24 feitas) |
+| 34 | 34-http-api-v0.md | HTTP API v0 / `runtgine serve` (**CONFIRMED**; G-153..G-158; slices 25–26 feitas) |
 | — | [openspec/](../openspec/README.md) | Pacotes de mudança OpenSpec (`NNN-slug`) |
 
 ## Fontes historicas (raiz do repo)
@@ -65,7 +65,7 @@ HTTP Player (`28`, G-117..G-122) esta **CONFIRMED v0** (slice 16 feito).
 Project Memory (`29`, G-123..G-128) esta **CONFIRMED v0** (slice 17 feito).
 Test Player (`30`, G-129..G-134) esta **CONFIRMED v0** (slice 18 feito).
 MVP 1.0 magro (`09`, G-135..G-140) esta **CONFIRMED** (slices 19–20 feitos).
-Intent Surface (`32`, G-141..G-146) esta **CONFIRMED** (slice 21 TUI + Wails Fase 3; codigo pendente).
-Evolution v0 (`33`, G-147..G-152) esta **CONFIRMED** (slices 22–24 Router/Playbooks/Lessons; codigo pendente).
-HTTP API (`34`, G-153..G-158) esta **CONFIRMED** (slices 25–26 `serve` + webhooks outbound; codigo pendente).
+Intent Surface (`32`, G-141..G-146) esta **CONFIRMED** (slice 21 TUI feito; Wails Fase 3).
+Evolution v0 (`33`, G-147..G-152) esta **CONFIRMED** (slices 22–24 feitas).
+HTTP API (`34`, G-153..G-158) esta **CONFIRMED** (slices 25–26 feitas).
 P3 restante: G-44 MCP; NATS; Wails; G-41 mais Players.

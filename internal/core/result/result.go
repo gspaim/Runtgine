@@ -43,4 +43,7 @@ const (
 	CodePolicyApprovalDenied = "policy.approval_denied"
 	CodePolicyNotWaiting     = "policy.not_waiting"
 	CodeClaimConflict        = "claim.conflict"
+	CodeNotFound             = "runtime.not_found"
+	CodeUnauthorized         = "auth.unauthorized"
+	CodeInputLimit           = "validation.input"
 )

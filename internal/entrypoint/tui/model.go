@@ -22,16 +22,18 @@ import (
 )
 
 const (
-	tabRuns = iota
+	tabIntent = iota
+	tabRuns
 	tabLive
 	tabBoard
 	tabEvents
 	tabGraph
 	tabConfig
 	tabCount
+	intentHistoryCap = 10
 )
 
-var tabNames = []string{"RUNS", "LIVE", "BOARD", "EVENTS", "GRAPH", "CONFIG"}
+var tabNames = []string{"INTENT", "RUNS", "LIVE", "BOARD", "EVENTS", "GRAPH", "CONFIG"}
 
 type CoreAPI interface {
 	ListRuns(context.Context, int) ([]api.RunSummary, error)
@@ -43,6 +45,14 @@ type CoreAPI interface {
 	ApproveRun(string, string) error
 	GetGraphSnapshot(context.Context) (graph.Snapshot, error)
 	RefreshGraph(context.Context) error
+	CompileIntent(context.Context, string, string, string) (task.Task, string, error)
+	SubmitIntent(context.Context, string, string, string) (string, string, error)
+	SubmitTask(context.Context, task.Task) (string, error)
+}
+
+type intentHistoryItem struct {
+	RunID   string
+	Summary string
 }
 
 type Model struct {
@@ -69,6 +79,14 @@ type Model struct {
 	err           error
 	spinner       spinner.Model
 	progress      progress.Model
+	intentDraft   string
+	intentJSON    bool
+	intentPreview string
+	intentMethod  string
+	intentDirty   bool
+	intentConfirm bool
+	intentBusy    bool
+	intentHistory []intentHistoryItem
 }
 
 type refreshMsg struct {
@@ -87,6 +105,14 @@ type streamClosedMsg struct{}
 type graphMsg struct {
 	snap graph.Snapshot
 	err  error
+}
+type intentResultMsg struct {
+	preview bool
+	pretty  string
+	method  string
+	runID   string
+	summary string
+	err     error
 }
 
 func New(core CoreAPI) (Model, func()) {
@@ -136,12 +162,18 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		}
 		m.err = nil
 		m.runs, m.events, m.config = msg.runs, msg.events, msg.config
-		if m.selected >= len(m.runs) {
-			m.selected = max(0, len(m.runs)-1)
-		}
 		if msg.snapshot.RunID != "" {
 			m.snapshot = msg.snapshot
-		} else if len(m.runs) == 0 {
+			for i, run := range m.runs {
+				if run.RunID == msg.snapshot.RunID {
+					m.selected = i
+					break
+				}
+			}
+		} else if m.selected >= len(m.runs) {
+			m.selected = max(0, len(m.runs)-1)
+		}
+		if msg.snapshot.RunID == "" && len(m.runs) == 0 {
 			m.snapshot = api.RunSnapshot{}
 		}
 	case graphMsg:
@@ -168,6 +200,27 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	case approveMsg:
 		m.err = msg.err
 		return m, m.refreshCmd()
+	case intentResultMsg:
+		m.intentBusy = false
+		if msg.err != nil {
+			m.err = msg.err
+			m.intentPreview = ""
+			m.intentMethod = ""
+			return m, nil
+		}
+		m.err = nil
+		m.intentPreview = msg.pretty
+		m.intentMethod = msg.method
+		m.intentDirty = false
+		if msg.preview || msg.runID == "" {
+			return m, nil
+		}
+		m.intentHistory = append([]intentHistoryItem{{RunID: msg.runID, Summary: msg.summary}}, m.intentHistory...)
+		if len(m.intentHistory) > intentHistoryCap {
+			m.intentHistory = m.intentHistory[:intentHistoryCap]
+		}
+		m.tab = tabLive
+		return m, m.selectRunCmd(msg.runID)
 	case spinner.TickMsg:
 		var cmd tea.Cmd
 		m.spinner, cmd = m.spinner.Update(msg)
@@ -208,15 +261,35 @@ func (m Model) handleKey(msg tea.KeyPressMsg) (tea.Model, tea.Cmd) {
 		return m, nil
 	}
 
-	switch key {
-	case "q", "ctrl+c":
+	if key == "q" || key == "ctrl+c" {
 		return m, tea.Quit
-	case "tab", "right", "l":
+	}
+	if key == "tab" {
+		m.tab = (m.tab + 1) % tabCount
+		m.confirm = false
+		m.filtering = false
+		m.intentConfirm = false
+		return m, m.maybeLoadGraph()
+	}
+	if key == "shift+tab" {
+		m.tab = (m.tab + tabCount - 1) % tabCount
+		m.confirm = false
+		m.filtering = false
+		m.intentConfirm = false
+		return m, m.maybeLoadGraph()
+	}
+
+	if m.tab == tabIntent {
+		return m.handleIntentKey(msg)
+	}
+
+	switch key {
+	case "right", "l":
 		m.tab = (m.tab + 1) % tabCount
 		m.confirm = false
 		m.filtering = false
 		return m, m.maybeLoadGraph()
-	case "shift+tab", "left", "h":
+	case "left", "h":
 		m.tab = (m.tab + tabCount - 1) % tabCount
 		m.confirm = false
 		m.filtering = false
@@ -290,6 +363,123 @@ func (m Model) handleKey(msg tea.KeyPressMsg) (tea.Model, tea.Cmd) {
 		return m, func() tea.Msg { return approveMsg{err: m.core.ApproveRun(runID, runner.DecisionDeny)} }
 	}
 	return m, nil
+}
+
+func (m Model) handleIntentKey(msg tea.KeyPressMsg) (tea.Model, tea.Cmd) {
+	key := msg.String()
+	switch key {
+	case "ctrl+p":
+		return m, m.intentCmd(true)
+	case "ctrl+enter":
+		return m, m.intentCmd(false)
+	case "ctrl+j":
+		m.intentJSON = !m.intentJSON
+		return m, nil
+	case "esc":
+		if m.intentConfirm {
+			m.intentDraft = ""
+			m.intentPreview = ""
+			m.intentMethod = ""
+			m.intentDirty = false
+			m.intentConfirm = false
+			m.err = nil
+			return m, nil
+		}
+		if strings.TrimSpace(m.intentDraft) != "" || m.intentPreview != "" {
+			m.intentConfirm = true
+			return m, nil
+		}
+		return m, nil
+	case "backspace":
+		m.intentConfirm = false
+		if m.intentDraft != "" {
+			_, size := utf8.DecodeLastRuneInString(m.intentDraft)
+			m.intentDraft = m.intentDraft[:len(m.intentDraft)-size]
+			m.intentDirty = true
+		}
+		return m, nil
+	case "enter":
+		m.intentConfirm = false
+		m.intentDraft += "\n"
+		m.intentDirty = true
+		return m, nil
+	}
+	if msg.Key().Text != "" {
+		m.intentConfirm = false
+		m.intentDraft += msg.Key().Text
+		m.intentDirty = true
+	}
+	return m, nil
+}
+
+func (m Model) intentCmd(preview bool) tea.Cmd {
+	text := m.intentDraft
+	jsonMode := m.intentJSON
+	return func() tea.Msg {
+		ctx, cancel := context.WithTimeout(context.Background(), 8*time.Second)
+		defer cancel()
+		if jsonMode {
+			return m.submitJSONIntent(ctx, text, preview)
+		}
+		if preview {
+			tk, method, err := m.core.CompileIntent(ctx, text, "tui", "intent")
+			if err != nil {
+				return intentResultMsg{preview: true, err: err}
+			}
+			pretty, _ := json.MarshalIndent(tk, "", "  ")
+			return intentResultMsg{preview: true, pretty: string(pretty), method: method, summary: tk.Intent.Summary}
+		}
+		runID, method, err := m.core.SubmitIntent(ctx, text, "tui", "intent")
+		if err != nil {
+			return intentResultMsg{err: err, method: method}
+		}
+		tk, _, _ := m.core.CompileIntent(ctx, text, "tui", "intent")
+		pretty, _ := json.MarshalIndent(tk, "", "  ")
+		return intentResultMsg{pretty: string(pretty), method: method, runID: runID, summary: tk.Intent.Summary}
+	}
+}
+
+func (m Model) submitJSONIntent(ctx context.Context, raw string, preview bool) tea.Msg {
+	trimmed := strings.TrimSpace(raw)
+	if err := task.ValidateDocument([]byte(trimmed)); err != nil {
+		return intentResultMsg{preview: preview, err: err}
+	}
+	tk, err := task.Parse([]byte(trimmed))
+	if err != nil {
+		return intentResultMsg{preview: preview, err: err}
+	}
+	if tk.Source.EntryPoint == "" {
+		tk.Source.EntryPoint = "tui"
+	}
+	pretty, _ := json.MarshalIndent(tk, "", "  ")
+	if preview {
+		return intentResultMsg{preview: true, pretty: string(pretty), method: "json", summary: tk.Intent.Summary}
+	}
+	runID, err := m.core.SubmitTask(ctx, tk)
+	if err != nil {
+		return intentResultMsg{pretty: string(pretty), method: "json", err: err}
+	}
+	return intentResultMsg{pretty: string(pretty), method: "json", runID: runID, summary: tk.Intent.Summary}
+}
+
+func (m Model) selectRunCmd(runID string) tea.Cmd {
+	return func() tea.Msg {
+		ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
+		defer cancel()
+		runs, err := m.core.ListRuns(ctx, 200)
+		if err != nil {
+			return refreshMsg{err: err}
+		}
+		snapshot, err := m.core.GetRun(ctx, runID)
+		if err != nil {
+			return refreshMsg{runs: runs, err: err}
+		}
+		events, err := m.core.ListRecentEvents(ctx, 300)
+		return refreshMsg{
+			runs: runs, snapshot: snapshot, events: events,
+			config: m.core.ConfigSnapshot(), err: err,
+		}
+	}
 }
 
 func (m Model) refreshCmd() tea.Cmd {
@@ -417,6 +607,8 @@ func (m Model) renderTabs() string {
 func (m Model) renderBody() string {
 	var body string
 	switch m.tab {
+	case tabIntent:
+		body = m.renderIntent()
 	case tabRuns:
 		body = m.renderRuns()
 	case tabLive:
@@ -432,6 +624,54 @@ func (m Model) renderBody() string {
 	}
 	height := max(8, m.height-7)
 	return lipgloss.NewStyle().Width(max(20, m.width-2)).Height(height).Render(body)
+}
+
+func (m Model) renderIntent() string {
+	mode := "NL"
+	if m.intentJSON {
+		mode = "JSON"
+	}
+	cursor := "▌"
+	if m.theme.ASCII {
+		cursor = "_"
+	}
+	input := m.intentDraft + cursor
+	if strings.TrimSpace(m.intentDraft) == "" {
+		placeholder := "type intent (NL) or paste Task IR in JSON mode"
+		input = m.theme.Muted().Render(placeholder) + cursor
+	}
+	preview := m.intentPreview
+	if preview == "" {
+		preview = m.theme.Muted().Render("Ctrl+p preview · Ctrl+Enter submit")
+	} else if m.intentMethod != "" {
+		preview = "method " + m.intentMethod + "\n" + preview
+	}
+	histLines := []string{"SESSION"}
+	if len(m.intentHistory) == 0 {
+		histLines = append(histLines, m.theme.Muted().Render("no submits this session"))
+	} else {
+		for i, h := range m.intentHistory {
+			if i >= 5 {
+				break
+			}
+			histLines = append(histLines, fmt.Sprintf("%s  %s", shortID(h.RunID), truncate(h.Summary, 36)))
+		}
+	}
+	title := fmt.Sprintf("INTENT  Mission Brief  mode %s", mode)
+	left := title + "\n\n" + input
+	right := "PREVIEW\n\n" + preview + "\n\n" + strings.Join(histLines, "\n")
+	if m.intentConfirm {
+		left += "\n\n" + m.theme.Status("cancelled").Render("Clear draft? esc again confirms")
+	}
+	if m.width < 80 {
+		return m.theme.Panel(true).Render(left + "\n\n" + right)
+	}
+	lw := max(28, m.width/2-4)
+	rw := max(28, m.width-lw-6)
+	return lipgloss.JoinHorizontal(lipgloss.Top,
+		m.theme.Panel(true).Width(lw).Render(left),
+		m.theme.Panel(false).Width(rw).Render(right),
+	)
 }
 
 func (m Model) renderRuns() string {
@@ -634,13 +874,19 @@ func (m Model) renderFooter() string {
 	if m.theme.ASCII {
 		hint = "tab navigate | j/k select | enter inspect | c cancel | / filter | r refresh | q quit"
 	}
+	if m.tab == tabIntent {
+		hint = "tab/shift+tab navigate · Ctrl+p preview · Ctrl+Enter submit · Ctrl+j JSON · esc clear · q quit"
+		if m.theme.ASCII {
+			hint = "tab navigate | Ctrl+p preview | Ctrl+Enter submit | Ctrl+j JSON | esc clear | q quit"
+		}
+	}
 	if m.tab == tabGraph {
 		hint = "tab/shift+tab navigate · j/k select · enter inspect · / filter · r refresh graph · q quit"
 		if m.theme.ASCII {
 			hint = "tab navigate | j/k select | enter inspect | / filter | r refresh graph | q quit"
 		}
 	}
-	if m.selectedWaiting() && m.tab != tabGraph {
+	if m.selectedWaiting() && m.tab != tabGraph && m.tab != tabIntent {
 		hint = "tab/shift+tab navigate · j/k select · a approve · d deny · c cancel · q quit"
 		if m.theme.ASCII {
 			hint = "tab navigate | j/k select | a approve | d deny | c cancel | q quit"

@@ -3,6 +3,7 @@ package tui
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"strings"
 	"testing"
 	"time"
@@ -12,20 +13,25 @@ import (
 	"github.com/gspaim/Runtgine/internal/core/api"
 	"github.com/gspaim/Runtgine/internal/core/event"
 	"github.com/gspaim/Runtgine/internal/core/graph"
+	"github.com/gspaim/Runtgine/internal/core/task"
 )
 
 type fakeCore struct {
-	runs       []api.RunSummary
-	snapshot   api.RunSnapshot
-	events     []event.Event
-	config     api.ConfigSnapshot
-	graph      graph.Snapshot
-	stream     chan event.Event
-	cancelled  string
-	approved   string
-	refreshes  int
-	refreshErr error
-	snapErr    error
+	runs         []api.RunSummary
+	snapshot     api.RunSnapshot
+	events       []event.Event
+	config       api.ConfigSnapshot
+	graph        graph.Snapshot
+	stream       chan event.Event
+	cancelled    string
+	approved     string
+	refreshes    int
+	refreshErr   error
+	snapErr      error
+	compileErr   error
+	submitErr    error
+	compileCalls int
+	submitted    int
 }
 
 func (f *fakeCore) ListRuns(context.Context, int) ([]api.RunSummary, error) {
@@ -71,6 +77,64 @@ func (f *fakeCore) GetGraphSnapshot(context.Context) (graph.Snapshot, error) {
 func (f *fakeCore) RefreshGraph(context.Context) error {
 	f.refreshes++
 	return f.refreshErr
+}
+
+func (f *fakeCore) CompileIntent(_ context.Context, text, _, _ string) (task.Task, string, error) {
+	if f.compileErr != nil {
+		return task.Task{}, "", f.compileErr
+	}
+	summary := strings.TrimSpace(text)
+	if summary == "" {
+		summary = "empty"
+	}
+	capName := "shell.exec"
+	method := "heuristic.shell"
+	lower := strings.ToLower(summary)
+	if strings.Contains(lower, "git status") {
+		capName = "git.status"
+		method = "heuristic.git"
+	}
+	f.compileCalls++
+	return task.Task{
+		SchemaVersion: "0.1.0",
+		Intent:        task.Intent{Summary: summary},
+		Source:        task.Source{EntryPoint: "tui"},
+		Steps:         []task.Step{{StepID: "s1", Capability: capName, Input: json.RawMessage(`{}`)}},
+	}, method, nil
+}
+
+func (f *fakeCore) SubmitIntent(ctx context.Context, text, ep, ref string) (string, string, error) {
+	if f.submitErr != nil {
+		return "", "", f.submitErr
+	}
+	tk, method, err := f.CompileIntent(ctx, text, ep, ref)
+	if err != nil {
+		return "", method, err
+	}
+	f.submitted++
+	id, _ := f.recordSubmit(tk)
+	return id, method, nil
+}
+
+func (f *fakeCore) SubmitTask(_ context.Context, tk task.Task) (string, error) {
+	if f.submitErr != nil {
+		return "", f.submitErr
+	}
+	f.submitted++
+	id, _ := f.recordSubmit(tk)
+	return id, nil
+}
+
+func (f *fakeCore) recordSubmit(tk task.Task) (string, string) {
+	id := fmt.Sprintf("run-%d", f.submitted)
+	now := time.Now().UTC()
+	raw, _ := json.Marshal(tk)
+	f.runs = append([]api.RunSummary{{
+		RunID: id, Status: "running", Summary: tk.Intent.Summary,
+		Source: "tui", CreatedAt: now, UpdatedAt: now,
+	}}, f.runs...)
+	f.snapshot = api.RunSnapshot{RunID: id, Status: "running", Task: raw}
+	return id, "json"
 }
 
 func fixture() *fakeCore {
@@ -378,8 +442,111 @@ func key(value string) tea.KeyPressMsg {
 		return tea.KeyPressMsg(tea.Key{Code: tea.KeyTab})
 	case "shift+tab":
 		return tea.KeyPressMsg(tea.Key{Code: tea.KeyTab, Mod: tea.ModShift})
+	case "esc":
+		return tea.KeyPressMsg(tea.Key{Code: tea.KeyEsc})
+	case "backspace":
+		return tea.KeyPressMsg(tea.Key{Code: tea.KeyBackspace})
+	case "ctrl+p":
+		return tea.KeyPressMsg(tea.Key{Code: 'p', Mod: tea.ModCtrl})
+	case "ctrl+enter":
+		return tea.KeyPressMsg(tea.Key{Code: tea.KeyEnter, Mod: tea.ModCtrl})
+	case "ctrl+j":
+		return tea.KeyPressMsg(tea.Key{Code: 'j', Mod: tea.ModCtrl})
 	default:
 		r := []rune(value)[0]
 		return tea.KeyPressMsg(tea.Key{Text: value, Code: r})
+	}
+}
+
+func TestIntentIsFirstTab(t *testing.T) {
+	model, _ := loadedModel(t)
+	if model.tab != tabIntent || tabNames[0] != "INTENT" {
+		t.Fatalf("first tab=%s", tabNames[model.tab])
+	}
+	if !strings.Contains(model.View().Content, "INTENT") {
+		t.Fatal("INTENT missing from default view")
+	}
+	updated, _ := model.Update(key("shift+tab"))
+	model = updated.(Model)
+	if model.tab != tabConfig {
+		t.Fatalf("shift+tab from INTENT got %s, want CONFIG", tabNames[model.tab])
+	}
+}
+
+func TestIntentPreviewGitStatus(t *testing.T) {
+	model, core := loadedModel(t)
+	model.tab = tabIntent
+	updated, _ := model.Update(tea.KeyPressMsg(tea.Key{Text: "git status", Code: 'g'}))
+	model = updated.(Model)
+	if model.intentDraft != "git status" {
+		t.Fatalf("draft=%q", model.intentDraft)
+	}
+	updated, cmd := model.Update(key("ctrl+p"))
+	if cmd == nil {
+		t.Fatal("ctrl+p must preview")
+	}
+	updated, _ = updated.Update(cmd())
+	model = updated.(Model)
+	if core.compileCalls == 0 {
+		t.Fatal("preview did not CompileIntent")
+	}
+	if core.submitted != 0 {
+		t.Fatal("preview must not submit")
+	}
+	if !strings.Contains(model.intentPreview, "git.status") {
+		t.Fatalf("preview=%s", model.intentPreview)
+	}
+	if model.intentMethod != "heuristic.git" {
+		t.Fatalf("method=%s", model.intentMethod)
+	}
+}
+
+func TestIntentSubmitGoesToLive(t *testing.T) {
+	model, core := loadedModel(t)
+	model.tab = tabIntent
+	updated, _ := model.Update(tea.KeyPressMsg(tea.Key{Text: "git status", Code: 'g'}))
+	model = updated.(Model)
+	updated, cmd := model.Update(key("ctrl+enter"))
+	if cmd == nil {
+		t.Fatal("ctrl+enter must submit")
+	}
+	updated, cmd = updated.Update(cmd())
+	model = updated.(Model)
+	if model.tab != tabLive {
+		t.Fatalf("tab=%s after submit", tabNames[model.tab])
+	}
+	if cmd == nil {
+		t.Fatal("submit should refresh selected run")
+	}
+	updated, _ = model.Update(cmd())
+	model = updated.(Model)
+	if core.submitted != 1 {
+		t.Fatalf("submitted=%d", core.submitted)
+	}
+	if model.snapshot.RunID == "" || model.snapshot.RunID == "019c-run-0001" {
+		t.Fatalf("selected run %q", model.snapshot.RunID)
+	}
+}
+
+func TestIntentJSONToggleAndResizeNoColor(t *testing.T) {
+	t.Setenv("NO_COLOR", "1")
+	model, _ := loadedModel(t)
+	model.theme = DetectTheme()
+	model.tab = tabIntent
+	updated, _ := model.Update(key("ctrl+j"))
+	model = updated.(Model)
+	if !model.intentJSON {
+		t.Fatal("ctrl+j should enable JSON mode")
+	}
+	model.width, model.height = 70, 24
+	content := model.View().Content
+	if !strings.Contains(content, "INTENT") {
+		t.Fatal("narrow INTENT missing title")
+	}
+	if !strings.Contains(content, "JSON") {
+		t.Fatal("JSON mode not shown")
+	}
+	if strings.Contains(content, "\x1b[38;") || strings.Contains(content, "\x1b[48;") {
+		t.Fatalf("NO_COLOR INTENT contains ANSI color")
 	}
 }

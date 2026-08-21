@@ -152,7 +152,7 @@ Slices 1–9 implementados (Core → Intent → Graph → Git → Filesystem).
 **Project Memory v0: CONFIRMED + implementado** (`29`, G-123..G-128; slice 17).
 **Test Player v0: CONFIRMED + implementado** (`30`, G-129..G-134; slice 18).
 **MVP 1.0 magro: CONFIRMED + implementado** (`09`/`31`, G-135..G-140; slices 19–20).
-**Intent Surface v0: CONFIRMED spec** (`32`, G-141..G-146; slice 21 pendente).
-**Evolution v0: CONFIRMED spec** (`33`, G-147..G-152; slices 22–24 pendentes).
-**HTTP API v0: CONFIRMED spec** (`34`, G-153..G-158; slices 25–26 pendentes).
+**Intent Surface v0: CONFIRMED + TUI implementada** (`32`, G-141..G-146; slice 21; Wails Fase 3).
+**Evolution v0: CONFIRMED + implementado** (`33`, G-147..G-152; slices 22–24).
+**HTTP API v0: CONFIRMED + implementado** (`34`, G-153..G-158; slices 25–26).
 P3 restante: G-44 MCP; NATS; Wails; G-41 mais Players.

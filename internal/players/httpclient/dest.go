@@ -24,6 +24,12 @@ func mustCIDR(s string) *net.IPNet {
 	return n
 }
 
+// ValidateDestinationURL enforces HTTPS-only and denies link-local / metadata
+// hosts (G-119). Webhooks outbound (G-156) reuse this policy.
+func ValidateDestinationURL(raw string) error {
+	return validateRawURL(raw)
+}
+
 func validateRawURL(raw string) error {
 	if strings.TrimSpace(raw) == "" {
 		return result.Validation(result.CodeInvalidInput, "url is required", nil)

@@ -98,3 +98,18 @@ leave `repo_hits` empty and MUST NOT fail the Run.
 - WHEN AssembleContext runs
 - THEN `repo_hits.paths` is empty
 - AND the Run continues
+
+### Requirement: ContextPack includes playbook_hits
+
+The ContextPack SHALL include a `playbook_hits` object with an `items`
+array of `{id, title, snippet}` and budget fields `playbook_max_hits`
+(default 2) and `playbook_max_chars` (default 1500). Hits come from
+`.runtgine/playbooks/*.md` matched by declared capabilities.
+`playbook_hits` ranks below `memory_hits` in the truncation hierarchy.
+
+#### Scenario: Empty playbooks degrade
+
+- GIVEN no playbooks are indexed
+- WHEN AssembleContext runs
+- THEN `playbook_hits.items` is `[]`
+- AND the Run continues
