@@ -25,7 +25,7 @@
       "properties": {
         "entry_point": {
           "type": "string",
-          "enum": ["cli", "tui", "board", "api", "http", "other"]
+          "enum": ["cli", "tui", "board", "api", "http", "wails", "other"]
         },
         "ref": {
           "type": "string"

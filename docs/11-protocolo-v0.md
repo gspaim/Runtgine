@@ -104,7 +104,7 @@ Entrada estruturada do MVP (CLI/Board). Sem Intent Engine.
 | `schema_version` | sim | exatamente `"0.1.0"` |
 | `task_id` | sim (apos admissão) | UUID v7; omitido no arquivo → Core gera |
 | `created_at` | sim (apos admissão) | RFC3339; omitido → Core preenche UTC |
-| `source.entry_point` | sim | `cli` \| `tui` \| `board` \| `api` \| `http` \| `other`; `wails` entra no slice 27 (`35`) |
+| `source.entry_point` | sim | `cli` \| `tui` \| `board` \| `api` \| `http` \| `wails` \| `other` |
 | `source.ref` | nao | id externo (card, file path) |
 | `intent.summary` | sim | humano; nao e executavel |
 | `intent.notes` | nao | |
@@ -457,7 +457,7 @@ internal/entrypoint/
   tui/                 # depois do CLI
   board/
   httpapi/             # G-45 / spec 34; slice 25 feito
-  desktop/             # G-159 / spec 35; slices 27–28
+  desktop/             # G-159 / spec 35; slice 27 feito
 pkg/protocol/          # tipos/schemas publicos estaveis (opcional cedo)
 schemas/               # JSON Schema files
 docs/

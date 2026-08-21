@@ -17,5 +17,8 @@
 .env
 .env.*
 
+# Desktop frontend
+node_modules/
+
 # Empryo
 .empryo

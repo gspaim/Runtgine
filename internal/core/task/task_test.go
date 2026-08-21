@@ -115,6 +115,28 @@ func TestParseGeneratesUUIDv7(t *testing.T) {
 	}
 }
 
+func TestAcceptWailsEntryPoint(t *testing.T) {
+	raw := []byte(`{
+	  "schema_version":"0.1.0",
+	  "source":{"entry_point":"wails"},
+	  "intent":{"summary":"git status"},
+	  "steps":[{"step_id":"s1","capability":"git.status","input":{"workdir":"."}}]
+	}`)
+	if err := task.ValidateDocument(raw); err != nil {
+		t.Fatal(err)
+	}
+	tk, err := task.Parse(raw)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := task.StructuralValidate(tk); err != nil {
+		t.Fatal(err)
+	}
+	if tk.Source.EntryPoint != "wails" {
+		t.Fatalf("entry_point=%s", tk.Source.EntryPoint)
+	}
+}
+
 func TestEmbeddedSchemaMatchesCanonical(t *testing.T) {
 	canonical, err := os.ReadFile(filepath.Join("..", "..", "..", "schemas", "task-ir-v0.1.0.json"))
 	if err != nil {

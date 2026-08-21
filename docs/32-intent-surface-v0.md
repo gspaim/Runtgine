@@ -11,7 +11,7 @@ TUI: [14-tui-design.md](14-tui-design.md) · Desktop: [35-wails-v0.md](35-wails-
 (Wails v3 + Svelte + shadcn; [07-stack.md](07-stack.md)).
 
 **Status deste doc: CONFIRMED (v0).** Código TUI = slice 21 **feito**.
-Wails INTENT = spec [35](35-wails-v0.md) (slices 27–28; código pendente).
+Wails INTENT = spec [35](35-wails-v0.md) (slice 27 feito; slice 28 demais views).
 
 **Pacote OpenSpec:** [`openspec/changes/archive/2026-08-21-032-intent-surface/`](../openspec/changes/archive/2026-08-21-032-intent-surface/).
 

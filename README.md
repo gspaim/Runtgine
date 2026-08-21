@@ -101,8 +101,9 @@ Visão enxuta do que já está em `main`. **Atualizar esta seção em todo PR
 | Feito | Slice 21 — Intent Surface TUI (`32`, G-141..G-146; aba INTENT) |
 | Feito | Slices 22–24 — Evolution v0 (`33`, G-147..G-152; Router, Playbooks, Lessons) |
 | Feito | Slices 25–26 — HTTP API v0 (`34`, G-153..G-158; `runtgine serve` + webhooks) |
-| Spec | Slices 27–28 — Desktop Wails v0 (`35`, G-159..G-165; `runtgine desktop`) |
-| Próximo código | Slice 27 (Wails INTENT/LIVE), depois 28 |
+| Feito | Slice 27 — Desktop Wails v3 INTENT/LIVE (`35`, G-159..G-163; `runtgine desktop`) |
+| Spec | Slice 28 — demais views desktop (`35` G-161/G-165) |
+| Próximo código | Slice 28 |
 
 Detalhe do corte: [`docs/09-mvp.md`](docs/09-mvp.md). Limitações atuais abaixo.
 
@@ -112,6 +113,7 @@ Detalhe do corte: [`docs/09-mvp.md`](docs/09-mvp.md). Limitações atuais abaixo
 
 - [Go 1.25 ou superior](https://go.dev/doc/install)
 - Git
+- Desktop (`runtgine desktop`): no Linux, `libgtk-4-dev` e `libwebkitgtk-6.0-dev` (CGO). Sem CGO o comando existe mas recusa abrir a janela.
 
 ### Instalação a partir do código
 
@@ -173,6 +175,7 @@ em:
 ### Superfícies extras
 
 - TUI: `./bin/runtgine tui` — aba INTENT (preview `Ctrl+p`, submit `Ctrl+Enter`).
+- Desktop: `./bin/runtgine desktop` — Wails v3, views INTENT e LIVE (Linux: GTK4 + WebKitGTK 6).
 - HTTP API (loopback): `./bin/runtgine serve --listen 127.0.0.1:7420`
 - Playbooks de exemplo: copie `examples/playbooks/*.md` para `.runtgine/playbooks/`.
 - Lessons HITL: `runtgine lessons list` / `approve` / `reject` (opt-in `lessons.capture=failures`).
@@ -191,6 +194,7 @@ runtgine blast <task.json|task.yaml> Relatório de impacto + affected (sem execu
 runtgine pipeline run               Executa o pipeline de análise
 runtgine board poll                 Importa cards do GitHub
 runtgine tui                        Abre a Mission Control
+runtgine desktop                    Abre a Mission Control desktop (Wails v3)
 ```
 
 Exemplos:
@@ -270,7 +274,7 @@ cmd/runtgine/             binário e CLI
 internal/config/          defaults, arquivo, env e flags
 internal/core/            Task, Event, Runner, Registry, Store, Graph e APIs
 internal/players/         Shell, Git, Filesystem, HTTP, Test, Pipeline e LLM Players
-internal/entrypoint/      CLI, Board e TUI
+internal/entrypoint/      CLI, Board, TUI, HTTP API e Desktop
 examples/                 exemplos de Task IR
 docs/                     decisões e especificações oficiais
 openspec/                 mudanças OpenSpec (`changes/<NNN>-<slug>/`)

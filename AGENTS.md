@@ -85,7 +85,7 @@ HTTP API: `docs/34-http-api-v0.md` + archive
 nao e HTTP Player `28`).
 Desktop Wails: `docs/35-wails-v0.md` +
 `openspec/changes/035-wails-v0/` — CONFIRMED
-(G-159..G-165); slices 27–28 (codigo pendente; Wails v3).
+(G-159..G-165); slice 27 feito; slice 28 pendente (Wails v3).
 Skill obrigatoria para TUI: `.cursor/skills/runtgine-tui-design/SKILL.md`.
 
 ## Ordem de trabalho
@@ -118,7 +118,7 @@ Skill obrigatoria para TUI: `.cursor/skills/runtgine-tui-design/SKILL.md`.
 26. Intent Surface — CONFIRMED v0 em `32` + archive `032-intent-surface` — slice 21 TUI feito; Wails = spec `35`
 27. Evolution v0 — CONFIRMED em `33` + archive `033-evolution-v0` — slices 22–24 feitas
 28. HTTP API — CONFIRMED em `34` + archive `034-http-api` — slices 25–26 feitas
-29. Desktop Wails — CONFIRMED v0 em `35` + OpenSpec `035-wails-v0` — slices 27–28 (codigo pendente)
+29. Desktop Wails — CONFIRMED v0 em `35` + OpenSpec `035-wails-v0` — slice 27 feito; slice 28 pendente
 30. Depois — MCP / mais Players / templates — so apos nova promocao em `04`
 
 ## Conceitos chave (nao confundir)
@@ -157,10 +157,11 @@ O update script (startup) roda `go mod download`; nao ha build/test/servico no s
 Notas nao obvias para desenvolver aqui:
 
 - SQLite usa `modernc.org/sqlite` (Go puro): nao precisa de CGO nem de
-  bibliotecas de sistema. `CGO_ENABLED=0` funciona.
-- Nao ha servico de longa duracao **hoje**: e um binario CLI/TUI. Cada
-  `runtgine run` executa e encerra. `runtgine serve` (HTTP API, spec `34`)
-  ainda nao esta implementado (slices 25–26).
+  bibliotecas de sistema. `CGO_ENABLED=0` funciona (o comando `desktop`
+  vira stub). O binario padrao no Linux com CGO precisa de GTK4 + WebKitGTK 6
+  para `runtgine desktop`.
+- Nao ha servico de longa duracao **hoje** no startup: e um binario CLI/TUI.
+  `runtgine serve` sobe a HTTP API. `runtgine desktop` abre a janela Wails.
 - Estado persistido em `<workspace>/.runtgine/runtgine.db` (gitignored). Para
   um estado limpo, apague `.runtgine/` entre execucoes.
 - `runtgine tui` exige um TTY interativo; nao roda em pipe/CI nao interativo.

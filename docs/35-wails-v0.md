@@ -9,9 +9,8 @@ Autoridade de status: [04-decisoes.md](04-decisoes.md).
 Stack: [07-stack.md](07-stack.md). Visual: [14-tui-design.md](14-tui-design.md).
 INTENT (semântica): [32-intent-surface-v0.md](32-intent-surface-v0.md) G-144.
 
-**Status deste doc: CONFIRMED (v0 spec).** Código **não** iniciado.
-Duas fatias: slice 27 (app + bindings + INTENT/LIVE), slice 28
-(demais views: RUNS, BOARD, EVENTS, GRAPH, CONFIG).
+**Status deste doc: CONFIRMED (v0 spec).** Slice 27 **feito** (app + INTENT/LIVE).
+Slice 28 (demais views) pendente.
 
 **Pacote OpenSpec:** [`openspec/changes/035-wails-v0/`](../openspec/changes/035-wails-v0/).
 

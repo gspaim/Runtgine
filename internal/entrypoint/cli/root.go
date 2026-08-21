@@ -19,6 +19,7 @@ import (
 	"github.com/gspaim/Runtgine/internal/core/store"
 	"github.com/gspaim/Runtgine/internal/core/task"
 	"github.com/gspaim/Runtgine/internal/entrypoint/board"
+	"github.com/gspaim/Runtgine/internal/entrypoint/desktop"
 	"github.com/gspaim/Runtgine/internal/entrypoint/httpapi"
 	tuientry "github.com/gspaim/Runtgine/internal/entrypoint/tui"
 	"github.com/spf13/cobra"
@@ -49,6 +50,7 @@ func NewRoot() *cobra.Command {
 	root.AddCommand(newPipelineCmd(&workspace, &verbose))
 	root.AddCommand(newBoardCmd(&workspace, &verbose))
 	root.AddCommand(newTUICmd(&workspace, &verbose))
+	root.AddCommand(newDesktopCmd(&workspace, &verbose))
 	root.AddCommand(newLessonsCmd(&workspace, &verbose))
 	root.AddCommand(newServeCmd(&workspace, &verbose))
 	return root
@@ -511,6 +513,21 @@ func newTUICmd(workspace *string, verbose *bool) *cobra.Command {
 			}
 			defer core.Close()
 			return tuientry.Run(core)
+		},
+	}
+}
+
+func newDesktopCmd(workspace *string, verbose *bool) *cobra.Command {
+	return &cobra.Command{
+		Use:   "desktop",
+		Short: "Open the Wails desktop Mission Control (G-159)",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			core, err := openCore(*workspace, *verbose)
+			if err != nil {
+				return err
+			}
+			defer core.Close()
+			return desktop.Run(core)
 		},
 	}
 }
