@@ -57,7 +57,7 @@ Status: CONFIRMED | HYPOTHESIS | OPEN QUESTION | REJECTED
 | TUI GRAPH tab | CONFIRMED (v0) | Aba read-only; ver `26-tui-graph-v0.md` + `14` |
 | HTTP Player | CONFIRMED (v0) | Cliente GET/HEAD HTTPS; ver `28-http-player-v0.md` |
 | Test Player | CONFIRMED (v0) | `test.go` no workspace; ver `30-test-player-v0.md` |
-| Many deterministic Players | CONFIRMED | Estrategico |
+| Many deterministic Players | CONFIRMED | Estrategico; proximo recorte G-41 = NPM (`36`, G-166..G-171) |
 | Runtgine + Chorus | CONFIRMED | Complementares |
 | Event Bus in-process (MVP) | CONFIRMED | Canais Go |
 | Nativo (nao Electron) | CONFIRMED | Wails |
@@ -130,6 +130,7 @@ Ver [09-mvp.md](09-mvp.md). Decisoes-chave:
 - Evolution v0 (G-147..G-152) — spec `33`; slices 22–24 feitas
 - HTTP API v0 (G-153..G-158; recorte G-45) — spec `34`; slices 25–26 feitas
 - Desktop Wails v0 (G-159..G-165; recorte G-35/G-144) — spec `35`; slices 27–28 feitas
+- NPM Player v0 (G-166..G-171; recorte G-41) — spec `36`; codigo = slice 29
 
 ## Protocolo v0 — confirmado (sessao de fechamento)
 
@@ -416,7 +417,7 @@ Nao e a API HTTP do Runtgine (G-45 recorte v0 em `34`).
 
 Ver [30-test-player-v0.md](30-test-player-v0.md). Recorte de G-41
 (`go test` no workspace). Codigo = slice 18 — feito.
-Nao e pytest/npm; nao e G-45.
+Nao e pytest; NPM = spec `36`. Nao e G-45.
 
 | Item | Status | Notas |
 |---|---|---|
@@ -503,6 +504,21 @@ Código = slices 27–28 (feitas). Wails **v3** (beta aceite; v2 fora).
 | G-163 INTENT desktop | CONFIRMED | Fecha G-144; preview sem Run |
 | G-164 Exclusoes v0 | CONFIRMED | Sem v2; sem HTTP client; sem chat; sem PTY; sem multi-window |
 | G-165 Ordem slices 27–28 | CONFIRMED | INTENT/LIVE (27) → demais views (28); ambas feitas |
+
+## NPM Player — CONFIRMED v0 (spec)
+
+Ver [36-npm-player-v0.md](36-npm-player-v0.md). Recorte de G-41
+(`npm test` no workspace). Código = slice 29 (pendente).
+Não é `test.go`; não é pytest; não é `npm install`.
+
+| Item | Status | Notas |
+|---|---|---|
+| G-166 Papel / pacote `npm` | CONFIRMED | `internal/players/npm`; Player deterministic |
+| G-167 Capabilities v0 | CONFIRMED | `npm.test` só |
+| G-168 Sandbox / argv | CONFIRMED | `npm test`; sem install/npx/prefix |
+| G-169 Falha vs sucesso | CONFIRMED | exit != 0 → `runtime.player_error` |
+| G-170 Registry + Graph + Intent | CONFIRMED | `api.Open`; `heuristic.npm`; sem claim/blast |
+| G-171 Exclusoes v0 | CONFIRMED | install, yarn/pnpm, pytest, G-44, G-45 |
 
 ## Git / release — fluxo de branches
 

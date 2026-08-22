@@ -37,10 +37,10 @@ P1 (MVP 1.0 magro — G-135..G-140):
 Heuristicas Intent → `test.go` / `git.status|diff|log` / `docker.ps`;
 Context Engine v0 (semente `repo_hits` a partir do Graph)
 
-P2: API HTTP (G-45 / spec `34`, feito); Desktop Wails (spec `35`); mais Players
+P2: API HTTP (G-45 / spec `34`, feito); Desktop Wails (spec `35`, feito); mais Players (NPM = spec `36`)
 
 P3: NATS (G-36 DEFERRED), MCP (G-44), Workflow Templates (G-40),
-Memory Player (G-47), K8s/Terraform/PostgreSQL
+Memory Player (G-47), pytest/yarn, K8s/Terraform/PostgreSQL
 
 ## Escopo detalhado do MVP
 

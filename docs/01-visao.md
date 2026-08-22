@@ -27,6 +27,7 @@ No MVP realizado, a entrada tipica e Task IR estruturado (CLI/Board)
 ou `runtgine intent` (NL). O 1.0 magro (ver `09`) adiciona heuristicas
 de Player e Context Engine v0; API HTTP v0 esta em `34` (slices 25–26
 feitas). Desktop Wails v0 esta spec'd em `35` (slices 27–28 feitas).
+NPM Player v0 esta spec'd em `36` (G-166..G-171; slice 29).
 
 ## Arquitetura
 

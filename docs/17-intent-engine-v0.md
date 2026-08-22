@@ -83,8 +83,8 @@ Antes de `matchShell`. Frases de alta confianca (PT/EN, case-insensitive):
 | `git log` | `git.log` | `heuristic.git` |
 | `docker ps` | `docker.ps` | `heuristic.docker` |
 
-Fora desta tabela no v0: `git add/commit/push`, `http.get`, `fs.*`,
-`docker run/build`, pytest/npm. Inputs = defaults do Manifest.
+Fora desta tabela no v0 desta spec: `git add/commit/push`, `http.get`, `fs.*`,
+`docker run/build`, pytest. `npm test` = spec `36` (`heuristic.npm`).
 
 ## G-136 — Metodos e soberania
 

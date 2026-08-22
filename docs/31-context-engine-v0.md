@@ -98,7 +98,8 @@ Compartilhado com heurísticas de Intent (`09` / G-135..G-136):
 
 - G-45 API HTTP (spec `34`, fora do 1.0); G-44 MCP; G-36 NATS; Wails
 - Player Router; Workflow Templates; Memory Player
-- `http.post`, `git.push`, pytest/npm, Players de infra
+- `http.post`, `git.push`, pytest, Players de infra
+  (`npm.test` = spec `36`, fora deste corte 1.0)
 - Context Engine “completo” (`02`: relevant events globais, current
   state rico, previous decisions além de `memory_hits`)
 

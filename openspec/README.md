@@ -37,7 +37,8 @@ branch:              feat/<NNN>-<slug>   (ou docs/ fix/ chore/)
 
 Exemplos válidos: `001-shell-player`, `017-intent-engine`, `019-graph-hits`.
 
-**Próximo id livre:** `036`. Nenhuma mudança ativa.
+**Próximo id livre:** `037`. Mudança ativa:
+[`036-npm-player/`](changes/036-npm-player/) (NPM Player v0; slice 29).
 Último archive:
 [`changes/archive/2026-08-21-035-wails-v0/`](changes/archive/2026-08-21-035-wails-v0/)
 (Desktop Wails v0; G-159..G-165; slices 27–28).
