@@ -41,6 +41,12 @@ func TestGraphRefreshOnOpen(t *testing.T) {
 	if !snapshotHas(snap, graph.KindCapability, "test.go") {
 		t.Fatal("missing test.go")
 	}
+	if !snapshotHas(snap, graph.KindPlayer, "npm") {
+		t.Fatal("missing npm player")
+	}
+	if !snapshotHas(snap, graph.KindCapability, "npm.test") {
+		t.Fatal("missing npm.test")
+	}
 }
 
 func TestGraphSyncFromSuccessfulRun(t *testing.T) {

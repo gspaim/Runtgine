@@ -104,7 +104,7 @@ Ate la, o Core deve rodar so com CLI + Shell.
 | ID | Gap |
 |---|---|
 | G-40 | Workflow Templates loading (nativo vs repo externo) — ver `08` |
-| G-41 | Biblioteca ampla de Players | Em andamento — Git (`20`), Filesystem (`21`), Docker (`23`), HTTP (`28`), Test (`30`) v0; **NPM spec `36` (G-166..G-171; slice 29)** |
+| G-41 | Biblioteca ampla de Players | Em andamento — Git (`20`), Filesystem (`21`), Docker (`23`), HTTP (`28`), Test (`30`), **NPM (`36`, G-166..G-171; slice 29 feito)**; resto: pytest/yarn/infra |
 | G-42 | Human-in-the-loop / Approvals | **CONFIRMED v0** — recorte G-81..G-86 em `22` |
 | G-43 | Resource Claims / Blast Radius | **Claims CONFIRMED v0** — `24`. **Blast CONFIRMED v0** — `25`. **Walk Blast←Graph CONFIRMED v0** — recorte G-111..G-116 em `27` |
 | G-44 | MCP integration — candidato a transporte futuro da Project Memory (fora do v0 `29`) |
@@ -259,7 +259,7 @@ Ate la, o Core deve rodar so com CLI + Shell.
 | ID | Gap | Notas |
 |---|---|---|
 | G-135 | Heurísticas Player no Intent | **CONFIRMED** — ver `17` / `09` |
-| G-136 | Métodos + soberania | **CONFIRMED** — `heuristic.test\|git\|docker` |
+| G-136 | Métodos + soberania | **CONFIRMED** — `heuristic.test\|git\|docker\|npm` |
 | G-137 | Papel Context Engine | **CONFIRMED** — ver `31-context-engine-v0.md` |
 | G-138 | Semente `repo_hits` | **CONFIRMED** — QueryHits path/symbol se vazio |
 | G-139 | Ranking / pack | **CONFIRMED** — sem walk / embeddings / file body |
@@ -348,7 +348,7 @@ Ate la, o Core deve rodar so com CLI + Shell.
 21. Evolution v0 — spec em `33` — G-147..G-152 CONFIRMED; slices 22–24 feitas
 22. HTTP API — spec em `34` — G-153..G-158 CONFIRMED; slices 25–26 feitas
 23. Desktop Wails — spec em `35` — G-159..G-165 CONFIRMED; slices 27–28 feitas
-24. NPM Player — spec em `36` — G-166..G-171 CONFIRMED; codigo = slice 29
+24. NPM Player — spec em `36` — G-166..G-171 CONFIRMED; codigo = slice 29 — feito
 
 ## Criterio de “pronto para codar”
 
@@ -372,8 +372,7 @@ Ate la, o Core deve rodar so com CLI + Shell.
 **MVP 1.0 magro (G-135..G-140): CONFIRMADO** — slices 19–20 feitos.
 **HTTP API (G-153..G-158): CONFIRMADO** — spec `34`; slices 25–26 feitas.
 **Desktop Wails (G-159..G-165): CONFIRMADO** — spec `35`; slices 27–28 feitas.
-**NPM Player (G-166..G-171): CONFIRMADO spec** — spec `36`; slice 29 pendente.
-**NPM Player (G-166..G-171): CONFIRMADO spec** — spec `36`; slice 29 pendente.
+**NPM Player (G-166..G-171): CONFIRMADO** — spec `36`; slice 29 feito.
 
 Ordem pratica de codigo:
 1. Core CLI + Shell (+ SQLite) — slice 1 — feito
@@ -400,7 +399,7 @@ Ordem pratica de codigo:
 22. Evolution v0 — slices 22–24 (G-147..G-152) — feito (spec `33`)
 23. HTTP API v0 — slices 25–26 (G-153..G-158) — feito (spec `34`)
 24. Desktop Wails v0 — slices 27–28 feitas (G-159..G-165) — spec `35`
-25. NPM Player v0 — spec `36` (G-166..G-171); codigo = slice 29
+25. NPM Player v0 — spec `36` (G-166..G-171); slice 29 feito
 
 P3 restante (G-40 templates, G-44 MCP; G-41 em andamento — pytest / yarn / K8s / TF / PG).
 MVP 1.0 magro: spec `09`/`31` (G-135..G-140); slices 19–20 feitos.

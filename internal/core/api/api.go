@@ -28,6 +28,7 @@ import (
 	gotestplayer "github.com/gspaim/Runtgine/internal/players/gotest"
 	httpplayer "github.com/gspaim/Runtgine/internal/players/httpclient"
 	"github.com/gspaim/Runtgine/internal/players/llm"
+	npmplayer "github.com/gspaim/Runtgine/internal/players/npm"
 	pipeplayer "github.com/gspaim/Runtgine/internal/players/pipeline"
 	"github.com/gspaim/Runtgine/internal/players/shell"
 )
@@ -77,6 +78,10 @@ func Open(cfg config.Config, log *slog.Logger) (*Core, error) {
 		return nil, err
 	}
 	if err := reg.Register(gotestplayer.New()); err != nil {
+		_ = st.Close()
+		return nil, err
+	}
+	if err := reg.Register(npmplayer.New()); err != nil {
 		_ = st.Close()
 		return nil, err
 	}

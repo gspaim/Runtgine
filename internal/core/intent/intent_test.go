@@ -71,6 +71,10 @@ func TestCompilePlayerHeuristics(t *testing.T) {
 		{"roda os testes", intent.MethodHeuristicTest, "test.go"},
 		{"rodar testes", intent.MethodHeuristicTest, "test.go"},
 		{"run tests", intent.MethodHeuristicTest, "test.go"},
+		{"npm test", intent.MethodHeuristicNPM, "npm.test"},
+		{"npm run test", intent.MethodHeuristicNPM, "npm.test"},
+		{"roda os testes npm", intent.MethodHeuristicNPM, "npm.test"},
+		{"run npm tests", intent.MethodHeuristicNPM, "npm.test"},
 		{"git status", intent.MethodHeuristicGit, "git.status"},
 		{"git diff", intent.MethodHeuristicGit, "git.diff"},
 		{"git log", intent.MethodHeuristicGit, "git.log"},
@@ -99,6 +103,37 @@ func TestCompileGoTestBeatsShellPrefix(t *testing.T) {
 		t.Fatal(err)
 	}
 	if res.Method != intent.MethodHeuristicTest || res.Task.Steps[0].Capability != "test.go" {
+		t.Fatalf("method=%s cap=%s", res.Method, res.Task.Steps[0].Capability)
+	}
+}
+
+func TestCompileNpmTestBeatsShellPrefix(t *testing.T) {
+	e := intent.New(llm.HeuristicCompleter{})
+	res, err := e.Compile(context.Background(), intent.Request{Text: "npm test"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if res.Method != intent.MethodHeuristicNPM || res.Task.Steps[0].Capability != "npm.test" {
+		t.Fatalf("method=%s cap=%s", res.Method, res.Task.Steps[0].Capability)
+	}
+	var in struct {
+		Workdir string `json:"workdir"`
+	}
+	if err := json.Unmarshal(res.Task.Steps[0].Input, &in); err != nil {
+		t.Fatal(err)
+	}
+	if in.Workdir != "." {
+		t.Fatalf("workdir=%q", in.Workdir)
+	}
+}
+
+func TestCompileNpmInstallStillShell(t *testing.T) {
+	e := intent.New(llm.HeuristicCompleter{})
+	res, err := e.Compile(context.Background(), intent.Request{Text: "npm install"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if res.Method != intent.MethodHeuristicShell || res.Task.Steps[0].Capability != "shell.exec" {
 		t.Fatalf("method=%s cap=%s", res.Method, res.Task.Steps[0].Capability)
 	}
 }
