@@ -104,7 +104,7 @@ Ate la, o Core deve rodar so com CLI + Shell.
 | ID | Gap |
 |---|---|
 | G-40 | Workflow Templates loading (nativo vs repo externo) — ver `08` |
-| G-41 | Biblioteca ampla de Players | Em andamento — Git (`20`), Filesystem (`21`), Docker (`23`), HTTP (`28`), Test (`30`) v0 (slice 18 feito) |
+| G-41 | Biblioteca ampla de Players | Em andamento — Git (`20`), Filesystem (`21`), Docker (`23`), HTTP (`28`), Test (`30`) v0; **NPM spec `36` (G-166..G-171; slice 29)** |
 | G-42 | Human-in-the-loop / Approvals | **CONFIRMED v0** — recorte G-81..G-86 em `22` |
 | G-43 | Resource Claims / Blast Radius | **Claims CONFIRMED v0** — `24`. **Blast CONFIRMED v0** — `25`. **Walk Blast←Graph CONFIRMED v0** — recorte G-111..G-116 em `27` |
 | G-44 | MCP integration — candidato a transporte futuro da Project Memory (fora do v0 `29`) |
@@ -252,7 +252,7 @@ Ate la, o Core deve rodar so com CLI + Shell.
 | G-131 | Sandbox / argv | **CONFIRMED** — `-mod=readonly`; allowlist |
 | G-132 | Falha vs sucesso | **CONFIRMED** — teste vermelho falha o Run |
 | G-133 | Registry + Graph | **CONFIRMED** — sem claim/blast |
-| G-134 | Exclusões v0 | **CONFIRMED** — pytest/npm, race, G-45, MCP |
+| G-134 | Exclusões v0 | **CONFIRMED** — pytest/npm no v0 `30`; npm = spec `36`; race, G-45, MCP |
 
 ## MVP 1.0 magro — CONFIRMED v0
 
@@ -310,6 +310,17 @@ Ate la, o Core deve rodar so com CLI + Shell.
 | G-164 | Exclusões v0 | **CONFIRMED** — sem HTTP client; sem chat; sem PTY |
 | G-165 | Slices 27–28 | **CONFIRMED** — INTENT/LIVE → demais views |
 
+## NPM Player (recorte G-41) — CONFIRMED v0 spec
+
+| ID | Gap | Notas |
+|---|---|---|
+| G-166 | Papel / pacote `npm` | **CONFIRMED** — ver `36-npm-player-v0.md` |
+| G-167 | Capabilities v0 | **CONFIRMED** — `npm.test` |
+| G-168 | Sandbox / argv | **CONFIRMED** — `npm test`; sem install/npx |
+| G-169 | Falha vs sucesso | **CONFIRMED** — teste vermelho falha o Run |
+| G-170 | Registry + Graph + Intent | **CONFIRMED** — `heuristic.npm`; sem claim/blast |
+| G-171 | Exclusões v0 | **CONFIRMED** — install, yarn/pnpm, pytest, G-44, G-45 |
+
 ---
 
 ## Ordem para fechar gaps
@@ -337,6 +348,7 @@ Ate la, o Core deve rodar so com CLI + Shell.
 21. Evolution v0 — spec em `33` — G-147..G-152 CONFIRMED; slices 22–24 feitas
 22. HTTP API — spec em `34` — G-153..G-158 CONFIRMED; slices 25–26 feitas
 23. Desktop Wails — spec em `35` — G-159..G-165 CONFIRMED; slices 27–28 feitas
+24. NPM Player — spec em `36` — G-166..G-171 CONFIRMED; codigo = slice 29
 
 ## Criterio de “pronto para codar”
 
@@ -360,6 +372,8 @@ Ate la, o Core deve rodar so com CLI + Shell.
 **MVP 1.0 magro (G-135..G-140): CONFIRMADO** — slices 19–20 feitos.
 **HTTP API (G-153..G-158): CONFIRMADO** — spec `34`; slices 25–26 feitas.
 **Desktop Wails (G-159..G-165): CONFIRMADO** — spec `35`; slices 27–28 feitas.
+**NPM Player (G-166..G-171): CONFIRMADO spec** — spec `36`; slice 29 pendente.
+**NPM Player (G-166..G-171): CONFIRMADO spec** — spec `36`; slice 29 pendente.
 
 Ordem pratica de codigo:
 1. Core CLI + Shell (+ SQLite) — slice 1 — feito
@@ -386,8 +400,9 @@ Ordem pratica de codigo:
 22. Evolution v0 — slices 22–24 (G-147..G-152) — feito (spec `33`)
 23. HTTP API v0 — slices 25–26 (G-153..G-158) — feito (spec `34`)
 24. Desktop Wails v0 — slices 27–28 feitas (G-159..G-165) — spec `35`
+25. NPM Player v0 — spec `36` (G-166..G-171); codigo = slice 29
 
-P3 restante (G-40 templates, G-44 MCP; G-41 em andamento).
+P3 restante (G-40 templates, G-44 MCP; G-41 em andamento — pytest / yarn / K8s / TF / PG).
 MVP 1.0 magro: spec `09`/`31` (G-135..G-140); slices 19–20 feitos.
 Test Player corte v0: spec `30` (G-129..G-134); slice 18 feito.
 Project Memory corte v0: spec `29` (G-123..G-128); slice 17 feito.

@@ -41,6 +41,7 @@ Autoridade de decisoes: [04-decisoes.md](04-decisoes.md).
 | 33 | 33-evolution-v0.md | Evolution v0: Router, Playbooks, Lessons (**CONFIRMED**; G-147..G-152; slices 22–24 feitas) |
 | 34 | 34-http-api-v0.md | HTTP API v0 / `runtgine serve` (**CONFIRMED**; G-153..G-158; slices 25–26 feitas) |
 | 35 | 35-wails-v0.md | Desktop Wails v0 (**CONFIRMED**; G-159..G-165; slices 27–28 feitas) |
+| 36 | 36-npm-player-v0.md | NPM Player v0 (**CONFIRMED** spec; G-166..G-171; slice 29) |
 | — | [openspec/](../openspec/README.md) | Pacotes de mudança OpenSpec (`NNN-slug`) |
 
 ## Fontes historicas (raiz do repo)
@@ -70,4 +71,5 @@ Intent Surface (`32`, G-141..G-146) esta **CONFIRMED** (slice 21 TUI feito; Wail
 Evolution v0 (`33`, G-147..G-152) esta **CONFIRMED** (slices 22–24 feitas).
 HTTP API (`34`, G-153..G-158) esta **CONFIRMED** (slices 25–26 feitas).
 Desktop Wails (`35`, G-159..G-165) esta **CONFIRMED** (slices 27–28 feitas).
-P3 restante: G-44 MCP; NATS; G-41 mais Players.
+NPM Player (`36`, G-166..G-171) esta **CONFIRMED spec** (slice 29 pendente).
+P3 restante: G-44 MCP; NATS; G-41 (pytest/yarn/infra).

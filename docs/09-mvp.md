@@ -122,7 +122,7 @@ Sem walk do workspace, sem embeddings, sem corpo de arquivo no pack.
 | Plugin system / event sourcing | Plataforma, não prova |
 | Memory Player (G-47) | Provider já existe; Player OPEN |
 | `http.post`, `git.push` / `add` / `commit` via NL | Escrita / rede; heuristicas só leitura |
-| pytest / npm / `-race` / K8s / Terraform / PostgreSQL | Outros recortes G-41 |
+| pytest / yarn / pnpm / `-race` / K8s / Terraform / PostgreSQL | Outros recortes G-41 |
 | Embeddings / RAG / dump do repositório no pack | Fora do Context Engine v0 |
 
 UC-02 (CI/CD via HTTP) é **pós-1.0**: spec [34-http-api-v0.md](34-http-api-v0.md)
@@ -153,7 +153,8 @@ UC-02 (CI/CD via HTTP) é **pós-1.0**: spec [34-http-api-v0.md](34-http-api-v0.
 6. Slices 25–26 — HTTP API v0 (G-153..G-158; ver `34`) — feito
 7. Desktop Wails v0 slice 27 (INTENT/LIVE) — feito (ver `35`)
 8. Slice 28 — demais views desktop + Lessons HITL — feito
-9. Depois: MCP (G-44), mais Players (G-41), templates (`08`) — nova promoção
+9. NPM Player v0 slice 29 (`npm.test`) — spec `36` (G-166..G-171)
+10. Depois: pytest / yarn / infra Players (G-41), MCP (G-44), templates (`08`)
 
 Histórico do runtime mínimo (Task IR → Shell → CLI → TUI → Board →
 pipeline) está nos slices 1–4 / `11` / `12`. Não reabrir.

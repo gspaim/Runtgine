@@ -452,6 +452,7 @@ internal/core/
   blast/               # Blast Radius v0 (G-99+; slice 13)
 internal/players/
   shell/
+  npm/                 # G-166 / spec 36; slice 29
 internal/entrypoint/
   cli/
   tui/                 # depois do CLI

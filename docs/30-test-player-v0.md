@@ -5,7 +5,8 @@ Player determinístico para **rodar testes Go no workspace**: contrato
 
 Inventário: [10-gaps.md](10-gaps.md) (G-129+; recorte de G-41).
 Autoridade de status: [04-decisoes.md](04-decisoes.md).
-Não é o Test Player genérico (pytest/npm). Não é Coverage UI.
+Não é o Test Player genérico (pytest). Não é Coverage UI.
+NPM = spec [36](36-npm-player-v0.md) (`npm.test`; G-166..G-171).
 Não é MCP ([G-44](10-gaps.md)). Não é a API HTTP (G-45).
 
 **Status deste doc: CONFIRMED (v0).** G-129..G-134 implementados no

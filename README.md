@@ -103,7 +103,8 @@ Visão enxuta do que já está em `main`. **Atualizar esta seção em todo PR
 | Feito | Slices 25–26 — HTTP API v0 (`34`, G-153..G-158; `runtgine serve` + webhooks) |
 | Feito | Slice 27 — Desktop Wails v3 INTENT/LIVE (`35`, G-159..G-163; `runtgine desktop`) |
 | Feito | Slice 28 — demais views desktop + Lessons HITL (`35` G-161/G-165) |
-| Próximo código | MCP / mais Players / templates — só após nova promoção em `04` |
+| Spec | Slice 29 — NPM Player v0 (`36`, G-166..G-171; `npm.test`) |
+| Próximo código | Slice 29 |
 
 Detalhe do corte: [`docs/09-mvp.md`](docs/09-mvp.md). Limitações atuais abaixo.
 
@@ -273,7 +274,7 @@ Fluxo real do MVP: **CLI/Board** montam `Task IR` e chamam `SubmitTask`. O **Val
 cmd/runtgine/             binário e CLI
 internal/config/          defaults, arquivo, env e flags
 internal/core/            Task, Event, Runner, Registry, Store, Graph e APIs
-internal/players/         Shell, Git, Filesystem, HTTP, Test, Pipeline e LLM Players
+internal/players/         Shell, Git, Filesystem, HTTP, Test, Pipeline, LLM; NPM = spec `36`
 internal/entrypoint/      CLI, Board, TUI, HTTP API e Desktop
 examples/                 exemplos de Task IR
 docs/                     decisões e especificações oficiais
