@@ -152,7 +152,7 @@ HTTP Player v0 (`28`, G-117..G-122): cliente HTTPS `http.get` /
 `http.head`. Nao e a API HTTP do runtime (G-45 recorte v0 em `34`).
 
 Test Player v0 (`30`, G-129..G-134): `test.go` (`go test` no workspace).
-Nao e pytest. NPM Player v0 (spec `36`, G-166..G-171): `npm.test`.
+Nao e pytest. NPM Player v0 (`36`, G-166..G-171; slice 29): `npm.test`.
 
 Muitos Players deterministicos sao estrategicos — aumentam utilidade
 sem IA, reduzem custo, aumentam confiabilidade. A visao e ter uma

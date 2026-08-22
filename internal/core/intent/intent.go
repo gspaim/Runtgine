@@ -22,6 +22,7 @@ const (
 	MethodHeuristicTest     = "heuristic.test"
 	MethodHeuristicGit      = "heuristic.git"
 	MethodHeuristicDocker   = "heuristic.docker"
+	MethodHeuristicNPM      = "heuristic.npm"
 	MethodLLM               = "llm"
 )
 
@@ -73,7 +74,7 @@ func (e *Engine) Compile(ctx context.Context, req Request) (CompileResult, error
 
 	if hit, ok := matchPlayer(text); ok {
 		extra := map[string]any{}
-		if hit.method == MethodHeuristicGit {
+		if hit.method == MethodHeuristicGit || hit.method == MethodHeuristicNPM {
 			extra["workdir"] = "."
 		}
 		tk, err := playerTask(text, hit.capability, ep, req.Ref, extra)
@@ -247,6 +248,8 @@ type playerHit struct {
 func matchPlayer(text string) (playerHit, bool) {
 	n := normalizeNL(text)
 	switch {
+	case hasPhrase(n, "npm test"), hasPhrase(n, "npm run test"), hasPhrase(n, "roda os testes npm"), hasPhrase(n, "run npm tests"):
+		return playerHit{capability: "npm.test", method: MethodHeuristicNPM}, true
 	case hasPhrase(n, "go test"), hasPhrase(n, "roda os testes"), hasPhrase(n, "rodar testes"), hasPhrase(n, "run tests"):
 		return playerHit{capability: "test.go", method: MethodHeuristicTest}, true
 	case hasPhrase(n, "git status"):

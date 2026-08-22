@@ -199,6 +199,65 @@ func TestSubmitRejectsEscapingTestPackage(t *testing.T) {
 	}
 }
 
+func TestSubmitRejectsEscapingNpmWorkdir(t *testing.T) {
+	core := openTestCore(t)
+	id, err := uuid.NewV7()
+	if err != nil {
+		t.Fatal(err)
+	}
+	tk := task.Task{
+		SchemaVersion: task.SchemaVersion,
+		TaskID:        id.String(),
+		Source:        task.Source{EntryPoint: "cli"},
+		Intent:        task.Intent{Summary: "escape npm tests"},
+		Steps: []task.Step{{
+			StepID:     "s1",
+			Capability: "npm.test",
+			Input:      json.RawMessage(`{"workdir":"../outside"}`),
+		}},
+	}
+	_, err = core.SubmitTask(context.Background(), tk)
+	if err == nil {
+		t.Fatal("expected rejection")
+	}
+	var ve result.Error
+	if !asValidation(err, &ve) || ve.Code != result.CodeInvalidInput {
+		t.Fatalf("got %v", err)
+	}
+
+	id2, err := uuid.NewV7()
+	if err != nil {
+		t.Fatal(err)
+	}
+	tk.TaskID = id2.String()
+	tk.Steps[0].Input = json.RawMessage(`{"workdir":"."}`)
+	_, err = core.SubmitTask(context.Background(), tk)
+	if err == nil {
+		t.Fatal("expected missing package.json rejection")
+	}
+	if !asValidation(err, &ve) || ve.Code != result.CodeInvalidInput {
+		t.Fatalf("missing package.json got %v", err)
+	}
+
+	if err := os.WriteFile(filepath.Join(core.Cfg.WorkspaceRoot, "package.json"), []byte(`{"name":"x","private":true}`), 0o644); err != nil {
+		t.Fatal(err)
+	}
+
+	id3, err := uuid.NewV7()
+	if err != nil {
+		t.Fatal(err)
+	}
+	tk.TaskID = id3.String()
+	tk.Steps[0].Input = json.RawMessage(`{"workdir":".","prefix":"/tmp"}`)
+	_, err = core.SubmitTask(context.Background(), tk)
+	if err == nil {
+		t.Fatal("expected extra property rejection")
+	}
+	if !asValidation(err, &ve) || ve.Code != result.CodeInvalidInput {
+		t.Fatalf("extra property got %v", err)
+	}
+}
+
 func TestSubmitRejectsHTTPCleartextAndAuth(t *testing.T) {
 	core := openTestCore(t)
 	id, err := uuid.NewV7()

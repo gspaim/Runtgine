@@ -37,11 +37,10 @@ branch:              feat/<NNN>-<slug>   (ou docs/ fix/ chore/)
 
 Exemplos válidos: `001-shell-player`, `017-intent-engine`, `019-graph-hits`.
 
-**Próximo id livre:** `037`. Mudança ativa:
-[`036-npm-player/`](changes/036-npm-player/) (NPM Player v0; slice 29).
+**Próximo id livre:** `037`. Nenhuma mudança ativa.
 Último archive:
-[`changes/archive/2026-08-21-035-wails-v0/`](changes/archive/2026-08-21-035-wails-v0/)
-(Desktop Wails v0; G-159..G-165; slices 27–28).
+[`changes/archive/2026-08-22-036-npm-player/`](changes/archive/2026-08-22-036-npm-player/)
+(NPM Player v0; G-166..G-171; slice 29).
 
 ## Autoridade
 
@@ -86,3 +85,4 @@ Não codificar mudança cujo status em `04` não esteja **CONFIRMED**
 | `evolution-v0` | Player Router + Playbooks + Lessons (slices 22–24) |
 | `http-api` | Entry Point HTTP `runtgine serve` + webhooks outbound (slices 25–26) |
 | `wails-v0` | Entry Point desktop Wails v3 (`runtgine desktop`; slices 27–28) |
+| `npm-player` | Player `npm.test` (`npm test` no workspace; spec 036) |

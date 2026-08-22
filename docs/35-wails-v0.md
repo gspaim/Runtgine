@@ -205,7 +205,7 @@ Todas convergem para o mesmo protocolo (`11`).
 1. Spec deste doc (G-159..G-165) — feito.
 2. **Slice 27** — app + INTENT/LIVE — feito.
 3. **Slice 28** — demais views + Lessons HITL — feito.
-4. Depois: NPM Player (`36`, slice 29); pytest/yarn; MCP (G-44); templates (`08`).
+4. Depois: pytest/yarn; MCP (G-44); templates (`08`). NPM Player (`36`, slice 29) feito.
 
 ---
 

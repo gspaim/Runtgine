@@ -130,7 +130,7 @@ Ver [09-mvp.md](09-mvp.md). Decisoes-chave:
 - Evolution v0 (G-147..G-152) — spec `33`; slices 22–24 feitas
 - HTTP API v0 (G-153..G-158; recorte G-45) — spec `34`; slices 25–26 feitas
 - Desktop Wails v0 (G-159..G-165; recorte G-35/G-144) — spec `35`; slices 27–28 feitas
-- NPM Player v0 (G-166..G-171; recorte G-41) — spec `36`; codigo = slice 29
+- NPM Player v0 (G-166..G-171; recorte G-41) — spec `36`; codigo = slice 29 — feito
 
 ## Protocolo v0 — confirmado (sessao de fechamento)
 
@@ -438,7 +438,7 @@ Codigo = slices 19–20 feitos. Nao e G-45; nao e NATS/Wails/MCP.
 | Item | Status | Notas |
 |---|---|---|
 | G-135 Heuristicas Player no Intent | CONFIRMED | slice 19 feito; `test.go` / git status|diff|log / `docker.ps` |
-| G-136 Metodos + soberania | CONFIRMED | `heuristic.test|git|docker`; LLM route inalterado |
+| G-136 Metodos + soberania | CONFIRMED | `heuristic.test|git|docker|npm`; LLM route inalterado |
 | G-137 Papel Context Engine | CONFIRMED | slice 20 feito; assembler; nao e Player |
 | G-138 Semente `repo_hits` | CONFIRMED | slice 20 feito; QueryHits path/symbol se vazio; nao pisa repo-search |
 | G-139 Ranking / pack | CONFIRMED | sem walk, embeddings, file body |
@@ -505,10 +505,10 @@ Código = slices 27–28 (feitas). Wails **v3** (beta aceite; v2 fora).
 | G-164 Exclusoes v0 | CONFIRMED | Sem v2; sem HTTP client; sem chat; sem PTY; sem multi-window |
 | G-165 Ordem slices 27–28 | CONFIRMED | INTENT/LIVE (27) → demais views (28); ambas feitas |
 
-## NPM Player — CONFIRMED v0 (spec)
+## NPM Player — CONFIRMED v0
 
 Ver [36-npm-player-v0.md](36-npm-player-v0.md). Recorte de G-41
-(`npm test` no workspace). Código = slice 29 (pendente).
+(`npm test` no workspace). Código = slice 29 (feito).
 Não é `test.go`; não é pytest; não é `npm install`.
 
 | Item | Status | Notas |

@@ -65,3 +65,17 @@ func TestCompileIntentGoTest(t *testing.T) {
 		t.Fatalf("steps=%v", tk.Steps)
 	}
 }
+
+func TestCompileIntentNpmTest(t *testing.T) {
+	core := openTestCore(t)
+	tk, method, err := core.CompileIntent(context.Background(), "npm test", "cli", "test")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if method != intent.MethodHeuristicNPM {
+		t.Fatalf("method=%s", method)
+	}
+	if len(tk.Steps) != 1 || tk.Steps[0].Capability != "npm.test" {
+		t.Fatalf("steps=%v", tk.Steps)
+	}
+}

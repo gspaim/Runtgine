@@ -86,9 +86,9 @@ nao e HTTP Player `28`).
 Desktop Wails: `docs/35-wails-v0.md` + archive
 `openspec/changes/archive/2026-08-21-035-wails-v0/` — CONFIRMED
 (G-159..G-165); slices 27–28 feitas (Wails v3).
-NPM Player: `docs/36-npm-player-v0.md` +
-`openspec/changes/036-npm-player/` — CONFIRMED spec
-(G-166..G-171); slice 29 pendente.
+NPM Player: `docs/36-npm-player-v0.md` + archive
+`openspec/changes/archive/2026-08-22-036-npm-player/` — CONFIRMED
+(G-166..G-171); slice 29 feita.
 Skill obrigatoria para TUI: `.cursor/skills/runtgine-tui-design/SKILL.md`.
 
 ## Ordem de trabalho
@@ -122,7 +122,7 @@ Skill obrigatoria para TUI: `.cursor/skills/runtgine-tui-design/SKILL.md`.
 27. Evolution v0 — CONFIRMED em `33` + archive `033-evolution-v0` — slices 22–24 feitas
 28. HTTP API — CONFIRMED em `34` + archive `034-http-api` — slices 25–26 feitas
 29. Desktop Wails — CONFIRMED v0 em `35` + archive `035-wails-v0` — slices 27–28 feitas
-30. NPM Player — CONFIRMED v0 spec em `36` + OpenSpec `036-npm-player` — slice 29 pendente
+30. NPM Player — CONFIRMED v0 em `36` + archive `036-npm-player` — slice 29 feito
 31. Depois — pytest/yarn / MCP / templates — so apos nova promocao em `04`
 
 ## Conceitos chave (nao confundir)

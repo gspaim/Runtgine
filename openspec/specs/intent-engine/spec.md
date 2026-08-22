@@ -18,8 +18,11 @@ bypass Validator or Registry.
 
 The Engine SHALL try **player** heuristics, then shell, then pipeline,
 before the LLM Completer. Player phrases in the MVP 1.0 table
-(`test.go`, `git.status|diff|log`, `docker.ps`) MUST win over generic
-shell prefixes (`go `, argv `git`).
+(`test.go`, `git.status|diff|log`, `docker.ps`) plus `npm.test`
+(`heuristic.npm`; spec `36`) MUST win over generic shell prefixes
+(`go `, `npm `, argv `git`). NPM phrases (`npm test`, `npm run test`,
+`roda os testes npm`, `run npm tests`) MUST be matched before
+`roda os testes` / `run tests` so they are not captured as `test.go`.
 
 #### Scenario: go test is not shell
 
@@ -27,6 +30,14 @@ shell prefixes (`go `, argv `git`).
 - WHEN `CompileIntent` runs
 - THEN method is `heuristic.test`
 - AND the Task has one `test.go` step
+- AND it MUST NOT be `shell.exec`
+
+#### Scenario: npm test is not shell
+
+- GIVEN text `npm test`
+- WHEN `CompileIntent` runs
+- THEN method is `heuristic.npm`
+- AND the Task has one `npm.test` step
 - AND it MUST NOT be `shell.exec`
 
 #### Scenario: git status
