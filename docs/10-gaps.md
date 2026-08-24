@@ -321,6 +321,31 @@ Ate la, o Core deve rodar so com CLI + Shell.
 | G-170 | Registry + Graph + Intent | **CONFIRMED** — `heuristic.npm`; sem claim/blast |
 | G-171 | Exclusões v0 | **CONFIRMED** — install, yarn/pnpm, pytest, G-44, G-45 |
 
+## Memory Player (recorte G-47) — CONFIRMED v0 spec
+
+| ID | Gap | Notas |
+|---|---|---|
+| G-180 | Papel / pacote `memory` | **CONFIRMED** — Player read-only; `internal/players/memory` |
+| G-181 | Capabilities v0 | **CONFIRMED** — `memory.recall`, `memory.check` |
+| G-182 | Provider `Reader` | **CONFIRMED** — `Recall`, `Check`; exposto em `internal/core/memory` |
+| G-183 | Sandbox | **CONFIRMED** — in-process; sem rede; sem MCP; sem shell |
+| G-184 | Falha do Provider degrada | **CONFIRMED** — erro → vazio + warning; nunca `runtime.player_error` |
+| G-185 | Registry + Graph | **CONFIRMED** — `api.Open`; `RefreshFromRegistry`; edge `provides` |
+| G-186 | Exclusões v0 | **CONFIRMED** — escrita, MCP, embeddings, RAG |
+
+## Pytest + Yarn Players (recorte G-41) — CONFIRMED v0 spec
+
+| ID | Gap | Notas |
+|---|---|---|
+| G-172 | Papel / pacote `pytest` | **CONFIRMED** — `internal/players/pytst`; deterministic |
+| G-173 | Capability `pytest.run` | **CONFIRMED** — argv allowlist; sem `-n`/`--cov*` |
+| G-174 | Workdir + marker | **CONFIRMED** — `pyproject.toml` \| `pytest.ini` \| `tests/` |
+| G-175 | Papel / pacote `yarn` | **CONFIRMED** — `internal/players/jstest`; deterministic |
+| G-176 | Capability `yarn.test` | **CONFIRMED** — `yarn test`; flags de install negadas |
+| G-177 | Workdir + `package.json` | **CONFIRMED** — padrão do `npm` |
+| G-178 | Falha vs sucesso | **CONFIRMED** — exit != 0 → `runtime.player_error` |
+| G-179 | Registry + Graph + Intent | **CONFIRMED** — `heuristic.pytest`, `heuristic.yarn`; sem claim/blast |
+
 ---
 
 ## Ordem para fechar gaps
@@ -349,6 +374,8 @@ Ate la, o Core deve rodar so com CLI + Shell.
 22. HTTP API — spec em `34` — G-153..G-158 CONFIRMED; slices 25–26 feitas
 23. Desktop Wails — spec em `35` — G-159..G-165 CONFIRMED; slices 27–28 feitas
 24. NPM Player — spec em `36` — G-166..G-171 CONFIRMED; codigo = slice 29 — feito
+25. Memory Player — spec em `38` — G-180..G-186 CONFIRMED; codigo = slice 31
+26. Pytest + Yarn Players — spec em `37` — G-172..G-179 CONFIRMED; codigo = slice 30
 
 ## Criterio de “pronto para codar”
 
@@ -400,6 +427,8 @@ Ordem pratica de codigo:
 23. HTTP API v0 — slices 25–26 (G-153..G-158) — feito (spec `34`)
 24. Desktop Wails v0 — slices 27–28 feitas (G-159..G-165) — spec `35`
 25. NPM Player v0 — spec `36` (G-166..G-171); slice 29 feito
+26. Memory Player v0 — spec `38` (G-180..G-186); slice 31
+27. Pytest + Yarn Players v0 — spec `37` (G-172..G-179); slice 30
 
 P3 restante (G-40 templates, G-44 MCP; G-41 em andamento — pytest / yarn / K8s / TF / PG).
 MVP 1.0 magro: spec `09`/`31` (G-135..G-140); slices 19–20 feitos.

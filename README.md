@@ -104,7 +104,9 @@ Visão enxuta do que já está em `main`. **Atualizar esta seção em todo PR
 | Feito | Slice 27 — Desktop Wails v3 INTENT/LIVE (`35`, G-159..G-163; `runtgine desktop`) |
 | Feito | Slice 28 — demais views desktop + Lessons HITL (`35` G-161/G-165) |
 | Feito | Slice 29 — NPM Player v0 (`36`, G-166..G-171; `npm.test`) |
-| Próximo código | pytest / yarn / infra Players (G-41); MCP (G-44); templates (`08`) |
+| Em curso (038) | Memory Player v0 (`38`, G-180..G-186; read-only) |
+| Em curso (037) | Pytest + Yarn Players v0 (`37`, G-172..G-179; slices 30/31) |
+| Próximo código | MCP (G-44); templates (`08`); infra Players G-41 |
 
 Detalhe do corte: [`docs/09-mvp.md`](docs/09-mvp.md). Limitações atuais abaixo.
 
@@ -419,6 +421,8 @@ vulnerabilidade.
 | [Project Memory](docs/29-project-memory-v0.md) | Memória episódica v0 (G-123..G-128; slice 17) |
 | [Test Player](docs/30-test-player-v0.md) | Player `test.go` v0 (G-129..G-134; slice 18) |
 | [NPM Player](docs/36-npm-player-v0.md) | Player `npm.test` v0 (G-166..G-171; slice 29) |
+| [Pytest+Yarn Players](docs/37-pytest-yarn-players-v0.md) | `pytest.run` + `yarn.test` v0 (G-172..G-179; slice 30) |
+| [Memory Player](docs/38-memory-player-v0.md) | Player read-only sobre Memory Provider (G-180..G-186; slice 31) |
 | [Context Engine](docs/31-context-engine-v0.md) | Semente `repo_hits` v0 (G-137..G-139; slice 20) |
 | [Intent Surface](docs/32-intent-surface-v0.md) | Aba INTENT / Mission Brief (G-141..G-146; slice 21) |
 | [Evolution](docs/33-evolution-v0.md) | Router, Playbooks, Lessons (G-147..G-152; slices 22–24) |

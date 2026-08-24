@@ -28,6 +28,7 @@ import (
 	gotestplayer "github.com/gspaim/Runtgine/internal/players/gotest"
 	httpplayer "github.com/gspaim/Runtgine/internal/players/httpclient"
 	"github.com/gspaim/Runtgine/internal/players/llm"
+	memplayer "github.com/gspaim/Runtgine/internal/players/memory"
 	npmplayer "github.com/gspaim/Runtgine/internal/players/npm"
 	pipeplayer "github.com/gspaim/Runtgine/internal/players/pipeline"
 	"github.com/gspaim/Runtgine/internal/players/shell"
@@ -85,6 +86,12 @@ func Open(cfg config.Config, log *slog.Logger) (*Core, error) {
 		_ = st.Close()
 		return nil, err
 	}
+	g := graph.New(st, log)
+	mem := memory.New(st, log)
+	if err := reg.Register(memplayer.New(mem, log)); err != nil {
+		_ = st.Close()
+		return nil, err
+	}
 	completer := llm.NewSwitchCompleter(cfg, llm.CompleterFromConfig(
 		cfg.LLMBackend, cfg.LLMAPIKey, cfg.LLMBaseURL, cfg.LLMModel,
 		cfg.AnthropicAPIKey, cfg.AnthropicModel,
@@ -97,8 +104,6 @@ func Open(cfg config.Config, log *slog.Logger) (*Core, error) {
 		_ = st.Close()
 		return nil, err
 	}
-	g := graph.New(st, log)
-	mem := memory.New(st, log)
 	lsn := lessons.New(st, mem, log)
 	books, err := playbooks.Load(playbooks.Dir(cfg.WorkspaceRoot))
 	if err != nil {

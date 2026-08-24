@@ -1,0 +1,9 @@
+schema: spec-driven
+created: 2026-08-24
+nnn: "038"
+slug: memory-player
+docs_canonical: docs/38-memory-player-v0.md
+gaps: [G-180, G-181, G-182, G-183, G-184, G-185, G-186]
+status: active
+branch: cursor/038-memory-player-d46c
+depends_on: ["029-project-memory", "033-evolution-v0"]
