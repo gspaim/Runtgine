@@ -1,0 +1,20 @@
+{
+  "schema_version": "0.1.0",
+  "source": {
+    "entry_point": "cli",
+    "ref": "examples/memory-check.json"
+  },
+  "intent": {
+    "summary": "Check Project Memory for a known failure pattern"
+  },
+  "steps": [
+    {
+      "step_id": "check",
+      "capability": "memory.check",
+      "input": {
+        "pattern": "link-local blocked"
+      },
+      "depends_on": []
+    }
+  ]
+}

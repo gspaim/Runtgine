@@ -39,6 +39,32 @@ type Service struct {
 	Log   *slog.Logger
 }
 
+// RecallQuery filters a Reader.Recall call. Text is required; Kind and
+// Limit are optional (empty/zero fall back to defaults).
+type RecallQuery struct {
+	Text  string
+	Kind  string
+	Limit int
+}
+
+// CheckResult is the answer to a Reader.Check call: whether any
+// `active` `failure` episode matches the pattern, and the first match
+// when so.
+type CheckResult struct {
+	HasFailure bool
+	Match      *Episode `json:"match,omitempty"`
+}
+
+// Reader is the read-only surface used by the Memory Player
+// (`internal/players/memory`; G-180..G-186). It is satisfied by
+// `*Service`. Implementations MUST degrade on error (caller treats
+// err==nil but empty result as "no information"); the Player wraps
+// every call to translate any error into a warning + empty result.
+type Reader interface {
+	Recall(ctx context.Context, q RecallQuery) ([]Hit, error)
+	Check(ctx context.Context, pattern string) (CheckResult, error)
+}
+
 func New(st *store.Store, log *slog.Logger) *Service {
 	if log == nil {
 		log = slog.Default()
@@ -158,6 +184,67 @@ func (s *Service) Query(ctx context.Context, text string, limit int) ([]Hit, err
 		hits = []Hit{}
 	}
 	return hits, nil
+}
+
+// Recall satisfies Reader.Recall. Wraps Query with the optional kind
+// filter; identical ranking/score semantics (G-125).
+func (s *Service) Recall(ctx context.Context, q RecallQuery) ([]Hit, error) {
+	hits, err := s.Query(ctx, q.Text, q.Limit)
+	if err != nil {
+		return nil, err
+	}
+	if q.Kind == "" {
+		return hits, nil
+	}
+	out := hits[:0]
+	for _, h := range hits {
+		if h.Kind == q.Kind {
+			out = append(out, h)
+		}
+	}
+	return out, nil
+}
+
+// Check satisfies Reader.Check. Returns HasFailure=true when at
+// least one `active` `failure` episode's title or body contains
+// any token from `pattern`. Match is the highest-score hit when
+// any. Implementation reuses the lexical scorer from Query.
+func (s *Service) Check(ctx context.Context, pattern string) (CheckResult, error) {
+	rows, err := s.Store.ListActiveMemoryEpisodes(ctx)
+	if err != nil {
+		return CheckResult{}, result.Runtime(result.CodeInternal, err.Error(), false, nil)
+	}
+	tokens := Tokenize(pattern)
+	if len(tokens) == 0 {
+		return CheckResult{HasFailure: false}, nil
+	}
+	var best *Episode
+	bestAt := time.Time{}
+	for _, row := range rows {
+		if row.Kind != KindFailure {
+			continue
+		}
+		hay := strings.ToLower(row.Title + " " + row.Body)
+		matched := false
+		for _, tok := range tokens {
+			if strings.Contains(hay, tok) {
+				matched = true
+				break
+			}
+		}
+		if !matched {
+			continue
+		}
+		ep := fromRow(row)
+		if best == nil || ep.CreatedAt.After(bestAt) {
+			best = &ep
+			bestAt = ep.CreatedAt
+		}
+	}
+	if best == nil {
+		return CheckResult{HasFailure: false}, nil
+	}
+	return CheckResult{HasFailure: true, Match: best}, nil
 }
 
 func (s *Service) Supersede(ctx context.Context, oldID string, in EpisodeInput) (Episode, error) {

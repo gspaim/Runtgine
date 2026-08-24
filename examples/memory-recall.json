@@ -1,0 +1,22 @@
+{
+  "schema_version": "0.1.0",
+  "source": {
+    "entry_point": "cli",
+    "ref": "examples/memory-recall.json"
+  },
+  "intent": {
+    "summary": "Recall Project Memory episodes for context"
+  },
+  "steps": [
+    {
+      "step_id": "recall",
+      "capability": "memory.recall",
+      "input": {
+        "query": "metadata IP denied",
+        "kind": "failure",
+        "limit": 5
+      },
+      "depends_on": []
+    }
+  ]
+}
