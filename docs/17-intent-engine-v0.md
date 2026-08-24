@@ -46,7 +46,7 @@ SubmitIntent(text, source)  -> run_id   // CompileIntent + SubmitTask
 ```
 
 - `method`: `heuristic.shell` | `heuristic.pipeline` | `heuristic.test` |
-  `heuristic.git` | `heuristic.docker` | `llm`
+  `heuristic.git` | `heuristic.docker` | `heuristic.npm` | `llm`
 - Entry point tipico: `cli` (ref opcional)
 - Pacote: `internal/core/intent`
 
@@ -78,20 +78,21 @@ Antes de `matchShell`. Frases de alta confianca (PT/EN, case-insensitive):
 | NL | Capability | Method |
 |---|---|---|
 | `go test`, `roda os testes`, `rodar testes`, `run tests` | `test.go` | `heuristic.test` |
+| `npm test`, `npm run test`, `roda os testes npm`, `run npm tests` | `npm.test` | `heuristic.npm` |
 | `git status` | `git.status` | `heuristic.git` |
 | `git diff` | `git.diff` | `heuristic.git` |
 | `git log` | `git.log` | `heuristic.git` |
 | `docker ps` | `docker.ps` | `heuristic.docker` |
 
 Fora desta tabela no v0 desta spec: `git add/commit/push`, `http.get`, `fs.*`,
-`docker run/build`, pytest. `npm test` = spec `36` (`heuristic.npm`).
+`docker run/build`, pytest. `npm test` = spec `36` (`heuristic.npm`; slice 29).
 
 ## G-136 — Metodos e soberania
 
 **Status: CONFIRMED** — codigo = slice 19 (feito).
 
 - `method` passa a incluir `heuristic.test` | `heuristic.git` |
-  `heuristic.docker` alem de `heuristic.shell` | `heuristic.pipeline` | `llm`
+  `heuristic.docker` | `heuristic.npm` (spec `36`) alem de `heuristic.shell` | `heuristic.pipeline` | `llm`
 - Caminho LLM (G-53) **nao** ganha `route` novo; continua `shell|pipeline`
 - Registry/Validator rejeitam capability inventada (inalterado)
 

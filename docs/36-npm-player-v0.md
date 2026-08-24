@@ -10,11 +10,11 @@ Não é o Test Player Go (`30`, `test.go`). Não é pytest.
 Não é `npm install` / `npx` / publish. Não é MCP ([G-44](10-gaps.md)).
 Não é a API HTTP (G-45 / `34`).
 
-**Status deste doc: CONFIRMED (v0 spec).** G-166..G-171 autorizam o
-**slice 29** de código. pytest, yarn/pnpm, `npm install` e Players de
+**Status deste doc: CONFIRMED v0 (slice 29 feito).** G-166..G-171
+autorizam o recorte. pytest, yarn/pnpm, `npm install` e Players de
 infra (K8s / Terraform / PostgreSQL) permanecem outros recortes G-41.
 
-**Pacote OpenSpec:** [`openspec/changes/036-npm-player/`](../openspec/changes/036-npm-player/).
+**Pacote OpenSpec:** [`openspec/changes/archive/2026-08-22-036-npm-player/`](../openspec/changes/archive/2026-08-22-036-npm-player/).
 
 Por que **npm** e não pytest neste corte: o desktop Wails já tem
 frontend `package.json` (`internal/entrypoint/desktop/frontend`). O

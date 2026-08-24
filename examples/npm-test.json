@@ -1,0 +1,21 @@
+{
+  "schema_version": "0.1.0",
+  "source": {
+    "entry_point": "cli",
+    "ref": "examples/npm-test.json"
+  },
+  "intent": {
+    "summary": "Run npm test via NPM Player"
+  },
+  "steps": [
+    {
+      "step_id": "npm-test",
+      "capability": "npm.test",
+      "input": {
+        "workdir": "./internal/players/npm/testdata/pkg",
+        "timeout_ms": 120000
+      },
+      "depends_on": []
+    }
+  ]
+}
