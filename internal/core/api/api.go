@@ -88,10 +88,6 @@ func Open(cfg config.Config, log *slog.Logger) (*Core, error) {
 		_ = st.Close()
 		return nil, err
 	}
-	if err := reg.Register(npmplayer.New()); err != nil {
-		_ = st.Close()
-		return nil, err
-	}
 	if err := reg.Register(jstest.New()); err != nil {
 		_ = st.Close()
 		return nil, err
