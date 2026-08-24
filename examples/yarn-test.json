@@ -1,0 +1,20 @@
+{
+  "schema_version": "0.1.0",
+  "source": {
+    "entry_point": "cli",
+    "ref": "examples/yarn-test.json"
+  },
+  "intent": {
+    "summary": "Run yarn test via Yarn Player"
+  },
+  "steps": [
+    {
+      "step_id": "yarn-test",
+      "capability": "yarn.test",
+      "input": {
+        "workdir": "./examples/yarnapp"
+      },
+      "depends_on": []
+    }
+  ]
+}

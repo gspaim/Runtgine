@@ -127,6 +127,39 @@ func TestCompileNpmTestBeatsShellPrefix(t *testing.T) {
 	}
 }
 
+func TestCompilePytestBeatsShellPrefix(t *testing.T) {
+	e := intent.New(llm.HeuristicCompleter{})
+	res, err := e.Compile(context.Background(), intent.Request{Text: "pytest tests/"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if res.Method != intent.MethodHeuristicPytest || res.Task.Steps[0].Capability != "pytest.run" {
+		t.Fatalf("method=%s cap=%s", res.Method, res.Task.Steps[0].Capability)
+	}
+}
+
+func TestCompileYarnTestBeatsShellPrefix(t *testing.T) {
+	e := intent.New(llm.HeuristicCompleter{})
+	res, err := e.Compile(context.Background(), intent.Request{Text: "yarn test"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if res.Method != intent.MethodHeuristicYarn || res.Task.Steps[0].Capability != "yarn.test" {
+		t.Fatalf("method=%s cap=%s", res.Method, res.Task.Steps[0].Capability)
+	}
+}
+
+func TestCompileYarnInstallStillShell(t *testing.T) {
+	e := intent.New(llm.HeuristicCompleter{})
+	res, err := e.Compile(context.Background(), intent.Request{Text: "yarn install"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if res.Method != intent.MethodHeuristicShell || res.Task.Steps[0].Capability != "shell.exec" {
+		t.Fatalf("method=%s cap=%s", res.Method, res.Task.Steps[0].Capability)
+	}
+}
+
 func TestCompileNpmInstallStillShell(t *testing.T) {
 	e := intent.New(llm.HeuristicCompleter{})
 	res, err := e.Compile(context.Background(), intent.Request{Text: "npm install"})
