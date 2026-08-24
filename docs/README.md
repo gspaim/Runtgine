@@ -42,6 +42,8 @@ Autoridade de decisoes: [04-decisoes.md](04-decisoes.md).
 | 34 | 34-http-api-v0.md | HTTP API v0 / `runtgine serve` (**CONFIRMED**; G-153..G-158; slices 25–26 feitas) |
 | 35 | 35-wails-v0.md | Desktop Wails v0 (**CONFIRMED**; G-159..G-165; slices 27–28 feitas) |
 | 36 | 36-npm-player-v0.md | NPM Player v0 (**CONFIRMED**; G-166..G-171; slice 29 feito) |
+| 37 | 37-pytest-yarn-players-v0.md | Pytest + Yarn Players v0 (**CONFIRMED**; G-172..G-179; slice 30) |
+| 38 | 38-memory-player-v0.md | Memory Player v0 (**CONFIRMED**; G-180..G-186; slice 31; fecha G-47) |
 | — | [openspec/](../openspec/README.md) | Pacotes de mudança OpenSpec (`NNN-slug`) |
 
 ## Fontes historicas (raiz do repo)

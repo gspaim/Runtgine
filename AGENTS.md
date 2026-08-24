@@ -89,6 +89,12 @@ Desktop Wails: `docs/35-wails-v0.md` + archive
 NPM Player: `docs/36-npm-player-v0.md` + archive
 `openspec/changes/archive/2026-08-22-036-npm-player/` — CONFIRMED
 (G-166..G-171); slice 29 feita.
+Memory Player: `docs/38-memory-player-v0.md` + archive
+`openspec/changes/archive/2026-08-24-038-memory-player/` — CONFIRMED
+(G-180..G-186); slice 31 fecha OPEN QUESTION G-47.
+Pytest + Yarn Players: `docs/37-pytest-yarn-players-v0.md` + archive
+`openspec/changes/archive/2026-08-24-037-pytest-yarn-players/` — CONFIRMED
+(G-172..G-179); slice 30.
 Skill obrigatoria para TUI: `.cursor/skills/runtgine-tui-design/SKILL.md`.
 
 ## Ordem de trabalho

@@ -520,6 +520,42 @@ Não é `test.go`; não é pytest; não é `npm install`.
 | G-170 Registry + Graph + Intent | CONFIRMED | `api.Open`; `heuristic.npm`; sem claim/blast |
 | G-171 Exclusoes v0 | CONFIRMED | install, yarn/pnpm, pytest, G-44, G-45 |
 
+## Memory Player — CONFIRMED v0
+
+Ver [38-memory-player-v0.md](38-memory-player-v0.md). Recorte de G-47
+sobre o Provider já CONFIRMED em `29` (Project Memory v0; slice 17).
+Fecha a OPEN QUESTION "Memory Player" que `04` carregava desde a
+sessão de `29`. **Não** é MCP (G-44), **não** é Knowledge, **não**
+RAG, **não** indexação de transcript. Read-only sobre o store.
+
+| Item | Status | Notas |
+|---|---|---|
+| G-180 Papel / pacote `memory` | CONFIRMED | `internal/players/memory`; Player deterministic; read-only |
+| G-181 Capabilities v0 | CONFIRMED | `memory.recall`, `memory.check` |
+| G-182 Provider `Reader` interface | CONFIRMED | `Recall`, `Check`; exposta a partir de `internal/core/memory`; Provider já cobre |
+| G-183 Sandbox | CONFIRMED | In-process; sem rede; sem MCP; sem shell |
+| G-184 Falha do Provider degrada | CONFIRMED | erro → step succeeded com vazio + `slog.Warn`; nunca `runtime.player_error` |
+| G-185 Registry + Graph | CONFIRMED | `api.Open`; `RefreshFromRegistry`; edge `provides` para `internal/core/memory` |
+| G-186 Exclusoes v0 | CONFIRMED | escrita (record/supersede/archive), MCP, embeddings, RAG, intents `lembre` |
+
+## Pytest + Yarn Players — CONFIRMED v0 spec
+
+Ver [37-pytest-yarn-players-v0.md](37-pytest-yarn-players-v0.md).
+Recorte de G-41. Mesmo padrão de `test.go` (`30`) e `npm.test`
+(`36`). Não cobre pytest parametrizado, tox, `pytest-xdist`,
+`yarn install`/`add`/`npx`, MCP, Knowledge.
+
+| Item | Status | Notas |
+|---|---|---|
+| G-172 Papel / pacote `pytest` | CONFIRMED | `internal/players/pytst`; Player deterministic |
+| G-173 Capability `pytest.run` | CONFIRMED | `pytest …`; argv allowlist; sem `-n`/`--cov*` |
+| G-174 Workdir + marker | CONFIRMED | `pyproject.toml` \| `pytest.ini` \| `tests/` |
+| G-175 Papel / pacote `yarn` | CONFIRMED | `internal/players/jstest`; Player deterministic |
+| G-176 Capability `yarn.test` | CONFIRMED | `yarn test`; `--frozen-lockfile`/`--immutable`/`--parallel`/`add`/`install`/`dlx`/`npx` negados |
+| G-177 Workdir + `package.json` | CONFIRMED | mesmo padrão do `npm` |
+| G-178 Falha vs sucesso | CONFIRMED | exit != 0 → `runtime.player_error` (pytest e yarn) |
+| G-179 Registry + Graph + Intent | CONFIRMED | `api.Open`; `heuristic.pytest`, `heuristic.yarn`; sem claim/blast; slices 30 |
+
 ## Git / release — fluxo de branches
 
 Ver [15-git-workflow.md](15-git-workflow.md).
