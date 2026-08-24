@@ -196,7 +196,7 @@ func (s *Service) Recall(ctx context.Context, q RecallQuery) ([]Hit, error) {
 	if q.Kind == "" {
 		return hits, nil
 	}
-	out := hits[:0]
+	out := make([]Hit, 0, len(hits))
 	for _, h := range hits {
 		if h.Kind == q.Kind {
 			out = append(out, h)
@@ -207,8 +207,8 @@ func (s *Service) Recall(ctx context.Context, q RecallQuery) ([]Hit, error) {
 
 // Check satisfies Reader.Check. Returns HasFailure=true when at
 // least one `active` `failure` episode's title or body contains
-// any token from `pattern`. Match is the highest-score hit when
-// any. Implementation reuses the lexical scorer from Query.
+// any token from `pattern`. Match is the most recent matching
+// episode (created_at desc, mirroring the Query tie-break).
 func (s *Service) Check(ctx context.Context, pattern string) (CheckResult, error) {
 	rows, err := s.Store.ListActiveMemoryEpisodes(ctx)
 	if err != nil {
