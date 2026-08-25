@@ -21,6 +21,7 @@ import (
 	"github.com/gspaim/Runtgine/internal/entrypoint/board"
 	"github.com/gspaim/Runtgine/internal/entrypoint/desktop"
 	"github.com/gspaim/Runtgine/internal/entrypoint/httpapi"
+	"github.com/gspaim/Runtgine/internal/entrypoint/mcpserver"
 	tuientry "github.com/gspaim/Runtgine/internal/entrypoint/tui"
 	"github.com/spf13/cobra"
 	"gopkg.in/yaml.v3"
@@ -53,6 +54,7 @@ func NewRoot() *cobra.Command {
 	root.AddCommand(newDesktopCmd(&workspace, &verbose))
 	root.AddCommand(newLessonsCmd(&workspace, &verbose))
 	root.AddCommand(newServeCmd(&workspace, &verbose))
+	root.AddCommand(newMCPCmd(&workspace, &verbose))
 	return root
 }
 
@@ -730,4 +732,23 @@ func newServeCmd(workspace *string, verbose *bool) *cobra.Command {
 	}
 	cmd.Flags().StringVar(&listen, "listen", "", "bind address (default: config api.listen / 127.0.0.1:7420)")
 	return cmd
+}
+
+// newMCPCmd starts the MCP Memory Server over stdio (G-189). The
+// server is read-only; warnings go to stderr.
+func newMCPCmd(workspace *string, verbose *bool) *cobra.Command {
+	return &cobra.Command{
+		Use:   "mcp",
+		Short: "MCP Memory Server over stdio, read-only (G-187)",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			core, err := openCore(*workspace, *verbose)
+			if err != nil {
+				return err
+			}
+			defer core.Close()
+			log := slog.New(slog.NewTextHandler(os.Stderr, &slog.HandlerOptions{Level: slog.LevelWarn}))
+			srv := mcpserver.New(core.Memory, log)
+			return srv.ServeStdio(cmd.Context(), os.Stdin, os.Stdout)
+		},
+	}
 }

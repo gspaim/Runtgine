@@ -19,6 +19,7 @@ import (
 	"github.com/gspaim/Runtgine/internal/core/result"
 	"github.com/gspaim/Runtgine/internal/core/runner"
 	"github.com/gspaim/Runtgine/internal/core/task"
+	"github.com/gspaim/Runtgine/internal/entrypoint/mcpserver"
 )
 
 const (
@@ -33,6 +34,7 @@ type Server struct {
 	Core    *api.Core
 	Log     *slog.Logger
 	Hooks   *Dispatcher
+	MCP     *mcpserver.Server
 	token   string
 	maxBody int
 }
@@ -51,6 +53,7 @@ func New(core *api.Core, log *slog.Logger) *Server {
 		token:   core.Cfg.API.Token,
 		maxBody: maxBody,
 	}
+	s.MCP = mcpserver.New(core.Memory, log)
 	s.Hooks = NewDispatcher(core.Cfg.Webhooks, core.Cfg.WebhookSecret, nil, log)
 	return s
 }
@@ -94,6 +97,7 @@ func (s *Server) Handler() http.Handler {
 	mux.HandleFunc("POST /v0/runs/{id}/approve", s.auth(s.postApprove(runner.DecisionGrant)))
 	mux.HandleFunc("POST /v0/runs/{id}/deny", s.auth(s.postApprove(runner.DecisionDeny)))
 	mux.HandleFunc("POST /v0/blast", s.auth(s.postBlast))
+	mux.Handle("POST /mcp", s.auth(s.MCP.ServeHTTP))
 	return mux
 }
 

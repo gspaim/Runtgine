@@ -107,7 +107,7 @@ Ate la, o Core deve rodar so com CLI + Shell.
 | G-41 | Biblioteca ampla de Players | Em andamento — Git (`20`), Filesystem (`21`), Docker (`23`), HTTP (`28`), Test (`30`), **NPM (`36`, G-166..G-171; slice 29 feito)**; resto: pytest/yarn/infra |
 | G-42 | Human-in-the-loop / Approvals | **CONFIRMED v0** — recorte G-81..G-86 em `22` |
 | G-43 | Resource Claims / Blast Radius | **Claims CONFIRMED v0** — `24`. **Blast CONFIRMED v0** — `25`. **Walk Blast←Graph CONFIRMED v0** — recorte G-111..G-116 em `27` |
-| G-44 | MCP integration — transporte da Project Memory | **CONFIRMED v0 spec** — recorte G-187..G-193 em `39` (servidor MCP read-only; slice 32 a fazer) |
+| G-44 | MCP integration — transporte da Project Memory | **CONFIRMED v0** — recorte G-187..G-193 em `39` (servidor MCP read-only; slice 32 feito) |
 | G-45 | API HTTP / webhooks | **CONFIRMED v0** — recorte G-153..G-158 em `34`; distinto do HTTP Player (`28`) |
 | G-46 | Project Memory (conceito + ContextPack + validade + hierarquia) | **CONFIRMED v0** — recorte G-123..G-128 em `29`; esboço em `16` |
 | G-47 | Modelo de acesso Memory Provider vs Memory Player — Provider **CONFIRMED v0** (`29`); Player **OPEN QUESTION** (fora do v0) |
@@ -441,7 +441,7 @@ Ordem pratica de codigo:
 25. NPM Player v0 — spec `36` (G-166..G-171); slice 29 feito
 26. Memory Player v0 — spec `38` (G-180..G-186); slice 31
 27. Pytest + Yarn Players v0 — spec `37` (G-172..G-179); slice 30
-28. MCP Memory Server v0 — spec `39` (G-187..G-193); slice 32 a fazer
+28. MCP Memory Server v0 — spec `39` (G-187..G-193); slice 32 feito
 
 P3 restante (G-40 templates; G-41 em andamento — infra / K8s / TF / PG).
 MVP 1.0 magro: spec `09`/`31` (G-135..G-140); slices 19–20 feitos.

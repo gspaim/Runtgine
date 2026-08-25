@@ -44,7 +44,7 @@ Autoridade de decisoes: [04-decisoes.md](04-decisoes.md).
 | 36 | 36-npm-player-v0.md | NPM Player v0 (**CONFIRMED**; G-166..G-171; slice 29 feito) |
 | 37 | 37-pytest-yarn-players-v0.md | Pytest + Yarn Players v0 (**CONFIRMED**; G-172..G-179; slice 30) |
 | 38 | 38-memory-player-v0.md | Memory Player v0 (**CONFIRMED**; G-180..G-186; slice 31; fecha G-47) |
-| 39 | 39-mcp-memory-v0.md | MCP Memory Server v0 (**CONFIRMED spec**; G-187..G-193; recorte de G-44; slice 32 a fazer) |
+| 39 | 39-mcp-memory-v0.md | MCP Memory Server v0 (**CONFIRMED**; G-187..G-193; recorte de G-44; slice 32 feito) |
 | — | [openspec/](../openspec/README.md) | Pacotes de mudança OpenSpec (`NNN-slug`) |
 
 ## Fontes historicas (raiz do repo)

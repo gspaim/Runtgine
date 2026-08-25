@@ -106,7 +106,8 @@ Visão enxuta do que já está em `main`. **Atualizar esta seção em todo PR
 | Feito | Slice 29 — NPM Player v0 (`36`, G-166..G-171; `npm.test`) |
 | Feito | Slice 30 — Pytest + Yarn Players v0 (`37`, G-172..G-179) |
 | Feito | Slice 31 — Memory Player v0 (`38`, G-180..G-186; read-only) |
-| Próximo código | Slice 32 — MCP Memory Server (`39`, G-187..G-193; servidor read-only); depois templates (`08`), infra Players G-41 |
+| Feito | Slice 32 — MCP Memory Server v0 (`39`, G-187..G-193; `runtgine mcp` + `/mcp`) |
+| Próximo código | Templates (`08`); infra Players G-41 |
 
 Detalhe do corte: [`docs/09-mvp.md`](docs/09-mvp.md). Limitações atuais abaixo.
 
@@ -180,6 +181,9 @@ em:
 - TUI: `./bin/runtgine tui` — aba INTENT (preview `Ctrl+p`, submit `Ctrl+Enter`).
 - Desktop: `./bin/runtgine desktop` — Wails v3, views INTENT e LIVE (Linux: GTK4 + WebKitGTK 6).
 - HTTP API (loopback): `./bin/runtgine serve --listen 127.0.0.1:7420`
+- MCP Memory Server (read-only): `./bin/runtgine mcp` (stdio) ou `POST /mcp`
+  no serve, com a mesma auth — veja [MCP](docs/39-mcp-memory-v0.md) e
+  `examples/mcp-claude-desktop.json`.
 - Playbooks de exemplo: copie `examples/playbooks/*.md` para `.runtgine/playbooks/`.
 - Lessons HITL: `runtgine lessons list` / `approve` / `reject` (opt-in `lessons.capture=failures`).
 
@@ -198,6 +202,7 @@ runtgine pipeline run               Executa o pipeline de análise
 runtgine board poll                 Importa cards do GitHub
 runtgine tui                        Abre a Mission Control
 runtgine desktop                    Abre a Mission Control desktop (Wails v3)
+runtgine mcp                        MCP Memory Server read-only via stdio
 ```
 
 Exemplos:

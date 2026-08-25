@@ -12,14 +12,14 @@ cliente MCP. Não é Player. Não é RAG. Não é Knowledge base. Não é
 alternativa ao MCP (`01`: Runtgine *expõe* memória via MCP; não
 compete com ele).
 
-**Status deste doc: CONFIRMED v0 (slice 32 a fazer).**
+**Status deste doc: CONFIRMED v0 (slice 32 feito).**
 G-187..G-193. Fecha G-44 como transporte de leitura da Project
 Memory; a direção "servidor, não cliente" é decisão explícita
 deste recorte (ver `16` §10, que exigia decidir sidecar vs store —
 o store local venceu em `29`; o servidor MCP expõe esse store).
 
-**Pacote OpenSpec:** [`openspec/changes/039-mcp-memory/`](../openspec/changes/039-mcp-memory/)
-(move para `archive/` após o slice 32).
+**Pacote OpenSpec:** [`openspec/changes/archive/2026-08-25-039-mcp-memory/`](../openspec/changes/archive/2026-08-25-039-mcp-memory/)
+(arquivado após o slice 32).
 
 ---
 
@@ -153,13 +153,13 @@ JSON-RPC bem-formado; `/mcp` sem token → 401; detalhes na §4.
 
 Marcado em `04-decisoes.md`:
 
-- [ ] G-187 Papel (servidor MCP read-only;
+- [x] G-187 Papel (servidor MCP read-only;
       `internal/entrypoint/mcpserver`)
-- [ ] G-188 Tools (`memory.query`, `memory.list`)
-- [ ] G-189 Transporte stdio (`runtgine mcp`)
-- [ ] G-190 Transporte HTTP (`/mcp` no serve, mesma auth)
-- [ ] G-191 Segurança e degradação (bearer, loopback, falha
+- [x] G-188 Tools (`memory.query`, `memory.list`)
+- [x] G-189 Transporte stdio (`runtgine mcp`)
+- [x] G-190 Transporte HTTP (`/mcp` no serve, mesma auth)
+- [x] G-191 Segurança e degradação (bearer, loopback, falha
       degrada)
-- [ ] G-192 Exclusões v0 (escrita, cliente, embeddings,
+- [x] G-192 Exclusões v0 (escrita, cliente, embeddings,
       cross-workspace)
-- [ ] G-193 Interop + aceite
+- [x] G-193 Interop + aceite

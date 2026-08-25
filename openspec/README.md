@@ -37,12 +37,10 @@ branch:              feat/<NNN>-<slug>   (ou docs/ fix/ chore/)
 
 Exemplos válidos: `001-shell-player`, `017-intent-engine`, `019-graph-hits`.
 
-**Próximo id livre:** `040`. Mudança ativa:
-[`changes/039-mcp-memory/`](changes/039-mcp-memory/)
-(MCP Memory Server v0; G-187..G-193; slice 32 a fazer).
+**Próximo id livre:** `040`. Nenhuma mudança ativa.
 Último archive:
-[`changes/archive/2026-08-24-038-memory-player/`](changes/archive/2026-08-24-038-memory-player/)
-(Memory Player v0; G-180..G-186; slice 31).
+[`changes/archive/2026-08-25-039-mcp-memory/`](changes/archive/2026-08-25-039-mcp-memory/)
+(MCP Memory Server v0; G-187..G-193; slice 32).
 
 ## Autoridade
 
@@ -90,4 +88,4 @@ Não codificar mudança cujo status em `04` não esteja **CONFIRMED**
 | `npm-player` | Player `npm.test` (`npm test` no workspace; spec 036) |
 | `pytest-yarn-players` | Players `pytest.run` / `yarn.test` (spec 037) |
 | `memory-player` | Player `memory.recall` / `memory.check` read-only (spec 038) |
-| `mcp-memory` | Servidor MCP read-only sobre Project Memory (`runtgine mcp` + `/mcp`; spec 039, em curso) |
+| `mcp-memory` | Servidor MCP read-only sobre Project Memory (`runtgine mcp` + `/mcp`; spec 039) |

@@ -564,7 +564,7 @@ Servidor **MCP read-only** sobre o Provider (`internal/core/memory`):
 tools `memory.query` / `memory.list`; transportes stdio (`runtgine
 mcp`) e HTTP (`/mcp` no serve, mesma auth). Não é cliente MCP; não
 é Player; não é alternativa ao MCP (`01`). Código = slice 32
-(**bloqueado** até este doc CONFIRMED).
+(feito).
 
 | Item | Status | Notas |
 |---|---|---|
