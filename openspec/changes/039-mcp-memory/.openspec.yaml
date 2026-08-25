@@ -1,0 +1,9 @@
+schema: spec-driven
+created: 2026-08-25
+nnn: "039"
+slug: mcp-memory
+docs_canonical: docs/39-mcp-memory-v0.md
+gaps: [G-187, G-188, G-189, G-190, G-191, G-192, G-193]
+status: active
+branch: feat/039-mcp-memory
+depends_on: ["029-project-memory", "034-http-api"]

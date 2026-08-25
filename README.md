@@ -104,9 +104,9 @@ Visão enxuta do que já está em `main`. **Atualizar esta seção em todo PR
 | Feito | Slice 27 — Desktop Wails v3 INTENT/LIVE (`35`, G-159..G-163; `runtgine desktop`) |
 | Feito | Slice 28 — demais views desktop + Lessons HITL (`35` G-161/G-165) |
 | Feito | Slice 29 — NPM Player v0 (`36`, G-166..G-171; `npm.test`) |
-| Em curso (038) | Memory Player v0 (`38`, G-180..G-186; read-only) |
-| Em curso (037) | Pytest + Yarn Players v0 (`37`, G-172..G-179; slices 30/31) |
-| Próximo código | MCP (G-44); templates (`08`); infra Players G-41 |
+| Feito | Slice 30 — Pytest + Yarn Players v0 (`37`, G-172..G-179) |
+| Feito | Slice 31 — Memory Player v0 (`38`, G-180..G-186; read-only) |
+| Próximo código | Slice 32 — MCP Memory Server (`39`, G-187..G-193; servidor read-only); depois templates (`08`), infra Players G-41 |
 
 Detalhe do corte: [`docs/09-mvp.md`](docs/09-mvp.md). Limitações atuais abaixo.
 
