@@ -18,6 +18,7 @@ const (
 	KindRun        = "run"
 	KindPath       = "path"
 	KindSymbol     = "symbol"
+	KindTemplate   = "template"
 
 	EdgeProvides   = "provides"
 	EdgeExecuted   = "executed"
@@ -130,6 +131,20 @@ func (s *Service) RefreshFromRegistry(ctx context.Context, reg *registry.Registr
 			if err := s.UpsertEdge(ctx, EdgeProvides, KindPlayer, m.Name, KindCapability, c.Name, nil); err != nil {
 				return err
 			}
+		}
+	}
+	return nil
+}
+
+func (s *Service) RefreshFromTemplates(ctx context.Context, ids []struct{ ID, Title string }) error {
+	for _, t := range ids {
+		if t.ID == "" {
+			continue
+		}
+		if err := s.UpsertNode(ctx, KindTemplate, t.ID, map[string]any{
+			"title": t.Title,
+		}); err != nil {
+			return err
 		}
 	}
 	return nil

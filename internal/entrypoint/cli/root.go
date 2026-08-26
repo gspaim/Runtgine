@@ -47,6 +47,7 @@ func NewRoot() *cobra.Command {
 	root.AddCommand(newCancelCmd(&workspace, &verbose))
 	root.AddCommand(newGraphCmd(&workspace, &verbose))
 	root.AddCommand(newMemoryCmd(&workspace, &verbose))
+	root.AddCommand(newTemplateCmd(&workspace, &verbose))
 	root.AddCommand(newBlastCmd(&workspace, &verbose))
 	root.AddCommand(newPipelineCmd(&workspace, &verbose))
 	root.AddCommand(newBoardCmd(&workspace, &verbose))
@@ -451,6 +452,84 @@ func episodeFlags(cmd *cobra.Command) memory.EpisodeInput {
 		RunID:  runID,
 		TaskID: taskID,
 	}
+}
+
+func newTemplateCmd(workspace *string, verbose *bool) *cobra.Command {
+	cmd := &cobra.Command{Use: "template", Short: "Workflow Templates (JSON → Task IR, not a Player)"}
+
+	cmd.AddCommand(&cobra.Command{
+		Use:   "list",
+		Short: "List loaded templates as JSON",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			core, err := openCore(*workspace, *verbose)
+			if err != nil {
+				return err
+			}
+			defer core.Close()
+			return writeJSON(os.Stdout, core.TemplateList())
+		},
+	})
+
+	cmd.AddCommand(&cobra.Command{
+		Use:   "show <id>",
+		Short: "Print one template as JSON",
+		Args:  cobra.ExactArgs(1),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			core, err := openCore(*workspace, *verbose)
+			if err != nil {
+				return err
+			}
+			defer core.Close()
+			tpl, err := core.TemplateGet(args[0])
+			if err != nil {
+				return err
+			}
+			return writeJSON(os.Stdout, tpl)
+		},
+	})
+
+	var wait, dryRun bool
+	run := &cobra.Command{
+		Use:   "run <id>",
+		Short: "Compile a template to Task IR and submit",
+		Args:  cobra.ExactArgs(1),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			core, err := openCore(*workspace, *verbose)
+			if err != nil {
+				return err
+			}
+			defer core.Close()
+			ctx := context.Background()
+			tk, err := core.CompileTemplate(args[0], "cli", "template:"+args[0], "run template "+args[0])
+			if err != nil {
+				return err
+			}
+			if dryRun {
+				enc := json.NewEncoder(os.Stdout)
+				enc.SetIndent("", "  ")
+				return enc.Encode(tk)
+			}
+			var unsub func()
+			var events <-chan event.Event
+			if wait {
+				events, unsub = core.Subscribe(256)
+				defer unsub()
+			}
+			runID, err := core.SubmitTask(ctx, tk)
+			if err != nil {
+				return err
+			}
+			fmt.Println(runID)
+			if !wait {
+				return nil
+			}
+			return waitForRun(ctx, core, runID, events)
+		},
+	}
+	run.Flags().BoolVar(&wait, "wait", true, "wait for run completion")
+	run.Flags().BoolVar(&dryRun, "dry-run", false, "print Task IR JSON without submitting")
+	cmd.AddCommand(run)
+	return cmd
 }
 
 func writeJSON(w *os.File, v any) error {

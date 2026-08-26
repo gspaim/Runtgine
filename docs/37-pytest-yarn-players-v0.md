@@ -11,7 +11,7 @@ Não é tox / pytest-xdist / `pytest-cov`. Não é `yarn install` /
 `yarn add` / `yarn dlx` / `npx` / `pnpm`. Não é MCP (G-44). Não é
 Knowledge. Não é K8s/Terraform/PostgreSQL.
 
-**Status deste doc: CONFIRMED v0 (slice 30 a fazer).** G-172..G-179.
+**Status deste doc: CONFIRMED v0 (slice 30 feito).** G-172..G-179.
 
 **Pacote OpenSpec:** [`openspec/changes/archive/2026-08-24-037-pytest-yarn-players/`](../openspec/changes/archive/2026-08-24-037-pytest-yarn-players/).
 Spec atual: [`openspec/specs/pytest-yarn-players/`](../openspec/specs/pytest-yarn-players/).

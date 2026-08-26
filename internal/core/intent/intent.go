@@ -13,6 +13,7 @@ import (
 	corepipe "github.com/gspaim/Runtgine/internal/core/pipeline"
 	"github.com/gspaim/Runtgine/internal/core/result"
 	"github.com/gspaim/Runtgine/internal/core/task"
+	"github.com/gspaim/Runtgine/internal/core/templates"
 	"github.com/gspaim/Runtgine/internal/players/llm"
 )
 
@@ -25,6 +26,7 @@ const (
 	MethodHeuristicNPM      = "heuristic.npm"
 	MethodHeuristicPytest   = "heuristic.pytest"
 	MethodHeuristicYarn     = "heuristic.yarn"
+	MethodHeuristicTemplate = "heuristic.template"
 	MethodLLM               = "llm"
 )
 
@@ -44,6 +46,7 @@ type Engine struct {
 	Completer llm.Completer
 	Graph     HitsQuerier   // optional; only used on LLM path
 	Memory    MemoryQuerier // optional; only used on LLM path
+	Templates []templates.Template
 }
 
 func New(c llm.Completer) *Engine {
@@ -84,6 +87,16 @@ func (e *Engine) Compile(ctx context.Context, req Request) (CompileResult, error
 			return CompileResult{}, err
 		}
 		return CompileResult{Task: tk, Method: hit.method}, nil
+	}
+	if tpl, ok, known := matchTemplate(text, e.Templates); known {
+		if !ok {
+			return CompileResult{}, result.Validation(result.CodeInvalidInput, "unknown template", map[string]any{"text": text})
+		}
+		tk, err := templates.Compile(tpl, ep, req.Ref, text)
+		if err != nil {
+			return CompileResult{}, err
+		}
+		return CompileResult{Task: tk, Method: MethodHeuristicTemplate}, nil
 	}
 	if argv, ok := matchShell(text); ok {
 		tk, err := shellTask(text, argv, ep, req.Ref)
@@ -268,6 +281,31 @@ func matchPlayer(text string) (playerHit, bool) {
 		return playerHit{capability: "docker.ps", method: MethodHeuristicDocker}, true
 	}
 	return playerHit{}, false
+}
+
+func matchTemplate(text string, list []templates.Template) (templates.Template, bool, bool) {
+	n := normalizeNL(text)
+	prefixes := []string{
+		"run template ",
+		"roda o template ",
+		"rodar template ",
+		"roda template ",
+		"template ",
+	}
+	for _, p := range prefixes {
+		if !strings.HasPrefix(n, p) {
+			continue
+		}
+		id := strings.TrimSpace(n[len(p):])
+		if id == "" {
+			return templates.Template{}, false, true
+		}
+		if tpl, ok := templates.Lookup(list, id); ok {
+			return tpl, true, true
+		}
+		return templates.Template{}, false, true
+	}
+	return templates.Template{}, false, false
 }
 
 func normalizeNL(s string) string {
