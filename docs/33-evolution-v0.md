@@ -201,7 +201,7 @@ Rejeições:
 | Auto-promoção silenciosa de skills | HITL obrigatório |
 | Benchmark crawler automático | Ops/research humano alimenta config |
 | Memory Player (`memory.*`) | G-47 OPEN; Provider basta no v0 |
-| Workflow Template engine completo | Escopo `08`; Playbooks são recorte |
+| Workflow Template engine completo | Spec `40` (G-194..G-200; slice 33); Playbooks permanecem markdown |
 | NATS / MCP / Wails | Outros tracks P3 |
 | HTTP API / `runtgine serve` | Spec `34` (G-45); não é Evolution |
 

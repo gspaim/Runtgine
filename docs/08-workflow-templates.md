@@ -7,8 +7,10 @@ deterministicos, Players necessarios e criterios de validacao.
 Playbooks (skills) sao documentacao executavel que acompanha o
 template. O Intent Engine consulta ambos para gerar Execution Plans.
 
-**Corte implementavel v0 (Playbooks only):** [33-evolution-v0.md](33-evolution-v0.md)
-(G-149). Workflow Templates completos permanecem HYPOTHESIS neste doc.
+**Corte implementavel v0 (Playbooks):** [33-evolution-v0.md](33-evolution-v0.md)
+(G-149). **Corte implementavel v0 (Templates JSON):** [40-workflow-templates-v0.md](40-workflow-templates-v0.md)
+(G-194..G-200; fecha G-40 como loading nativo). Auto-sizing / Verifier /
+fases TLC permanecem fora do v0.
 Lessons / auto-melhoria: G-150 em `33` (slice 24).
 
 ---
@@ -69,12 +71,12 @@ Complex: dominio novo, Spec+discussao, Pesquisa+arquitetura, UAT
 
 | Conceito | Status | Descricao |
 |---|---|---|
-| Workflow Template | HYPOTHESIS | Registro reutilizavel no Graph |
-| Playbook / Skill | HYPOTHESIS | Documentacao executavel |
-| Phase | HYPOTHESIS | Etapa de um template |
-| Deterministic Gate | HYPOTHESIS | Script que valida artefato |
+| Workflow Template | CONFIRMED v0 (`40`) | JSON nativo → Task IR; Graph kind `template` |
+| Playbook / Skill | CONFIRMED v0 (`33`) | Documentacao executavel + `playbook_hits` |
+| Phase | HYPOTHESIS | Etapa de um template (fora do v0 `40`) |
+| Deterministic Gate | HYPOTHESIS | No v0 `40` um gate e um step deterministico |
 | Verifier | HYPOTHESIS | Validacao final (autor != verifier) |
-| Lessons Engine | HYPOTHESIS | Auto-distillation de falhas |
+| Lessons Engine | CONFIRMED v0 (`33` G-150) | Postmortem + HITL |
 | Auto-sizing | HYPOTHESIS | Profundidade por complexidade |
 
 ---
@@ -90,8 +92,8 @@ No Runtgine, executados pelo Task Validator.
 
 ---
 
-## Questao em aberto
+## Questao G-40 — resolvida no v0
 
-Workflow Templates sao nativos do Runtime Graph ou carregados de
-repositorios externos? A segunda opcao e mais poderosa: qualquer
-playbook registrado sem modificar o core.
+**Nativo no workspace** (`.runtgine/templates/*.json`). Repo externo /
+marketplace fica fora do v0 (`40` G-196 / G-200). Playbooks
+continuam markdown em `.runtgine/playbooks/` (`33`).

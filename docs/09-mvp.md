@@ -154,7 +154,11 @@ UC-02 (CI/CD via HTTP) é **pós-1.0**: spec [34-http-api-v0.md](34-http-api-v0.
 7. Desktop Wails v0 slice 27 (INTENT/LIVE) — feito (ver `35`)
 8. Slice 28 — demais views desktop + Lessons HITL — feito
 9. NPM Player v0 slice 29 (`npm.test`) — spec `36` (G-166..G-171) — feito
-10. Depois: pytest / yarn / infra Players (G-41), MCP (G-44), templates (`08`)
+10. Pytest + Yarn slice 30 — spec `37` — feito
+11. Memory Player slice 31 — spec `38` — feito
+12. MCP Memory Server slice 32 — spec `39` — feito
+13. Workflow Templates slice 33 — spec `40` (G-40) — feito
+14. Depois: infra Players G-41 (K8s / TF / PG)
 
 Histórico do runtime mínimo (Task IR → Shell → CLI → TUI → Board →
 pipeline) está nos slices 1–4 / `11` / `12`. Não reabrir.

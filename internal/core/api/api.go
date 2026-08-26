@@ -22,6 +22,7 @@ import (
 	"github.com/gspaim/Runtgine/internal/core/runner"
 	"github.com/gspaim/Runtgine/internal/core/store"
 	"github.com/gspaim/Runtgine/internal/core/task"
+	"github.com/gspaim/Runtgine/internal/core/templates"
 	dockerplayer "github.com/gspaim/Runtgine/internal/players/docker"
 	"github.com/gspaim/Runtgine/internal/players/filesystem"
 	gitplayer "github.com/gspaim/Runtgine/internal/players/git"
@@ -38,16 +39,17 @@ import (
 
 // Core is the Entry Point → Core API (G-07).
 type Core struct {
-	Cfg     config.Config
-	Reg     *registry.Registry
-	Bus     *event.MemoryBus
-	Store   *store.Store
-	Runner  *runner.Runner
-	Intent  *intent.Engine
-	Graph   *graph.Service
-	Memory  *memory.Service
-	Lessons *lessons.Service
-	Log     *slog.Logger
+	Cfg       config.Config
+	Reg       *registry.Registry
+	Bus       *event.MemoryBus
+	Store     *store.Store
+	Runner    *runner.Runner
+	Intent    *intent.Engine
+	Graph     *graph.Service
+	Memory    *memory.Service
+	Lessons   *lessons.Service
+	Templates []templates.Template
+	Log       *slog.Logger
 }
 
 func Open(cfg config.Config, log *slog.Logger) (*Core, error) {
@@ -150,20 +152,45 @@ func Open(cfg config.Config, log *slog.Logger) (*Core, error) {
 			log.Warn("graph refresh failed", "err", err)
 		}
 	}
+	tpls, tplWarns, err := templates.Load(templates.Dir(cfg.WorkspaceRoot))
+	if err != nil {
+		if log != nil {
+			log.Warn("templates load failed", "err", err)
+		}
+		tpls = nil
+	}
+	for _, w := range tplWarns {
+		if log != nil {
+			log.Warn("template skipped", "detail", w)
+		}
+	}
+	if len(tpls) > 0 {
+		refs := make([]struct{ ID, Title string }, 0, len(tpls))
+		for _, t := range tpls {
+			refs = append(refs, struct{ ID, Title string }{ID: t.ID, Title: t.Title})
+		}
+		if err := g.RefreshFromTemplates(context.Background(), refs); err != nil {
+			if log != nil {
+				log.Warn("graph templates refresh failed", "err", err)
+			}
+		}
+	}
 	eng := intent.New(completer)
 	eng.Graph = g
 	eng.Memory = mem
+	eng.Templates = tpls
 	return &Core{
-		Cfg:     cfg,
-		Reg:     reg,
-		Bus:     bus,
-		Store:   st,
-		Runner:  r,
-		Intent:  eng,
-		Graph:   g,
-		Memory:  mem,
-		Lessons: lsn,
-		Log:     log,
+		Cfg:       cfg,
+		Reg:       reg,
+		Bus:       bus,
+		Store:     st,
+		Runner:    r,
+		Intent:    eng,
+		Graph:     g,
+		Memory:    mem,
+		Lessons:   lsn,
+		Templates: tpls,
+		Log:       log,
 	}, nil
 }
 
@@ -210,6 +237,26 @@ func (c *Core) BlastTask(ctx context.Context, t task.Task) (blast.Report, error)
 	}
 	blast.ApplyWalk(&rep, snap, snapErr)
 	return rep, nil
+}
+
+func (c *Core) TemplateList() []templates.Template {
+	return append([]templates.Template(nil), c.Templates...)
+}
+
+func (c *Core) TemplateGet(id string) (templates.Template, error) {
+	tpl, ok := templates.Lookup(c.Templates, id)
+	if !ok {
+		return templates.Template{}, result.Validation(result.CodeNotFound, "unknown template "+id, map[string]any{"id": id})
+	}
+	return tpl, nil
+}
+
+func (c *Core) CompileTemplate(id, entryPoint, ref, summary string) (task.Task, error) {
+	tpl, err := c.TemplateGet(id)
+	if err != nil {
+		return task.Task{}, err
+	}
+	return templates.Compile(tpl, entryPoint, ref, summary)
 }
 
 // CompileIntent translates natural language into Task IR (G-51).

@@ -79,3 +79,57 @@ func TestCompileIntentNpmTest(t *testing.T) {
 		t.Fatalf("steps=%v", tk.Steps)
 	}
 }
+
+func TestCompileIntentTemplate(t *testing.T) {
+	ws := t.TempDir()
+	dir := filepath.Join(ws, ".runtgine", "templates")
+	if err := os.MkdirAll(dir, 0o755); err != nil {
+		t.Fatal(err)
+	}
+	raw := []byte(`{
+  "id": "verify",
+  "title": "Verify",
+  "steps": [
+    {"step_id": "status", "capability": "git.status", "input": {"workdir": "."}},
+    {"step_id": "test", "capability": "test.go", "input": {"workdir": "."}, "depends_on": ["status"]}
+  ]
+}`)
+	if err := os.WriteFile(filepath.Join(dir, "verify.json"), raw, 0o644); err != nil {
+		t.Fatal(err)
+	}
+	cfg := config.Defaults()
+	cfg.WorkspaceRoot = ws
+	cfg.DBPath = filepath.Join(ws, ".runtgine", "runtgine.db")
+	core, err := api.Open(cfg, slog.New(slog.NewTextHandler(os.Stderr, &slog.HandlerOptions{Level: slog.LevelError})))
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Cleanup(func() { _ = core.Close() })
+
+	tk, method, err := core.CompileIntent(context.Background(), "run template verify", "cli", "test")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if method != intent.MethodHeuristicTemplate {
+		t.Fatalf("method=%s", method)
+	}
+	if len(tk.Steps) != 2 || tk.Metadata["template"] != "verify" {
+		t.Fatalf("task=%+v", tk)
+	}
+	if _, _, err := core.CompileIntent(context.Background(), "run template missing", "cli", "test"); err == nil {
+		t.Fatal("expected unknown template")
+	}
+	snap, err := core.GetGraphSnapshot(context.Background())
+	if err != nil {
+		t.Fatal(err)
+	}
+	found := false
+	for _, n := range snap.Nodes {
+		if n.Kind == "template" && n.ID == "verify" {
+			found = true
+		}
+	}
+	if !found {
+		t.Fatal("graph missing template node")
+	}
+}

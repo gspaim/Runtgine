@@ -107,7 +107,8 @@ Visão enxuta do que já está em `main`. **Atualizar esta seção em todo PR
 | Feito | Slice 30 — Pytest + Yarn Players v0 (`37`, G-172..G-179) |
 | Feito | Slice 31 — Memory Player v0 (`38`, G-180..G-186; read-only) |
 | Feito | Slice 32 — MCP Memory Server v0 (`39`, G-187..G-193; `runtgine mcp` + `/mcp`) |
-| Próximo código | Templates (`08`); infra Players G-41 |
+| Feito | Slice 33 — Workflow Templates v0 (`40`, G-194..G-200; `runtgine template`) |
+| Próximo código | Infra Players G-41 (K8s / Terraform / PostgreSQL) |
 
 Detalhe do corte: [`docs/09-mvp.md`](docs/09-mvp.md). Limitações atuais abaixo.
 
@@ -203,6 +204,7 @@ runtgine board poll                 Importa cards do GitHub
 runtgine tui                        Abre a Mission Control
 runtgine desktop                    Abre a Mission Control desktop (Wails v3)
 runtgine mcp                        MCP Memory Server read-only via stdio
+runtgine template list|show|run     Workflow Templates (JSON → Task IR)
 ```
 
 Exemplos:
