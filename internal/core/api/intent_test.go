@@ -80,6 +80,38 @@ func TestCompileIntentNpmTest(t *testing.T) {
 	}
 }
 
+func TestCompileIntentInfra(t *testing.T) {
+	core := openTestCore(t)
+	tk, method, err := core.CompileIntent(context.Background(), "terraform validate", "cli", "test")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if method != intent.MethodHeuristicTF || tk.Steps[0].Capability != "tf.validate" {
+		t.Fatalf("method=%s steps=%v", method, tk.Steps)
+	}
+	tk, method, err = core.CompileIntent(context.Background(), "kubectl get pods", "cli", "test")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if method != intent.MethodHeuristicK8s || tk.Steps[0].Capability != "k8s.list" {
+		t.Fatalf("method=%s steps=%v", method, tk.Steps)
+	}
+	tk, method, err = core.CompileIntent(context.Background(), "kubectl get pods web", "cli", "test")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if method != intent.MethodHeuristicK8s || tk.Steps[0].Capability != "k8s.get" {
+		t.Fatalf("get method=%s steps=%v", method, tk.Steps)
+	}
+	tk, method, err = core.CompileIntent(context.Background(), "pg ping", "cli", "test")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if method != intent.MethodHeuristicPG || tk.Steps[0].Capability != "pg.ping" {
+		t.Fatalf("pg method=%s steps=%v", method, tk.Steps)
+	}
+}
+
 func TestCompileIntentTemplate(t *testing.T) {
 	ws := t.TempDir()
 	dir := filepath.Join(ws, ".runtgine", "templates")

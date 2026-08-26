@@ -104,7 +104,7 @@ Ate la, o Core deve rodar so com CLI + Shell.
 | ID | Gap |
 |---|---|
 | G-40 | Workflow Templates loading (nativo vs repo externo) — ver `08` | **CONFIRMED v0** — recorte G-194..G-200 em `40` (nativo no workspace; slice 33) |
-| G-41 | Biblioteca ampla de Players | Em andamento — Git (`20`), Filesystem (`21`), Docker (`23`), HTTP (`28`), Test (`30`), NPM (`36`), pytest/yarn (`37`); resto: infra (K8s / TF / PG) |
+| G-41 | Biblioteca ampla de Players | Em andamento — Git/FS/Docker/HTTP/Test/NPM/pytest/yarn; **infra v0 CONFIRMED** (`41`, G-201..G-209; slice 34) |
 | G-42 | Human-in-the-loop / Approvals | **CONFIRMED v0** — recorte G-81..G-86 em `22` |
 | G-43 | Resource Claims / Blast Radius | **Claims CONFIRMED v0** — `24`. **Blast CONFIRMED v0** — `25`. **Walk Blast←Graph CONFIRMED v0** — recorte G-111..G-116 em `27` |
 | G-44 | MCP integration — transporte da Project Memory | **CONFIRMED v0** — recorte G-187..G-193 em `39` (servidor MCP read-only; slice 32 feito) |
@@ -370,6 +370,20 @@ Ate la, o Core deve rodar so com CLI + Shell.
 | G-199 | Graph | **CONFIRMED** — kind aditivo `template` |
 | G-200 | Exclusões v0 | **CONFIRMED** — remoto, auto-sizing, verifier, Player |
 
+## Infra Players (recorte G-41) — CONFIRMED v0 spec
+
+| ID | Gap | Notas |
+|---|---|---|
+| G-201 | Kubernetes Player | **CONFIRMED** — `k8s.get` / `k8s.list` |
+| G-202 | K8s sandbox | **CONFIRMED** — `kubectl get`; sem apply/exec |
+| G-203 | Terraform Player | **CONFIRMED** — `tf.validate` / `tf.plan` |
+| G-204 | Terraform sandbox | **CONFIRMED** — `*.tf`; `tf.plan` HITL; sem apply/init |
+| G-205 | Postgres Player | **CONFIRMED** — `pg.ping` |
+| G-206 | Postgres sandbox | **CONFIRMED** — sem SQL/password no IR |
+| G-207 | Registry + Intent | **CONFIRMED** — `heuristic.k8s`/`tf`/`pg` |
+| G-208 | Falha vs sucesso | **CONFIRMED** — exit ≠ 0 falha o Run |
+| G-209 | Exclusões v0 | **CONFIRMED** — apply/destroy/exec/SQL |
+
 ---
 
 ## Ordem para fechar gaps
@@ -402,6 +416,7 @@ Ate la, o Core deve rodar so com CLI + Shell.
 26. Pytest + Yarn Players — spec em `37` — G-172..G-179 CONFIRMED; codigo = slice 30
 27. MCP Memory Server — spec em `39` — G-187..G-193 CONFIRMED; codigo = slice 32
 28. Workflow Templates — spec em `40` — G-194..G-200 CONFIRMED; codigo = slice 33
+29. Infra Players — spec em `41` — G-201..G-209 CONFIRMED; codigo = slice 34
 
 ## Criterio de “pronto para codar”
 
@@ -457,8 +472,9 @@ Ordem pratica de codigo:
 27. Pytest + Yarn Players v0 — spec `37` (G-172..G-179); slice 30
 28. MCP Memory Server v0 — spec `39` (G-187..G-193); slice 32 feito
 29. Workflow Templates v0 — spec `40` (G-194..G-200); slice 33 feito
+30. Infra Players v0 — spec `41` (G-201..G-209); slice 34 feito
 
-P3 restante (G-41 em andamento — infra / K8s / TF / PG).
+P3 restante: NATS (G-36); G-41 além do recorte infra (Helm/cloud/SQL).
 MVP 1.0 magro: spec `09`/`31` (G-135..G-140); slices 19–20 feitos.
 Test Player corte v0: spec `30` (G-129..G-134); slice 18 feito.
 Project Memory corte v0: spec `29` (G-123..G-128); slice 17 feito.

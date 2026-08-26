@@ -1,0 +1,21 @@
+{
+  "schema_version": "0.1.0",
+  "source": {
+    "entry_point": "cli",
+    "ref": "examples/pg-ping.json"
+  },
+  "intent": {
+    "summary": "Ping PostgreSQL"
+  },
+  "steps": [
+    {
+      "step_id": "s1",
+      "capability": "pg.ping",
+      "input": {
+        "dbname": "postgres",
+        "host": "127.0.0.1"
+      },
+      "depends_on": []
+    }
+  ]
+}

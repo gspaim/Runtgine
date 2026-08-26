@@ -158,7 +158,8 @@ UC-02 (CI/CD via HTTP) é **pós-1.0**: spec [34-http-api-v0.md](34-http-api-v0.
 11. Memory Player slice 31 — spec `38` — feito
 12. MCP Memory Server slice 32 — spec `39` — feito
 13. Workflow Templates slice 33 — spec `40` (G-40) — feito
-14. Depois: infra Players G-41 (K8s / TF / PG)
+14. Infra Players slice 34 — spec `41` (G-201..G-209) — feito
+15. Depois: só após nova promoção em `04`
 
 Histórico do runtime mínimo (Task IR → Shell → CLI → TUI → Board →
 pipeline) está nos slices 1–4 / `11` / `12`. Não reabrir.

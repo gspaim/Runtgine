@@ -37,10 +37,10 @@ branch:              feat/<NNN>-<slug>   (ou docs/ fix/ chore/)
 
 Exemplos válidos: `001-shell-player`, `017-intent-engine`, `019-graph-hits`.
 
-**Próximo id livre:** `041`. Nenhuma mudança ativa.
+**Próximo id livre:** `042`. Nenhuma mudança ativa.
 Último archive:
-[`changes/archive/2026-08-26-040-workflow-templates/`](changes/archive/2026-08-26-040-workflow-templates/)
-(Workflow Templates v0; G-194..G-200; slice 33).
+[`changes/archive/2026-08-26-041-infra-players/`](changes/archive/2026-08-26-041-infra-players/)
+(Infra Players v0; G-201..G-209; slice 34).
 
 ## Autoridade
 
@@ -90,3 +90,4 @@ Não codificar mudança cujo status em `04` não esteja **CONFIRMED**
 | `memory-player` | Player `memory.recall` / `memory.check` read-only (spec 038) |
 | `mcp-memory` | Servidor MCP read-only sobre Project Memory (`runtgine mcp` + `/mcp`; spec 039) |
 | `workflow-templates` | Templates JSON nativos → Task IR (`runtgine template`; spec 040) |
+| `infra-players` | Players `k8s` / `terraform` / `postgres` (spec 041) |

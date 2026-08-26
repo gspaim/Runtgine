@@ -26,6 +26,9 @@ const (
 	MethodHeuristicNPM      = "heuristic.npm"
 	MethodHeuristicPytest   = "heuristic.pytest"
 	MethodHeuristicYarn     = "heuristic.yarn"
+	MethodHeuristicK8s      = "heuristic.k8s"
+	MethodHeuristicTF       = "heuristic.tf"
+	MethodHeuristicPG       = "heuristic.pg"
 	MethodHeuristicTemplate = "heuristic.template"
 	MethodLLM               = "llm"
 )
@@ -79,7 +82,10 @@ func (e *Engine) Compile(ctx context.Context, req Request) (CompileResult, error
 
 	if hit, ok := matchPlayer(text); ok {
 		extra := map[string]any{}
-		if hit.method == MethodHeuristicGit || hit.method == MethodHeuristicNPM || hit.method == MethodHeuristicPytest || hit.method == MethodHeuristicYarn {
+		for k, v := range hit.extra {
+			extra[k] = v
+		}
+		if hit.method == MethodHeuristicGit || hit.method == MethodHeuristicNPM || hit.method == MethodHeuristicPytest || hit.method == MethodHeuristicYarn || hit.method == MethodHeuristicTF {
 			extra["workdir"] = "."
 		}
 		tk, err := playerTask(text, hit.capability, ep, req.Ref, extra)
@@ -258,11 +264,21 @@ func playerTask(summary, capability, ep, ref string, input map[string]any) (task
 type playerHit struct {
 	capability string
 	method     string
+	extra      map[string]any
 }
 
 func matchPlayer(text string) (playerHit, bool) {
 	n := normalizeNL(text)
+	if hit, ok := matchK8s(n); ok {
+		return hit, true
+	}
 	switch {
+	case hasPhrase(n, "terraform validate"):
+		return playerHit{capability: "tf.validate", method: MethodHeuristicTF}, true
+	case hasPhrase(n, "terraform plan"):
+		return playerHit{capability: "tf.plan", method: MethodHeuristicTF}, true
+	case hasPhrase(n, "pg ping"), hasPhrase(n, "postgres ping"), hasPhrase(n, "psql ping"):
+		return playerHit{capability: "pg.ping", method: MethodHeuristicPG, extra: map[string]any{"dbname": "postgres"}}, true
 	case hasPhrase(n, "npm test"), hasPhrase(n, "npm run test"), hasPhrase(n, "roda os testes npm"), hasPhrase(n, "run npm tests"):
 		return playerHit{capability: "npm.test", method: MethodHeuristicNPM}, true
 	case hasPhrase(n, "pytest"), hasPhrase(n, "roda pytest"), hasPhrase(n, "run pytest"), hasPhrase(n, "rodar pytest"):
@@ -279,6 +295,25 @@ func matchPlayer(text string) (playerHit, bool) {
 		return playerHit{capability: "git.log", method: MethodHeuristicGit}, true
 	case hasPhrase(n, "docker ps"):
 		return playerHit{capability: "docker.ps", method: MethodHeuristicDocker}, true
+	}
+	return playerHit{}, false
+}
+
+func matchK8s(n string) (playerHit, bool) {
+	for _, p := range []string{"kubectl get ", "k8s get "} {
+		if !strings.HasPrefix(n, p) {
+			continue
+		}
+		rest := strings.Fields(n[len(p):])
+		if len(rest) == 0 || strings.HasPrefix(rest[0], "-") {
+			return playerHit{}, false
+		}
+		extra := map[string]any{"resource": rest[0]}
+		if len(rest) >= 2 && !strings.HasPrefix(rest[1], "-") {
+			extra["name"] = rest[1]
+			return playerHit{capability: "k8s.get", method: MethodHeuristicK8s, extra: extra}, true
+		}
+		return playerHit{capability: "k8s.list", method: MethodHeuristicK8s, extra: extra}, true
 	}
 	return playerHit{}, false
 }

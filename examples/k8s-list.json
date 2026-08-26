@@ -1,0 +1,21 @@
+{
+  "schema_version": "0.1.0",
+  "source": {
+    "entry_point": "cli",
+    "ref": "examples/k8s-list.json"
+  },
+  "intent": {
+    "summary": "List pods via Kubernetes Player"
+  },
+  "steps": [
+    {
+      "step_id": "s1",
+      "capability": "k8s.list",
+      "input": {
+        "resource": "pods",
+        "namespace": "default"
+      },
+      "depends_on": []
+    }
+  ]
+}
