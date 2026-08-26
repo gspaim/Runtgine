@@ -556,6 +556,26 @@ Recorte de G-41. Mesmo padrão de `test.go` (`30`) e `npm.test`
 | G-178 Falha vs sucesso | CONFIRMED | exit != 0 → `runtime.player_error` (pytest e yarn) |
 | G-179 Registry + Graph + Intent | CONFIRMED | `api.Open`; `heuristic.pytest`, `heuristic.yarn`; sem claim/blast; slices 30 |
 
+## MCP Memory Server — CONFIRMED v0 spec
+
+Ver [39-mcp-memory-v0.md](39-mcp-memory-v0.md). Recorte de G-44
+("candidato a transporte futuro da Project Memory" desde `29`).
+Servidor **MCP read-only** sobre o Provider (`internal/core/memory`):
+tools `memory.query` / `memory.list`; transportes stdio (`runtgine
+mcp`) e HTTP (`/mcp` no serve, mesma auth). Não é cliente MCP; não
+é Player; não é alternativa ao MCP (`01`). Código = slice 32
+(feito).
+
+| Item | Status | Notas |
+|---|---|---|
+| G-187 Papel / pacote | CONFIRMED | `internal/entrypoint/mcpserver`; servidor read-only; não Player |
+| G-188 Tools v0 | CONFIRMED | `memory.query`, `memory.list`; só `active`; sem escrita |
+| G-189 Transporte stdio | CONFIRMED | `runtgine mcp`; JSON-RPC 2.0 stdin/stdout |
+| G-190 Transporte HTTP | CONFIRMED | `/mcp` no serve; mesma auth (bearer) + loopback (`CheckBind`) |
+| G-191 Segurança / degradação | CONFIRMED | Falha do Provider → vazio + warning; server vivo; token obrigatório no HTTP |
+| G-192 Exclusoes v0 | CONFIRMED | Escrita via MCP, cliente MCP, embeddings/RAG/Knowledge, cross-workspace, subscriptions/resources |
+| G-193 Interop + aceite | CONFIRMED | Handshake/tools/list/tools-call bem-formados nos dois transportes |
+
 ## Git / release — fluxo de branches
 
 Ver [15-git-workflow.md](15-git-workflow.md).

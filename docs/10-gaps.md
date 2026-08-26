@@ -107,7 +107,7 @@ Ate la, o Core deve rodar so com CLI + Shell.
 | G-41 | Biblioteca ampla de Players | Em andamento — Git (`20`), Filesystem (`21`), Docker (`23`), HTTP (`28`), Test (`30`), **NPM (`36`, G-166..G-171; slice 29 feito)**; resto: pytest/yarn/infra |
 | G-42 | Human-in-the-loop / Approvals | **CONFIRMED v0** — recorte G-81..G-86 em `22` |
 | G-43 | Resource Claims / Blast Radius | **Claims CONFIRMED v0** — `24`. **Blast CONFIRMED v0** — `25`. **Walk Blast←Graph CONFIRMED v0** — recorte G-111..G-116 em `27` |
-| G-44 | MCP integration — candidato a transporte futuro da Project Memory (fora do v0 `29`) |
+| G-44 | MCP integration — transporte da Project Memory | **CONFIRMED v0** — recorte G-187..G-193 em `39` (servidor MCP read-only; slice 32 feito) |
 | G-45 | API HTTP / webhooks | **CONFIRMED v0** — recorte G-153..G-158 em `34`; distinto do HTTP Player (`28`) |
 | G-46 | Project Memory (conceito + ContextPack + validade + hierarquia) | **CONFIRMED v0** — recorte G-123..G-128 em `29`; esboço em `16` |
 | G-47 | Modelo de acesso Memory Provider vs Memory Player — Provider **CONFIRMED v0** (`29`); Player **OPEN QUESTION** (fora do v0) |
@@ -346,6 +346,18 @@ Ate la, o Core deve rodar so com CLI + Shell.
 | G-178 | Falha vs sucesso | **CONFIRMED** — exit != 0 → `runtime.player_error` |
 | G-179 | Registry + Graph + Intent | **CONFIRMED** — `heuristic.pytest`, `heuristic.yarn`; sem claim/blast |
 
+## MCP Memory Server (recorte G-44) — CONFIRMED v0 spec
+
+| ID | Gap | Notas |
+|---|---|---|
+| G-187 | Papel / pacote | **CONFIRMED** — servidor MCP read-only; `internal/entrypoint/mcpserver`; não Player |
+| G-188 | Tools v0 | **CONFIRMED** — `memory.query`, `memory.list`; só `active`; sem escrita |
+| G-189 | Transporte stdio | **CONFIRMED** — `runtgine mcp`; JSON-RPC 2.0 stdin/stdout |
+| G-190 | Transporte HTTP | **CONFIRMED** — `/mcp` no serve; mesma auth (bearer) + loopback |
+| G-191 | Segurança / degradação | **CONFIRMED** — falha do Provider → vazio + warning; server vivo |
+| G-192 | Exclusões v0 | **CONFIRMED** — escrita via MCP, cliente MCP, embeddings, cross-workspace, subscriptions/resources |
+| G-193 | Interop + aceite | **CONFIRMED** — handshake/tools/list/tools-call bem-formados nos dois transportes |
+
 ---
 
 ## Ordem para fechar gaps
@@ -429,8 +441,9 @@ Ordem pratica de codigo:
 25. NPM Player v0 — spec `36` (G-166..G-171); slice 29 feito
 26. Memory Player v0 — spec `38` (G-180..G-186); slice 31
 27. Pytest + Yarn Players v0 — spec `37` (G-172..G-179); slice 30
+28. MCP Memory Server v0 — spec `39` (G-187..G-193); slice 32 feito
 
-P3 restante (G-40 templates, G-44 MCP; G-41 em andamento — pytest / yarn / K8s / TF / PG).
+P3 restante (G-40 templates; G-41 em andamento — infra / K8s / TF / PG).
 MVP 1.0 magro: spec `09`/`31` (G-135..G-140); slices 19–20 feitos.
 Test Player corte v0: spec `30` (G-129..G-134); slice 18 feito.
 Project Memory corte v0: spec `29` (G-123..G-128); slice 17 feito.

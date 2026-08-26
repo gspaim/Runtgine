@@ -95,6 +95,9 @@ Memory Player: `docs/38-memory-player-v0.md` + archive
 Pytest + Yarn Players: `docs/37-pytest-yarn-players-v0.md` + archive
 `openspec/changes/archive/2026-08-24-037-pytest-yarn-players/` — CONFIRMED
 (G-172..G-179); slice 30.
+MCP Memory Server: `docs/39-mcp-memory-v0.md` + archive
+`openspec/changes/archive/2026-08-25-039-mcp-memory/` — CONFIRMED
+(G-187..G-193); slice 32 feito (fecha G-44; servidor read-only).
 Skill obrigatoria para TUI: `.cursor/skills/runtgine-tui-design/SKILL.md`.
 
 ## Ordem de trabalho

@@ -37,10 +37,10 @@ branch:              feat/<NNN>-<slug>   (ou docs/ fix/ chore/)
 
 Exemplos válidos: `001-shell-player`, `017-intent-engine`, `019-graph-hits`.
 
-**Próximo id livre:** `037`. Nenhuma mudança ativa.
+**Próximo id livre:** `040`. Nenhuma mudança ativa.
 Último archive:
-[`changes/archive/2026-08-22-036-npm-player/`](changes/archive/2026-08-22-036-npm-player/)
-(NPM Player v0; G-166..G-171; slice 29).
+[`changes/archive/2026-08-25-039-mcp-memory/`](changes/archive/2026-08-25-039-mcp-memory/)
+(MCP Memory Server v0; G-187..G-193; slice 32).
 
 ## Autoridade
 
@@ -86,3 +86,6 @@ Não codificar mudança cujo status em `04` não esteja **CONFIRMED**
 | `http-api` | Entry Point HTTP `runtgine serve` + webhooks outbound (slices 25–26) |
 | `wails-v0` | Entry Point desktop Wails v3 (`runtgine desktop`; slices 27–28) |
 | `npm-player` | Player `npm.test` (`npm test` no workspace; spec 036) |
+| `pytest-yarn-players` | Players `pytest.run` / `yarn.test` (spec 037) |
+| `memory-player` | Player `memory.recall` / `memory.check` read-only (spec 038) |
+| `mcp-memory` | Servidor MCP read-only sobre Project Memory (`runtgine mcp` + `/mcp`; spec 039) |
