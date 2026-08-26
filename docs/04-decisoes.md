@@ -57,7 +57,7 @@ Status: CONFIRMED | HYPOTHESIS | OPEN QUESTION | REJECTED
 | TUI GRAPH tab | CONFIRMED (v0) | Aba read-only; ver `26-tui-graph-v0.md` + `14` |
 | HTTP Player | CONFIRMED (v0) | Cliente GET/HEAD HTTPS; ver `28-http-player-v0.md` |
 | Test Player | CONFIRMED (v0) | `test.go` no workspace; ver `30-test-player-v0.md` |
-| Many deterministic Players | CONFIRMED | Estrategico; G-41 em andamento (infra = spec `41`) |
+| Many deterministic Players | CONFIRMED | Estrategico; G-41 recorte infra CONFIRMED em `41` |
 | Workflow Templates v0 | CONFIRMED (v0) | JSON nativo no workspace; ver `40-workflow-templates-v0.md` |
 | Runtgine + Chorus | CONFIRMED | Complementares |
 | Event Bus in-process (MVP) | CONFIRMED | Canais Go |
@@ -136,6 +136,7 @@ Ver [09-mvp.md](09-mvp.md). Decisoes-chave:
 - Memory Player v0 (G-180..G-186; recorte G-47) — spec `38`; codigo = slice 31 — feito
 - MCP Memory Server v0 (G-187..G-193; recorte G-44) — spec `39`; codigo = slice 32 — feito
 - Workflow Templates v0 (G-194..G-200; recorte G-40) — spec `40`; codigo = slice 33 — feito
+- Infra Players v0 (G-201..G-209; recorte G-41) — spec `41`; codigo = slice 34 — feito
 
 ## Protocolo v0 — confirmado (sessao de fechamento)
 
@@ -597,6 +598,24 @@ compila para Task IR; Validator soberano. Distinto de Playbooks
 | G-198 CLI + Intent | CONFIRMED | `runtgine template`; `heuristic.template` antes de shell |
 | G-199 Graph | CONFIRMED | kind aditivo `template`; sem aresta nova |
 | G-200 Exclusoes v0 | CONFIRMED | remoto, auto-sizing, verifier, Player, HTTP/MCP |
+
+## Infra Players — CONFIRMED v0 spec
+
+Ver [41-infra-players-v0.md](41-infra-players-v0.md). Recorte de
+G-41 (K8s / Terraform / PostgreSQL). Código = slice 34 (feito).
+Leitura / validate+plan / ping; sem apply, sem SQL livre.
+
+| Item | Status | Notas |
+|---|---|---|
+| G-201 Kubernetes Player | CONFIRMED | `k8s.get` / `k8s.list`; `internal/players/k8s` |
+| G-202 K8s sandbox | CONFIRMED | argv `kubectl get`; sem apply/exec; `safeRef` |
+| G-203 Terraform Player | CONFIRMED | `tf.validate` / `tf.plan`; `internal/players/tf` |
+| G-204 Terraform sandbox | CONFIRMED | `*.tf` no workdir; `tf.plan` approval-required; sem apply/init |
+| G-205 Postgres Player | CONFIRMED | `pg.ping`; `internal/players/pg` |
+| G-206 Postgres sandbox | CONFIRMED | sem SQL/password no IR; `PGPASSWORD` só env |
+| G-207 Registry + Intent | CONFIRMED | `heuristic.k8s` / `heuristic.tf` / `heuristic.pg` |
+| G-208 Falha vs sucesso | CONFIRMED | exit ≠ 0 → `runtime.player_error`; testes fake |
+| G-209 Exclusoes v0 | CONFIRMED | apply/destroy/init/exec/SQL; Helm; cloud SDKs |
 
 ## Git / release — fluxo de branches
 

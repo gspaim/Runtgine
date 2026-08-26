@@ -101,6 +101,9 @@ MCP Memory Server: `docs/39-mcp-memory-v0.md` + archive
 Workflow Templates: `docs/40-workflow-templates-v0.md` + archive
 `openspec/changes/archive/2026-08-26-040-workflow-templates/` — CONFIRMED
 (G-194..G-200); recorte de G-40; slice 33.
+Infra Players: `docs/41-infra-players-v0.md` + archive
+`openspec/changes/archive/2026-08-26-041-infra-players/` — CONFIRMED
+(G-201..G-209); slice 34 (k8s / terraform / postgres).
 Skill obrigatoria para TUI: `.cursor/skills/runtgine-tui-design/SKILL.md`.
 
 ## Ordem de trabalho
@@ -139,7 +142,8 @@ Skill obrigatoria para TUI: `.cursor/skills/runtgine-tui-design/SKILL.md`.
 32. Pytest + Yarn — CONFIRMED v0 em `37` + archive `037-pytest-yarn-players` — slice 30
 33. MCP Memory — CONFIRMED v0 em `39` + archive `039-mcp-memory` — slice 32
 34. Workflow Templates — CONFIRMED v0 em `40` (G-194..G-200) — slice 33
-35. Depois — infra Players G-41 (K8s / TF / PG) — so apos nova promocao em `04`
+35. Infra Players — CONFIRMED v0 em `41` (G-201..G-209) — slice 34
+36. Depois — so apos nova promocao em `04` (NATS G-36 DEFERRED; resto G-41)
 
 ## Conceitos chave (nao confundir)
 

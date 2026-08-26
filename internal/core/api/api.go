@@ -29,12 +29,15 @@ import (
 	gotestplayer "github.com/gspaim/Runtgine/internal/players/gotest"
 	httpplayer "github.com/gspaim/Runtgine/internal/players/httpclient"
 	"github.com/gspaim/Runtgine/internal/players/jstest"
+	k8splayer "github.com/gspaim/Runtgine/internal/players/k8s"
 	"github.com/gspaim/Runtgine/internal/players/llm"
 	memplayer "github.com/gspaim/Runtgine/internal/players/memory"
 	npmplayer "github.com/gspaim/Runtgine/internal/players/npm"
+	pgplayer "github.com/gspaim/Runtgine/internal/players/pg"
 	pipeplayer "github.com/gspaim/Runtgine/internal/players/pipeline"
 	pytstplayer "github.com/gspaim/Runtgine/internal/players/pytst"
 	"github.com/gspaim/Runtgine/internal/players/shell"
+	tfplayer "github.com/gspaim/Runtgine/internal/players/tf"
 )
 
 // Core is the Entry Point → Core API (G-07).
@@ -95,6 +98,18 @@ func Open(cfg config.Config, log *slog.Logger) (*Core, error) {
 		return nil, err
 	}
 	if err := reg.Register(pytstplayer.New()); err != nil {
+		_ = st.Close()
+		return nil, err
+	}
+	if err := reg.Register(k8splayer.New()); err != nil {
+		_ = st.Close()
+		return nil, err
+	}
+	if err := reg.Register(tfplayer.New()); err != nil {
+		_ = st.Close()
+		return nil, err
+	}
+	if err := reg.Register(pgplayer.New()); err != nil {
 		_ = st.Close()
 		return nil, err
 	}
