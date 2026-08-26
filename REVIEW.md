@@ -44,7 +44,8 @@ O 1.0 magro (`09`) fecha heuristicas de Player + Context Engine v0.
 CONFIRMED: Task, Workflow, Execution Plan, Player, Capability,
 Manifest, Event, Queue, Event Bus, Entry Point != Player.
 
-HYPOTHESIS: Player Router, Background Player, Workflow Template.
+HYPOTHESIS: Background Player.
+CONFIRMED (v0): Player Router (`33`), Workflow Template (`40`).
 
 CONFIRMED (v0): Intent Engine, Task IR, Task Validator (subset), Runtime Graph,
 Context Engine (semente `repo_hits`; `31`),

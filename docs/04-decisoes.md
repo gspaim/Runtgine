@@ -57,7 +57,8 @@ Status: CONFIRMED | HYPOTHESIS | OPEN QUESTION | REJECTED
 | TUI GRAPH tab | CONFIRMED (v0) | Aba read-only; ver `26-tui-graph-v0.md` + `14` |
 | HTTP Player | CONFIRMED (v0) | Cliente GET/HEAD HTTPS; ver `28-http-player-v0.md` |
 | Test Player | CONFIRMED (v0) | `test.go` no workspace; ver `30-test-player-v0.md` |
-| Many deterministic Players | CONFIRMED | Estrategico; proximo recorte G-41 = NPM (`36`, G-166..G-171) |
+| Many deterministic Players | CONFIRMED | Estrategico; G-41 em andamento (infra = spec `41`) |
+| Workflow Templates v0 | CONFIRMED (v0) | JSON nativo no workspace; ver `40-workflow-templates-v0.md` |
 | Runtgine + Chorus | CONFIRMED | Complementares |
 | Event Bus in-process (MVP) | CONFIRMED | Canais Go |
 | Nativo (nao Electron) | CONFIRMED | Wails |
@@ -131,6 +132,10 @@ Ver [09-mvp.md](09-mvp.md). Decisoes-chave:
 - HTTP API v0 (G-153..G-158; recorte G-45) — spec `34`; slices 25–26 feitas
 - Desktop Wails v0 (G-159..G-165; recorte G-35/G-144) — spec `35`; slices 27–28 feitas
 - NPM Player v0 (G-166..G-171; recorte G-41) — spec `36`; codigo = slice 29 — feito
+- Pytest + Yarn Players v0 (G-172..G-179; recorte G-41) — spec `37`; codigo = slice 30 — feito
+- Memory Player v0 (G-180..G-186; recorte G-47) — spec `38`; codigo = slice 31 — feito
+- MCP Memory Server v0 (G-187..G-193; recorte G-44) — spec `39`; codigo = slice 32 — feito
+- Workflow Templates v0 (G-194..G-200; recorte G-40) — spec `40`; codigo = slice 33 — feito
 
 ## Protocolo v0 — confirmado (sessao de fechamento)
 
@@ -268,7 +273,7 @@ Rejeicoes (inalteradas vs `16`):
 | Memoria como autoridade de execucao | REJECTED | Sugere contexto; lista negativa |
 | Supersession silenciosa via LLM no Core | REJECTED | Validade so com opt-in explicito |
 | RAG generico / indexar transcripts | REJECTED | Compile observations |
-| Memory Player (`memory.*`) | OPEN QUESTION | Fora do v0; G-47 Player permanece aberto |
+| Memory Player (`memory.*`) | CONFIRMED (v0) | Recorte G-180..G-186 em `38`; fecha G-47 |
 
 ## Runtime Graph — CONFIRMED v0
 
@@ -575,6 +580,23 @@ mcp`) e HTTP (`/mcp` no serve, mesma auth). Não é cliente MCP; não
 | G-191 Segurança / degradação | CONFIRMED | Falha do Provider → vazio + warning; server vivo; token obrigatório no HTTP |
 | G-192 Exclusoes v0 | CONFIRMED | Escrita via MCP, cliente MCP, embeddings/RAG/Knowledge, cross-workspace, subscriptions/resources |
 | G-193 Interop + aceite | CONFIRMED | Handshake/tools/list/tools-call bem-formados nos dois transportes |
+
+## Workflow Templates — CONFIRMED v0 spec
+
+Ver [40-workflow-templates-v0.md](40-workflow-templates-v0.md). Recorte de
+G-40 (nativo vs repo externo). JSON em `.runtgine/templates/`
+compila para Task IR; Validator soberano. Distinto de Playbooks
+(`33`). Código = slice 33 (feito).
+
+| Item | Status | Notas |
+|---|---|---|
+| G-194 Papel / pacote | CONFIRMED | `internal/core/templates`; Core, não Player |
+| G-195 Schema JSON v0 | CONFIRMED | `id`, `title`, `steps` 1–20; `additionalProperties: false` |
+| G-196 Loading nativo | CONFIRMED | Fecha G-40: workspace only; best-effort skip+warn |
+| G-197 Compile → Task IR | CONFIRMED | `metadata.template`; admissão valida capabilities |
+| G-198 CLI + Intent | CONFIRMED | `runtgine template`; `heuristic.template` antes de shell |
+| G-199 Graph | CONFIRMED | kind aditivo `template`; sem aresta nova |
+| G-200 Exclusoes v0 | CONFIRMED | remoto, auto-sizing, verifier, Player, HTTP/MCP |
 
 ## Git / release — fluxo de branches
 

@@ -1,0 +1,9 @@
+schema: spec-driven
+created: 2026-08-26
+nnn: "040"
+slug: workflow-templates
+docs_canonical: docs/40-workflow-templates-v0.md
+gaps: [G-194, G-195, G-196, G-197, G-198, G-199, G-200]
+status: archived
+branch: feat/040-workflow-templates
+depends_on: ["033-evolution-v0"]

@@ -1,0 +1,18 @@
+{
+  "schema_version": "0.1.0",
+  "id": "verify",
+  "title": "Verify workspace",
+  "steps": [
+    {
+      "step_id": "status",
+      "capability": "git.status",
+      "input": { "workdir": "." }
+    },
+    {
+      "step_id": "test",
+      "capability": "test.go",
+      "input": { "workdir": "." },
+      "depends_on": ["status"]
+    }
+  ]
+}
