@@ -29,8 +29,14 @@ import (
 	"github.com/gspaim/Runtgine/internal/players/git"
 	gotestplayer "github.com/gspaim/Runtgine/internal/players/gotest"
 	httpplayer "github.com/gspaim/Runtgine/internal/players/httpclient"
+	"github.com/gspaim/Runtgine/internal/players/jstest"
+	k8splayer "github.com/gspaim/Runtgine/internal/players/k8s"
+	memplayer "github.com/gspaim/Runtgine/internal/players/memory"
 	npmplayer "github.com/gspaim/Runtgine/internal/players/npm"
+	pgplayer "github.com/gspaim/Runtgine/internal/players/pg"
+	pytstplayer "github.com/gspaim/Runtgine/internal/players/pytst"
 	"github.com/gspaim/Runtgine/internal/players/shell"
+	tfplayer "github.com/gspaim/Runtgine/internal/players/tf"
 )
 
 // GraphBridge syncs structural memory (G-65) and serves QueryHits (G-68). Optional.
@@ -238,6 +244,54 @@ func (r *Runner) validateTaskIR(t task.Task) error {
 			}
 		case npmplayer.CapTest:
 			if err := npmplayer.ValidateStaticInput(r.Workspace, s.Capability, s.Input); err != nil {
+				var ve result.Error
+				if errors.As(err, &ve) {
+					return r.reject(t.TaskID, ve.Code, ve.Message)
+				}
+				return r.reject(t.TaskID, result.CodeInvalidInput, err.Error())
+			}
+		case pytstplayer.CapRun:
+			if err := pytstplayer.ValidateStaticInput(r.Workspace, s.Capability, s.Input); err != nil {
+				var ve result.Error
+				if errors.As(err, &ve) {
+					return r.reject(t.TaskID, ve.Code, ve.Message)
+				}
+				return r.reject(t.TaskID, result.CodeInvalidInput, err.Error())
+			}
+		case jstest.CapTest:
+			if err := jstest.ValidateStaticInput(r.Workspace, s.Capability, s.Input); err != nil {
+				var ve result.Error
+				if errors.As(err, &ve) {
+					return r.reject(t.TaskID, ve.Code, ve.Message)
+				}
+				return r.reject(t.TaskID, result.CodeInvalidInput, err.Error())
+			}
+		case memplayer.CapRecall, memplayer.CapCheck:
+			if err := memplayer.ValidateStaticInput(r.Workspace, s.Capability, s.Input); err != nil {
+				var ve result.Error
+				if errors.As(err, &ve) {
+					return r.reject(t.TaskID, ve.Code, ve.Message)
+				}
+				return r.reject(t.TaskID, result.CodeInvalidInput, err.Error())
+			}
+		case k8splayer.CapList, k8splayer.CapGet:
+			if err := k8splayer.ValidateStaticInput(r.Workspace, s.Capability, s.Input); err != nil {
+				var ve result.Error
+				if errors.As(err, &ve) {
+					return r.reject(t.TaskID, ve.Code, ve.Message)
+				}
+				return r.reject(t.TaskID, result.CodeInvalidInput, err.Error())
+			}
+		case tfplayer.CapValidate, tfplayer.CapPlan:
+			if err := tfplayer.ValidateStaticInput(r.Workspace, s.Capability, s.Input); err != nil {
+				var ve result.Error
+				if errors.As(err, &ve) {
+					return r.reject(t.TaskID, ve.Code, ve.Message)
+				}
+				return r.reject(t.TaskID, result.CodeInvalidInput, err.Error())
+			}
+		case pgplayer.CapPing:
+			if err := pgplayer.ValidateStaticInput(r.Workspace, s.Capability, s.Input); err != nil {
 				var ve result.Error
 				if errors.As(err, &ve) {
 					return r.reject(t.TaskID, ve.Code, ve.Message)

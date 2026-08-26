@@ -19,6 +19,7 @@
 | Manifest | Declaracao de capabilities, entradas e saidas de um Player |
 | Memory Player | Player read-only `memory.recall` / `memory.check`; CONFIRMED v0 (ver `38`) |
 | Workflow Template | JSON reutilizavel que compila para Task IR; CONFIRMED v0 (ver `40`) |
+| Infra Players | Players deterministicos `k8s` / `terraform` / `postgres`; CONFIRMED v0 (ver `41`) |
 | Memory Provider | Fonte de memoria consultada pelo AssembleContext; CONFIRMED v0 local SQLite (`29`) |
 | Orchestrator | Coordena o fluxo de execucao |
 | Player | Entidade capaz de fornecer capabilities |

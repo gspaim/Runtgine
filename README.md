@@ -108,7 +108,8 @@ Visão enxuta do que já está em `main`. **Atualizar esta seção em todo PR
 | Feito | Slice 31 — Memory Player v0 (`38`, G-180..G-186; read-only) |
 | Feito | Slice 32 — MCP Memory Server v0 (`39`, G-187..G-193; `runtgine mcp` + `/mcp`) |
 | Feito | Slice 33 — Workflow Templates v0 (`40`, G-194..G-200; `runtgine template`) |
-| Próximo código | Infra Players G-41 (K8s / Terraform / PostgreSQL) |
+| Feito | Slice 34 — Infra Players v0 (`41`, G-201..G-209; `k8s.*` / `tf.*` / `pg.ping`) |
+| Próximo código | Recortes G-41 restantes (Helm / cloud / SQL) ou NATS (G-36 DEFERRED) |
 
 Detalhe do corte: [`docs/09-mvp.md`](docs/09-mvp.md). Limitações atuais abaixo.
 
@@ -430,6 +431,9 @@ vulnerabilidade.
 | [NPM Player](docs/36-npm-player-v0.md) | Player `npm.test` v0 (G-166..G-171; slice 29) |
 | [Pytest+Yarn Players](docs/37-pytest-yarn-players-v0.md) | `pytest.run` + `yarn.test` v0 (G-172..G-179; slice 30) |
 | [Memory Player](docs/38-memory-player-v0.md) | Player read-only sobre Memory Provider (G-180..G-186; slice 31) |
+| [MCP Memory](docs/39-mcp-memory-v0.md) | Servidor MCP read-only (G-187..G-193; slice 32) |
+| [Workflow Templates](docs/40-workflow-templates-v0.md) | JSON nativo → Task IR (G-194..G-200; slice 33) |
+| [Infra Players](docs/41-infra-players-v0.md) | `k8s.*` / `tf.*` / `pg.ping` (G-201..G-209; slice 34) |
 | [Context Engine](docs/31-context-engine-v0.md) | Semente `repo_hits` v0 (G-137..G-139; slice 20) |
 | [Intent Surface](docs/32-intent-surface-v0.md) | Aba INTENT / Mission Brief (G-141..G-146; slice 21) |
 | [Evolution](docs/33-evolution-v0.md) | Router, Playbooks, Lessons (G-147..G-152; slices 22–24) |

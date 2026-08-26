@@ -1,0 +1,9 @@
+schema: spec-driven
+created: 2026-08-26
+nnn: "041"
+slug: infra-players
+docs_canonical: docs/41-infra-players-v0.md
+gaps: [G-201, G-202, G-203, G-204, G-205, G-206, G-207, G-208, G-209]
+status: archived
+branch: feat/041-infra-players
+depends_on: ["023-docker-player"]

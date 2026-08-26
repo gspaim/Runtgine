@@ -79,7 +79,8 @@ Entry Point != Player.
 
 ## 7. Players
 
-Deterministic: Shell (MVP), Git, Filesystem, Docker (spec `23`), K8s, Terraform, Test.
+Deterministic: Shell (MVP), Git, Filesystem, Docker (spec `23`),
+K8s / Terraform / Postgres (spec `41`), Test, NPM, pytest, yarn.
 AI: Claude, GPT, Gemini, local LLM. HITL: Core `ApproveRun` (nao e Player; spec `22`).
 Service: PG, HTTP.
 
