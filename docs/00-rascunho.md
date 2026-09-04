@@ -81,3 +81,55 @@ Resumo da posicao:
 
 Questao em aberto permanece: templates nativos no Graph vs registro dinamico
 a partir de repos externos.
+
+---
+
+## TUI v1 (discussao, pre-decisao)
+
+Contexto: a TUI Constellation Mission Control ja existe e e autoridade
+de design (`14-tui-design.md` + skill `.cursor/skills/runtgine-tui-design/`).
+Implementada nos slices 3 (base), 14 (aba GRAPH) e 21 (aba INTENT).
+Esta secao abre a discussao do **proximo ciclo de TUI** — nada aqui e
+CONFIRMED; qualquer recorte precisa de decisao em `04-decisoes.md`
+antes de spec/codigo.
+
+Recortes candidatos (todos eram exclusoes ou REJECTED do v0, e por isso
+exigem decisao nova):
+
+1. **PTY / tuios — terminal vivo dentro da TUI** (maior valor, maior risco)
+   - Hoje a TUI observa runs; nao executa nem multiplexa terminais.
+     `tuios no MVP` foi REJECTED ("Nao e multiplexer; PTY futuro exige
+     nova decisao").
+   - Exige: multiplexador de sessoes PTY, lifecycle de processos
+     filhos, seguranca (o que pode rodar dentro?), keymap novo,
+     scrollback/resize.
+   - Valor: mission control de verdade — acompanhar E intervir.
+
+2. **GRAPH canvas 2D** (UX visual)
+   - v0 da aba GRAPH e lista/detalhe por decisao (G-107: "sem canvas
+     2D"). Um canvas de nos/arestas (player → capability → task → run)
+     mudaria a forma de navegar a memoria estrutural.
+   - Custo alto de UX/teclado vs. ganho incremental sobre a lista;
+     candidate a ficar por ultimo.
+
+3. **Hits + Blast surfaces** (menor, fecha o loop de verificacao)
+   - Os dados de verificacao ja existem no Core mas hoje so aparecem
+     em CLI/API: `graph_hits`/`memory_hits`/`playbook_hits` no detalhe
+     do step, e o Impact Report do Blast (`runtgine blast`) navegavel
+     a partir de um Run/Task.
+   - Segue `14` + skill; nao cria conceito novo; reusa `QueryHits`,
+     `BlastTask` e o Memory Provider.
+
+Ordem sugerida pelo arquiteto: **3 → 1 → 2**. Hits+Blast primeiro
+(pequeno, coerente com a frase do produto, zero conceito novo);
+PTY/tuios como a grande aposta do v1 se a discussao confirmar valor;
+canvas 2D por ultimo (puro UX, sem dado novo).
+
+Questoes abertas para decidir antes de promover qualquer recorte:
+- Qual(is) recorte(s) entram no ciclo TUI v1?
+- PTY/tuios: qual o caso de uso concreto (ver saida de testes longos?
+  intervir em shell?) e quais guardas de seguranca?
+- Hits/Blast: surfacem inline no detalhe do step ou aba propria
+  (`14` fixa seis abas — aba nova exigiria emenda de design)?
+- Prioridade vs. estabilizar a release 0.1.0 (limitacoes conhecidas:
+  steps sequenciais, cancelamento nao coordenado).
