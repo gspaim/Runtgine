@@ -1,0 +1,18 @@
+{
+  "schema_version": "0.1.0",
+  "source": {
+    "entry_point": "cli",
+    "ref": "examples/az-identity.json"
+  },
+  "intent": {
+    "summary": "Show active Azure account"
+  },
+  "steps": [
+    {
+      "step_id": "s1",
+      "capability": "azure.identity",
+      "input": {},
+      "depends_on": []
+    }
+  ]
+}

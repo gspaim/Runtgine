@@ -94,7 +94,7 @@ Ate la, o Core deve rodar so com CLI + Shell.
 | G-34 | Estrategia de testes (unit vs integracao) | **CONFIRMED** — ver `13` |
 | G-35 | Wails: Svelte vs React | **CONFIRMED** — Wails + Svelte; ver `13` |
 | G-36 | NATS / Event Bus distribuido (OPEN QUESTION) | **DEFERRED** — Bus plugavel; sem NATS no MVP; ver `13` |
-| G-37 | Modulo path Go + versao minima de Go |
+| G-37 | Modulo path Go + versao minima de Go | **CONFIRMED** — `github.com/gspaim/Runtgine`; Go minimo = go.mod (`1.25`) |
 | G-38 | Config do runtime (arquivo, env, defaults) | **CONFIRMED** — defaults < file < env < flags; ver `13` |
 
 ---
@@ -104,7 +104,7 @@ Ate la, o Core deve rodar so com CLI + Shell.
 | ID | Gap |
 |---|---|
 | G-40 | Workflow Templates loading (nativo vs repo externo) — ver `08` | **CONFIRMED v0** — recorte G-194..G-200 em `40` (nativo no workspace; slice 33) |
-| G-41 | Biblioteca ampla de Players | Em andamento — Git/FS/Docker/HTTP/Test/NPM/pytest/yarn; **infra v0 CONFIRMED** (`41`, G-201..G-209; slice 34); **Helm v0 CONFIRMED** (`42`, G-210..G-216; slice 35 feito); **AWS v0 CONFIRMED** (`43`, G-217..G-223; slice 36 feito) |
+| G-41 | Biblioteca ampla de Players | Em andamento — Git/FS/Docker/HTTP/Test/NPM/pytest/yarn; **infra v0 CONFIRMED** (`41`, G-201..G-209; slice 34); **Helm v0 CONFIRMED** (`42`, G-210..G-216; slice 35 feito); **AWS v0 CONFIRMED** (`43`, G-217..G-223; slice 36 feito); **GCP/Azure v0 CONFIRMED** (`44`, G-224..G-230; slice 37 feito) |
 | G-42 | Human-in-the-loop / Approvals | **CONFIRMED v0** — recorte G-81..G-86 em `22` |
 | G-43 | Resource Claims / Blast Radius | **Claims CONFIRMED v0** — `24`. **Blast CONFIRMED v0** — `25`. **Walk Blast←Graph CONFIRMED v0** — recorte G-111..G-116 em `27` |
 | G-44 | MCP integration — transporte da Project Memory | **CONFIRMED v0** — recorte G-187..G-193 em `39` (servidor MCP read-only; slice 32 feito) |
@@ -408,6 +408,18 @@ Ate la, o Core deve rodar so com CLI + Shell.
 | G-222 | Registry + Graph + Intent | **CONFIRMED** — `heuristic.aws`; sem claim/blast; slice 36 feito |
 | G-223 | Exclusões v0 | **CONFIRMED** — mutantes, GCP/Azure, SQL, NATS |
 
+## Cloud Players GCP + Azure (recorte G-41) — CONFIRMED v0 spec
+
+| ID | Gap | Notas |
+|---|---|---|
+| G-224 | Papel / pacote `gcp` | **CONFIRMED** — `internal/players/gcp` (binário `gcloud`) |
+| G-225 | GCP sandbox | **CONFIRMED** — `gcp.identity` / `config` / `projects`; `--format=json` fixo; env herdado |
+| G-226 | Papel / pacote `azure` | **CONFIRMED** — `internal/players/azure` (binário `az`) |
+| G-227 | Azure sandbox | **CONFIRMED** — `azure.identity` / `subscriptions` / `groups`; `-o json` fixo |
+| G-228 | Falha vs sucesso | **CONFIRMED** — exit ≠ 0 → `runtime.player_error` |
+| G-229 | Registry + Graph + Intent | **CONFIRMED** — `heuristic.gcp` / `heuristic.az`; sem claim/blast |
+| G-230 | Exclusões v0 | **CONFIRMED** — mutantes (create/delete/set/IAM/deploy), outros provedores, SQL |
+
 ---
 
 ## Ordem para fechar gaps
@@ -443,6 +455,7 @@ Ate la, o Core deve rodar so com CLI + Shell.
 29. Infra Players — spec em `41` — G-201..G-209 CONFIRMED; codigo = slice 34
 30. Helm Player — spec em `42` — G-210..G-216 CONFIRMED; codigo = slice 35 — feito
 31. Cloud AWS Player — spec em `43` — G-217..G-223 CONFIRMED; codigo = slice 36 — feito
+32. Cloud Players GCP + Azure — spec em `44` — G-224..G-230 CONFIRMED; codigo = slice 37 — feito
 
 ## Criterio de “pronto para codar”
 
@@ -469,6 +482,7 @@ Ate la, o Core deve rodar so com CLI + Shell.
 **NPM Player (G-166..G-171): CONFIRMADO** — spec `36`; slice 29 feito.
 **Helm Player (G-210..G-216): CONFIRMADO** — spec `42`; slice 35 feito.
 **Cloud AWS Player (G-217..G-223): CONFIRMADO** — spec `43`; slice 36 feito.
+**Cloud Players GCP + Azure (G-224..G-230): CONFIRMADO** — spec `44`; slice 37 feito.
 
 Ordem pratica de codigo:
 1. Core CLI + Shell (+ SQLite) — slice 1 — feito
@@ -503,8 +517,10 @@ Ordem pratica de codigo:
 30. Infra Players v0 — spec `41` (G-201..G-209); slice 34 feito
 31. Helm Player v0 — spec `42` (G-210..G-216); slice 35 feito
 32. Cloud AWS Player v0 — spec `43` (G-217..G-223); slice 36 feito
+33. Cloud Players GCP + Azure v0 — spec `44` (G-224..G-230); slice 37 feito
 
-P3 restante: NATS (G-36); G-41 além de infra+Helm+AWS (cloud GCP/Azure, SQL).
+P3 restante: SQL/migrations (exige spec propria com desenho de
+seguranca); NATS (G-36, DEFERRED).
 MVP 1.0 magro: spec `09`/`31` (G-135..G-140); slices 19–20 feitos.
 Test Player corte v0: spec `30` (G-129..G-134); slice 18 feito.
 Project Memory corte v0: spec `29` (G-123..G-128); slice 17 feito.
