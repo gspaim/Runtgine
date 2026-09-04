@@ -114,7 +114,8 @@ Visão enxuta do que já está em `main`. **Atualizar esta seção em todo PR
 | Feito | Slice 37 — Cloud Players GCP + Azure v0 (`44`, G-224..G-230; `gcp.*` / `azure.*` read-only) |
 | Feito | Slice 38 — Postgres EXPLAIN v0 (`45`, G-231..G-237; `pg.explain`; fila G-41 fechada) |
 | Feito | Release v0.1.0-rc.1 — primeiro corte do produto (binários multi-OS) |
-| Próximo código | Slice 39 — TUI v1 Charm Mission Control (`46`, G-238..G-244) |
+| Feito | Slice 39 — TUI v1 Charm Mission Control (`46`, G-238..G-244) |
+| Próximo código | NATS (G-36) DEFERRED; PTY/tuios e GRAPH canvas 2D exigem nova decisão em `04` |
 
 Detalhe do corte: [`docs/09-mvp.md`](docs/09-mvp.md). Limitações atuais abaixo.
 
@@ -332,6 +333,11 @@ Atalhos principais:
 | `c` | Solicitar cancelamento com confirmação |
 | `/` | Filtrar eventos ou nós GRAPH |
 | `r` | Atualizar (em GRAPH: `RefreshGraph` + snapshot) |
+| `Ctrl+p` | Preview da intenção (INTENT) |
+| `Ctrl+Enter` | Submeter intenção (INTENT) |
+| `Ctrl+b` | Blast do draft (INTENT; não submete) |
+| `b` | Blast do run (LIVE) |
+| `?` | Overlay de help |
 | `q` | Sair |
 
 A interface adapta-se a terminais largos, médios e estreitos, respeita
@@ -454,7 +460,7 @@ vulnerabilidade.
 | [Desktop Wails](docs/35-wails-v0.md) | `runtgine desktop` (G-159..G-165; slices 27–28) |
 | [OpenSpec](openspec/README.md) | Pacotes de mudança `NNN-slug` |
 | [TUI Design](docs/14-tui-design.md) | Constellation Mission Control |
-| [TUI v1](docs/46-tui-v1.md) | Charm Bubbles + Hits/Blast inline (G-238..G-244; slice 39) |
+| [TUI v1](docs/46-tui-v1.md) | Charm Bubbles + Hits/Blast inline (G-238..G-244; slice 39 feito) |
 | [Git workflow](docs/15-git-workflow.md) | Branches, RC e releases |
 | [Intent Engine](docs/17-intent-engine-v0.md) | NL → Task IR v0 |
 | [Guia para LLMs](AGENTS.md) | Regras de implementação |

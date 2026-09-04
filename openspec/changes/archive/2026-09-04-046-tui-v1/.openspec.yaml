@@ -4,6 +4,6 @@ nnn: "046"
 slug: tui-v1
 docs_canonical: docs/46-tui-v1.md
 gaps: [G-238, G-239, G-240, G-241, G-242, G-243, G-244]
-status: active
+status: archived
 branch: feat/046-tui-v1
 depends_on: ["026-tui-graph", "032-intent-surface", "025-blast-radius", "027-blast-graph-walk", "019-graph-hits"]

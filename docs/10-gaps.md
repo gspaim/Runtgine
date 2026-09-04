@@ -436,7 +436,7 @@ Ate la, o Core deve rodar so com CLI + Shell.
 
 | ID | Gap | Notas |
 |---|---|---|
-| G-238 | Papel / stack | **CONFIRMED** — mesmo `runtgine tui`; Charm v2; código = slice 39 |
+| G-238 | Papel / stack | **CONFIRMED** — mesmo `runtgine tui`; Charm v2; slice 39 feito |
 | G-239 | Shell visual | **CONFIRMED** — Bubbles table/viewport/textarea/list/help |
 | G-240 | Tabs + chrome | **CONFIRMED** — sete abas; RUNS=table; INTENT=textarea |
 | G-241 | Hits inline | **CONFIRMED** — LIVE ContextPack + INTENT `QueryHits`; sem aba HITS |
@@ -481,7 +481,7 @@ Ate la, o Core deve rodar so com CLI + Shell.
 31. Cloud AWS Player — spec em `43` — G-217..G-223 CONFIRMED; codigo = slice 36 — feito
 32. Cloud Players GCP + Azure — spec em `44` — G-224..G-230 CONFIRMED; codigo = slice 37 — feito
 33. Postgres EXPLAIN (SQL) — spec em `45` — G-231..G-237 CONFIRMED; codigo = slice 38 — feito
-34. TUI v1 Charm Mission Control — spec em `46` — G-238..G-244 CONFIRMED; codigo = slice 39
+34. TUI v1 Charm Mission Control — spec em `46` — G-238..G-244 CONFIRMED; codigo = slice 39 — feito
 
 ## Criterio de “pronto para codar”
 
@@ -510,7 +510,7 @@ Ate la, o Core deve rodar so com CLI + Shell.
 **Cloud AWS Player (G-217..G-223): CONFIRMADO** — spec `43`; slice 36 feito.
 **Cloud Players GCP + Azure (G-224..G-230): CONFIRMADO** — spec `44`; slice 37 feito.
 **Postgres EXPLAIN (G-231..G-237): CONFIRMADO** — spec `45`; slice 38 feito.
-**TUI v1 (G-238..G-244): CONFIRMADO** — spec `46`; codigo = slice 39.
+**TUI v1 (G-238..G-244): CONFIRMADO** — spec `46`; slice 39 feito.
 
 Ordem pratica de codigo:
 1. Core CLI + Shell (+ SQLite) — slice 1 — feito
@@ -547,11 +547,11 @@ Ordem pratica de codigo:
 32. Cloud AWS Player v0 — spec `43` (G-217..G-223); slice 36 feito
 33. Cloud Players GCP + Azure v0 — spec `44` (G-224..G-230); slice 37 feito
 34. Postgres EXPLAIN v0 — spec `45` (G-231..G-237); slice 38 feito
-35. TUI v1 Charm Mission Control — spec `46` (G-238..G-244); slice 39
+35. TUI v1 Charm Mission Control — spec `46` (G-238..G-244); slice 39 feito
 
 P3 restante: apenas NATS (G-36, DEFERRED — so com nova decisao em `04`).
 A fila nomeada de recortes de G-41 esta fechada (slices 34–38).
-TUI v1: spec `46` (G-238..G-244); codigo = slice 39.
+TUI v1: spec `46` (G-238..G-244); slice 39 feito.
 MVP 1.0 magro: spec `09`/`31` (G-135..G-140); slices 19–20 feitos.
 Test Player corte v0: spec `30` (G-129..G-134); slice 18 feito.
 Project Memory corte v0: spec `29` (G-123..G-128); slice 17 feito.

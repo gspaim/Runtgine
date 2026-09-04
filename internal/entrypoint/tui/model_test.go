@@ -11,6 +11,7 @@ import (
 	tea "charm.land/bubbletea/v2"
 
 	"github.com/gspaim/Runtgine/internal/core/api"
+	"github.com/gspaim/Runtgine/internal/core/blast"
 	"github.com/gspaim/Runtgine/internal/core/event"
 	"github.com/gspaim/Runtgine/internal/core/graph"
 	"github.com/gspaim/Runtgine/internal/core/task"
@@ -32,6 +33,11 @@ type fakeCore struct {
 	submitErr    error
 	compileCalls int
 	submitted    int
+	hits         graph.Hits
+	hitCalls     int
+	blastRep     blast.Report
+	blastErr     error
+	blastCalls   int
 }
 
 func (f *fakeCore) ListRuns(context.Context, int) ([]api.RunSummary, error) {
@@ -123,6 +129,25 @@ func (f *fakeCore) SubmitTask(_ context.Context, tk task.Task) (string, error) {
 	f.submitted++
 	id, _ := f.recordSubmit(tk)
 	return id, nil
+}
+
+func (f *fakeCore) QueryHits(_ context.Context, _ graph.Query) graph.Hits {
+	f.hitCalls++
+	if f.hits.Items == nil {
+		return graph.Hits{Items: []graph.Hit{}}
+	}
+	return f.hits
+}
+
+func (f *fakeCore) BlastTask(_ context.Context, _ task.Task) (blast.Report, error) {
+	f.blastCalls++
+	if f.blastErr != nil {
+		return blast.Report{}, f.blastErr
+	}
+	if f.blastRep.Risk == "" {
+		return blast.Report{Risk: blast.RiskNone, Touches: []blast.Touch{}, Conflicts: []blast.Conflict{}, Affected: []blast.Affected{}}, nil
+	}
+	return f.blastRep, nil
 }
 
 func (f *fakeCore) recordSubmit(tk task.Task) (string, string) {
@@ -221,19 +246,19 @@ func TestNavigationAndCancelConfirmation(t *testing.T) {
 	model, core := loadedModel(t)
 	model.tab = tabRuns
 
-	updated, _ := model.Update(key("enter"))
+	updated, _ := model.Update(pressKey("enter"))
 	model = updated.(Model)
 	if model.tab != tabLive {
 		t.Fatalf("enter selected tab %d, want LIVE", model.tab)
 	}
 
-	updated, cmd := model.Update(key("c"))
+	updated, cmd := model.Update(pressKey("c"))
 	model = updated.(Model)
 	if !model.confirm || cmd != nil {
 		t.Fatal("first c must request confirmation")
 	}
 
-	updated, cmd = model.Update(key("c"))
+	updated, cmd = model.Update(pressKey("c"))
 	model = updated.(Model)
 	if cmd == nil {
 		t.Fatal("second c must issue cancellation")
@@ -255,7 +280,7 @@ func TestApproveDenyKeysOnWaitingRun(t *testing.T) {
 	model.snapshot = core.snapshot
 	model.tab = tabRuns
 
-	updated, cmd := model.Update(key("a"))
+	updated, cmd := model.Update(pressKey("a"))
 	model = updated.(Model)
 	if cmd == nil {
 		t.Fatal("a must approve")
@@ -267,7 +292,7 @@ func TestApproveDenyKeysOnWaitingRun(t *testing.T) {
 		t.Fatalf("approved=%q", core.approved)
 	}
 
-	updated, cmd = model.Update(key("d"))
+	updated, cmd = model.Update(pressKey("d"))
 	if cmd == nil {
 		t.Fatal("d must deny")
 	}
@@ -296,7 +321,7 @@ func TestEventsFilterInput(t *testing.T) {
 	model, _ := loadedModel(t)
 	model.tab = tabEvents
 
-	updated, _ := model.Update(key("/"))
+	updated, _ := model.Update(pressKey("/"))
 	model = updated.(Model)
 	if !model.filtering {
 		t.Fatal("/ should enable event filtering")
@@ -312,17 +337,17 @@ func TestTabCycleIncludesGraph(t *testing.T) {
 	model, _ := loadedModel(t)
 	model.tab = tabEvents
 
-	updated, _ := model.Update(key("tab"))
+	updated, _ := model.Update(pressKey("tab"))
 	model = updated.(Model)
 	if model.tab != tabGraph {
 		t.Fatalf("tab from EVENTS got %s, want GRAPH", tabNames[model.tab])
 	}
-	updated, _ = model.Update(key("tab"))
+	updated, _ = model.Update(pressKey("tab"))
 	model = updated.(Model)
 	if model.tab != tabConfig {
 		t.Fatalf("tab from GRAPH got %s, want CONFIG", tabNames[model.tab])
 	}
-	updated, _ = model.Update(key("shift+tab"))
+	updated, _ = model.Update(pressKey("shift+tab"))
 	model = updated.(Model)
 	if model.tab != tabGraph {
 		t.Fatalf("shift+tab from CONFIG got %s, want GRAPH", tabNames[model.tab])
@@ -351,7 +376,7 @@ func TestGraphFilterHidesPlayers(t *testing.T) {
 	model.tab = tabGraph
 	model.width = 140
 
-	updated, _ := model.Update(key("/"))
+	updated, _ := model.Update(pressKey("/"))
 	model = updated.(Model)
 	updated, _ = model.Update(tea.KeyPressMsg(tea.Key{Text: "capability", Code: 'c'}))
 	model = updated.(Model)
@@ -382,7 +407,7 @@ func TestGraphRefreshCallsCore(t *testing.T) {
 	if core.refreshes != 0 {
 		t.Fatalf("snapshot load must not RefreshGraph, got %d", core.refreshes)
 	}
-	updated, cmd := model.Update(key("r"))
+	updated, cmd := model.Update(pressKey("r"))
 	if cmd == nil {
 		t.Fatal("r on GRAPH must refresh")
 	}
@@ -434,7 +459,7 @@ func selectGraphNode(t *testing.T, model *Model, kind, id string) {
 	t.Fatalf("node %s %s not in GRAPH list", kind, id)
 }
 
-func key(value string) tea.KeyPressMsg {
+func pressKey(value string) tea.KeyPressMsg {
 	switch value {
 	case "enter":
 		return tea.KeyPressMsg(tea.Key{Code: tea.KeyEnter})
@@ -452,6 +477,8 @@ func key(value string) tea.KeyPressMsg {
 		return tea.KeyPressMsg(tea.Key{Code: tea.KeyEnter, Mod: tea.ModCtrl})
 	case "ctrl+j":
 		return tea.KeyPressMsg(tea.Key{Code: 'j', Mod: tea.ModCtrl})
+	case "ctrl+b":
+		return tea.KeyPressMsg(tea.Key{Code: 'b', Mod: tea.ModCtrl})
 	default:
 		r := []rune(value)[0]
 		return tea.KeyPressMsg(tea.Key{Text: value, Code: r})
@@ -466,7 +493,7 @@ func TestIntentIsFirstTab(t *testing.T) {
 	if !strings.Contains(model.View().Content, "INTENT") {
 		t.Fatal("INTENT missing from default view")
 	}
-	updated, _ := model.Update(key("shift+tab"))
+	updated, _ := model.Update(pressKey("shift+tab"))
 	model = updated.(Model)
 	if model.tab != tabConfig {
 		t.Fatalf("shift+tab from INTENT got %s, want CONFIG", tabNames[model.tab])
@@ -481,7 +508,7 @@ func TestIntentPreviewGitStatus(t *testing.T) {
 	if model.intentDraft != "git status" {
 		t.Fatalf("draft=%q", model.intentDraft)
 	}
-	updated, cmd := model.Update(key("ctrl+p"))
+	updated, cmd := model.Update(pressKey("ctrl+p"))
 	if cmd == nil {
 		t.Fatal("ctrl+p must preview")
 	}
@@ -506,7 +533,7 @@ func TestIntentSubmitGoesToLive(t *testing.T) {
 	model.tab = tabIntent
 	updated, _ := model.Update(tea.KeyPressMsg(tea.Key{Text: "git status", Code: 'g'}))
 	model = updated.(Model)
-	updated, cmd := model.Update(key("ctrl+enter"))
+	updated, cmd := model.Update(pressKey("ctrl+enter"))
 	if cmd == nil {
 		t.Fatal("ctrl+enter must submit")
 	}
@@ -533,7 +560,7 @@ func TestIntentJSONToggleAndResizeNoColor(t *testing.T) {
 	model, _ := loadedModel(t)
 	model.theme = DetectTheme()
 	model.tab = tabIntent
-	updated, _ := model.Update(key("ctrl+j"))
+	updated, _ := model.Update(pressKey("ctrl+j"))
 	model = updated.(Model)
 	if !model.intentJSON {
 		t.Fatal("ctrl+j should enable JSON mode")
@@ -548,5 +575,154 @@ func TestIntentJSONToggleAndResizeNoColor(t *testing.T) {
 	}
 	if strings.Contains(content, "\x1b[38;") || strings.Contains(content, "\x1b[48;") {
 		t.Fatalf("NO_COLOR INTENT contains ANSI color")
+	}
+}
+
+func TestHelpOverlayToggle(t *testing.T) {
+	model, _ := loadedModel(t)
+	updated, _ := model.Update(pressKey("?"))
+	model = updated.(Model)
+	if !model.helpOpen {
+		t.Fatal("? should open help")
+	}
+	content := model.View().Content
+	if !strings.Contains(content, "HELP") {
+		t.Fatalf("help overlay missing HELP: %s", content)
+	}
+	updated, _ = model.Update(pressKey("esc"))
+	model = updated.(Model)
+	if model.helpOpen {
+		t.Fatal("esc should close help")
+	}
+}
+
+func TestLiveEmptyHits(t *testing.T) {
+	model, _ := loadedModel(t)
+	model.tab = tabLive
+	content := model.View().Content
+	if !strings.Contains(content, "No hits.") {
+		t.Fatalf("LIVE missing empty hits: %s", content)
+	}
+}
+
+func TestLiveShowsContextPackHits(t *testing.T) {
+	model, core := loadedModel(t)
+	core.snapshot.Events[0].Payload["graph_hits"] = []map[string]any{
+		{"kind": "path", "id": "docs/46-tui-v1.md", "score": 10},
+	}
+	model.snapshot = core.snapshot
+	model.tab = tabLive
+	content := model.View().Content
+	if !strings.Contains(content, "docs/46-tui-v1.md") {
+		t.Fatalf("LIVE missing graph hit: %s", content)
+	}
+	if strings.Contains(content, "No hits.") {
+		t.Fatal("LIVE still shows empty hits")
+	}
+}
+
+func TestIntentPreviewQueriesHits(t *testing.T) {
+	model, core := loadedModel(t)
+	core.hits = graph.Hits{Items: []graph.Hit{{Kind: "capability", ID: "git.status", Score: 8}}}
+	model.tab = tabIntent
+	updated, _ := model.Update(tea.KeyPressMsg(tea.Key{Text: "git status", Code: 'g'}))
+	model = updated.(Model)
+	updated, cmd := model.Update(pressKey("ctrl+p"))
+	if cmd == nil {
+		t.Fatal("ctrl+p must preview")
+	}
+	updated, _ = updated.Update(cmd())
+	model = updated.(Model)
+	if core.hitCalls == 0 {
+		t.Fatal("preview must QueryHits")
+	}
+	if !strings.Contains(model.View().Content, "git.status") {
+		t.Fatalf("INTENT preview missing hits: %s", model.View().Content)
+	}
+}
+
+func TestIntentBlastDoesNotSubmit(t *testing.T) {
+	model, core := loadedModel(t)
+	core.blastRep = blast.Report{Risk: blast.RiskPath, Touches: []blast.Touch{{Kind: "path", Key: "notes.md", Capability: "fs.write", Mode: blast.ModeWrite}}}
+	model.tab = tabIntent
+	updated, _ := model.Update(tea.KeyPressMsg(tea.Key{Text: "git status", Code: 'g'}))
+	model = updated.(Model)
+	updated, cmd := model.Update(pressKey("ctrl+b"))
+	if cmd == nil {
+		t.Fatal("ctrl+b must blast")
+	}
+	updated, _ = updated.Update(cmd())
+	model = updated.(Model)
+	if core.blastCalls != 1 {
+		t.Fatalf("blastCalls=%d", core.blastCalls)
+	}
+	if core.submitted != 0 {
+		t.Fatal("blast must not submit")
+	}
+	if !model.blastOpen || model.blastRep == nil || model.blastRep.Risk != blast.RiskPath {
+		t.Fatalf("blast panel not open: open=%v rep=%v", model.blastOpen, model.blastRep)
+	}
+	content := model.View().Content
+	if !strings.Contains(content, "PATH") && !strings.Contains(content, "path") {
+		t.Fatalf("INTENT blast missing risk: %s", content)
+	}
+}
+
+func TestLiveBlastAndGraphIgnoresB(t *testing.T) {
+	model, core := loadedModel(t)
+	core.blastRep = blast.Report{Risk: blast.RiskNone}
+	model.tab = tabLive
+	updated, cmd := model.Update(pressKey("b"))
+	if cmd == nil {
+		t.Fatal("b on LIVE must blast")
+	}
+	updated, _ = updated.Update(cmd())
+	model = updated.(Model)
+	if core.blastCalls != 1 {
+		t.Fatalf("LIVE blastCalls=%d", core.blastCalls)
+	}
+
+	model.tab = tabGraph
+	updated, cmd = model.Update(pressKey("b"))
+	if cmd != nil {
+		msg := cmd()
+		if _, ok := msg.(blastMsg); ok {
+			t.Fatal("GRAPH must not start BlastTask")
+		}
+	}
+	updated, cmd = model.Update(pressKey("ctrl+b"))
+	if cmd != nil {
+		if _, ok := cmd().(blastMsg); ok {
+			t.Fatal("GRAPH ctrl+b must not blast")
+		}
+	}
+}
+
+func TestNarrowHitsBlastNoColor(t *testing.T) {
+	t.Setenv("NO_COLOR", "1")
+	t.Setenv("RUNTGINE_ASCII", "1")
+	model, core := loadedModel(t)
+	model.theme = DetectTheme()
+	core.snapshot.Events[0].Payload["graph_hits"] = []map[string]any{
+		{"kind": "path", "id": "README.md", "score": 4},
+	}
+	model.snapshot = core.snapshot
+	rep := blast.Report{Risk: blast.RiskWorkspace}
+	model.blastRep = &rep
+	model.blastOpen = true
+	model.tab = tabLive
+	model.width, model.height = 70, 24
+	content := model.View().Content
+	if strings.TrimSpace(content) == "" {
+		t.Fatal("narrow LIVE empty")
+	}
+	if !strings.Contains(content, "README.md") {
+		t.Fatalf("narrow LIVE missing hits: %s", content)
+	}
+	if !strings.Contains(content, "WORKSPACE") && !strings.Contains(content, "workspace") {
+		t.Fatalf("narrow LIVE missing risk text: %s", content)
+	}
+	if strings.Contains(content, "\x1b[38;") || strings.Contains(content, "\x1b[48;") {
+		t.Fatalf("NO_COLOR LIVE contains ANSI color")
 	}
 }

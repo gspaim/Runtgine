@@ -123,3 +123,37 @@ func (t Theme) Star() string {
 	}
 	return "✦"
 }
+
+func (t Theme) Risk(risk string) lipgloss.Style {
+	color := Muted
+	switch risk {
+	case "path":
+		color = Amber
+	case "workspace":
+		color = Anomaly
+	case "none":
+		color = Telemetry
+	}
+	return t.style(color)
+}
+
+func (t Theme) RiskSymbol(risk string) string {
+	if t.ASCII {
+		switch risk {
+		case "path":
+			return "P"
+		case "workspace":
+			return "!"
+		default:
+			return "."
+		}
+	}
+	switch risk {
+	case "path":
+		return "◐"
+	case "workspace":
+		return "×"
+	default:
+		return "○"
+	}
+}

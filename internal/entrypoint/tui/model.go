@@ -9,12 +9,19 @@ import (
 	"time"
 	"unicode/utf8"
 
+	"charm.land/bubbles/v2/help"
+	"charm.land/bubbles/v2/key"
+	"charm.land/bubbles/v2/list"
 	"charm.land/bubbles/v2/progress"
 	"charm.land/bubbles/v2/spinner"
+	"charm.land/bubbles/v2/table"
+	"charm.land/bubbles/v2/textarea"
+	"charm.land/bubbles/v2/viewport"
 	tea "charm.land/bubbletea/v2"
 	"charm.land/lipgloss/v2"
 
 	"github.com/gspaim/Runtgine/internal/core/api"
+	"github.com/gspaim/Runtgine/internal/core/blast"
 	"github.com/gspaim/Runtgine/internal/core/event"
 	"github.com/gspaim/Runtgine/internal/core/graph"
 	"github.com/gspaim/Runtgine/internal/core/runner"
@@ -48,6 +55,8 @@ type CoreAPI interface {
 	CompileIntent(context.Context, string, string, string) (task.Task, string, error)
 	SubmitIntent(context.Context, string, string, string) (string, string, error)
 	SubmitTask(context.Context, task.Task) (string, error)
+	QueryHits(context.Context, graph.Query) graph.Hits
+	BlastTask(context.Context, task.Task) (blast.Report, error)
 }
 
 type intentHistoryItem struct {
@@ -87,6 +96,19 @@ type Model struct {
 	intentConfirm bool
 	intentBusy    bool
 	intentHistory []intentHistoryItem
+	textarea      textarea.Model
+	runsTable     table.Model
+	eventsTable   table.Model
+	previewVP     viewport.Model
+	detailVP      viewport.Model
+	graphList     list.Model
+	help          help.Model
+	keys          appKeyMap
+	helpOpen      bool
+	intentHits    []hitRow
+	blastRep      *blast.Report
+	blastErr      error
+	blastOpen     bool
 }
 
 type refreshMsg struct {
@@ -112,7 +134,13 @@ type intentResultMsg struct {
 	method  string
 	runID   string
 	summary string
+	hits    []hitRow
 	err     error
+}
+
+type blastMsg struct {
+	report blast.Report
+	err    error
 }
 
 func New(core CoreAPI) (Model, func()) {
@@ -133,9 +161,88 @@ func New(core CoreAPI) (Model, func()) {
 		bar.FullColor, bar.EmptyColor = lipgloss.NoColor{}, lipgloss.NoColor{}
 	}
 	ch, unsubscribe := core.Subscribe(256)
+	ta := textarea.New()
+	ta.Placeholder = "type intent (NL) or paste Task IR in JSON mode"
+	ta.SetHeight(8)
+	ta.SetWidth(40)
+	ta.ShowLineNumbers = false
+	ta.Prompt = ""
+	_ = ta.Focus()
+	km := table.DefaultKeyMap()
+	km.PageUp = key.NewBinding(key.WithKeys("pgup"), key.WithHelp("pgup", "page up"))
+	km.HalfPageDown = key.NewBinding(key.WithKeys("ctrl+d"), key.WithHelp("ctrl+d", "½ page down"))
+	runsTbl := table.New(
+		table.WithColumns([]table.Column{
+			{Title: "ST", Width: 3},
+			{Title: "STATUS", Width: 16},
+			{Title: "RUN ID", Width: 14},
+			{Title: "INTENT", Width: 36},
+			{Title: "ELAPSED", Width: 8},
+		}),
+		table.WithFocused(true),
+		table.WithHeight(12),
+		table.WithKeyMap(km),
+	)
+	eventsTbl := table.New(
+		table.WithColumns([]table.Column{
+			{Title: "UTC", Width: 12},
+			{Title: "TYPE", Width: 20},
+			{Title: "RUN", Width: 13},
+			{Title: "STEP", Width: 16},
+			{Title: "PLAYER", Width: 12},
+		}),
+		table.WithFocused(false),
+		table.WithHeight(10),
+		table.WithKeyMap(km),
+	)
+	styles := table.DefaultStyles()
+	styles.Header = theme.Muted().Bold(true)
+	styles.Selected = theme.Selected()
+	if theme.NoColor {
+		styles.Header = lipgloss.NewStyle().Bold(true)
+		styles.Selected = lipgloss.NewStyle().Bold(true)
+		styles.Cell = lipgloss.NewStyle()
+	}
+	runsTbl.SetStyles(styles)
+	eventsTbl.SetStyles(styles)
+	delegate := list.NewDefaultDelegate()
+	if theme.NoColor {
+		plain := lipgloss.NewStyle()
+		delegate.Styles = list.DefaultItemStyles{
+			NormalTitle: plain, NormalDesc: plain,
+			SelectedTitle: plain.Bold(true), SelectedDesc: plain.Bold(true),
+			DimmedTitle: plain, DimmedDesc: plain, FilterMatch: plain,
+		}
+	}
+	gl := list.New([]list.Item{}, delegate, 40, 12)
+	gl.SetShowHelp(false)
+	gl.SetShowStatusBar(false)
+	gl.SetShowTitle(false)
+	gl.SetShowPagination(false)
+	gl.SetFilteringEnabled(false)
+	gl.SetShowFilter(false)
+	if theme.NoColor {
+		plain := lipgloss.NewStyle()
+		st := gl.Styles
+		st.Title = plain
+		st.TitleBar = plain
+		st.PaginationStyle = plain
+		st.ActivePaginationDot = plain
+		st.InactivePaginationDot = plain
+		st.DividerDot = plain
+		gl.Styles = st
+		ta.SetStyles(textarea.Styles{
+			Focused: textarea.StyleState{Base: plain, Text: plain, CursorLine: plain, Placeholder: plain, Prompt: plain},
+			Blurred: textarea.StyleState{Base: plain, Text: plain, CursorLine: plain, Placeholder: plain, Prompt: plain},
+		})
+	}
 	return Model{
 		core: core, theme: theme, width: 100, height: 30,
 		eventCh: ch, spinner: spin, progress: bar,
+		textarea: ta, runsTable: runsTbl, eventsTable: eventsTbl,
+		previewVP: viewport.New(viewport.WithWidth(40), viewport.WithHeight(10)),
+		detailVP:  viewport.New(viewport.WithWidth(40), viewport.WithHeight(10)),
+		graphList: gl, help: newHelp(theme), keys: newAppKeyMap(),
 	}, unsubscribe
 }
 
@@ -155,6 +262,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	case tea.WindowSizeMsg:
 		m.width, m.height = msg.Width, msg.Height
 		m.progress.SetWidth(max(10, min(60, msg.Width-12)))
+		m.resizeComponents()
 	case refreshMsg:
 		if msg.err != nil {
 			m.err = msg.err
@@ -212,7 +320,11 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		m.intentPreview = msg.pretty
 		m.intentMethod = msg.method
 		m.intentDirty = false
-		if msg.preview || msg.runID == "" {
+		if msg.preview {
+			m.intentHits = msg.hits
+			return m, nil
+		}
+		if msg.runID == "" {
 			return m, nil
 		}
 		m.intentHistory = append([]intentHistoryItem{{RunID: msg.runID, Summary: msg.summary}}, m.intentHistory...)
@@ -229,6 +341,20 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		var cmd tea.Cmd
 		m.progress, cmd = m.progress.Update(msg)
 		return m, cmd
+	case blastMsg:
+		if msg.err != nil {
+			m.err = msg.err
+			m.blastOpen = false
+			m.blastRep = nil
+			m.blastErr = msg.err
+			return m, nil
+		}
+		m.err = nil
+		m.blastErr = nil
+		rep := msg.report
+		m.blastRep = &rep
+		m.blastOpen = true
+		return m, nil
 	case tea.KeyPressMsg:
 		return m.handleKey(msg)
 	}
@@ -261,6 +387,21 @@ func (m Model) handleKey(msg tea.KeyPressMsg) (tea.Model, tea.Cmd) {
 		return m, nil
 	}
 
+	if m.helpOpen {
+		if key == "q" || key == "ctrl+c" {
+			return m, tea.Quit
+		}
+		if key == "?" || key == "esc" {
+			m.helpOpen = false
+		}
+		return m, nil
+	}
+	if key == "?" {
+		m.helpOpen = true
+		m.help.ShowAll = true
+		return m, nil
+	}
+
 	if key == "q" || key == "ctrl+c" {
 		return m, tea.Quit
 	}
@@ -281,6 +422,10 @@ func (m Model) handleKey(msg tea.KeyPressMsg) (tea.Model, tea.Cmd) {
 
 	if m.tab == tabIntent {
 		return m.handleIntentKey(msg)
+	}
+
+	if key == "b" && m.tab == tabLive {
+		return m, m.liveBlastCmd()
 	}
 
 	switch key {
@@ -372,6 +517,8 @@ func (m Model) handleIntentKey(msg tea.KeyPressMsg) (tea.Model, tea.Cmd) {
 		return m, m.intentCmd(true)
 	case "ctrl+enter":
 		return m, m.intentCmd(false)
+	case "ctrl+b":
+		return m, m.intentBlastCmd()
 	case "ctrl+j":
 		m.intentJSON = !m.intentJSON
 		return m, nil
@@ -427,7 +574,8 @@ func (m Model) intentCmd(preview bool) tea.Cmd {
 				return intentResultMsg{preview: true, err: err}
 			}
 			pretty, _ := json.MarshalIndent(tk, "", "  ")
-			return intentResultMsg{preview: true, pretty: string(pretty), method: method, summary: tk.Intent.Summary}
+			hits := hitsFromGraph(m.core.QueryHits(ctx, graph.Query{Text: text}))
+			return intentResultMsg{preview: true, pretty: string(pretty), method: method, summary: tk.Intent.Summary, hits: hits}
 		}
 		runID, method, err := m.core.SubmitIntent(ctx, text, "tui", "intent")
 		if err != nil {
@@ -453,13 +601,76 @@ func (m Model) submitJSONIntent(ctx context.Context, raw string, preview bool) t
 	}
 	pretty, _ := json.MarshalIndent(tk, "", "  ")
 	if preview {
-		return intentResultMsg{preview: true, pretty: string(pretty), method: "json", summary: tk.Intent.Summary}
+		hits := hitsFromGraph(m.core.QueryHits(ctx, graph.Query{Text: raw}))
+		return intentResultMsg{preview: true, pretty: string(pretty), method: "json", summary: tk.Intent.Summary, hits: hits}
 	}
 	runID, err := m.core.SubmitTask(ctx, tk)
 	if err != nil {
 		return intentResultMsg{pretty: string(pretty), method: "json", err: err}
 	}
 	return intentResultMsg{pretty: string(pretty), method: "json", runID: runID, summary: tk.Intent.Summary}
+}
+
+func (m Model) intentBlastCmd() tea.Cmd {
+	text := m.intentDraft
+	jsonMode := m.intentJSON
+	return func() tea.Msg {
+		ctx, cancel := context.WithTimeout(context.Background(), 8*time.Second)
+		defer cancel()
+		var tk task.Task
+		var err error
+		if jsonMode {
+			if err = task.ValidateDocument([]byte(strings.TrimSpace(text))); err != nil {
+				return blastMsg{err: err}
+			}
+			tk, err = task.Parse([]byte(strings.TrimSpace(text)))
+		} else {
+			tk, _, err = m.core.CompileIntent(ctx, text, "tui", "intent")
+		}
+		if err != nil {
+			return blastMsg{err: err}
+		}
+		rep, err := m.core.BlastTask(ctx, tk)
+		return blastMsg{report: rep, err: err}
+	}
+}
+
+func (m Model) liveBlastCmd() tea.Cmd {
+	raw := append(json.RawMessage(nil), m.snapshot.Task...)
+	return func() tea.Msg {
+		if len(bytesTrim(raw)) == 0 {
+			return blastMsg{err: fmt.Errorf("no task on selected run")}
+		}
+		tk, err := task.Parse(raw)
+		if err != nil {
+			return blastMsg{err: err}
+		}
+		ctx, cancel := context.WithTimeout(context.Background(), 8*time.Second)
+		defer cancel()
+		rep, err := m.core.BlastTask(ctx, tk)
+		return blastMsg{report: rep, err: err}
+	}
+}
+
+func bytesTrim(b []byte) []byte {
+	return []byte(strings.TrimSpace(string(b)))
+}
+
+func (m *Model) resizeComponents() {
+	bodyW := max(20, m.width-6)
+	bodyH := max(6, m.height-10)
+	m.textarea.SetWidth(max(20, bodyW/2-4))
+	m.textarea.SetHeight(min(10, max(4, bodyH/3)))
+	m.previewVP.SetWidth(max(20, bodyW/2-2))
+	m.previewVP.SetHeight(max(6, bodyH-2))
+	m.detailVP.SetWidth(max(20, bodyW/2-2))
+	m.detailVP.SetHeight(max(6, bodyH/2))
+	m.runsTable.SetWidth(bodyW)
+	m.runsTable.SetHeight(max(6, bodyH-2))
+	m.eventsTable.SetWidth(max(20, bodyW/2-2))
+	m.eventsTable.SetHeight(max(6, bodyH-4))
+	m.graphList.SetSize(max(20, bodyW/2-4), max(6, bodyH-4))
+	m.help.SetWidth(max(20, m.width-4))
 }
 
 func (m Model) selectRunCmd(runID string) tea.Cmd {
@@ -552,6 +763,9 @@ func (m Model) View() tea.View {
 	header := m.renderHeader()
 	tabs := m.renderTabs()
 	body := m.renderBody()
+	if m.helpOpen {
+		body = m.renderHelpOverlay()
+	}
 	footer := m.renderFooter()
 	content := lipgloss.JoinVertical(lipgloss.Left, header, tabs, body, footer)
 	view := tea.NewView(content)
@@ -562,6 +776,15 @@ func (m Model) View() tea.View {
 		view.ForegroundColor = lipgloss.Color(Starlight)
 	}
 	return view
+}
+
+func (m Model) renderHelpOverlay() string {
+	m.help.ShowAll = true
+	m.help.SetWidth(max(20, m.width-8))
+	body := "HELP  Constellation Mission Control\n\n" +
+		m.theme.Muted().Render("q still quits") + "\n\n" +
+		m.help.View(m.keys)
+	return m.theme.Panel(true).Render(body)
 }
 
 func (m Model) renderHeader() string {
@@ -631,20 +854,20 @@ func (m Model) renderIntent() string {
 	if m.intentJSON {
 		mode = "JSON"
 	}
-	cursor := "▌"
-	if m.theme.ASCII {
-		cursor = "_"
-	}
-	input := m.intentDraft + cursor
-	if strings.TrimSpace(m.intentDraft) == "" {
-		placeholder := "type intent (NL) or paste Task IR in JSON mode"
-		input = m.theme.Muted().Render(placeholder) + cursor
-	}
+	m.textarea.SetValue(m.intentDraft)
+	m.textarea.SetWidth(max(20, m.width/2-8))
+	m.textarea.SetHeight(min(10, max(4, m.height/4)))
+	input := m.textarea.View()
 	preview := m.intentPreview
 	if preview == "" {
-		preview = m.theme.Muted().Render("Ctrl+p preview · Ctrl+Enter submit")
+		preview = m.theme.Muted().Render("Ctrl+p preview · Ctrl+Enter submit · Ctrl+b blast")
 	} else if m.intentMethod != "" {
 		preview = "method " + m.intentMethod + "\n" + preview
+	}
+	hits := m.renderHits("HITS", m.intentHits)
+	blast := m.renderBlast()
+	if !m.blastOpen {
+		blast = m.theme.Muted().Render("BLAST  Ctrl+b")
 	}
 	histLines := []string{"SESSION"}
 	if len(m.intentHistory) == 0 {
@@ -657,9 +880,10 @@ func (m Model) renderIntent() string {
 			histLines = append(histLines, fmt.Sprintf("%s  %s", shortID(h.RunID), truncate(h.Summary, 36)))
 		}
 	}
+	m.previewVP.SetContent(preview)
 	title := fmt.Sprintf("INTENT  Mission Brief  mode %s", mode)
 	left := title + "\n\n" + input
-	right := "PREVIEW\n\n" + preview + "\n\n" + strings.Join(histLines, "\n")
+	right := "PREVIEW\n\n" + m.previewVP.View() + "\n\n" + hits + "\n\n" + blast + "\n\n" + strings.Join(histLines, "\n")
 	if m.intentConfirm {
 		left += "\n\n" + m.theme.Status("cancelled").Render("Clear draft? esc again confirms")
 	}
@@ -678,28 +902,25 @@ func (m Model) renderRuns() string {
 	if len(m.runs) == 0 {
 		return m.theme.Panel(true).Render("RUNS\n\nNo runs recorded.")
 	}
-	lines := []string{"RUNS  STATUS       RUN ID         INTENT / MISSION                         ELAPSED"}
-	limit := max(3, m.height-11)
-	for i, run := range m.runs {
-		if i >= limit {
-			break
-		}
+	rows := make([]table.Row, 0, len(m.runs))
+	for _, run := range m.runs {
 		elapsed := run.UpdatedAt.Sub(run.CreatedAt)
 		if run.Status == "running" || run.Status == "waiting_approval" {
 			elapsed = time.Since(run.CreatedAt)
 		}
-		line := fmt.Sprintf("%s %-12s %-14s %-40s %8s",
-			m.theme.Symbol(run.Status), run.Status, shortID(run.RunID),
-			truncate(run.Summary, 40), duration(elapsed))
-		line = m.theme.Status(run.Status).Render(line)
-		if i == m.selected {
-			line = m.theme.Selected().Render("> " + line)
-		} else {
-			line = "  " + line
-		}
-		lines = append(lines, line)
+		rows = append(rows, table.Row{
+			m.theme.Symbol(run.Status),
+			run.Status,
+			shortID(run.RunID),
+			truncate(run.Summary, 36),
+			duration(elapsed),
+		})
 	}
-	return m.theme.Panel(true).Render(strings.Join(lines, "\n"))
+	m.runsTable.SetRows(rows)
+	m.runsTable.SetCursor(m.selected)
+	m.runsTable.SetHeight(max(6, m.height-10))
+	m.runsTable.SetWidth(max(40, m.width-6))
+	return m.theme.Panel(true).Render("RUNS\n" + m.runsTable.View())
 }
 
 func (m Model) renderLive() string {
@@ -732,13 +953,20 @@ func (m Model) renderLive() string {
 	detail := fmt.Sprintf("intent       %s\nsource       %s\ncurrent step %s\nplayer       %s\ncapability   %s\nContextPack  %s\ntelemetry    %s",
 		truncate(t.Intent.Summary, max(20, m.width-24)),
 		t.Source.EntryPoint, currentStep, player, capability, contextBytes, telemetry)
+	hits := m.renderHits("HITS", hitsFromEvents(m.snapshot.Events))
+	blast := m.renderBlast()
+	if !m.blastOpen {
+		blast = m.theme.Muted().Render("BLAST  press b")
+	}
+	m.detailVP.SetContent(detail)
+	rightBody := "CURRENT RUN\n\n" + m.detailVP.View() + "\n\n" + hits + "\n\n" + blast
 
 	if m.width >= 120 {
 		left := m.theme.Panel(true).Width(m.width/2 - 4).Render(title + "\n\n" + trajectory + "\n\n" + progressLine)
-		right := m.theme.Panel(false).Width(m.width/2 - 4).Render("CURRENT RUN\n\n" + detail)
+		right := m.theme.Panel(false).Width(m.width/2 - 4).Render(rightBody)
 		return lipgloss.JoinHorizontal(lipgloss.Top, left, right)
 	}
-	return m.theme.Panel(true).Render(title + "\n\n" + trajectory + "\n\n" + progressLine + "\n\n" + detail)
+	return m.theme.Panel(true).Render(title + "\n\n" + trajectory + "\n\n" + progressLine + "\n\n" + rightBody)
 }
 
 func (m Model) renderTrajectory(t task.Task, states map[string]string) string {
@@ -800,8 +1028,7 @@ func (m Model) renderBoard() string {
 
 func (m Model) renderEvents() string {
 	filter := strings.ToLower(strings.TrimSpace(m.filter))
-	lines := []string{"EVENTS  UTC          TYPE                 RUN           STEP               PLAYER"}
-	shown := 0
+	rows := make([]table.Row, 0, len(m.events))
 	var selected event.Event
 	for _, e := range m.events {
 		step := "-"
@@ -816,31 +1043,34 @@ func (m Model) renderEvents() string {
 		if filter != "" && !strings.Contains(haystack, filter) {
 			continue
 		}
-		if shown == 0 {
+		if selected.EventID == "" {
 			selected = e
 		}
-		lines = append(lines, fmt.Sprintf("%s  %-20s %-13s %-18s %s",
-			e.TS.UTC().Format("15:04:05.000"), truncate(e.Type, 20), shortID(e.RunID),
-			truncate(step, 18), truncate(player, 16)))
-		shown++
-		if shown >= max(4, m.height-17) {
-			break
-		}
+		rows = append(rows, table.Row{
+			e.TS.UTC().Format("15:04:05.000"),
+			truncate(e.Type, 20),
+			shortID(e.RunID),
+			truncate(step, 16),
+			truncate(player, 12),
+		})
 	}
+	m.eventsTable.SetRows(rows)
+	m.eventsTable.SetHeight(max(6, m.height-14))
 	query := "filter: " + m.filter
 	if m.filtering {
 		query += "▌"
 	}
-	list := m.theme.Panel(true).Render(strings.Join(lines, "\n") + "\n\n" + query)
+	listPane := m.theme.Panel(true).Render("EVENTS\n" + m.eventsTable.View() + "\n\n" + query)
 	if selected.EventID == "" {
-		return list
+		return listPane
 	}
 	payload, _ := json.MarshalIndent(selected.Payload, "", "  ")
-	detail := m.theme.Panel(false).Render("PAYLOAD\n" + truncateLines(string(payload), max(3, m.height/3)))
+	m.detailVP.SetContent(string(payload))
+	detail := m.theme.Panel(false).Render("PAYLOAD\n" + m.detailVP.View())
 	if m.width >= 120 {
-		return lipgloss.JoinHorizontal(lipgloss.Top, list, detail)
+		return lipgloss.JoinHorizontal(lipgloss.Top, listPane, detail)
 	}
-	return lipgloss.JoinVertical(lipgloss.Left, list, detail)
+	return lipgloss.JoinVertical(lipgloss.Left, listPane, detail)
 }
 
 func (m Model) renderConfig() string {
@@ -870,20 +1100,31 @@ precedence
 }
 
 func (m Model) renderFooter() string {
-	hint := "tab/shift+tab navigate · j/k select · enter inspect · c cancel · / filter · r refresh · q quit"
+	hint := "tab/shift+tab navigate · j/k select · enter inspect · c cancel · / filter · r refresh · ? help · q quit"
 	if m.theme.ASCII {
-		hint = "tab navigate | j/k select | enter inspect | c cancel | / filter | r refresh | q quit"
+		hint = "tab navigate | j/k select | enter inspect | c cancel | / filter | r refresh | ? help | q quit"
 	}
-	if m.tab == tabIntent {
-		hint = "tab/shift+tab navigate · Ctrl+p preview · Ctrl+Enter submit · Ctrl+j JSON · esc clear · q quit"
+	if m.helpOpen {
+		hint = "?/esc close help · q quit"
 		if m.theme.ASCII {
-			hint = "tab navigate | Ctrl+p preview | Ctrl+Enter submit | Ctrl+j JSON | esc clear | q quit"
+			hint = "?/esc close help | q quit"
+		}
+	} else if m.tab == tabIntent {
+		hint = "tab/shift+tab navigate · Ctrl+p preview · Ctrl+Enter submit · Ctrl+b blast · Ctrl+j JSON · ? help · q quit"
+		if m.theme.ASCII {
+			hint = "tab navigate | Ctrl+p preview | Ctrl+Enter submit | Ctrl+b blast | Ctrl+j JSON | ? help | q quit"
 		}
 	}
-	if m.tab == tabGraph {
-		hint = "tab/shift+tab navigate · j/k select · enter inspect · / filter · r refresh graph · q quit"
+	if m.tab == tabGraph && !m.helpOpen {
+		hint = "tab/shift+tab navigate · j/k select · enter inspect · / filter · r refresh graph · ? help · q quit"
 		if m.theme.ASCII {
-			hint = "tab navigate | j/k select | enter inspect | / filter | r refresh graph | q quit"
+			hint = "tab navigate | j/k select | enter inspect | / filter | r refresh graph | ? help | q quit"
+		}
+	}
+	if m.tab == tabLive && !m.helpOpen && !m.selectedWaiting() {
+		hint = "tab/shift+tab navigate · j/k select · b blast · c cancel · ? help · q quit"
+		if m.theme.ASCII {
+			hint = "tab navigate | j/k select | b blast | c cancel | ? help | q quit"
 		}
 	}
 	if m.selectedWaiting() && m.tab != tabGraph && m.tab != tabIntent {

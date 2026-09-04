@@ -116,8 +116,9 @@ Cloud Players GCP + Azure: `docs/44-cloud-gcp-azure-players-v0.md`
 Postgres EXPLAIN: `docs/45-pg-explain-v0.md` + archive
 `openspec/changes/archive/2026-09-04-045-pg-explain/` — CONFIRMED
 (G-231..G-237); slice 38 feito; fecha a fila nomeada de G-41.
-TUI v1: `docs/46-tui-v1.md` + `openspec/changes/046-tui-v1/` — CONFIRMED
-(G-238..G-244); codigo = slice 39 (Charm v2 profissional + Hits/Blast).
+TUI v1: `docs/46-tui-v1.md` + archive
+`openspec/changes/archive/2026-09-04-046-tui-v1/` — CONFIRMED
+(G-238..G-244); slice 39 feito (Charm v2 profissional + Hits/Blast).
 Skill obrigatoria para TUI: `.cursor/skills/runtgine-tui-design/SKILL.md`.
 
 ## Ordem de trabalho
@@ -161,7 +162,7 @@ Skill obrigatoria para TUI: `.cursor/skills/runtgine-tui-design/SKILL.md`.
 37. Cloud AWS Player — CONFIRMED v0 em `43` (G-217..G-223) — slice 36 feito
 38. Cloud Players GCP + Azure — CONFIRMED v0 em `44` (G-224..G-230) — slice 37 feito
 39. Postgres EXPLAIN — CONFIRMED v0 em `45` (G-231..G-237) — slice 38 feito; fila G-41 fechada
-40. TUI v1 Charm Mission Control — CONFIRMED v0 em `46` (G-238..G-244) — slice 39
+40. TUI v1 Charm Mission Control — CONFIRMED v0 em `46` (G-238..G-244) — slice 39 feito
 41. Depois — NATS G-36 DEFERRED; PTY/tuios e GRAPH canvas 2D exigem nova decisao em `04`
 
 ## Conceitos chave (nao confundir)

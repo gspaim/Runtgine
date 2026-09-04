@@ -505,6 +505,15 @@ func (c *Core) RefreshGraph(ctx context.Context) error {
 	return c.Graph.RefreshFromRegistry(ctx, c.Reg)
 }
 
+// QueryHits returns ranked structural hits. A missing Graph degrades to
+// an empty set — never an error (G-241).
+func (c *Core) QueryHits(ctx context.Context, q graph.Query) graph.Hits {
+	if c == nil || c.Graph == nil {
+		return graph.Hits{Items: []graph.Hit{}}
+	}
+	return c.Graph.QueryHits(ctx, q)
+}
+
 func (c *Core) QueryGraphNeighbors(ctx context.Context, kind, id, edgeKind, direction string) ([]graph.Node, error) {
 	return c.Graph.QueryNeighbors(ctx, kind, id, edgeKind, direction)
 }
