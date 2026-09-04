@@ -1,0 +1,18 @@
+{
+  "schema_version": "0.1.0",
+  "source": {
+    "entry_point": "cli",
+    "ref": "examples/aws-sts-identity.json"
+  },
+  "intent": {
+    "summary": "Show AWS caller identity"
+  },
+  "steps": [
+    {
+      "step_id": "s1",
+      "capability": "aws.sts-identity",
+      "input": {},
+      "depends_on": []
+    }
+  ]
+}

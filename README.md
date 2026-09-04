@@ -110,7 +110,8 @@ Visão enxuta do que já está em `main`. **Atualizar esta seção em todo PR
 | Feito | Slice 33 — Workflow Templates v0 (`40`, G-194..G-200; `runtgine template`) |
 | Feito | Slice 34 — Infra Players v0 (`41`, G-201..G-209; `k8s.*` / `tf.*` / `pg.ping`) |
 | Feito | Slice 35 — Helm Player v0 (`42`, G-210..G-216; `helm.lint` / `template` / `list` / `status`) |
-| Próximo código | Slice 36 — Cloud AWS Player v0 (`43`, G-217..G-223; recorte G-41) — spec confirmada |
+| Feito | Slice 36 — Cloud AWS Player v0 (`43`, G-217..G-223; `aws.sts-identity` / `s3-buckets` / `s3-objects`) |
+| Próximo código | Recortes G-41 restantes (cloud GCP/Azure, SQL) ou NATS (G-36 DEFERRED) — requer nova promoção em `04` |
 
 Detalhe do corte: [`docs/09-mvp.md`](docs/09-mvp.md). Limitações atuais abaixo.
 

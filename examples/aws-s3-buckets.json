@@ -1,0 +1,18 @@
+{
+  "schema_version": "0.1.0",
+  "source": {
+    "entry_point": "cli",
+    "ref": "examples/aws-s3-buckets.json"
+  },
+  "intent": {
+    "summary": "List S3 buckets"
+  },
+  "steps": [
+    {
+      "step_id": "s1",
+      "capability": "aws.s3-buckets",
+      "input": {},
+      "depends_on": []
+    }
+  ]
+}

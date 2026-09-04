@@ -23,6 +23,7 @@ import (
 	"github.com/gspaim/Runtgine/internal/core/store"
 	"github.com/gspaim/Runtgine/internal/core/task"
 	"github.com/gspaim/Runtgine/internal/core/templates"
+	awsplayer "github.com/gspaim/Runtgine/internal/players/aws"
 	dockerplayer "github.com/gspaim/Runtgine/internal/players/docker"
 	"github.com/gspaim/Runtgine/internal/players/filesystem"
 	gitplayer "github.com/gspaim/Runtgine/internal/players/git"
@@ -115,6 +116,10 @@ func Open(cfg config.Config, log *slog.Logger) (*Core, error) {
 		return nil, err
 	}
 	if err := reg.Register(helmplayer.New()); err != nil {
+		_ = st.Close()
+		return nil, err
+	}
+	if err := reg.Register(awsplayer.New()); err != nil {
 		_ = st.Close()
 		return nil, err
 	}

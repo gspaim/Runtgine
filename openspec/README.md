@@ -37,13 +37,13 @@ branch:              feat/<NNN>-<slug>   (ou docs/ fix/ chore/)
 
 Exemplos válidos: `001-shell-player`, `017-intent-engine`, `019-graph-hits`.
 
-**Próximo id livre:** `044`. Mudança ativa:
-[`changes/043-aws-player/`](changes/043-aws-player/)
-(Cloud AWS Player v0; G-217..G-223).
+**Próximo id livre:** `044`. Nenhuma mudança ativa.
 Último archive:
+[`changes/archive/2026-09-04-043-aws-player/`](changes/archive/2026-09-04-043-aws-player/)
+(Cloud AWS Player v0; G-217..G-223; slice 36).
+Archives anteriores:
 [`changes/archive/2026-09-04-042-helm-player/`](changes/archive/2026-09-04-042-helm-player/)
 (Helm Player v0; G-210..G-216; slice 35).
-Archives anteriores:
 [`changes/archive/2026-08-26-041-infra-players/`](changes/archive/2026-08-26-041-infra-players/)
 (Infra Players v0; G-201..G-209; slice 34).
 

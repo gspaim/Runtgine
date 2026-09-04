@@ -640,7 +640,7 @@ Ver [43-aws-player-v0.md](43-aws-player-v0.md). Recorte de G-41
 (cloud read-only). Levanta a exclusão de cloud SDKs do corte v0 de
 `41`/`42` (G-209/G-216) **só para AWS em leitura**; GCP/Azure e SQL
 arbitrário continuam fora. Identidade + listagem S3 em JSON;
-credenciais só via ambiente. Código = slice 36 (pendente).
+credenciais só via ambiente. Código = slice 36 (feito).
 
 | Item | Status | Notas |
 |---|---|---|

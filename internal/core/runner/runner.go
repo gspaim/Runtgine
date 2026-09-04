@@ -24,6 +24,7 @@ import (
 	"github.com/gspaim/Runtgine/internal/core/result"
 	"github.com/gspaim/Runtgine/internal/core/store"
 	"github.com/gspaim/Runtgine/internal/core/task"
+	awsplayer "github.com/gspaim/Runtgine/internal/players/aws"
 	dockplayer "github.com/gspaim/Runtgine/internal/players/docker"
 	"github.com/gspaim/Runtgine/internal/players/filesystem"
 	"github.com/gspaim/Runtgine/internal/players/git"
@@ -301,6 +302,14 @@ func (r *Runner) validateTaskIR(t task.Task) error {
 			}
 		case helmplayer.CapLint, helmplayer.CapTemplate, helmplayer.CapList, helmplayer.CapStatus:
 			if err := helmplayer.ValidateStaticInput(r.Workspace, s.Capability, s.Input); err != nil {
+				var ve result.Error
+				if errors.As(err, &ve) {
+					return r.reject(t.TaskID, ve.Code, ve.Message)
+				}
+				return r.reject(t.TaskID, result.CodeInvalidInput, err.Error())
+			}
+		case awsplayer.CapStsIdentity, awsplayer.CapS3Buckets, awsplayer.CapS3Objects:
+			if err := awsplayer.ValidateStaticInput(r.Workspace, s.Capability, s.Input); err != nil {
 				var ve result.Error
 				if errors.As(err, &ve) {
 					return r.reject(t.TaskID, ve.Code, ve.Message)

@@ -30,6 +30,7 @@ const (
 	MethodHeuristicTF       = "heuristic.tf"
 	MethodHeuristicPG       = "heuristic.pg"
 	MethodHeuristicHelm     = "heuristic.helm"
+	MethodHeuristicAWS      = "heuristic.aws"
 	MethodHeuristicTemplate = "heuristic.template"
 	MethodLLM               = "llm"
 )
@@ -276,6 +277,9 @@ func matchPlayer(text string) (playerHit, bool) {
 	if hit, ok := matchHelm(n); ok {
 		return hit, true
 	}
+	if hit, ok := matchAWS(n); ok {
+		return hit, true
+	}
 	switch {
 	case hasPhrase(n, "terraform validate"):
 		return playerHit{capability: "tf.validate", method: MethodHeuristicTF}, true
@@ -348,6 +352,54 @@ func matchHelm(n string) (playerHit, bool) {
 		return playerHit{capability: "helm.list", method: MethodHeuristicHelm}, true
 	}
 	return playerHit{}, false
+}
+
+// matchAWS matches read-only AWS CLI invocations (spec 43). Mutants
+// like s3 rm/cp/sync never match here.
+func matchAWS(n string) (playerHit, bool) {
+	exact := func(prefix string) bool {
+		return strings.HasPrefix(n, prefix) && strings.TrimSpace(n[len(prefix):]) == ""
+	}
+	if exact("aws sts get-caller-identity") {
+		return playerHit{capability: "aws.sts-identity", method: MethodHeuristicAWS}, true
+	}
+	if exact("aws s3 ls") {
+		return playerHit{capability: "aws.s3-buckets", method: MethodHeuristicAWS}, true
+	}
+	const uriPrefix = "aws s3 ls s3://"
+	if strings.HasPrefix(n, uriPrefix) {
+		uri := strings.TrimSpace(n[len(uriPrefix):])
+		bucket, prefix, ok := splitS3URI(uri)
+		if !ok {
+			return playerHit{}, false
+		}
+		extra := map[string]any{"bucket": bucket}
+		if prefix != "" {
+			extra["prefix"] = prefix
+		}
+		return playerHit{capability: "aws.s3-objects", method: MethodHeuristicAWS, extra: extra}, true
+	}
+	return playerHit{}, false
+}
+
+// splitS3URI parses s3://bucket[/prefix] statically (no network).
+func splitS3URI(uri string) (bucket, prefix string, ok bool) {
+	if uri == "" {
+		return "", "", false
+	}
+	bucket = uri
+	prefix = ""
+	if i := strings.Index(uri, "/"); i >= 0 {
+		bucket = uri[:i]
+		prefix = strings.TrimSuffix(uri[i+1:], "/")
+	}
+	if bucket == "" || strings.HasPrefix(bucket, "-") || strings.ContainsAny(bucket, " ") {
+		return "", "", false
+	}
+	if prefix != "" && (strings.HasPrefix(prefix, "-") || strings.ContainsAny(prefix, " ")) {
+		return "", "", false
+	}
+	return bucket, prefix, true
 }
 
 func matchTemplate(text string, list []templates.Template) (templates.Template, bool, bool) {
