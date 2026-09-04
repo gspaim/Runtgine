@@ -2,7 +2,9 @@
 
 Direcionamento visual e funcional da TUI do Runtgine.
 
-**Status: IMPLEMENTED (Slice 3).**
+**Status: IMPLEMENTED (Slice 3 + GRAPH 14 + INTENT 21).** TUI v1
+(componentes Charm + Hits/Blast) = spec [`46-tui-v1.md`](46-tui-v1.md),
+slice 39.
 
 ## Conceito
 
@@ -31,11 +33,13 @@ A TUI e uma superficie sobre o Core:
 
 - Bubble Tea
 - Lip Gloss
-- Bubbles
+- Bubbles — **v1 (`46`)** exige os componentes `table`, `viewport`,
+  `textarea`, `list` e `help`, não só spinner/progress.
 
 O desktop futuro continua Wails v3 + Svelte + shadcn-svelte (spec `35`).
 A TUI valida a linguagem de interacao antes do desktop. View **INTENT**
-no Wails espelha a aba INTENT (`32` / G-144).
+no Wails espelha a aba INTENT (`32` / G-144). Hits/Blast na TUI = spec
+`46`; Wails não acompanha nesse slice.
 
 ## Sistema visual
 
@@ -84,6 +88,7 @@ Footer:
 tab/shift+tab navigate · enter inspect · c cancel · / filter · q quit
 (+ a approve · d deny when selected run is waiting_approval)
 (+ Ctrl+p preview · Ctrl+Enter submit on INTENT tab)
+(+ Ctrl+b blast on INTENT · b blast on LIVE · ? help)
 ```
 
 ## Aba INTENT
@@ -93,8 +98,10 @@ em Task IR e submete Run via Core (`CompileIntent` / `SubmitIntent`).
 
 Mostra:
 
-- campo NL multilinha (ou modo JSON Task IR);
-- preview Task IR + `method` (`heuristic.*` | `llm`);
+- campo NL multilinha via Bubbles `textarea` (ou modo JSON Task IR);
+- preview Task IR + `method` (`heuristic.*` | `llm`) em `viewport`;
+- Hits do `QueryHits` no preview (`46` / G-241);
+- drawer Blast (`Ctrl+b` → `BlastTask`, sem submeter);
 - erros de compilacao/Validator;
 - historico curto da sessao (ultimas submissoes: `run_id` + resumo).
 
@@ -114,7 +121,7 @@ Regras:
 
 ## Aba RUNS
 
-Tabela de execucoes:
+Tabela de execucoes (Bubbles `table` no v1, spec `46`):
 
 - sinal/status;
 - `run_id` curto;
@@ -143,7 +150,11 @@ Detalhe do Run selecionado:
 - pendente = starlight/muted;
 - progress bar;
 - Current Step (Player, capability, ContextPack);
-- ticker de telemetria.
+- ticker de telemetria;
+- painel Hits (`graph_hits` / `memory_hits` / `playbook_hits` do
+  ContextPack; empty = `No hits.`) — spec `46`;
+- drawer Blast (`b` → `BlastTask` do Task do Run; mostra `risk` +
+  touches / conflicts / `affected`).
 
 O grafo nao pode prejudicar a leitura em terminais estreitos: usar lista
 vertical como fallback.
@@ -193,8 +204,8 @@ Mostra:
 `r` na aba chama `RefreshGraph` e recarrega o snapshot. `/` filtra
 kind/id. Em `< 80` colunas: lista vertical; sem diagrama horizontal.
 
-Core APIs: `GetGraphSnapshot`, `RefreshGraph`. Sem Player, sem canvas 2D,
-sem Blast/Hits nesta aba.
+Core APIs: `GetGraphSnapshot`, `RefreshGraph`. Sem Player, sem canvas 2D.
+Hits e Blast **não** entram nesta aba (LIVE/INTENT, spec `46`).
 
 ## Aba CONFIG
 
@@ -228,14 +239,16 @@ Secrets sempre mascarados.
 
 ## Fora do MVP da TUI (implementacao pendente)
 
-- aba **INTENT** (slice 21; spec confirmada em `32`) — docs prontas, codigo depois;
 - tuios / terminal multiplexer;
 - PTY interativo embutido;
 - edicao rica de config;
 - Runtime Graph “completo” (genome, AST contínuo, grafo federado);
-- walk Blast←Graph na TUI;
-- acesso web/SSH;
-- Wails v0 (spec `35`; slices 27–28; inclui INTENT desktop espelhando `32`).
+- canvas 2D na aba GRAPH (G-107);
+- Blast a partir de um nó GRAPH (G-110);
+- acesso web/SSH.
+
+Hits + Blast **inline** (não aba nova) estão em `46` (slice 39).
+INTENT está implementada (slice 21). Wails v0 em spec `35`.
 
 ## Skill
 
@@ -253,5 +266,6 @@ Antes de criar ou alterar a TUI, ler:
 - Config permanece read-only; o snapshot nao expoe tokens ou API keys
 - Cancelamento exige confirmacao e persiste o estado de runs orfaos de um
   processo CLI anterior
-- Testes cobrem navegacao, resize, **seis** tabs (slice 3–14; **sete** apos slice 21 INTENT),
-  filtro GRAPH/EVENTS, cancelamento e `NO_COLOR`
+- Testes cobrem navegacao, resize, **sete** tabs, filtro GRAPH/EVENTS,
+  cancelamento e `NO_COLOR`
+- TUI v1 (componentes Bubbles + Hits/Blast): spec `46`, slice 39

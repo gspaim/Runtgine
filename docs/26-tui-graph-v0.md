@@ -15,7 +15,8 @@ do Impact Report é a spec [27-blast-graph-walk-v0.md](27-blast-graph-walk-v0.md
 (CLI `runtgine blast`, não GRAPH).
 
 **Status deste doc: CONFIRMED (v0).** G-105..G-110 implementados no
-slice 14. Multiplexer, PTY, edição do Graph e Hits UI permanecem fora.
+slice 14. Multiplexer, PTY, edição do Graph permanecem fora. Hits/Blast
+na TUI saíram desta aba e foram para LIVE/INTENT (spec `46`).
 
 **Nota (032):** a ordem de tabs passou a incluir **INTENT** como primeira aba;
 ver [32-intent-surface-v0.md](32-intent-surface-v0.md). Este doc descreve só a aba GRAPH.

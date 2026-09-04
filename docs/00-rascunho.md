@@ -81,3 +81,12 @@ Resumo da posicao:
 
 Questao em aberto permanece: templates nativos no Graph vs registro dinamico
 a partir de repos externos.
+
+---
+
+## TUI v1
+
+Promovida para [46-tui-v1.md](46-tui-v1.md) (G-238..G-244 CONFIRMED;
+Charm v2 + Hits/Blast inline). PTY/tuios e canvas 2D da aba GRAPH
+continuam **fora** — exigem nova decisão em `04` se voltarem à fila.
+

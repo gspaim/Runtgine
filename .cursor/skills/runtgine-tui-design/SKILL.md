@@ -12,9 +12,10 @@ Use this skill whenever a task creates, changes, or reviews the Runtgine TUI.
 Read before implementation:
 
 1. `docs/14-tui-design.md`
-2. `docs/04-decisoes.md`
-3. `docs/11-protocolo-v0.md`
-4. Relevant Core APIs in `internal/core/api`
+2. `docs/46-tui-v1.md` (v1 chrome + Hits/Blast)
+3. `docs/04-decisoes.md`
+4. `docs/11-protocolo-v0.md`
+5. Relevant Core APIs in `internal/core/api`
 
 ## Non-negotiable architecture
 
@@ -49,6 +50,10 @@ Do not replace them with fictional names in commands, schemas, or Core APIs.
 Prefer reusable components and centralized theme tokens. Do not scatter raw
 color values across views.
 
+v1 (`docs/46-tui-v1.md`) requires Bubbles `table`, `viewport`, `textarea`,
+`list`, and `help` — not only spinner/progress. Do not add `huh` or a
+second TUI stack.
+
 ## Tokens
 
 ```go
@@ -81,22 +86,28 @@ Not a chatbot — compile NL/JSON to Task IR and submit via Core APIs.
 
 ### INTENT
 
-- Multiline NL input (or JSON Task IR mode toggle).
-- Preview panel: Task IR + `method` via `CompileIntent` (`Ctrl+p`).
+- Multiline NL input via Bubbles `textarea` (or JSON Task IR mode toggle).
+- Preview panel: Task IR + `method` via `CompileIntent` (`Ctrl+p`) plus
+  `QueryHits` for the draft (empty hits are OK).
 - Submit via `SubmitIntent` (`Ctrl+Enter`); on success select run and switch to LIVE.
+- Blast drawer via `BlastTask` (`Ctrl+b`); does not submit.
 - Session history cap (~10 entries: run_id + summary); no long transcript persistence.
 - Never call Players directly.
 
 ### RUNS
 
-Show run ID, intent, status, and elapsed time. Selection uses starlight/violet.
-Status includes text/symbol in addition to color.
+Show run ID, intent, status, and elapsed time in a Bubbles `table`.
+Selection uses starlight/violet. Status includes text/symbol in addition
+to color.
 
 ### LIVE
 
 Show the selected run, step dependency trajectory, progress, current Player,
-capability, ContextPack size, and latest telemetry. Use a vertical step list
-when the terminal is too narrow for a constellation trajectory.
+capability, ContextPack size, latest telemetry, and an inline Hits pane
+(`graph_hits` / `memory_hits` / `playbook_hits`; `No hits.` when empty).
+`b` opens the Blast drawer (`BlastTask` on the run's Task IR). Use a
+vertical step list when the terminal is too narrow for a constellation
+trajectory.
 
 ### BOARD
 
@@ -113,7 +124,8 @@ Read-only workspace Runtime Graph (`GetGraphSnapshot`). Show node/edge
 counts, a `kind`+`id` list, and selected-node attrs plus incident edges.
 `r` calls `RefreshGraph` then reloads the snapshot. `/` filters kind/id
 (independent of EVENTS). Width `< 80`: vertical list only, no 2D canvas.
-Do not mix Blast or QueryHits into this tab.
+Do not mix Blast or QueryHits into this tab (Hits/Blast live on LIVE and
+INTENT — spec `46`).
 
 ### CONFIG
 
@@ -136,6 +148,9 @@ Default keymap:
 | `r` | refresh |
 | `Ctrl+p` | preview intent (INTENT tab only) |
 | `Ctrl+Enter` | submit intent (INTENT tab only) |
+| `Ctrl+b` | blast draft (INTENT tab only; no submit) |
+| `b` | blast selected run (LIVE tab only) |
+| `?` | toggle help overlay |
 | `q` | quit |
 
 Keep key hints visible in the footer.
@@ -179,3 +194,5 @@ All views must survive resize events.
 - [ ] Board behavior matches `docs/12-board-p1.md`
 - [ ] Visual tokens match `docs/14-tui-design.md`
 - [ ] No tuios/PTY scope creep
+- [ ] No eighth tab; Hits/Blast are drawers/panes
+- [ ] GRAPH still has no canvas 2D and does not start Blast

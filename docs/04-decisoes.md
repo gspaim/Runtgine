@@ -137,6 +137,7 @@ Ver [09-mvp.md](09-mvp.md). Decisoes-chave:
 - MCP Memory Server v0 (G-187..G-193; recorte G-44) — spec `39`; codigo = slice 32 — feito
 - Workflow Templates v0 (G-194..G-200; recorte G-40) — spec `40`; codigo = slice 33 — feito
 - Infra Players v0 (G-201..G-209; recorte G-41) — spec `41`; codigo = slice 34 — feito
+- TUI v1 Charm Mission Control (G-238..G-244) — spec `46`; codigo = slice 39
 
 ## Protocolo v0 — confirmado (sessao de fechamento)
 
@@ -217,13 +218,14 @@ Ver [14-tui-design.md](14-tui-design.md).
 | Decisao | Status | Notas |
 |---|---|---|
 | Sistema visual Constellation Mission Control | CONFIRMED | Mission Control + constelacoes |
-| Bubble Tea + Lip Gloss + Bubbles | CONFIRMED | TUI moderna e responsiva |
+| Bubble Tea + Lip Gloss + Bubbles | CONFIRMED | TUI moderna e responsiva; v1 usa Bubbles table/viewport/textarea/list/help (`46`) |
 | Tabs Intent / Runs / Live / Board / Events / Graph / Config | CONFIRMED | Sete abas; INTENT = Entry Point visual (G-142) |
 | Tema espacial e visual, nao dominio | CONFIRMED | Manter Task/Run/Step/Event/Player |
 | TUI usa apenas APIs do Core | CONFIRMED | Nunca chama Player diretamente |
 | Charm stack v2 via `charm.land/*` | IMPLEMENTED | Requer Go 1.25+ |
 | Config da TUI read-only e secrets mascarados | IMPLEMENTED | Snapshot publico contem apenas estado/config nao sensivel |
-| tuios no MVP | REJECTED | Nao e multiplexer; PTY futuro exige nova decisao |
+| TUI v1 (Bubbles + Hits/Blast inline) | CONFIRMED | spec `46`; codigo = slice 39 |
+| tuios no MVP | REJECTED | Nao e multiplexer; PTY futuro exige nova decisao (fora de `46`) |
 
 ## Board / pipeline (P1) — CONFIRMADO
 
@@ -372,7 +374,7 @@ Ver [25-blast-radius-v0.md](25-blast-radius-v0.md). Resto de G-43
 | G-100 Impact Report | CONFIRMED | touches, predicted_claims, risk, conflicts, images |
 | G-101 Tabelas | CONFIRMED | predicted = G-95; touches incluem fs.read/list/stat |
 | G-102 Overlay | CONFIRMED | read-only vs claims ativos; nunca Acquire |
-| G-103 Superficie | CONFIRMED | `BlastTask` + `runtgine blast`; sem TUI GRAPH |
+| G-103 Superficie | CONFIRMED | `BlastTask` + `runtgine blast`; TUI INTENT/LIVE em `46`; sem TUI GRAPH |
 | G-104 Exclusoes v0 | CONFIRMED | Gate Execute, shell argv, persistencia; walk 1-hop promovido em `27` |
 
 ## TUI GRAPH — CONFIRMED v0
@@ -388,7 +390,7 @@ Slice 14 feito.
 | G-107 Conteudo | CONFIRMED | Counts + lista + detalhe; sem canvas 2D |
 | G-108 Refresh | CONFIRMED | `r` → `RefreshGraph` + snapshot |
 | G-109 Filtro | CONFIRMED | `/` substring kind/id; independente de EVENTS |
-| G-110 Exclusoes v0 | CONFIRMED | Blast-from-graph, Hits UI, PTY, editar grafo |
+| G-110 Exclusoes v0 | CONFIRMED | Blast-from-graph e Hits na aba GRAPH; Hits/Blast TUI = LIVE/INTENT em `46`; PTY, editar grafo |
 
 ## Walk Blast←Graph — CONFIRMED v0
 
@@ -402,7 +404,7 @@ Codigo = slice 15 — feito. Nao e QueryHits; nao dispara a partir da aba GRAPH.
 | G-112 Snapshot | CONFIRMED | `GetGraphSnapshot`; erro → `affected=[]` |
 | G-113 Sementes / hop | CONFIRMED | path touches; inbound `mentions` only |
 | G-114 Campo `affected` | CONFIRMED | Aditivo; `risk` intacto; schema `0.1.0` |
-| G-115 Superficie | CONFIRMED | Mesmo `BlastTask` / CLI; sem TUI |
+| G-115 Superficie | CONFIRMED | Mesmo `BlastTask` / CLI; TUI drawer em `46`; sem GRAPH→blast |
 | G-116 Exclusoes v0 | CONFIRMED | GRAPH→blast, multi-hop, gate, Hits |
 
 ## HTTP Player — CONFIRMED v0
@@ -691,6 +693,22 @@ Código = slice 38 (feito).
 | G-235 Registry + admission | CONFIRMED | Manifest com `sql` só em `pg.explain`; runner valida |
 | G-236 Intent | CONFIRMED | `explain select|with` → `heuristic.pg`; `dbname` default `postgres` |
 | G-237 Exclusoes v0 | CONFIRMED | ANALYZE/EXECUTE, linhas, migrations, dump, outros SGBDs |
+
+## TUI v1 — Charm Mission Control — CONFIRMED v0
+
+Ver [46-tui-v1.md](46-tui-v1.md). Redesenho da superfície Charm v2
+(já CONFIRMED) + Hits/Blast inline. Código = slice 39 (ainda não).
+Não é troca de stack. Não é PTY/tuios. Não é canvas 2D.
+
+| Item | Status | Notas |
+|---|---|---|
+| G-238 Papel / stack | CONFIRMED | Mesmo `runtgine tui`; Bubble Tea/Lip Gloss/Bubbles v2 |
+| G-239 Shell visual | CONFIRMED | table, viewport, textarea, list, help; tokens `14` |
+| G-240 Tabs + chrome | CONFIRMED | Sete abas; RUNS=table; INTENT=textarea |
+| G-241 Hits inline | CONFIRMED | LIVE ContextPack + INTENT `QueryHits`; sem aba HITS; GRAPH sem Hits |
+| G-242 Blast drawer | CONFIRMED | INTENT `Ctrl+b` / LIVE `b` → `BlastTask`; sem aba BLAST; GRAPH não dispara |
+| G-243 Keymap + help | CONFIRMED | `?` overlay; keymap v0 intacto |
+| G-244 Exclusoes v0 | CONFIRMED | PTY/tuios, canvas 2D, Ratatui/Textual, 8ª aba, huh, Wails neste slice |
 
 ## Git / release — fluxo de branches
 
