@@ -15,11 +15,10 @@ Não é `helm install` / `upgrade` / `rollback` / `uninstall`. Não é
 `helm get` nem `helm test`. Não é repo/OCI (add/push/package). Não é
 `kubectl` (`41`). Não é Docker (`23`). Não é MCP. Não é template (`40`).
 
-**Status deste doc: CONFIRMED v0 (código = slice 35, pendente).**
-G-210..G-216.
+**Status deste doc: CONFIRMED v0 (slice 35 feito).** G-210..G-216.
 
-**Pacote OpenSpec:** [`openspec/changes/042-helm-player/`](../openspec/changes/042-helm-player/)
-(mudança ativa; arquivar após o slice 35).
+**Pacote OpenSpec:** [`openspec/changes/archive/2026-09-04-042-helm-player/`](../openspec/changes/archive/2026-09-04-042-helm-player/)
+(arquivado após o slice 35). Spec atual: [`openspec/specs/helm-player/`](../openspec/specs/helm-player/).
 
 ---
 

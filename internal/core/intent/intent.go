@@ -29,6 +29,7 @@ const (
 	MethodHeuristicK8s      = "heuristic.k8s"
 	MethodHeuristicTF       = "heuristic.tf"
 	MethodHeuristicPG       = "heuristic.pg"
+	MethodHeuristicHelm     = "heuristic.helm"
 	MethodHeuristicTemplate = "heuristic.template"
 	MethodLLM               = "llm"
 )
@@ -272,6 +273,9 @@ func matchPlayer(text string) (playerHit, bool) {
 	if hit, ok := matchK8s(n); ok {
 		return hit, true
 	}
+	if hit, ok := matchHelm(n); ok {
+		return hit, true
+	}
 	switch {
 	case hasPhrase(n, "terraform validate"):
 		return playerHit{capability: "tf.validate", method: MethodHeuristicTF}, true
@@ -314,6 +318,34 @@ func matchK8s(n string) (playerHit, bool) {
 			return playerHit{capability: "k8s.get", method: MethodHeuristicK8s, extra: extra}, true
 		}
 		return playerHit{capability: "k8s.list", method: MethodHeuristicK8s, extra: extra}, true
+	}
+	return playerHit{}, false
+}
+
+// matchHelm matches high-confidence read-only helm invocations (spec 42).
+// install/upgrade/rollback/uninstall never match here.
+func matchHelm(n string) (playerHit, bool) {
+	singleArg := func(prefix string) (string, bool) {
+		if !strings.HasPrefix(n, prefix) {
+			return "", false
+		}
+		fields := strings.Fields(n[len(prefix):])
+		if len(fields) != 1 || strings.HasPrefix(fields[0], "-") {
+			return "", false
+		}
+		return fields[0], true
+	}
+	if chart, ok := singleArg("helm lint "); ok {
+		return playerHit{capability: "helm.lint", method: MethodHeuristicHelm, extra: map[string]any{"chart": chart}}, true
+	}
+	if chart, ok := singleArg("helm template "); ok {
+		return playerHit{capability: "helm.template", method: MethodHeuristicHelm, extra: map[string]any{"chart": chart}}, true
+	}
+	if release, ok := singleArg("helm status "); ok {
+		return playerHit{capability: "helm.status", method: MethodHeuristicHelm, extra: map[string]any{"release": release}}, true
+	}
+	if strings.HasPrefix(n, "helm list") && strings.TrimSpace(n[len("helm list"):]) == "" {
+		return playerHit{capability: "helm.list", method: MethodHeuristicHelm}, true
 	}
 	return playerHit{}, false
 }

@@ -28,6 +28,7 @@ import (
 	"github.com/gspaim/Runtgine/internal/players/filesystem"
 	"github.com/gspaim/Runtgine/internal/players/git"
 	gotestplayer "github.com/gspaim/Runtgine/internal/players/gotest"
+	helmplayer "github.com/gspaim/Runtgine/internal/players/helm"
 	httpplayer "github.com/gspaim/Runtgine/internal/players/httpclient"
 	"github.com/gspaim/Runtgine/internal/players/jstest"
 	k8splayer "github.com/gspaim/Runtgine/internal/players/k8s"
@@ -292,6 +293,14 @@ func (r *Runner) validateTaskIR(t task.Task) error {
 			}
 		case pgplayer.CapPing:
 			if err := pgplayer.ValidateStaticInput(r.Workspace, s.Capability, s.Input); err != nil {
+				var ve result.Error
+				if errors.As(err, &ve) {
+					return r.reject(t.TaskID, ve.Code, ve.Message)
+				}
+				return r.reject(t.TaskID, result.CodeInvalidInput, err.Error())
+			}
+		case helmplayer.CapLint, helmplayer.CapTemplate, helmplayer.CapList, helmplayer.CapStatus:
+			if err := helmplayer.ValidateStaticInput(r.Workspace, s.Capability, s.Input); err != nil {
 				var ve result.Error
 				if errors.As(err, &ve) {
 					return r.reject(t.TaskID, ve.Code, ve.Message)

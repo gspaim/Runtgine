@@ -4,6 +4,6 @@ nnn: "042"
 slug: helm-player
 docs_canonical: docs/42-helm-player-v0.md
 gaps: [G-210, G-211, G-212, G-213, G-214, G-215, G-216]
-status: active
+status: archived
 branch: feat/042-helm-player
 depends_on: ["041-infra-players"]

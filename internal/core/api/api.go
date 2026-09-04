@@ -27,6 +27,7 @@ import (
 	"github.com/gspaim/Runtgine/internal/players/filesystem"
 	gitplayer "github.com/gspaim/Runtgine/internal/players/git"
 	gotestplayer "github.com/gspaim/Runtgine/internal/players/gotest"
+	helmplayer "github.com/gspaim/Runtgine/internal/players/helm"
 	httpplayer "github.com/gspaim/Runtgine/internal/players/httpclient"
 	"github.com/gspaim/Runtgine/internal/players/jstest"
 	k8splayer "github.com/gspaim/Runtgine/internal/players/k8s"
@@ -110,6 +111,10 @@ func Open(cfg config.Config, log *slog.Logger) (*Core, error) {
 		return nil, err
 	}
 	if err := reg.Register(pgplayer.New()); err != nil {
+		_ = st.Close()
+		return nil, err
+	}
+	if err := reg.Register(helmplayer.New()); err != nil {
 		_ = st.Close()
 		return nil, err
 	}
