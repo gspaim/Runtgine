@@ -73,7 +73,7 @@ Task → Event → Queue → Player → Result
 Visão enxuta do que já está em `main`. **Atualizar esta seção em todo PR
 `release/*` → `main`** (e em PRs para `develop` quando o estágio mudar).
 
-**Agora:** MVP funcional (slices 1–20, 1.0 magro feito), sem release estável.
+**Agora:** MVP funcional completo (slices 1–38; 1.0 magro feito). Primeira release: **v0.1.0-rc.1**.
 
 | | Entrega |
 |---|---|
@@ -113,6 +113,7 @@ Visão enxuta do que já está em `main`. **Atualizar esta seção em todo PR
 | Feito | Slice 36 — Cloud AWS Player v0 (`43`, G-217..G-223; `aws.sts-identity` / `s3-buckets` / `s3-objects`) |
 | Feito | Slice 37 — Cloud Players GCP + Azure v0 (`44`, G-224..G-230; `gcp.*` / `azure.*` read-only) |
 | Feito | Slice 38 — Postgres EXPLAIN v0 (`45`, G-231..G-237; `pg.explain`; fila G-41 fechada) |
+| Feito | Release v0.1.0-rc.1 — primeiro corte do produto (binários multi-OS) |
 | Próximo código | Nenhum recorte nomeado restante; NATS (G-36) DEFERRED — release ou nova decisão em `04` |
 
 Detalhe do corte: [`docs/09-mvp.md`](docs/09-mvp.md). Limitações atuais abaixo.
