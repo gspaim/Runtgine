@@ -1,0 +1,20 @@
+{
+  "schema_version": "0.1.0",
+  "source": {
+    "entry_point": "cli",
+    "ref": "examples/helm-lint.json"
+  },
+  "intent": {
+    "summary": "Lint a Helm chart in the workspace"
+  },
+  "steps": [
+    {
+      "step_id": "s1",
+      "capability": "helm.lint",
+      "input": {
+        "chart": "charts/demo"
+      },
+      "depends_on": []
+    }
+  ]
+}

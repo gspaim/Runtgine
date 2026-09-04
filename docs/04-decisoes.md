@@ -622,7 +622,7 @@ Leitura / validate+plan / ping; sem apply, sem SQL livre.
 Ver [42-helm-player-v0.md](42-helm-player-v0.md). Recorte de G-41
 (Helm). Levanta a exclusão de Helm do corte v0 de `41` (G-209) como
 recorte próprio. Lint / render local / leitura de cluster; sem
-install/upgrade. Código = slice 35 (pendente).
+install/upgrade. Código = slice 35 (feito).
 
 | Item | Status | Notas |
 |---|---|---|

@@ -79,6 +79,10 @@ func TestCompilePlayerHeuristics(t *testing.T) {
 		{"git diff", intent.MethodHeuristicGit, "git.diff"},
 		{"git log", intent.MethodHeuristicGit, "git.log"},
 		{"docker ps", intent.MethodHeuristicDocker, "docker.ps"},
+		{"helm lint charts/demo", intent.MethodHeuristicHelm, "helm.lint"},
+		{"helm template charts/demo", intent.MethodHeuristicHelm, "helm.template"},
+		{"helm list", intent.MethodHeuristicHelm, "helm.list"},
+		{"helm status web", intent.MethodHeuristicHelm, "helm.status"},
 	}
 	for _, tc := range cases {
 		t.Run(tc.text, func(t *testing.T) {
@@ -104,6 +108,37 @@ func TestCompileGoTestBeatsShellPrefix(t *testing.T) {
 	}
 	if res.Method != intent.MethodHeuristicTest || res.Task.Steps[0].Capability != "test.go" {
 		t.Fatalf("method=%s cap=%s", res.Method, res.Task.Steps[0].Capability)
+	}
+}
+
+func TestCompileHelmChartInput(t *testing.T) {
+	e := intent.New(llm.HeuristicCompleter{})
+	res, err := e.Compile(context.Background(), intent.Request{Text: "helm template charts/demo"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if res.Method != intent.MethodHeuristicHelm || res.Task.Steps[0].Capability != "helm.template" {
+		t.Fatalf("method=%s cap=%s", res.Method, res.Task.Steps[0].Capability)
+	}
+	var in struct {
+		Chart string `json:"chart"`
+	}
+	if err := json.Unmarshal(res.Task.Steps[0].Input, &in); err != nil {
+		t.Fatal(err)
+	}
+	if in.Chart != "charts/demo" {
+		t.Fatalf("chart=%s", in.Chart)
+	}
+}
+
+func TestCompileHelmInstallDoesNotMatchPlayer(t *testing.T) {
+	e := intent.New(llm.HeuristicCompleter{})
+	res, err := e.Compile(context.Background(), intent.Request{Text: "helm install web charts/demo"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if res.Method == intent.MethodHeuristicHelm {
+		t.Fatalf("install must not match the helm player heuristics (method=%s)", res.Method)
 	}
 }
 
