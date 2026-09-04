@@ -86,7 +86,10 @@ a partir de repos externos.
 
 ## TUI v1
 
-Promovida para [46-tui-v1.md](46-tui-v1.md) (G-238..G-244 CONFIRMED;
-Charm v2 + Hits/Blast inline). PTY/tuios e canvas 2D da aba GRAPH
-continuam **fora** — exigem nova decisão em `04` se voltarem à fila.
+Discussao pre-decisao (PR #65) promovida para
+[46-tui-v1.md](46-tui-v1.md) (G-238..G-244 CONFIRMED; Charm v2 +
+Hits/Blast inline). Recortes que **nao** entraram neste ciclo e
+continuam **fora** — exigem nova decisao em `04`:
 
+- PTY / tuios (terminal vivo; `tuios no MVP` permanece REJECTED)
+- GRAPH canvas 2D (G-107)
