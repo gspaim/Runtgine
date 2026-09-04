@@ -48,7 +48,7 @@ Autoridade de decisoes: [04-decisoes.md](04-decisoes.md).
 | 40 | 40-workflow-templates-v0.md | Workflow Templates v0 (**CONFIRMED**; G-194..G-200; recorte de G-40; slice 33) |
 | 41 | 41-infra-players-v0.md | Infra Players v0 (**CONFIRMED**; G-201..G-209; K8s/TF/PG; slice 34) |
 | 42 | 42-helm-player-v0.md | Helm Player v0 (**CONFIRMED**; G-210..G-216; recorte de G-41; slice 35 feito) |
-| 43 | 43-aws-player-v0.md | Cloud AWS Player v0 read-only (**CONFIRMED**; G-217..G-223; recorte de G-41; slice 36 pendente) |
+| 43 | 43-aws-player-v0.md | Cloud AWS Player v0 read-only (**CONFIRMED**; G-217..G-223; recorte de G-41; slice 36 feito) |
 | — | [openspec/](../openspec/README.md) | Pacotes de mudança OpenSpec (`NNN-slug`) |
 
 ## Fontes historicas (raiz do repo)
@@ -84,6 +84,6 @@ NPM Player (`36`), Pytest+Yarn (`37`), Memory Player (`38`) e MCP Memory
 **CONFIRMED v0** (slice 33). Infra Players (`41`, G-201..G-209) esta
 **CONFIRMED v0** (slice 34). Helm Player (`42`, G-210..G-216) esta
 **CONFIRMED v0** (slice 35 feito). Cloud AWS Player (`43`,
-G-217..G-223) esta **CONFIRMED v0** (slice 36 pendente). P3
+G-217..G-223) esta **CONFIRMED v0** (slice 36 feito). P3
 restante: NATS (G-36); G-41 além de infra+Helm+AWS (cloud GCP/Azure,
 SQL).

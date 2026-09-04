@@ -4,6 +4,6 @@ nnn: "043"
 slug: aws-player
 docs_canonical: docs/43-aws-player-v0.md
 gaps: [G-217, G-218, G-219, G-220, G-221, G-222, G-223]
-status: active
+status: archived
 branch: feat/043-aws-player
 depends_on: ["042-helm-player"]

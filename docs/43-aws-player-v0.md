@@ -17,11 +17,10 @@ Não é `s3 cp` / `mv` / `rm` / `sync` / `mb`. Não é `ec2 run-instances`
 arbitrário. Não é GCP (`gcloud`) nem Azure (`az`). Não é NATS (G-36).
 Não é MCP. Não é template (`40`).
 
-**Status deste doc: CONFIRMED v0 (código = slice 36, pendente).**
-G-217..G-223.
+**Status deste doc: CONFIRMED v0 (slice 36 feito).** G-217..G-223.
 
-**Pacote OpenSpec:** [`openspec/changes/043-aws-player/`](../openspec/changes/043-aws-player/)
-(mudança ativa; arquivar após o slice 36).
+**Pacote OpenSpec:** [`openspec/changes/archive/2026-09-04-043-aws-player/`](../openspec/changes/archive/2026-09-04-043-aws-player/)
+(arquivado após o slice 36). Spec atual: [`openspec/specs/aws-player/`](../openspec/specs/aws-player/).
 
 ---
 

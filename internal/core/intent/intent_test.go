@@ -83,6 +83,9 @@ func TestCompilePlayerHeuristics(t *testing.T) {
 		{"helm template charts/demo", intent.MethodHeuristicHelm, "helm.template"},
 		{"helm list", intent.MethodHeuristicHelm, "helm.list"},
 		{"helm status web", intent.MethodHeuristicHelm, "helm.status"},
+		{"aws sts get-caller-identity", intent.MethodHeuristicAWS, "aws.sts-identity"},
+		{"aws s3 ls", intent.MethodHeuristicAWS, "aws.s3-buckets"},
+		{"aws s3 ls s3://data/logs", intent.MethodHeuristicAWS, "aws.s3-objects"},
 	}
 	for _, tc := range cases {
 		t.Run(tc.text, func(t *testing.T) {
@@ -139,6 +142,38 @@ func TestCompileHelmInstallDoesNotMatchPlayer(t *testing.T) {
 	}
 	if res.Method == intent.MethodHeuristicHelm {
 		t.Fatalf("install must not match the helm player heuristics (method=%s)", res.Method)
+	}
+}
+
+func TestCompileAwsS3UriParsesStatically(t *testing.T) {
+	e := intent.New(llm.HeuristicCompleter{})
+	res, err := e.Compile(context.Background(), intent.Request{Text: "aws s3 ls s3://data/logs/"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if res.Method != intent.MethodHeuristicAWS || res.Task.Steps[0].Capability != "aws.s3-objects" {
+		t.Fatalf("method=%s cap=%s", res.Method, res.Task.Steps[0].Capability)
+	}
+	var in struct {
+		Bucket string `json:"bucket"`
+		Prefix string `json:"prefix"`
+	}
+	if err := json.Unmarshal(res.Task.Steps[0].Input, &in); err != nil {
+		t.Fatal(err)
+	}
+	if in.Bucket != "data" || in.Prefix != "logs" {
+		t.Fatalf("bucket=%s prefix=%s", in.Bucket, in.Prefix)
+	}
+}
+
+func TestCompileAwsMutantDoesNotMatchPlayer(t *testing.T) {
+	e := intent.New(llm.HeuristicCompleter{})
+	res, err := e.Compile(context.Background(), intent.Request{Text: "aws s3 rm s3://data/x"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if res.Method == intent.MethodHeuristicAWS {
+		t.Fatalf("s3 rm must not match the aws player heuristics (method=%s)", res.Method)
 	}
 }
 
