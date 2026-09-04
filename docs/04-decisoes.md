@@ -57,7 +57,7 @@ Status: CONFIRMED | HYPOTHESIS | OPEN QUESTION | REJECTED
 | TUI GRAPH tab | CONFIRMED (v0) | Aba read-only; ver `26-tui-graph-v0.md` + `14` |
 | HTTP Player | CONFIRMED (v0) | Cliente GET/HEAD HTTPS; ver `28-http-player-v0.md` |
 | Test Player | CONFIRMED (v0) | `test.go` no workspace; ver `30-test-player-v0.md` |
-| Many deterministic Players | CONFIRMED | Estrategico; G-41 recorte infra CONFIRMED em `41` |
+| Many deterministic Players | CONFIRMED | Estrategico; recortes G-41: infra em `41`, Helm em `42` |
 | Workflow Templates v0 | CONFIRMED (v0) | JSON nativo no workspace; ver `40-workflow-templates-v0.md` |
 | Runtgine + Chorus | CONFIRMED | Complementares |
 | Event Bus in-process (MVP) | CONFIRMED | Canais Go |
@@ -616,6 +616,23 @@ Leitura / validate+plan / ping; sem apply, sem SQL livre.
 | G-207 Registry + Intent | CONFIRMED | `heuristic.k8s` / `heuristic.tf` / `heuristic.pg` |
 | G-208 Falha vs sucesso | CONFIRMED | exit ≠ 0 → `runtime.player_error`; testes fake |
 | G-209 Exclusoes v0 | CONFIRMED | apply/destroy/init/exec/SQL; Helm; cloud SDKs |
+
+## Helm Player — CONFIRMED v0 spec
+
+Ver [42-helm-player-v0.md](42-helm-player-v0.md). Recorte de G-41
+(Helm). Levanta a exclusão de Helm do corte v0 de `41` (G-209) como
+recorte próprio. Lint / render local / leitura de cluster; sem
+install/upgrade. Código = slice 35 (pendente).
+
+| Item | Status | Notas |
+|---|---|---|
+| G-210 Helm Player | CONFIRMED | `internal/players/helm`; deterministic |
+| G-211 Capabilities v0 | CONFIRMED | `helm.lint` / `helm.template` / `helm.list` / `helm.status`; todas allow |
+| G-212 Sandbox | CONFIRMED | argv fechado; sem install/upgrade/rollback/uninstall/get/test; sem `--set*`/values |
+| G-213 Chart no workspace | CONFIRMED | `chart` relativo com marker `Chart.yaml`; cluster read via kubeconfig herdado |
+| G-214 Falha vs sucesso | CONFIRMED | exit ≠ 0 → `runtime.player_error`; timeout → `runtime.timeout` |
+| G-215 Registry + Intent | CONFIRMED | `heuristic.helm` antes de shell; `helm install` não casa |
+| G-216 Exclusoes v0 | CONFIRMED | repo/OCI, plugin, kustomize/k3s/kind, cloud SDKs, SQL |
 
 ## Git / release — fluxo de branches
 

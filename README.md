@@ -109,7 +109,7 @@ Visão enxuta do que já está em `main`. **Atualizar esta seção em todo PR
 | Feito | Slice 32 — MCP Memory Server v0 (`39`, G-187..G-193; `runtgine mcp` + `/mcp`) |
 | Feito | Slice 33 — Workflow Templates v0 (`40`, G-194..G-200; `runtgine template`) |
 | Feito | Slice 34 — Infra Players v0 (`41`, G-201..G-209; `k8s.*` / `tf.*` / `pg.ping`) |
-| Próximo código | Recortes G-41 restantes (Helm / cloud / SQL) ou NATS (G-36 DEFERRED) |
+| Próximo código | Slice 35 — Helm Player v0 (`42`, G-210..G-216; recorte G-41) — spec confirmada |
 
 Detalhe do corte: [`docs/09-mvp.md`](docs/09-mvp.md). Limitações atuais abaixo.
 

@@ -37,7 +37,9 @@ branch:              feat/<NNN>-<slug>   (ou docs/ fix/ chore/)
 
 Exemplos válidos: `001-shell-player`, `017-intent-engine`, `019-graph-hits`.
 
-**Próximo id livre:** `042`. Nenhuma mudança ativa.
+**Próximo id livre:** `043`. Mudança ativa:
+[`changes/042-helm-player/`](changes/042-helm-player/)
+(Helm Player v0; G-210..G-216).
 Último archive:
 [`changes/archive/2026-08-26-041-infra-players/`](changes/archive/2026-08-26-041-infra-players/)
 (Infra Players v0; G-201..G-209; slice 34).
@@ -91,3 +93,4 @@ Não codificar mudança cujo status em `04` não esteja **CONFIRMED**
 | `mcp-memory` | Servidor MCP read-only sobre Project Memory (`runtgine mcp` + `/mcp`; spec 039) |
 | `workflow-templates` | Templates JSON nativos → Task IR (`runtgine template`; spec 040) |
 | `infra-players` | Players `k8s` / `terraform` / `postgres` (spec 041) |
+| `helm-player` | Player `helm` (lint/template/list/status; spec 042) |

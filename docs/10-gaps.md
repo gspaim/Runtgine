@@ -104,7 +104,7 @@ Ate la, o Core deve rodar so com CLI + Shell.
 | ID | Gap |
 |---|---|
 | G-40 | Workflow Templates loading (nativo vs repo externo) — ver `08` | **CONFIRMED v0** — recorte G-194..G-200 em `40` (nativo no workspace; slice 33) |
-| G-41 | Biblioteca ampla de Players | Em andamento — Git/FS/Docker/HTTP/Test/NPM/pytest/yarn; **infra v0 CONFIRMED** (`41`, G-201..G-209; slice 34) |
+| G-41 | Biblioteca ampla de Players | Em andamento — Git/FS/Docker/HTTP/Test/NPM/pytest/yarn; **infra v0 CONFIRMED** (`41`, G-201..G-209; slice 34); **Helm v0 CONFIRMED** (`42`, G-210..G-216; slice 35) |
 | G-42 | Human-in-the-loop / Approvals | **CONFIRMED v0** — recorte G-81..G-86 em `22` |
 | G-43 | Resource Claims / Blast Radius | **Claims CONFIRMED v0** — `24`. **Blast CONFIRMED v0** — `25`. **Walk Blast←Graph CONFIRMED v0** — recorte G-111..G-116 em `27` |
 | G-44 | MCP integration — transporte da Project Memory | **CONFIRMED v0** — recorte G-187..G-193 em `39` (servidor MCP read-only; slice 32 feito) |
@@ -384,6 +384,18 @@ Ate la, o Core deve rodar so com CLI + Shell.
 | G-208 | Falha vs sucesso | **CONFIRMED** — exit ≠ 0 falha o Run |
 | G-209 | Exclusões v0 | **CONFIRMED** — apply/destroy/exec/SQL |
 
+## Helm Player (recorte G-41) — CONFIRMED v0 spec
+
+| ID | Gap | Notas |
+|---|---|---|
+| G-210 | Papel / pacote `helm` | **CONFIRMED** — `internal/players/helm`; deterministic |
+| G-211 | Capabilities v0 | **CONFIRMED** — `helm.lint`, `helm.template`, `helm.list`, `helm.status` |
+| G-212 | Sandbox / argv | **CONFIRMED** — sem install/upgrade/rollback/uninstall/get/test; sem `--set*`/values |
+| G-213 | Chart no workspace | **CONFIRMED** — marker `Chart.yaml`; cluster read via kubeconfig herdado |
+| G-214 | Falha vs sucesso | **CONFIRMED** — exit ≠ 0 → `runtime.player_error` |
+| G-215 | Registry + Graph + Intent | **CONFIRMED** — `heuristic.helm`; sem claim/blast |
+| G-216 | Exclusões v0 | **CONFIRMED** — repo/OCI, plugin, kustomize/k3s/kind, cloud SDKs |
+
 ---
 
 ## Ordem para fechar gaps
@@ -417,6 +429,7 @@ Ate la, o Core deve rodar so com CLI + Shell.
 27. MCP Memory Server — spec em `39` — G-187..G-193 CONFIRMED; codigo = slice 32
 28. Workflow Templates — spec em `40` — G-194..G-200 CONFIRMED; codigo = slice 33
 29. Infra Players — spec em `41` — G-201..G-209 CONFIRMED; codigo = slice 34
+30. Helm Player — spec em `42` — G-210..G-216 CONFIRMED; codigo = slice 35
 
 ## Criterio de “pronto para codar”
 
@@ -441,6 +454,7 @@ Ate la, o Core deve rodar so com CLI + Shell.
 **HTTP API (G-153..G-158): CONFIRMADO** — spec `34`; slices 25–26 feitas.
 **Desktop Wails (G-159..G-165): CONFIRMADO** — spec `35`; slices 27–28 feitas.
 **NPM Player (G-166..G-171): CONFIRMADO** — spec `36`; slice 29 feito.
+**Helm Player (G-210..G-216): CONFIRMADO** — spec `42`; slice 35 pendente.
 
 Ordem pratica de codigo:
 1. Core CLI + Shell (+ SQLite) — slice 1 — feito
@@ -473,8 +487,9 @@ Ordem pratica de codigo:
 28. MCP Memory Server v0 — spec `39` (G-187..G-193); slice 32 feito
 29. Workflow Templates v0 — spec `40` (G-194..G-200); slice 33 feito
 30. Infra Players v0 — spec `41` (G-201..G-209); slice 34 feito
+31. Helm Player v0 — spec `42` (G-210..G-216); slice 35
 
-P3 restante: NATS (G-36); G-41 além do recorte infra (Helm/cloud/SQL).
+P3 restante: NATS (G-36); G-41 além de infra+Helm (cloud/SQL).
 MVP 1.0 magro: spec `09`/`31` (G-135..G-140); slices 19–20 feitos.
 Test Player corte v0: spec `30` (G-129..G-134); slice 18 feito.
 Project Memory corte v0: spec `29` (G-123..G-128); slice 17 feito.

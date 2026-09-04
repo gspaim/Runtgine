@@ -47,6 +47,7 @@ Autoridade de decisoes: [04-decisoes.md](04-decisoes.md).
 | 39 | 39-mcp-memory-v0.md | MCP Memory Server v0 (**CONFIRMED**; G-187..G-193; recorte de G-44; slice 32 feito) |
 | 40 | 40-workflow-templates-v0.md | Workflow Templates v0 (**CONFIRMED**; G-194..G-200; recorte de G-40; slice 33) |
 | 41 | 41-infra-players-v0.md | Infra Players v0 (**CONFIRMED**; G-201..G-209; K8s/TF/PG; slice 34) |
+| 42 | 42-helm-player-v0.md | Helm Player v0 (**CONFIRMED**; G-210..G-216; recorte de G-41; slice 35 pendente) |
 | — | [openspec/](../openspec/README.md) | Pacotes de mudança OpenSpec (`NNN-slug`) |
 
 ## Fontes historicas (raiz do repo)
@@ -80,4 +81,6 @@ NPM Player (`36`, G-166..G-171) esta **CONFIRMED** (slice 29 feito).
 NPM Player (`36`), Pytest+Yarn (`37`), Memory Player (`38`) e MCP Memory
 (`39`) estao **CONFIRMED**. Workflow Templates (`40`, G-194..G-200) esta
 **CONFIRMED v0** (slice 33). Infra Players (`41`, G-201..G-209) esta
-**CONFIRMED v0** (slice 34). P3 restante: NATS (G-36); G-41 além de infra.
+**CONFIRMED v0** (slice 34). Helm Player (`42`, G-210..G-216) esta
+**CONFIRMED v0** (slice 35 pendente). P3 restante: NATS (G-36);
+G-41 além de infra+Helm (cloud/SQL).

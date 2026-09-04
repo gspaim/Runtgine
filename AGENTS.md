@@ -104,6 +104,9 @@ Workflow Templates: `docs/40-workflow-templates-v0.md` + archive
 Infra Players: `docs/41-infra-players-v0.md` + archive
 `openspec/changes/archive/2026-08-26-041-infra-players/` — CONFIRMED
 (G-201..G-209); slice 34 (k8s / terraform / postgres).
+Helm Player: `docs/42-helm-player-v0.md` + change ativa
+`openspec/changes/042-helm-player/` — CONFIRMED
+(G-210..G-216); slice 35 pendente.
 Skill obrigatoria para TUI: `.cursor/skills/runtgine-tui-design/SKILL.md`.
 
 ## Ordem de trabalho
@@ -143,7 +146,8 @@ Skill obrigatoria para TUI: `.cursor/skills/runtgine-tui-design/SKILL.md`.
 33. MCP Memory — CONFIRMED v0 em `39` + archive `039-mcp-memory` — slice 32
 34. Workflow Templates — CONFIRMED v0 em `40` (G-194..G-200) — slice 33
 35. Infra Players — CONFIRMED v0 em `41` (G-201..G-209) — slice 34
-36. Depois — so apos nova promocao em `04` (NATS G-36 DEFERRED; resto G-41)
+36. Helm Player — CONFIRMED v0 em `42` (G-210..G-216) — slice 35 pendente
+37. Depois — so apos nova promocao em `04` (NATS G-36 DEFERRED; resto G-41)
 
 ## Conceitos chave (nao confundir)
 
