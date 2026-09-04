@@ -672,6 +672,26 @@ slice 37 (feito).
 | G-229 Registry + Intent | CONFIRMED | `heuristic.gcp` / `heuristic.az`; mutantes não casam |
 | G-230 Exclusoes v0 | CONFIRMED | mutantes (create/delete/set/IAM/deploy), outros provedores, SQL |
 
+## Postgres EXPLAIN (recorte SQL) — CONFIRMED v0 spec
+
+Ver [45-pg-explain-v0.md](45-pg-explain-v0.md). Último recorte
+nomeado de G-41. **Levanta a exclusão "sem SQL no IR"**
+(G-206/G-209/G-216) somente para `pg.explain`: `EXPLAIN (FORMAT
+JSON)` sem ANALYZE (planner puro, sem execução/leitura de dados),
+SQL validada estaticamente (prefixo `SELECT`/`WITH`, sem `;`, sem
+`\`, ≤ 10 KiB — fecha meta-comandos psql e multi-statement).
+Código = slice 38 (feito).
+
+| Item | Status | Notas |
+|---|---|---|
+| G-231 Capability `pg.explain` | CONFIRMED | `sql` + conn do `pg.ping`; saída `plan` JSON + `truncated` |
+| G-232 Validação estática | CONFIRMED | 1ª palavra SELECT/WITH; sem `;` sem `\`; ≤ 10 KiB; conservador |
+| G-233 Conexão + argv | CONFIRMED | flags do `pg.ping`; `EXPLAIN (FORMAT JSON) ` prefixo construído pelo Player; senha só env |
+| G-234 Falha vs sucesso | CONFIRMED | exit ≠ 0 → `runtime.player_error`; JSON não-parseável → bruto + truncated |
+| G-235 Registry + admission | CONFIRMED | Manifest com `sql` só em `pg.explain`; runner valida |
+| G-236 Intent | CONFIRMED | `explain select|with` → `heuristic.pg`; `dbname` default `postgres` |
+| G-237 Exclusoes v0 | CONFIRMED | ANALYZE/EXECUTE, linhas, migrations, dump, outros SGBDs |
+
 ## Git / release — fluxo de branches
 
 Ver [15-git-workflow.md](15-git-workflow.md).

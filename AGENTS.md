@@ -113,6 +113,9 @@ Cloud AWS Player: `docs/43-aws-player-v0.md` + archive
 Cloud Players GCP + Azure: `docs/44-cloud-gcp-azure-players-v0.md`
 + archive `openspec/changes/archive/2026-09-04-044-cloud-gcp-azure/`
 — CONFIRMED (G-224..G-230); slice 37 feito.
+Postgres EXPLAIN: `docs/45-pg-explain-v0.md` + archive
+`openspec/changes/archive/2026-09-04-045-pg-explain/` — CONFIRMED
+(G-231..G-237); slice 38 feito; fecha a fila nomeada de G-41.
 Skill obrigatoria para TUI: `.cursor/skills/runtgine-tui-design/SKILL.md`.
 
 ## Ordem de trabalho
@@ -155,7 +158,8 @@ Skill obrigatoria para TUI: `.cursor/skills/runtgine-tui-design/SKILL.md`.
 36. Helm Player — CONFIRMED v0 em `42` (G-210..G-216) — slice 35 feito
 37. Cloud AWS Player — CONFIRMED v0 em `43` (G-217..G-223) — slice 36 feito
 38. Cloud Players GCP + Azure — CONFIRMED v0 em `44` (G-224..G-230) — slice 37 feito
-39. Depois — SQL/migrations exige spec propria; NATS G-36 DEFERRED
+39. Postgres EXPLAIN — CONFIRMED v0 em `45` (G-231..G-237) — slice 38 feito; fila G-41 fechada
+40. Depois — NATS G-36 DEFERRED; novas promocoes exigem decisao em `04`
 
 ## Conceitos chave (nao confundir)
 

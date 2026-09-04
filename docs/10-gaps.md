@@ -104,7 +104,7 @@ Ate la, o Core deve rodar so com CLI + Shell.
 | ID | Gap |
 |---|---|
 | G-40 | Workflow Templates loading (nativo vs repo externo) — ver `08` | **CONFIRMED v0** — recorte G-194..G-200 em `40` (nativo no workspace; slice 33) |
-| G-41 | Biblioteca ampla de Players | Em andamento — Git/FS/Docker/HTTP/Test/NPM/pytest/yarn; **infra v0 CONFIRMED** (`41`, G-201..G-209; slice 34); **Helm v0 CONFIRMED** (`42`, G-210..G-216; slice 35 feito); **AWS v0 CONFIRMED** (`43`, G-217..G-223; slice 36 feito); **GCP/Azure v0 CONFIRMED** (`44`, G-224..G-230; slice 37 feito) |
+| G-41 | Biblioteca ampla de Players | Em andamento — Git/FS/Docker/HTTP/Test/NPM/pytest/yarn; **infra v0 CONFIRMED** (`41`, G-201..G-209; slice 34); **Helm v0 CONFIRMED** (`42`, G-210..G-216; slice 35 feito); **AWS v0 CONFIRMED** (`43`, G-217..G-223; slice 36 feito); **GCP/Azure v0 CONFIRMED** (`44`, G-224..G-230; slice 37 feito); **SQL/EXPLAIN v0 CONFIRMED** (`45`, G-231..G-237; slice 38 feito) |
 | G-42 | Human-in-the-loop / Approvals | **CONFIRMED v0** — recorte G-81..G-86 em `22` |
 | G-43 | Resource Claims / Blast Radius | **Claims CONFIRMED v0** — `24`. **Blast CONFIRMED v0** — `25`. **Walk Blast←Graph CONFIRMED v0** — recorte G-111..G-116 em `27` |
 | G-44 | MCP integration — transporte da Project Memory | **CONFIRMED v0** — recorte G-187..G-193 em `39` (servidor MCP read-only; slice 32 feito) |
@@ -420,6 +420,18 @@ Ate la, o Core deve rodar so com CLI + Shell.
 | G-229 | Registry + Graph + Intent | **CONFIRMED** — `heuristic.gcp` / `heuristic.az`; sem claim/blast |
 | G-230 | Exclusões v0 | **CONFIRMED** — mutantes (create/delete/set/IAM/deploy), outros provedores, SQL |
 
+## Postgres EXPLAIN (recorte SQL de G-41) — CONFIRMED v0 spec
+
+| ID | Gap | Notas |
+|---|---|---|
+| G-231 | Capability `pg.explain` | **CONFIRMED** — `EXPLAIN (FORMAT JSON)` sem ANALYZE; `plan` JSON |
+| G-232 | Validação estática | **CONFIRMED** — 1ª palavra SELECT/WITH; sem `;` sem `\`; ≤ 10 KiB |
+| G-233 | Conexão + argv | **CONFIRMED** — flags do `pg.ping`; prefixo construído pelo Player; senha só env |
+| G-234 | Falha vs sucesso | **CONFIRMED** — exit ≠ 0 → `runtime.player_error` |
+| G-235 | Registry + admission | **CONFIRMED** — `sql` só em `pg.explain`; runner valida |
+| G-236 | Intent | **CONFIRMED** — `explain select\|with` → `heuristic.pg` |
+| G-237 | Exclusões v0 | **CONFIRMED** — ANALYZE/EXECUTE, linhas, migrations, dump, outros SGBDs |
+
 ---
 
 ## Ordem para fechar gaps
@@ -456,6 +468,7 @@ Ate la, o Core deve rodar so com CLI + Shell.
 30. Helm Player — spec em `42` — G-210..G-216 CONFIRMED; codigo = slice 35 — feito
 31. Cloud AWS Player — spec em `43` — G-217..G-223 CONFIRMED; codigo = slice 36 — feito
 32. Cloud Players GCP + Azure — spec em `44` — G-224..G-230 CONFIRMED; codigo = slice 37 — feito
+33. Postgres EXPLAIN (SQL) — spec em `45` — G-231..G-237 CONFIRMED; codigo = slice 38 — feito
 
 ## Criterio de “pronto para codar”
 
@@ -483,6 +496,7 @@ Ate la, o Core deve rodar so com CLI + Shell.
 **Helm Player (G-210..G-216): CONFIRMADO** — spec `42`; slice 35 feito.
 **Cloud AWS Player (G-217..G-223): CONFIRMADO** — spec `43`; slice 36 feito.
 **Cloud Players GCP + Azure (G-224..G-230): CONFIRMADO** — spec `44`; slice 37 feito.
+**Postgres EXPLAIN (G-231..G-237): CONFIRMADO** — spec `45`; slice 38 feito.
 
 Ordem pratica de codigo:
 1. Core CLI + Shell (+ SQLite) — slice 1 — feito
@@ -518,9 +532,10 @@ Ordem pratica de codigo:
 31. Helm Player v0 — spec `42` (G-210..G-216); slice 35 feito
 32. Cloud AWS Player v0 — spec `43` (G-217..G-223); slice 36 feito
 33. Cloud Players GCP + Azure v0 — spec `44` (G-224..G-230); slice 37 feito
+34. Postgres EXPLAIN v0 — spec `45` (G-231..G-237); slice 38 feito
 
-P3 restante: SQL/migrations (exige spec propria com desenho de
-seguranca); NATS (G-36, DEFERRED).
+P3 restante: apenas NATS (G-36, DEFERRED — so com nova decisao em `04`).
+A fila nomeada de recortes de G-41 esta fechada (slices 34–38).
 MVP 1.0 magro: spec `09`/`31` (G-135..G-140); slices 19–20 feitos.
 Test Player corte v0: spec `30` (G-129..G-134); slice 18 feito.
 Project Memory corte v0: spec `29` (G-123..G-128); slice 17 feito.

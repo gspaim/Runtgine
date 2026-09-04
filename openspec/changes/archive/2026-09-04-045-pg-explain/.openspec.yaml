@@ -1,0 +1,9 @@
+schema: spec-driven
+created: 2026-09-04
+nnn: "045"
+slug: pg-explain
+docs_canonical: docs/45-pg-explain-v0.md
+gaps: [G-231, G-232, G-233, G-234, G-235, G-236, G-237]
+status: archived
+branch: feat/045-pg-explain
+depends_on: ["041-infra-players"]

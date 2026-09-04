@@ -50,6 +50,7 @@ Autoridade de decisoes: [04-decisoes.md](04-decisoes.md).
 | 42 | 42-helm-player-v0.md | Helm Player v0 (**CONFIRMED**; G-210..G-216; recorte de G-41; slice 35 feito) |
 | 43 | 43-aws-player-v0.md | Cloud AWS Player v0 read-only (**CONFIRMED**; G-217..G-223; recorte de G-41; slice 36 feito) |
 | 44 | 44-cloud-gcp-azure-players-v0.md | Cloud Players GCP + Azure read-only (**CONFIRMED**; G-224..G-230; recorte de G-41; slice 37 feito) |
+| 45 | 45-pg-explain-v0.md | Postgres EXPLAIN read-only (**CONFIRMED**; G-231..G-237; recorte de G-41; slice 38 feito; fecha a fila G-41) |
 | — | [openspec/](../openspec/README.md) | Pacotes de mudança OpenSpec (`NNN-slug`) |
 
 ## Fontes historicas (raiz do repo)
@@ -87,5 +88,6 @@ NPM Player (`36`), Pytest+Yarn (`37`), Memory Player (`38`) e MCP Memory
 **CONFIRMED v0** (slice 35 feito). Cloud AWS Player (`43`,
 G-217..G-223) esta **CONFIRMED v0** (slice 36 feito). Cloud Players
 GCP + Azure (`44`, G-224..G-230) esta **CONFIRMED v0** (slice 37
-feito). P3 restante: SQL/migrations (spec propria) e NATS (G-36,
-DEFERRED).
+feito). Postgres EXPLAIN (`45`, G-231..G-237) esta **CONFIRMED v0**
+(slice 38 feito; fecha a fila nomeada de G-41). P3 restante: apenas
+NATS (G-36, DEFERRED).
