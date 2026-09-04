@@ -159,4 +159,5 @@ Slices 1–9 implementados (Core → Intent → Graph → Git → Filesystem).
 **HTTP API v0: CONFIRMED + implementado** (`34`, G-153..G-158; slices 25–26).
 **Desktop Wails v0: CONFIRMED + implementado** (`35`, G-159..G-165; slices 27–28).
 **NPM Player v0: CONFIRMED + implementado** (`36`, G-166..G-171; slice 29).
+**TUI v1: CONFIRMED spec** (`46`, G-238..G-244; codigo = slice 39).
 P3 restante: G-44 MCP; NATS; G-41 (pytest/yarn/infra).

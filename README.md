@@ -114,7 +114,7 @@ Visão enxuta do que já está em `main`. **Atualizar esta seção em todo PR
 | Feito | Slice 37 — Cloud Players GCP + Azure v0 (`44`, G-224..G-230; `gcp.*` / `azure.*` read-only) |
 | Feito | Slice 38 — Postgres EXPLAIN v0 (`45`, G-231..G-237; `pg.explain`; fila G-41 fechada) |
 | Feito | Release v0.1.0-rc.1 — primeiro corte do produto (binários multi-OS) |
-| Próximo código | Nenhum recorte nomeado restante; NATS (G-36) DEFERRED — release ou nova decisão em `04` |
+| Próximo código | Slice 39 — TUI v1 Charm Mission Control (`46`, G-238..G-244) |
 
 Detalhe do corte: [`docs/09-mvp.md`](docs/09-mvp.md). Limitações atuais abaixo.
 
@@ -337,6 +337,10 @@ Atalhos principais:
 A interface adapta-se a terminais largos, médios e estreitos, respeita
 `NO_COLOR` e oferece fallback ASCII com `RUNTGINE_ASCII=1`.
 
+TUI v1 (spec [`46`](docs/46-tui-v1.md), slice 39): mesmos sete tabs;
+Bubbles `table` / `textarea` / `viewport` / `help`; Hits e Blast
+inline (sem aba nova). PTY e canvas 2D continuam fora.
+
 ## GitHub Board
 
 Defina um token e importe Issues:
@@ -450,6 +454,7 @@ vulnerabilidade.
 | [Desktop Wails](docs/35-wails-v0.md) | `runtgine desktop` (G-159..G-165; slices 27–28) |
 | [OpenSpec](openspec/README.md) | Pacotes de mudança `NNN-slug` |
 | [TUI Design](docs/14-tui-design.md) | Constellation Mission Control |
+| [TUI v1](docs/46-tui-v1.md) | Charm Bubbles + Hits/Blast inline (G-238..G-244; slice 39) |
 | [Git workflow](docs/15-git-workflow.md) | Branches, RC e releases |
 | [Intent Engine](docs/17-intent-engine-v0.md) | NL → Task IR v0 |
 | [Guia para LLMs](AGENTS.md) | Regras de implementação |

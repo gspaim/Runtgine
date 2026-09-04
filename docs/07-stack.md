@@ -30,7 +30,9 @@ Go e ideal para isso:
 Cobra: padrao de fato para CLI em Go (Docker, K8s, Hugo usam).
 Bubble Tea: framework TUI Elm-architecture. Com Lip Gloss
 (estilizacao) e Bubbles (componentes prontos: input, spinner,
-tabela, lista, viewport, progress). Produtivo e maduro.
+tabela, lista, viewport, progress, textarea, help). Produtivo e maduro.
+O corte v1 (`46`) **usa** esses componentes no layout; o v0 só usava
+o motor Elm + spinner/progress.
 
 ## Por que Wails (desktop)
 
