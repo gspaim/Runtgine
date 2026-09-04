@@ -595,7 +595,11 @@ func (r *Runner) execute(ctx context.Context, t task.Task, p plan.Plan, skipAppr
 	r.syncGraph(p.RunID)
 }
 
-func (r *Runner) fail(ctx context.Context, p plan.Plan, t task.Task, err error) {
+func (r *Runner) fail(_ context.Context, p plan.Plan, t task.Task, err error) {
+	// Persist with a fresh context: fail() can run after the run context
+	// was cancelled, and a cancelled context would silently drop the
+	// terminal status write.
+	ctx := context.Background()
 	_ = r.Store.UpdateRunStatus(ctx, p.RunID, store.StatusFailed, store.FormatErr(err))
 	_ = r.emit(p.RunID, p.TaskID, nil, event.TypeRunFailed, map[string]any{"error": err.Error()})
 	r.captureFailure(ctx, p.RunID, t.TaskID, t.Intent.Summary, err)
@@ -603,7 +607,9 @@ func (r *Runner) fail(ctx context.Context, p plan.Plan, t task.Task, err error) 
 	r.syncGraph(p.RunID)
 }
 
-func (r *Runner) cancelled(ctx context.Context, p plan.Plan) {
+func (r *Runner) cancelled(_ context.Context, p plan.Plan) {
+	// Same as fail(): the run context is already cancelled here.
+	ctx := context.Background()
 	_ = r.Store.UpdateRunStatus(ctx, p.RunID, store.StatusCancelled, "")
 	_ = r.emit(p.RunID, p.TaskID, nil, event.TypeRunCancelled, nil)
 	r.releaseClaims(p.RunID, p.TaskID)
