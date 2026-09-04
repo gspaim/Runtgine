@@ -137,7 +137,7 @@ Ver [09-mvp.md](09-mvp.md). Decisoes-chave:
 - MCP Memory Server v0 (G-187..G-193; recorte G-44) — spec `39`; codigo = slice 32 — feito
 - Workflow Templates v0 (G-194..G-200; recorte G-40) — spec `40`; codigo = slice 33 — feito
 - Infra Players v0 (G-201..G-209; recorte G-41) — spec `41`; codigo = slice 34 — feito
-- TUI v1 Charm Mission Control (G-238..G-244) — spec `46`; codigo = slice 39
+- TUI v1 Charm Mission Control (G-238..G-244) — spec `46`; codigo = slice 39 — feito
 
 ## Protocolo v0 — confirmado (sessao de fechamento)
 
@@ -224,7 +224,7 @@ Ver [14-tui-design.md](14-tui-design.md).
 | TUI usa apenas APIs do Core | CONFIRMED | Nunca chama Player diretamente |
 | Charm stack v2 via `charm.land/*` | IMPLEMENTED | Requer Go 1.25+ |
 | Config da TUI read-only e secrets mascarados | IMPLEMENTED | Snapshot publico contem apenas estado/config nao sensivel |
-| TUI v1 (Bubbles + Hits/Blast inline) | CONFIRMED | spec `46`; codigo = slice 39 |
+| TUI v1 (Bubbles + Hits/Blast inline) | CONFIRMED | spec `46`; codigo = slice 39 — feito |
 | tuios no MVP | REJECTED | Nao e multiplexer; PTY futuro exige nova decisao (fora de `46`) |
 
 ## Board / pipeline (P1) — CONFIRMADO
@@ -697,7 +697,7 @@ Código = slice 38 (feito).
 ## TUI v1 — Charm Mission Control — CONFIRMED v0
 
 Ver [46-tui-v1.md](46-tui-v1.md). Redesenho da superfície Charm v2
-(já CONFIRMED) + Hits/Blast inline. Código = slice 39 (ainda não).
+(já CONFIRMED) + Hits/Blast inline. Código = slice 39 (feito).
 Não é troca de stack. Não é PTY/tuios. Não é canvas 2D.
 
 | Item | Status | Notas |

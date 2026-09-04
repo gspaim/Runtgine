@@ -18,13 +18,12 @@ GRAPH ([26-tui-graph-v0.md](26-tui-graph-v0.md)), INTENT
 Este PR **altera `14`** e a skill
 `.cursor/skills/runtgine-tui-design/SKILL.md`.
 
-**Status deste doc: CONFIRMED v0 (código = slice 39, ainda não).**
+**Status deste doc: CONFIRMED v0 (slice 39 feito).**
 G-238..G-244. PTY/tuios e canvas 2D do GRAPH **permanecem fora**.
 
 **Pacote OpenSpec:**
-[`openspec/changes/046-tui-v1/`](../openspec/changes/046-tui-v1/).
-Branch de implementação: `feat/046-tui-v1` (docs nesta PR; código
-depois do merge da spec).
+[`openspec/changes/archive/2026-09-04-046-tui-v1/`](../openspec/changes/archive/2026-09-04-046-tui-v1/).
+Spec atual: [`openspec/specs/tui-v1/`](../openspec/specs/tui-v1/).
 
 ---
 

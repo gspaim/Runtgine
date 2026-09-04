@@ -523,11 +523,21 @@ func (r *Runner) execute(ctx context.Context, t task.Task, p plan.Plan, skipAppr
 		pack = r.attachMemoryHits(ctx, pack, t)
 		pack = r.attachPlaybookHits(pack)
 		packJSON, _ := contextpack.Marshal(pack)
-		_ = r.emit(p.RunID, t.TaskID, &stepID, event.TypeStepStarted, map[string]any{
+		started := map[string]any{
 			"capability":    s.Capability,
 			"player":        s.Player,
 			"context_bytes": len(packJSON),
-		})
+		}
+		if len(pack.GraphHits.Items) > 0 {
+			started["graph_hits"] = pack.GraphHits.Items
+		}
+		if len(pack.MemoryHits.Items) > 0 {
+			started["memory_hits"] = pack.MemoryHits.Items
+		}
+		if len(pack.PlaybookHits.Items) > 0 {
+			started["playbook_hits"] = pack.PlaybookHits.Items
+		}
+		_ = r.emit(p.RunID, t.TaskID, &stepID, event.TypeStepStarted, started)
 
 		player, ok := r.Reg.Get(s.Player)
 		if !ok {

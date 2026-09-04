@@ -37,10 +37,11 @@ branch:              feat/<NNN>-<slug>   (ou docs/ fix/ chore/)
 
 Exemplos válidos: `001-shell-player`, `017-intent-engine`, `019-graph-hits`.
 
-**Próximo id livre:** `047`. Mudança ativa:
-[`changes/046-tui-v1/`](changes/046-tui-v1/)
-(TUI v1 Charm Mission Control; G-238..G-244; slice 39).
+**Próximo id livre:** `047`. Nenhuma mudança ativa.
 Último archive:
+[`changes/archive/2026-09-04-046-tui-v1/`](changes/archive/2026-09-04-046-tui-v1/)
+(TUI v1 Charm Mission Control; G-238..G-244; slice 39).
+Último archive anterior:
 [`changes/archive/2026-09-04-045-pg-explain/`](changes/archive/2026-09-04-045-pg-explain/)
 (Postgres EXPLAIN; G-231..G-237; slice 38; fecha a fila G-41).
 Archives anteriores:
@@ -106,4 +107,4 @@ Não codificar mudança cujo status em `04` não esteja **CONFIRMED**
 | `aws-player` | Player `aws` read-only (sts-identity/s3-buckets/s3-objects; spec 043) |
 | `cloud-gcp-azure` | Players `gcp` / `azure` read-only (identity/config/list; spec 044) |
 | `pg-explain` | Capability `pg.explain` read-only no Player postgres (spec 045) |
-| `tui-v1` | TUI v1 Charm Mission Control + Hits/Blast inline (spec 046; change ativa) |
+| `tui-v1` | TUI v1 Charm Mission Control + Hits/Blast inline (spec 046) |

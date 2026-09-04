@@ -8,11 +8,21 @@ import (
 	"strings"
 	"time"
 
+	"charm.land/bubbles/v2/list"
 	tea "charm.land/bubbletea/v2"
 	"charm.land/lipgloss/v2"
 
 	"github.com/gspaim/Runtgine/internal/core/graph"
 )
+
+type graphListItem struct {
+	kind string
+	id   string
+}
+
+func (g graphListItem) Title() string       { return g.kind }
+func (g graphListItem) Description() string { return g.id }
+func (g graphListItem) FilterValue() string { return g.kind + " " + g.id }
 
 var graphKindOrder = []string{
 	graph.KindPlayer,
@@ -111,43 +121,37 @@ func (m Model) renderGraph() string {
 		return m.theme.Panel(true).Render(body)
 	}
 
-	limit := max(3, m.height-14)
-	lines := []string{header, ""}
+	items := make([]list.Item, 0, len(nodes))
 	var selected graph.Node
 	for i, n := range nodes {
 		if i == m.graphSelected {
 			selected = n
 		}
-		if i >= limit {
-			continue
-		}
-		idWidth := max(12, min(40, m.width-20))
-		line := fmt.Sprintf("%-12s %s", n.Kind, truncate(n.ID, idWidth))
-		if i == m.graphSelected {
-			line = m.theme.Selected().Render("> " + line)
-		} else {
-			line = "  " + line
-		}
-		lines = append(lines, line)
+		items = append(items, graphListItem{kind: n.Kind, id: n.ID})
 	}
-	lines = append(lines, "", m.graphFilterLine())
+	m.graphList.SetItems(items)
+	if len(items) > 0 {
+		m.graphList.Select(m.graphSelected)
+	}
+	m.graphList.SetSize(max(20, m.width/2-6), max(6, m.height-14))
+	listBody := header + "\n" + m.graphList.View() + "\n" + m.graphFilterLine()
 	if m.graphErr != nil {
-		lines = append(lines, m.theme.Status("failed").Render("error: "+m.graphErr.Error()))
+		listBody += "\n" + m.theme.Status("failed").Render("error: "+m.graphErr.Error())
 	}
-	listBody := strings.Join(lines, "\n")
 
 	showDetail := m.width >= 80 || m.graphInspect
 	if !showDetail || selected.Kind == "" {
 		return m.theme.Panel(true).Render(listBody)
 	}
+	detailBody := m.graphDetail(selected)
 	if m.width >= 120 {
 		left := m.theme.Panel(true).Width(m.width/2 - 4).Render(listBody)
-		right := m.theme.Panel(false).Width(m.width/2 - 4).Render(m.graphDetail(selected))
+		right := m.theme.Panel(false).Width(m.width/2 - 4).Render(detailBody)
 		return lipgloss.JoinHorizontal(lipgloss.Top, left, right)
 	}
-	list := m.theme.Panel(true).Render(listBody)
-	detail := m.theme.Panel(false).Render(m.graphDetail(selected))
-	return lipgloss.JoinVertical(lipgloss.Left, list, detail)
+	listPane := m.theme.Panel(true).Render(listBody)
+	detail := m.theme.Panel(false).Render(detailBody)
+	return lipgloss.JoinVertical(lipgloss.Left, listPane, detail)
 }
 
 func (m Model) graphHeader() string {
