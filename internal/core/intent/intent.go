@@ -31,6 +31,8 @@ const (
 	MethodHeuristicPG       = "heuristic.pg"
 	MethodHeuristicHelm     = "heuristic.helm"
 	MethodHeuristicAWS      = "heuristic.aws"
+	MethodHeuristicGCP      = "heuristic.gcp"
+	MethodHeuristicAZ       = "heuristic.az"
 	MethodHeuristicTemplate = "heuristic.template"
 	MethodLLM               = "llm"
 )
@@ -280,6 +282,9 @@ func matchPlayer(text string) (playerHit, bool) {
 	if hit, ok := matchAWS(n); ok {
 		return hit, true
 	}
+	if hit, ok := matchCloudCLI(n); ok {
+		return hit, true
+	}
 	switch {
 	case hasPhrase(n, "terraform validate"):
 		return playerHit{capability: "tf.validate", method: MethodHeuristicTF}, true
@@ -400,6 +405,23 @@ func splitS3URI(uri string) (bucket, prefix string, ok bool) {
 		return "", "", false
 	}
 	return bucket, prefix, true
+}
+
+// matchCloudCLI matches read-only gcloud/az invocations (spec 44).
+// Mutants like projects create / group delete never match here.
+func matchCloudCLI(n string) (playerHit, bool) {
+	exact := map[string]playerHit{
+		"gcloud auth list":     {capability: "gcp.identity", method: MethodHeuristicGCP},
+		"gcloud config list":   {capability: "gcp.config", method: MethodHeuristicGCP},
+		"gcloud projects list": {capability: "gcp.projects", method: MethodHeuristicGCP},
+		"az account show":      {capability: "azure.identity", method: MethodHeuristicAZ},
+		"az account list":      {capability: "azure.subscriptions", method: MethodHeuristicAZ},
+		"az group list":        {capability: "azure.groups", method: MethodHeuristicAZ},
+	}
+	if hit, ok := exact[n]; ok {
+		return hit, true
+	}
+	return playerHit{}, false
 }
 
 func matchTemplate(text string, list []templates.Template) (templates.Template, bool, bool) {

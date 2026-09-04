@@ -25,10 +25,12 @@ import (
 	"github.com/gspaim/Runtgine/internal/core/store"
 	"github.com/gspaim/Runtgine/internal/core/task"
 	awsplayer "github.com/gspaim/Runtgine/internal/players/aws"
+	azureplayer "github.com/gspaim/Runtgine/internal/players/azure"
 	dockplayer "github.com/gspaim/Runtgine/internal/players/docker"
 	"github.com/gspaim/Runtgine/internal/players/filesystem"
 	"github.com/gspaim/Runtgine/internal/players/git"
 	gotestplayer "github.com/gspaim/Runtgine/internal/players/gotest"
+	gcpplayer "github.com/gspaim/Runtgine/internal/players/gcp"
 	helmplayer "github.com/gspaim/Runtgine/internal/players/helm"
 	httpplayer "github.com/gspaim/Runtgine/internal/players/httpclient"
 	"github.com/gspaim/Runtgine/internal/players/jstest"
@@ -310,6 +312,22 @@ func (r *Runner) validateTaskIR(t task.Task) error {
 			}
 		case awsplayer.CapStsIdentity, awsplayer.CapS3Buckets, awsplayer.CapS3Objects:
 			if err := awsplayer.ValidateStaticInput(r.Workspace, s.Capability, s.Input); err != nil {
+				var ve result.Error
+				if errors.As(err, &ve) {
+					return r.reject(t.TaskID, ve.Code, ve.Message)
+				}
+				return r.reject(t.TaskID, result.CodeInvalidInput, err.Error())
+			}
+		case gcpplayer.CapIdentity, gcpplayer.CapConfig, gcpplayer.CapProjects:
+			if err := gcpplayer.ValidateStaticInput(r.Workspace, s.Capability, s.Input); err != nil {
+				var ve result.Error
+				if errors.As(err, &ve) {
+					return r.reject(t.TaskID, ve.Code, ve.Message)
+				}
+				return r.reject(t.TaskID, result.CodeInvalidInput, err.Error())
+			}
+		case azureplayer.CapIdentity, azureplayer.CapSubscriptions, azureplayer.CapGroups:
+			if err := azureplayer.ValidateStaticInput(r.Workspace, s.Capability, s.Input); err != nil {
 				var ve result.Error
 				if errors.As(err, &ve) {
 					return r.reject(t.TaskID, ve.Code, ve.Message)

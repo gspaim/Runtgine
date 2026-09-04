@@ -1,0 +1,18 @@
+{
+  "schema_version": "0.1.0",
+  "source": {
+    "entry_point": "cli",
+    "ref": "examples/az-groups.json"
+  },
+  "intent": {
+    "summary": "List Azure resource groups"
+  },
+  "steps": [
+    {
+      "step_id": "s1",
+      "capability": "azure.groups",
+      "input": {},
+      "depends_on": []
+    }
+  ]
+}

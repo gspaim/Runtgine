@@ -57,7 +57,7 @@ Status: CONFIRMED | HYPOTHESIS | OPEN QUESTION | REJECTED
 | TUI GRAPH tab | CONFIRMED (v0) | Aba read-only; ver `26-tui-graph-v0.md` + `14` |
 | HTTP Player | CONFIRMED (v0) | Cliente GET/HEAD HTTPS; ver `28-http-player-v0.md` |
 | Test Player | CONFIRMED (v0) | `test.go` no workspace; ver `30-test-player-v0.md` |
-| Many deterministic Players | CONFIRMED | Estrategico; recortes G-41: infra em `41`, Helm em `42`, AWS em `43` |
+| Many deterministic Players | CONFIRMED | Estrategico; recortes G-41: infra em `41`, Helm em `42`, AWS em `43`, GCP/Azure em `44` |
 | Workflow Templates v0 | CONFIRMED (v0) | JSON nativo no workspace; ver `40-workflow-templates-v0.md` |
 | Runtgine + Chorus | CONFIRMED | Complementares |
 | Event Bus in-process (MVP) | CONFIRMED | Canais Go |
@@ -207,6 +207,7 @@ Ver [13-p2.md](13-p2.md).
 | G-34 Testes | CONFIRMED | Unit + integracao + smoke; LLM mockado |
 | G-35 Wails Svelte vs React | CONFIRMED | Wails mantido; frontend Svelte |
 | G-36 NATS | DEFERRED | Bus plugavel; sem NATS no MVP |
+| G-37 Modulo path / Go | CONFIRMED | `github.com/gspaim/Runtgine`; Go minimo = go.mod (`1.25`) |
 | G-38 Config runtime | CONFIRMED | defaults < file < env < flags |
 
 ## TUI — Constellation Mission Control
@@ -651,6 +652,25 @@ credenciais só via ambiente. Código = slice 36 (feito).
 | G-221 Falha vs sucesso | CONFIRMED | exit ≠ 0 → `runtime.player_error`; JSON não-parseável → bruto + truncated |
 | G-222 Registry + Intent | CONFIRMED | `heuristic.aws` antes de shell; `s3://` parse estático; `s3 rm` não casa |
 | G-223 Exclusoes v0 | CONFIRMED | mutantes, GCP/Azure, SQL, NATS, MCP, templates |
+
+## Cloud Players (GCP + Azure) — CONFIRMED v0 spec
+
+Ver [44-cloud-gcp-azure-players-v0.md](44-cloud-gcp-azure-players-v0.md).
+Recorte de G-41 (cloud read-only, fecha a parte cloud). Levanta a
+exclusão de cloud SDKs de `41`–`43` só para GCP/Azure em leitura.
+Identidade, config e listagem em JSON; zero campos no IR além de
+`timeout_ms`; credenciais via ambiente/config herdado. Código =
+slice 37 (feito).
+
+| Item | Status | Notas |
+|---|---|---|
+| G-224 GCP Player | CONFIRMED | `internal/players/gcp` (binário `gcloud`); `gcp.identity` / `config` / `projects` |
+| G-225 GCP sandbox | CONFIRMED | `--format=json` fixo; sem filter/project no IR; env/config herdado |
+| G-226 Azure Player | CONFIRMED | `internal/players/azure` (binário `az`); `azure.identity` / `subscriptions` / `groups` |
+| G-227 Azure sandbox | CONFIRMED | `-o json` fixo; sem subscription/query no IR; `az login` herdado |
+| G-228 Falha vs sucesso | CONFIRMED | exit ≠ 0 → `runtime.player_error`; JSON não-parseável → bruto + truncated |
+| G-229 Registry + Intent | CONFIRMED | `heuristic.gcp` / `heuristic.az`; mutantes não casam |
+| G-230 Exclusoes v0 | CONFIRMED | mutantes (create/delete/set/IAM/deploy), outros provedores, SQL |
 
 ## Git / release — fluxo de branches
 

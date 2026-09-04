@@ -86,6 +86,12 @@ func TestCompilePlayerHeuristics(t *testing.T) {
 		{"aws sts get-caller-identity", intent.MethodHeuristicAWS, "aws.sts-identity"},
 		{"aws s3 ls", intent.MethodHeuristicAWS, "aws.s3-buckets"},
 		{"aws s3 ls s3://data/logs", intent.MethodHeuristicAWS, "aws.s3-objects"},
+		{"gcloud auth list", intent.MethodHeuristicGCP, "gcp.identity"},
+		{"gcloud config list", intent.MethodHeuristicGCP, "gcp.config"},
+		{"gcloud projects list", intent.MethodHeuristicGCP, "gcp.projects"},
+		{"az account show", intent.MethodHeuristicAZ, "azure.identity"},
+		{"az account list", intent.MethodHeuristicAZ, "azure.subscriptions"},
+		{"az group list", intent.MethodHeuristicAZ, "azure.groups"},
 	}
 	for _, tc := range cases {
 		t.Run(tc.text, func(t *testing.T) {
@@ -174,6 +180,19 @@ func TestCompileAwsMutantDoesNotMatchPlayer(t *testing.T) {
 	}
 	if res.Method == intent.MethodHeuristicAWS {
 		t.Fatalf("s3 rm must not match the aws player heuristics (method=%s)", res.Method)
+	}
+}
+
+func TestCompileCloudMutantsDoNotMatchPlayers(t *testing.T) {
+	e := intent.New(llm.HeuristicCompleter{})
+	for _, text := range []string{"gcloud projects create demo", "az group delete -n rg"} {
+		res, err := e.Compile(context.Background(), intent.Request{Text: text})
+		if err != nil {
+			t.Fatal(err)
+		}
+		if res.Method == intent.MethodHeuristicGCP || res.Method == intent.MethodHeuristicAZ {
+			t.Fatalf("%s must not match cloud player heuristics (method=%s)", text, res.Method)
+		}
 	}
 }
 

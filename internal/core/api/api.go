@@ -24,10 +24,12 @@ import (
 	"github.com/gspaim/Runtgine/internal/core/task"
 	"github.com/gspaim/Runtgine/internal/core/templates"
 	awsplayer "github.com/gspaim/Runtgine/internal/players/aws"
+	azureplayer "github.com/gspaim/Runtgine/internal/players/azure"
 	dockerplayer "github.com/gspaim/Runtgine/internal/players/docker"
 	"github.com/gspaim/Runtgine/internal/players/filesystem"
 	gitplayer "github.com/gspaim/Runtgine/internal/players/git"
 	gotestplayer "github.com/gspaim/Runtgine/internal/players/gotest"
+	gcpplayer "github.com/gspaim/Runtgine/internal/players/gcp"
 	helmplayer "github.com/gspaim/Runtgine/internal/players/helm"
 	httpplayer "github.com/gspaim/Runtgine/internal/players/httpclient"
 	"github.com/gspaim/Runtgine/internal/players/jstest"
@@ -120,6 +122,14 @@ func Open(cfg config.Config, log *slog.Logger) (*Core, error) {
 		return nil, err
 	}
 	if err := reg.Register(awsplayer.New()); err != nil {
+		_ = st.Close()
+		return nil, err
+	}
+	if err := reg.Register(gcpplayer.New()); err != nil {
+		_ = st.Close()
+		return nil, err
+	}
+	if err := reg.Register(azureplayer.New()); err != nil {
 		_ = st.Close()
 		return nil, err
 	}

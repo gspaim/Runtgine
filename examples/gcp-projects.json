@@ -1,0 +1,18 @@
+{
+  "schema_version": "0.1.0",
+  "source": {
+    "entry_point": "cli",
+    "ref": "examples/gcp-projects.json"
+  },
+  "intent": {
+    "summary": "List GCP projects"
+  },
+  "steps": [
+    {
+      "step_id": "s1",
+      "capability": "gcp.projects",
+      "input": {},
+      "depends_on": []
+    }
+  ]
+}
