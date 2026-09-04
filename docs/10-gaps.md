@@ -104,7 +104,7 @@ Ate la, o Core deve rodar so com CLI + Shell.
 | ID | Gap |
 |---|---|
 | G-40 | Workflow Templates loading (nativo vs repo externo) — ver `08` | **CONFIRMED v0** — recorte G-194..G-200 em `40` (nativo no workspace; slice 33) |
-| G-41 | Biblioteca ampla de Players | Em andamento — Git/FS/Docker/HTTP/Test/NPM/pytest/yarn; **infra v0 CONFIRMED** (`41`, G-201..G-209; slice 34); **Helm v0 CONFIRMED** (`42`, G-210..G-216; slice 35 feito) |
+| G-41 | Biblioteca ampla de Players | Em andamento — Git/FS/Docker/HTTP/Test/NPM/pytest/yarn; **infra v0 CONFIRMED** (`41`, G-201..G-209; slice 34); **Helm v0 CONFIRMED** (`42`, G-210..G-216; slice 35 feito); **AWS v0 CONFIRMED** (`43`, G-217..G-223; slice 36) |
 | G-42 | Human-in-the-loop / Approvals | **CONFIRMED v0** — recorte G-81..G-86 em `22` |
 | G-43 | Resource Claims / Blast Radius | **Claims CONFIRMED v0** — `24`. **Blast CONFIRMED v0** — `25`. **Walk Blast←Graph CONFIRMED v0** — recorte G-111..G-116 em `27` |
 | G-44 | MCP integration — transporte da Project Memory | **CONFIRMED v0** — recorte G-187..G-193 em `39` (servidor MCP read-only; slice 32 feito) |
@@ -396,6 +396,18 @@ Ate la, o Core deve rodar so com CLI + Shell.
 | G-215 | Registry + Graph + Intent | **CONFIRMED** — `heuristic.helm`; sem claim/blast; slice 35 feito |
 | G-216 | Exclusões v0 | **CONFIRMED** — repo/OCI, plugin, kustomize/k3s/kind, cloud SDKs |
 
+## Cloud AWS Player (recorte G-41) — CONFIRMED v0 spec
+
+| ID | Gap | Notas |
+|---|---|---|
+| G-217 | Papel / pacote `aws` | **CONFIRMED** — `internal/players/aws`; deterministic |
+| G-218 | Capabilities v0 | **CONFIRMED** — `aws.sts-identity`, `aws.s3-buckets`, `aws.s3-objects`; `--output json` |
+| G-219 | Sandbox / argv | **CONFIRMED** — sem cp/mv/rm/sync/create/put/delete/tag; sem endpoint/query/profile |
+| G-220 | Credenciais no ambiente | **CONFIRMED** — `~/.aws` + `AWS_*` herdado; nunca no Task IR |
+| G-221 | Falha vs sucesso | **CONFIRMED** — exit ≠ 0 → `runtime.player_error` |
+| G-222 | Registry + Graph + Intent | **CONFIRMED** — `heuristic.aws`; sem claim/blast |
+| G-223 | Exclusões v0 | **CONFIRMED** — mutantes, GCP/Azure, SQL, NATS |
+
 ---
 
 ## Ordem para fechar gaps
@@ -430,6 +442,7 @@ Ate la, o Core deve rodar so com CLI + Shell.
 28. Workflow Templates — spec em `40` — G-194..G-200 CONFIRMED; codigo = slice 33
 29. Infra Players — spec em `41` — G-201..G-209 CONFIRMED; codigo = slice 34
 30. Helm Player — spec em `42` — G-210..G-216 CONFIRMED; codigo = slice 35 — feito
+31. Cloud AWS Player — spec em `43` — G-217..G-223 CONFIRMED; codigo = slice 36
 
 ## Criterio de “pronto para codar”
 
@@ -455,6 +468,7 @@ Ate la, o Core deve rodar so com CLI + Shell.
 **Desktop Wails (G-159..G-165): CONFIRMADO** — spec `35`; slices 27–28 feitas.
 **NPM Player (G-166..G-171): CONFIRMADO** — spec `36`; slice 29 feito.
 **Helm Player (G-210..G-216): CONFIRMADO** — spec `42`; slice 35 feito.
+**Cloud AWS Player (G-217..G-223): CONFIRMADO** — spec `43`; slice 36 pendente.
 
 Ordem pratica de codigo:
 1. Core CLI + Shell (+ SQLite) — slice 1 — feito
@@ -488,8 +502,9 @@ Ordem pratica de codigo:
 29. Workflow Templates v0 — spec `40` (G-194..G-200); slice 33 feito
 30. Infra Players v0 — spec `41` (G-201..G-209); slice 34 feito
 31. Helm Player v0 — spec `42` (G-210..G-216); slice 35 feito
+32. Cloud AWS Player v0 — spec `43` (G-217..G-223); slice 36
 
-P3 restante: NATS (G-36); G-41 além de infra+Helm (cloud/SQL).
+P3 restante: NATS (G-36); G-41 além de infra+Helm+AWS (cloud GCP/Azure, SQL).
 MVP 1.0 magro: spec `09`/`31` (G-135..G-140); slices 19–20 feitos.
 Test Player corte v0: spec `30` (G-129..G-134); slice 18 feito.
 Project Memory corte v0: spec `29` (G-123..G-128); slice 17 feito.

@@ -110,7 +110,7 @@ Visão enxuta do que já está em `main`. **Atualizar esta seção em todo PR
 | Feito | Slice 33 — Workflow Templates v0 (`40`, G-194..G-200; `runtgine template`) |
 | Feito | Slice 34 — Infra Players v0 (`41`, G-201..G-209; `k8s.*` / `tf.*` / `pg.ping`) |
 | Feito | Slice 35 — Helm Player v0 (`42`, G-210..G-216; `helm.lint` / `template` / `list` / `status`) |
-| Próximo código | Recortes G-41 restantes (cloud / SQL) ou NATS (G-36 DEFERRED) — requer nova promoção em `04` |
+| Próximo código | Slice 36 — Cloud AWS Player v0 (`43`, G-217..G-223; recorte G-41) — spec confirmada |
 
 Detalhe do corte: [`docs/09-mvp.md`](docs/09-mvp.md). Limitações atuais abaixo.
 
@@ -436,6 +436,7 @@ vulnerabilidade.
 | [Workflow Templates](docs/40-workflow-templates-v0.md) | JSON nativo → Task IR (G-194..G-200; slice 33) |
 | [Infra Players](docs/41-infra-players-v0.md) | `k8s.*` / `tf.*` / `pg.ping` (G-201..G-209; slice 34) |
 | [Helm Player](docs/42-helm-player-v0.md) | Player `helm.lint` / `template` / `list` / `status` (G-210..G-216; slice 35) |
+| [Cloud AWS Player](docs/43-aws-player-v0.md) | Player `aws.sts-identity` / `s3-buckets` / `s3-objects` read-only (G-217..G-223; slice 36) |
 | [Context Engine](docs/31-context-engine-v0.md) | Semente `repo_hits` v0 (G-137..G-139; slice 20) |
 | [Intent Surface](docs/32-intent-surface-v0.md) | Aba INTENT / Mission Brief (G-141..G-146; slice 21) |
 | [Evolution](docs/33-evolution-v0.md) | Router, Playbooks, Lessons (G-147..G-152; slices 22–24) |
