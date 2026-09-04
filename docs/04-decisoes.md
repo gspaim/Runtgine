@@ -57,7 +57,7 @@ Status: CONFIRMED | HYPOTHESIS | OPEN QUESTION | REJECTED
 | TUI GRAPH tab | CONFIRMED (v0) | Aba read-only; ver `26-tui-graph-v0.md` + `14` |
 | HTTP Player | CONFIRMED (v0) | Cliente GET/HEAD HTTPS; ver `28-http-player-v0.md` |
 | Test Player | CONFIRMED (v0) | `test.go` no workspace; ver `30-test-player-v0.md` |
-| Many deterministic Players | CONFIRMED | Estrategico; recortes G-41: infra em `41`, Helm em `42` |
+| Many deterministic Players | CONFIRMED | Estrategico; recortes G-41: infra em `41`, Helm em `42`, AWS em `43` |
 | Workflow Templates v0 | CONFIRMED (v0) | JSON nativo no workspace; ver `40-workflow-templates-v0.md` |
 | Runtgine + Chorus | CONFIRMED | Complementares |
 | Event Bus in-process (MVP) | CONFIRMED | Canais Go |
@@ -633,6 +633,24 @@ install/upgrade. Código = slice 35 (feito).
 | G-214 Falha vs sucesso | CONFIRMED | exit ≠ 0 → `runtime.player_error`; timeout → `runtime.timeout` |
 | G-215 Registry + Intent | CONFIRMED | `heuristic.helm` antes de shell; `helm install` não casa |
 | G-216 Exclusoes v0 | CONFIRMED | repo/OCI, plugin, kustomize/k3s/kind, cloud SDKs, SQL |
+
+## Cloud AWS Player — CONFIRMED v0 spec
+
+Ver [43-aws-player-v0.md](43-aws-player-v0.md). Recorte de G-41
+(cloud read-only). Levanta a exclusão de cloud SDKs do corte v0 de
+`41`/`42` (G-209/G-216) **só para AWS em leitura**; GCP/Azure e SQL
+arbitrário continuam fora. Identidade + listagem S3 em JSON;
+credenciais só via ambiente. Código = slice 36 (pendente).
+
+| Item | Status | Notas |
+|---|---|---|
+| G-217 AWS Player | CONFIRMED | `internal/players/aws`; deterministic |
+| G-218 Capabilities v0 | CONFIRMED | `aws.sts-identity` / `aws.s3-buckets` / `aws.s3-objects`; todas allow; `--output json` |
+| G-219 Sandbox | CONFIRMED | argv fechado; sem cp/mv/rm/sync/create/put/delete/tag; sem endpoint/query/profile |
+| G-220 Credenciais no ambiente | CONFIRMED | `~/.aws` + `AWS_*` herdado; nunca no Task IR (modelo `PGPASSWORD`) |
+| G-221 Falha vs sucesso | CONFIRMED | exit ≠ 0 → `runtime.player_error`; JSON não-parseável → bruto + truncated |
+| G-222 Registry + Intent | CONFIRMED | `heuristic.aws` antes de shell; `s3://` parse estático; `s3 rm` não casa |
+| G-223 Exclusoes v0 | CONFIRMED | mutantes, GCP/Azure, SQL, NATS, MCP, templates |
 
 ## Git / release — fluxo de branches
 
