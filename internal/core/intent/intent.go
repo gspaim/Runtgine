@@ -292,6 +292,15 @@ func matchPlayer(text string) (playerHit, bool) {
 		return playerHit{capability: "tf.plan", method: MethodHeuristicTF}, true
 	case hasPhrase(n, "pg ping"), hasPhrase(n, "postgres ping"), hasPhrase(n, "psql ping"):
 		return playerHit{capability: "pg.ping", method: MethodHeuristicPG, extra: map[string]any{"dbname": "postgres"}}, true
+	case strings.HasPrefix(n, "explain select "), strings.HasPrefix(n, "explain with "):
+		return playerHit{
+			capability: "pg.explain",
+			method:     MethodHeuristicPG,
+			extra: map[string]any{
+				"sql":    strings.TrimSpace(n[len("explain "):]),
+				"dbname": "postgres",
+			},
+		}, true
 	case hasPhrase(n, "npm test"), hasPhrase(n, "npm run test"), hasPhrase(n, "roda os testes npm"), hasPhrase(n, "run npm tests"):
 		return playerHit{capability: "npm.test", method: MethodHeuristicNPM}, true
 	case hasPhrase(n, "pytest"), hasPhrase(n, "roda pytest"), hasPhrase(n, "run pytest"), hasPhrase(n, "rodar pytest"):

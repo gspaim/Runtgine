@@ -112,7 +112,8 @@ Visão enxuta do que já está em `main`. **Atualizar esta seção em todo PR
 | Feito | Slice 35 — Helm Player v0 (`42`, G-210..G-216; `helm.lint` / `template` / `list` / `status`) |
 | Feito | Slice 36 — Cloud AWS Player v0 (`43`, G-217..G-223; `aws.sts-identity` / `s3-buckets` / `s3-objects`) |
 | Feito | Slice 37 — Cloud Players GCP + Azure v0 (`44`, G-224..G-230; `gcp.*` / `azure.*` read-only) |
-| Próximo código | SQL/migrations (exige spec própria com desenho de segurança) ou NATS (G-36 DEFERRED) |
+| Feito | Slice 38 — Postgres EXPLAIN v0 (`45`, G-231..G-237; `pg.explain`; fila G-41 fechada) |
+| Próximo código | Nenhum recorte nomeado restante; NATS (G-36) DEFERRED — release ou nova decisão em `04` |
 
 Detalhe do corte: [`docs/09-mvp.md`](docs/09-mvp.md). Limitações atuais abaixo.
 
@@ -440,6 +441,7 @@ vulnerabilidade.
 | [Helm Player](docs/42-helm-player-v0.md) | Player `helm.lint` / `template` / `list` / `status` (G-210..G-216; slice 35) |
 | [Cloud AWS Player](docs/43-aws-player-v0.md) | Player `aws.sts-identity` / `s3-buckets` / `s3-objects` read-only (G-217..G-223; slice 36) |
 | [Cloud GCP + Azure Players](docs/44-cloud-gcp-azure-players-v0.md) | Players `gcp.*` / `azure.*` read-only (G-224..G-230; slice 37) |
+| [Postgres EXPLAIN](docs/45-pg-explain-v0.md) | Capability `pg.explain` read-only (G-231..G-237; slice 38) |
 | [Context Engine](docs/31-context-engine-v0.md) | Semente `repo_hits` v0 (G-137..G-139; slice 20) |
 | [Intent Surface](docs/32-intent-surface-v0.md) | Aba INTENT / Mission Brief (G-141..G-146; slice 21) |
 | [Evolution](docs/33-evolution-v0.md) | Router, Playbooks, Lessons (G-147..G-152; slices 22–24) |

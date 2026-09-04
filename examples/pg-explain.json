@@ -1,0 +1,21 @@
+{
+  "schema_version": "0.1.0",
+  "source": {
+    "entry_point": "cli",
+    "ref": "examples/pg-explain.json"
+  },
+  "intent": {
+    "summary": "Explain the plan of a read-only query"
+  },
+  "steps": [
+    {
+      "step_id": "s1",
+      "capability": "pg.explain",
+      "input": {
+        "sql": "select id from users where active = true",
+        "dbname": "app"
+      },
+      "depends_on": []
+    }
+  ]
+}

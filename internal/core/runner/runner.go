@@ -294,7 +294,7 @@ func (r *Runner) validateTaskIR(t task.Task) error {
 				}
 				return r.reject(t.TaskID, result.CodeInvalidInput, err.Error())
 			}
-		case pgplayer.CapPing:
+		case pgplayer.CapPing, pgplayer.CapExplain:
 			if err := pgplayer.ValidateStaticInput(r.Workspace, s.Capability, s.Input); err != nil {
 				var ve result.Error
 				if errors.As(err, &ve) {

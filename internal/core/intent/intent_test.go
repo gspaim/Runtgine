@@ -86,6 +86,9 @@ func TestCompilePlayerHeuristics(t *testing.T) {
 		{"aws sts get-caller-identity", intent.MethodHeuristicAWS, "aws.sts-identity"},
 		{"aws s3 ls", intent.MethodHeuristicAWS, "aws.s3-buckets"},
 		{"aws s3 ls s3://data/logs", intent.MethodHeuristicAWS, "aws.s3-objects"},
+		{"pg ping", intent.MethodHeuristicPG, "pg.ping"},
+		{"explain select id from users", intent.MethodHeuristicPG, "pg.explain"},
+		{"explain with c as (select 1) select * from c", intent.MethodHeuristicPG, "pg.explain"},
 		{"gcloud auth list", intent.MethodHeuristicGCP, "gcp.identity"},
 		{"gcloud config list", intent.MethodHeuristicGCP, "gcp.config"},
 		{"gcloud projects list", intent.MethodHeuristicGCP, "gcp.projects"},
@@ -180,6 +183,27 @@ func TestCompileAwsMutantDoesNotMatchPlayer(t *testing.T) {
 	}
 	if res.Method == intent.MethodHeuristicAWS {
 		t.Fatalf("s3 rm must not match the aws player heuristics (method=%s)", res.Method)
+	}
+}
+
+func TestCompileExplainExtractsSQL(t *testing.T) {
+	e := intent.New(llm.HeuristicCompleter{})
+	res, err := e.Compile(context.Background(), intent.Request{Text: "explain select id from users"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if res.Method != intent.MethodHeuristicPG || res.Task.Steps[0].Capability != "pg.explain" {
+		t.Fatalf("method=%s cap=%s", res.Method, res.Task.Steps[0].Capability)
+	}
+	var in struct {
+		SQL    string `json:"sql"`
+		DBName string `json:"dbname"`
+	}
+	if err := json.Unmarshal(res.Task.Steps[0].Input, &in); err != nil {
+		t.Fatal(err)
+	}
+	if in.SQL != "select id from users" || in.DBName != "postgres" {
+		t.Fatalf("sql=%q dbname=%q", in.SQL, in.DBName)
 	}
 }
 
