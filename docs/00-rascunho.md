@@ -14,12 +14,14 @@ o conteudo migra para o documento apropriado.
 
 - Entry Point != Player
 - Core unico; entry points variados (Board, CLI, TUI, API, Desktop/Wails, Web)
-- MVP: CLI + TUI + Board; API e Wails pos-MVP
+- MVP: CLI + TUI + Board; API HTTP v0 spec `34` (pos-1.0, slices 25–26);
+  Wails Fase 3
 - Desktop = Wails (nao GPUI)
 
 ### Ainda em aberto
 
-- Board Integration: polling vs webhook no longo prazo?
+- Board Integration: webhook **inbound** GitHub no longo prazo?
+  (polling G-20 permanece; outbound de Run = `34` G-156)
 - Detalhes do adapter GitHub Projects (auth, mapeamento card → Task IR) — gap P1
 
 Resolvido em proposta (`11-protocolo-v0`, aguardando confirmacao):
@@ -50,8 +52,8 @@ Questoes de Entry Point que `11` ja propoe resposta:
 - Board = Entry Point/adapter que emite Task IR (detalhe GitHub = gap P1)
 
 Ainda em aberto apos `11` (nao bloqueia Core CLI+Shell):
-- Board: polling vs webhook no longo prazo
-- Detalhes GitHub Projects (G-20+)
+- Board: webhook inbound GitHub no longo prazo (G-20 = polling)
+- Detalhes GitHub Projects (G-20+; em `12`)
 
 ## Context Management (discussao)
 

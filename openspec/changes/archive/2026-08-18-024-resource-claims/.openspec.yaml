@@ -1,0 +1,9 @@
+schema: spec-driven
+created: 2026-08-18
+nnn: "024"
+slug: resource-claims
+docs_canonical: docs/24-resource-claims-v0.md
+gaps: [G-93, G-94, G-95, G-96, G-97, G-98]
+status: archived
+branch: feat/024-resource-claims
+depends_on: ["022-execution-policy"]

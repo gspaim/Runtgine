@@ -1,0 +1,9 @@
+schema: spec-driven
+created: 2026-08-19
+nnn: "028"
+slug: http-player
+docs_canonical: docs/28-http-player-v0.md
+gaps: [G-117, G-118, G-119, G-120, G-121, G-122]
+status: archived
+branch: feat/028-http-player
+depends_on: ["023-docker-player"]

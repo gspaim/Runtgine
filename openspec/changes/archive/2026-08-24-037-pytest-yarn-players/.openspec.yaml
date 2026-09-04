@@ -1,0 +1,9 @@
+schema: spec-driven
+created: 2026-08-24
+nnn: "037"
+slug: pytest-yarn-players
+docs_canonical: docs/37-pytest-yarn-players-v0.md
+gaps: [G-172, G-173, G-174, G-175, G-176, G-177, G-178, G-179]
+status: active
+branch: cursor/037-pytest-yarn-players-d46c
+depends_on: ["030-test-player", "036-npm-player"]

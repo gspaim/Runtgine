@@ -1,0 +1,21 @@
+{
+  "schema_version": "0.1.0",
+  "source": {
+    "entry_point": "cli",
+    "ref": "examples/git-status.json"
+  },
+  "intent": {
+    "summary": "Show git status via Git Player"
+  },
+  "steps": [
+    {
+      "step_id": "status",
+      "capability": "git.status",
+      "input": {
+        "workdir": ".",
+        "timeout_ms": 10000
+      },
+      "depends_on": []
+    }
+  ]
+}

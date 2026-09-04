@@ -1,0 +1,21 @@
+{
+  "schema_version": "0.1.0",
+  "source": {
+    "entry_point": "cli",
+    "ref": "examples/pytest-run.json"
+  },
+  "intent": {
+    "summary": "Run pytest via Pytest Player"
+  },
+  "steps": [
+    {
+      "step_id": "pytest",
+      "capability": "pytest.run",
+      "input": {
+        "workdir": "./examples/pyapp",
+        "flags": ["-q"]
+      },
+      "depends_on": []
+    }
+  ]
+}

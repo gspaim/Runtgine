@@ -8,25 +8,55 @@ import (
 	"time"
 
 	"github.com/gspaim/Runtgine/internal/config"
+	"github.com/gspaim/Runtgine/internal/core/blast"
+	"github.com/gspaim/Runtgine/internal/core/claim"
 	"github.com/gspaim/Runtgine/internal/core/event"
+	"github.com/gspaim/Runtgine/internal/core/graph"
+	"github.com/gspaim/Runtgine/internal/core/intent"
+	"github.com/gspaim/Runtgine/internal/core/lessons"
+	"github.com/gspaim/Runtgine/internal/core/memory"
+	"github.com/gspaim/Runtgine/internal/core/playbooks"
+	"github.com/gspaim/Runtgine/internal/core/policy"
 	"github.com/gspaim/Runtgine/internal/core/registry"
 	"github.com/gspaim/Runtgine/internal/core/result"
 	"github.com/gspaim/Runtgine/internal/core/runner"
 	"github.com/gspaim/Runtgine/internal/core/store"
 	"github.com/gspaim/Runtgine/internal/core/task"
+	"github.com/gspaim/Runtgine/internal/core/templates"
+	awsplayer "github.com/gspaim/Runtgine/internal/players/aws"
+	azureplayer "github.com/gspaim/Runtgine/internal/players/azure"
+	dockerplayer "github.com/gspaim/Runtgine/internal/players/docker"
+	"github.com/gspaim/Runtgine/internal/players/filesystem"
+	gitplayer "github.com/gspaim/Runtgine/internal/players/git"
+	gotestplayer "github.com/gspaim/Runtgine/internal/players/gotest"
+	gcpplayer "github.com/gspaim/Runtgine/internal/players/gcp"
+	helmplayer "github.com/gspaim/Runtgine/internal/players/helm"
+	httpplayer "github.com/gspaim/Runtgine/internal/players/httpclient"
+	"github.com/gspaim/Runtgine/internal/players/jstest"
+	k8splayer "github.com/gspaim/Runtgine/internal/players/k8s"
 	"github.com/gspaim/Runtgine/internal/players/llm"
+	memplayer "github.com/gspaim/Runtgine/internal/players/memory"
+	npmplayer "github.com/gspaim/Runtgine/internal/players/npm"
+	pgplayer "github.com/gspaim/Runtgine/internal/players/pg"
 	pipeplayer "github.com/gspaim/Runtgine/internal/players/pipeline"
+	pytstplayer "github.com/gspaim/Runtgine/internal/players/pytst"
 	"github.com/gspaim/Runtgine/internal/players/shell"
+	tfplayer "github.com/gspaim/Runtgine/internal/players/tf"
 )
 
 // Core is the Entry Point → Core API (G-07).
 type Core struct {
-	Cfg    config.Config
-	Reg    *registry.Registry
-	Bus    *event.MemoryBus
-	Store  *store.Store
-	Runner *runner.Runner
-	Log    *slog.Logger
+	Cfg       config.Config
+	Reg       *registry.Registry
+	Bus       *event.MemoryBus
+	Store     *store.Store
+	Runner    *runner.Runner
+	Intent    *intent.Engine
+	Graph     *graph.Service
+	Memory    *memory.Service
+	Lessons   *lessons.Service
+	Templates []templates.Template
+	Log       *slog.Logger
 }
 
 func Open(cfg config.Config, log *slog.Logger) (*Core, error) {
@@ -43,10 +73,76 @@ func Open(cfg config.Config, log *slog.Logger) (*Core, error) {
 		_ = st.Close()
 		return nil, err
 	}
-	completer := llm.CompleterFromConfig(
+	if err := reg.Register(gitplayer.New()); err != nil {
+		_ = st.Close()
+		return nil, err
+	}
+	if err := reg.Register(filesystem.New()); err != nil {
+		_ = st.Close()
+		return nil, err
+	}
+	if err := reg.Register(dockerplayer.New()); err != nil {
+		_ = st.Close()
+		return nil, err
+	}
+	if err := reg.Register(httpplayer.New()); err != nil {
+		_ = st.Close()
+		return nil, err
+	}
+	if err := reg.Register(gotestplayer.New()); err != nil {
+		_ = st.Close()
+		return nil, err
+	}
+	if err := reg.Register(npmplayer.New()); err != nil {
+		_ = st.Close()
+		return nil, err
+	}
+	if err := reg.Register(jstest.New()); err != nil {
+		_ = st.Close()
+		return nil, err
+	}
+	if err := reg.Register(pytstplayer.New()); err != nil {
+		_ = st.Close()
+		return nil, err
+	}
+	if err := reg.Register(k8splayer.New()); err != nil {
+		_ = st.Close()
+		return nil, err
+	}
+	if err := reg.Register(tfplayer.New()); err != nil {
+		_ = st.Close()
+		return nil, err
+	}
+	if err := reg.Register(pgplayer.New()); err != nil {
+		_ = st.Close()
+		return nil, err
+	}
+	if err := reg.Register(helmplayer.New()); err != nil {
+		_ = st.Close()
+		return nil, err
+	}
+	if err := reg.Register(awsplayer.New()); err != nil {
+		_ = st.Close()
+		return nil, err
+	}
+	if err := reg.Register(gcpplayer.New()); err != nil {
+		_ = st.Close()
+		return nil, err
+	}
+	if err := reg.Register(azureplayer.New()); err != nil {
+		_ = st.Close()
+		return nil, err
+	}
+	g := graph.New(st, log)
+	mem := memory.New(st, log)
+	if err := reg.Register(memplayer.New(mem, log)); err != nil {
+		_ = st.Close()
+		return nil, err
+	}
+	completer := llm.NewSwitchCompleter(cfg, llm.CompleterFromConfig(
 		cfg.LLMBackend, cfg.LLMAPIKey, cfg.LLMBaseURL, cfg.LLMModel,
 		cfg.AnthropicAPIKey, cfg.AnthropicModel,
-	)
+	))
 	if err := reg.Register(pipeplayer.NewWithRefine(completer)); err != nil {
 		_ = st.Close()
 		return nil, err
@@ -55,11 +151,88 @@ func Open(cfg config.Config, log *slog.Logger) (*Core, error) {
 		_ = st.Close()
 		return nil, err
 	}
+	lsn := lessons.New(st, mem, log)
+	books, err := playbooks.Load(playbooks.Dir(cfg.WorkspaceRoot))
+	if err != nil {
+		if log != nil {
+			log.Warn("playbooks load failed", "err", err)
+		}
+		books = nil
+	}
+	tab, err := policy.Compile(policy.FileConfig{
+		Default:      cfg.ExecutionPolicy.Default,
+		Capabilities: cfg.ExecutionPolicy.Capabilities,
+	}, cfg.PolicyDefaultEnv, reg)
+	if err != nil {
+		_ = st.Close()
+		return nil, err
+	}
 	r := runner.New(reg, bus, st, cfg.WorkspaceRoot, cfg.LLMBackend, cfg.MaxConcurrentRuns, log)
-	return &Core{Cfg: cfg, Reg: reg, Bus: bus, Store: st, Runner: r, Log: log}, nil
+	r.Graph = g
+	r.Memory = mem
+	r.MemoryCapture = cfg.Memory.Capture
+	r.Playbooks = books
+	r.Lessons = lsn
+	r.LessonsCapture = cfg.Lessons.Capture
+	r.Policy = tab
+	claims := claim.New(st)
+	if err := claims.SweepOrphans(context.Background()); err != nil {
+		if log != nil {
+			log.Warn("claim sweep failed", "err", err)
+		}
+	}
+	r.Claims = claims
+	if err := g.RefreshFromRegistry(context.Background(), reg); err != nil {
+		if log != nil {
+			log.Warn("graph refresh failed", "err", err)
+		}
+	}
+	tpls, tplWarns, err := templates.Load(templates.Dir(cfg.WorkspaceRoot))
+	if err != nil {
+		if log != nil {
+			log.Warn("templates load failed", "err", err)
+		}
+		tpls = nil
+	}
+	for _, w := range tplWarns {
+		if log != nil {
+			log.Warn("template skipped", "detail", w)
+		}
+	}
+	if len(tpls) > 0 {
+		refs := make([]struct{ ID, Title string }, 0, len(tpls))
+		for _, t := range tpls {
+			refs = append(refs, struct{ ID, Title string }{ID: t.ID, Title: t.Title})
+		}
+		if err := g.RefreshFromTemplates(context.Background(), refs); err != nil {
+			if log != nil {
+				log.Warn("graph templates refresh failed", "err", err)
+			}
+		}
+	}
+	eng := intent.New(completer)
+	eng.Graph = g
+	eng.Memory = mem
+	eng.Templates = tpls
+	return &Core{
+		Cfg:       cfg,
+		Reg:       reg,
+		Bus:       bus,
+		Store:     st,
+		Runner:    r,
+		Intent:    eng,
+		Graph:     g,
+		Memory:    mem,
+		Lessons:   lsn,
+		Templates: tpls,
+		Log:       log,
+	}, nil
 }
 
 func (c *Core) Close() error {
+	if c.Runner != nil {
+		c.Runner.WaitIdle()
+	}
 	return c.Store.Close()
 }
 
@@ -69,6 +242,82 @@ func (c *Core) SubmitTask(ctx context.Context, t task.Task) (string, error) {
 		return "", err
 	}
 	return res.RunID, nil
+}
+
+// BlastTask returns a G-100 impact report without creating a Run, acquiring
+// claims, evaluating policy, or calling a Player.
+func (c *Core) BlastTask(ctx context.Context, t task.Task) (blast.Report, error) {
+	if err := c.Runner.ValidateTaskIR(t); err != nil {
+		return blast.Report{}, err
+	}
+	var active []store.ResourceClaim
+	if c.Store != nil {
+		rows, err := c.Store.ListActiveClaims(ctx)
+		if err != nil {
+			return blast.Report{}, err
+		}
+		active = rows
+	}
+	rep, err := blast.Analyze(t.Steps, active)
+	if err != nil {
+		return blast.Report{}, err
+	}
+	var snap graph.Snapshot
+	var snapErr error
+	if c.Graph != nil {
+		snap, snapErr = c.Graph.Snapshot(ctx)
+		if snapErr != nil && c.Log != nil {
+			c.Log.Warn("blast graph walk skipped", "err", snapErr)
+		}
+	}
+	blast.ApplyWalk(&rep, snap, snapErr)
+	return rep, nil
+}
+
+func (c *Core) TemplateList() []templates.Template {
+	return append([]templates.Template(nil), c.Templates...)
+}
+
+func (c *Core) TemplateGet(id string) (templates.Template, error) {
+	tpl, ok := templates.Lookup(c.Templates, id)
+	if !ok {
+		return templates.Template{}, result.Validation(result.CodeNotFound, "unknown template "+id, map[string]any{"id": id})
+	}
+	return tpl, nil
+}
+
+func (c *Core) CompileTemplate(id, entryPoint, ref, summary string) (task.Task, error) {
+	tpl, err := c.TemplateGet(id)
+	if err != nil {
+		return task.Task{}, err
+	}
+	return templates.Compile(tpl, entryPoint, ref, summary)
+}
+
+// CompileIntent translates natural language into Task IR (G-51).
+func (c *Core) CompileIntent(ctx context.Context, text, entryPoint, ref string) (task.Task, string, error) {
+	res, err := c.Intent.Compile(ctx, intent.Request{
+		Text:       text,
+		EntryPoint: entryPoint,
+		Ref:        ref,
+	})
+	if err != nil {
+		return task.Task{}, "", err
+	}
+	return res.Task, res.Method, nil
+}
+
+// SubmitIntent compiles NL intent and submits the resulting Task IR.
+func (c *Core) SubmitIntent(ctx context.Context, text, entryPoint, ref string) (string, string, error) {
+	tk, method, err := c.CompileIntent(ctx, text, entryPoint, ref)
+	if err != nil {
+		return "", "", err
+	}
+	runID, err := c.SubmitTask(ctx, tk)
+	if err != nil {
+		return "", method, err
+	}
+	return runID, method, nil
 }
 
 type ChildRunView struct {
@@ -100,23 +349,30 @@ type ConfigSnapshot struct {
 	Precedence        string `json:"precedence"`
 }
 
+type PendingApproval struct {
+	StepID     string `json:"step_id"`
+	Capability string `json:"capability"`
+	Player     string `json:"player"`
+}
+
 type RunSnapshot struct {
-	RunID       string          `json:"run_id"`
-	TaskID      string          `json:"task_id"`
-	ParentRunID string          `json:"parent_run_id,omitempty"`
-	Status      string          `json:"status"`
-	Error       string          `json:"error,omitempty"`
-	Events      []event.Event   `json:"events"`
-	Task        json.RawMessage `json:"task,omitempty"`
-	Subtasks    []store.Subtask `json:"subtasks,omitempty"`
-	ChildRuns   []ChildRunView  `json:"child_runs,omitempty"`
+	RunID           string           `json:"run_id"`
+	TaskID          string           `json:"task_id"`
+	ParentRunID     string           `json:"parent_run_id,omitempty"`
+	Status          string           `json:"status"`
+	Error           string           `json:"error,omitempty"`
+	PendingApproval *PendingApproval `json:"pending_approval,omitempty"`
+	Events          []event.Event    `json:"events"`
+	Task            json.RawMessage  `json:"task,omitempty"`
+	Subtasks        []store.Subtask  `json:"subtasks,omitempty"`
+	ChildRuns       []ChildRunView   `json:"child_runs,omitempty"`
 }
 
 func (c *Core) GetRun(ctx context.Context, runID string) (RunSnapshot, error) {
 	run, taskJSON, err := c.Store.GetRun(ctx, runID)
 	if err != nil {
 		if err == sql.ErrNoRows {
-			return RunSnapshot{}, result.Runtime(result.CodeInternal, "run not found", false, nil)
+			return RunSnapshot{}, result.Runtime(result.CodeNotFound, "run not found", false, nil)
 		}
 		return RunSnapshot{}, err
 	}
@@ -130,7 +386,7 @@ func (c *Core) GetRun(ctx context.Context, runID string) (RunSnapshot, error) {
 	for _, ch := range children {
 		views = append(views, ChildRunView{RunID: ch.RunID, TaskID: ch.TaskID, Status: string(ch.Status)})
 	}
-	return RunSnapshot{
+	snap := RunSnapshot{
 		RunID:       run.RunID,
 		TaskID:      run.TaskID,
 		ParentRunID: run.ParentRunID,
@@ -140,7 +396,15 @@ func (c *Core) GetRun(ctx context.Context, runID string) (RunSnapshot, error) {
 		Task:        taskJSON,
 		Subtasks:    subs,
 		ChildRuns:   views,
-	}, nil
+	}
+	if run.Status == store.StatusWaitingApproval && run.PendingStepID != "" {
+		snap.PendingApproval = &PendingApproval{
+			StepID:     run.PendingStepID,
+			Capability: run.PendingCapability,
+			Player:     run.PendingPlayer,
+		}
+	}
+	return snap, nil
 }
 
 func (c *Core) ListRuns(ctx context.Context, limit int) ([]RunSummary, error) {
@@ -188,6 +452,10 @@ func (c *Core) Subscribe(buffer int) (<-chan event.Event, func()) {
 	return c.Bus.Subscribe(buffer)
 }
 
+func (c *Core) ApproveRun(runID, decision string) error {
+	return c.Runner.Approve(context.Background(), runID, decision)
+}
+
 func (c *Core) CancelRun(runID string) error {
 	if err := c.Runner.Cancel(runID); err == nil {
 		return nil
@@ -196,12 +464,18 @@ func (c *Core) CancelRun(runID string) error {
 	// A prior CLI process may have left a persisted non-terminal run without
 	// an in-memory cancel function. Mark that stale run cancelled.
 	run, _, err := c.Store.GetRun(context.Background(), runID)
+	if err == sql.ErrNoRows {
+		return result.Runtime(result.CodeNotFound, "run not found", false, nil)
+	}
 	if err != nil {
 		return err
 	}
 	switch run.Status {
 	case store.StatusSucceeded, store.StatusFailed, store.StatusCancelled, store.StatusRejected:
 		return result.Runtime(result.CodeCancelled, "run is already terminal", false, nil)
+	}
+	if err := c.Store.ClearPendingApproval(context.Background(), runID); err != nil {
+		return err
 	}
 	if err := c.Store.UpdateRunStatus(
 		context.Background(), runID, store.StatusCancelled, "",
@@ -218,5 +492,71 @@ func (c *Core) CancelRun(runID string) error {
 		return err
 	}
 	c.Bus.Publish(e)
+	c.Runner.ReleaseClaims(runID, run.TaskID)
+	c.syncGraph(runID)
 	return nil
+}
+
+func (c *Core) GetGraphSnapshot(ctx context.Context) (graph.Snapshot, error) {
+	return c.Graph.Snapshot(ctx)
+}
+
+func (c *Core) RefreshGraph(ctx context.Context) error {
+	return c.Graph.RefreshFromRegistry(ctx, c.Reg)
+}
+
+func (c *Core) QueryGraphNeighbors(ctx context.Context, kind, id, edgeKind, direction string) ([]graph.Node, error) {
+	return c.Graph.QueryNeighbors(ctx, kind, id, edgeKind, direction)
+}
+
+func (c *Core) MemoryRecord(ctx context.Context, in memory.EpisodeInput) (memory.Episode, error) {
+	return c.Memory.Record(ctx, in)
+}
+
+func (c *Core) MemoryList(ctx context.Context, f memory.Filter) ([]memory.Episode, error) {
+	return c.Memory.List(ctx, f)
+}
+
+func (c *Core) MemoryQuery(ctx context.Context, text string, limit int) ([]memory.Hit, error) {
+	return c.Memory.Query(ctx, text, limit)
+}
+
+func (c *Core) MemorySupersede(ctx context.Context, oldID string, in memory.EpisodeInput) (memory.Episode, error) {
+	return c.Memory.Supersede(ctx, oldID, in)
+}
+
+func (c *Core) MemoryArchive(ctx context.Context, id string) (memory.Episode, error) {
+	return c.Memory.Archive(ctx, id)
+}
+
+func (c *Core) ListLessons(ctx context.Context, status string) ([]lessons.Proposal, error) {
+	if c.Lessons == nil {
+		return nil, result.Runtime(result.CodeInternal, "lessons provider missing", false, nil)
+	}
+	return c.Lessons.List(ctx, status)
+}
+
+func (c *Core) ApproveLesson(ctx context.Context, id string) (memory.Episode, error) {
+	if c.Lessons == nil {
+		return memory.Episode{}, result.Runtime(result.CodeInternal, "lessons provider missing", false, nil)
+	}
+	return c.Lessons.Approve(ctx, id)
+}
+
+func (c *Core) RejectLesson(ctx context.Context, id string) error {
+	if c.Lessons == nil {
+		return result.Runtime(result.CodeInternal, "lessons provider missing", false, nil)
+	}
+	return c.Lessons.Reject(ctx, id)
+}
+
+func (c *Core) syncGraph(runID string) {
+	if c.Graph == nil || runID == "" {
+		return
+	}
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+	if err := c.Graph.SyncFromRun(ctx, runID); err != nil && c.Log != nil {
+		c.Log.Warn("graph sync failed", "run_id", runID, "err", err)
+	}
 }

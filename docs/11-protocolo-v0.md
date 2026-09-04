@@ -26,8 +26,16 @@ Itens individuais marcados `CONFIRMED` nas secoes.
 | Campo | Formato |
 |---|---|
 | IDs (`task_id`, `run_id`, `event_id`) | UUID v7 string (time-ordered; RFC 9562) |
-| `schema_version` | semver string no documento (`"0.1.0"`) |
+| `schema_version` | exatamente `"0.1.0"` no MVP (sem fill silencioso) |
 | Nomes de capability | `domain.action` (ex.: `shell.exec`, `git.commit`) |
+
+Regras de admissão (Slice 4):
+
+- `task_id` omitido → Core/CLI gera UUID v7; se presente, deve ser UUID v7
+  valido (UUID v4/outros → `validation.schema`).
+- `created_at` omitido → Core preenche UTC; se presente, RFC3339.
+- Schema canônico: `schemas/task-ir-v0.1.0.json` (draft 2020-12).
+- Lib: `github.com/santhosh-tekuri/jsonschema/v6`.
 
 ## 3. Capability naming (G-05)
 
@@ -63,7 +71,7 @@ Entrada estruturada do MVP (CLI/Board). Sem Intent Engine.
 ```json
 {
   "schema_version": "0.1.0",
-  "task_id": "550e8400-e29b-41d4-a716-446655440000",
+  "task_id": "01900000-0000-7000-8000-000000000001",
   "created_at": "2026-08-16T02:00:00Z",
   "source": {
     "entry_point": "cli",
@@ -93,10 +101,10 @@ Entrada estruturada do MVP (CLI/Board). Sem Intent Engine.
 
 | Campo | Obrigatorio | Notas |
 |---|---|---|
-| `schema_version` | sim | |
-| `task_id` | sim | UUID v7; CLI pode gerar |
-| `created_at` | sim | RFC3339 |
-| `source.entry_point` | sim | `cli` \| `tui` \| `board` \| `api` \| `other` |
+| `schema_version` | sim | exatamente `"0.1.0"` |
+| `task_id` | sim (apos admissão) | UUID v7; omitido no arquivo → Core gera |
+| `created_at` | sim (apos admissão) | RFC3339; omitido → Core preenche UTC |
+| `source.entry_point` | sim | `cli` \| `tui` \| `board` \| `api` \| `http` \| `wails` \| `other` |
 | `source.ref` | nao | id externo (card, file path) |
 | `intent.summary` | sim | humano; nao e executavel |
 | `intent.notes` | nao | |
@@ -228,6 +236,12 @@ O Runner resolve `capability` → `player` via Registry. Sem replanejamento dina
 | `run.succeeded` | Todos steps ok |
 | `run.failed` | Run abortado por falha |
 | `run.cancelled` | Cancelamento (se suportado; P2 pode adiar emissao) |
+| `run.waiting_approval` | Policy `approval-required`; pausa antes do Execute (G-83) |
+| `run.approval_granted` | `ApproveRun(grant)` |
+| `run.approval_denied` | `ApproveRun(deny)` |
+| `claim.acquired` | Lock gravado (G-96; spec `24`) |
+| `claim.conflict` | Recurso tomado por outro Run (G-97) |
+| `claim.released` | Release no terminal do Run |
 
 Payload de `task.rejected` / `step.failed` usa o Error model (§9).
 
@@ -241,10 +255,13 @@ Payload de `task.rejected` / `step.failed` usa o Error model (§9).
 accepted → planned → running → succeeded
                               ↘ failed
                               ↘ cancelled   (opcional no MVP)
+                              ↘ waiting_approval → running   (G-83; spec `22`)
+                                                 ↘ failed
+                                                 ↘ cancelled
 rejected   (terminal; sem run)
 ```
 
-Estados da Task (visao Entry Point): `accepted` | `rejected` | `running` | `succeeded` | `failed` | `cancelled`.
+Estados da Task (visao Entry Point): `accepted` | `rejected` | `running` | `succeeded` | `failed` | `cancelled` | `waiting_approval`.
 
 Um `run_id` por tentativa de execucao de uma task aceita.
 
@@ -293,6 +310,10 @@ Codigos iniciais:
 | `runtime.timeout` | Runner/Player |
 | `runtime.cancelled` | Runner |
 | `runtime.internal` | Core |
+| `policy.denied` | Execution Policy deny na admissao (G-82; spec `22`) |
+| `policy.approval_denied` | Humano recusou HITL (G-83) |
+| `policy.not_waiting` | `ApproveRun` sem Run em `waiting_approval` |
+| `claim.conflict` | Resource Claim: recurso exclusivo tomado (G-97; spec `24`) |
 
 ---
 
@@ -310,8 +331,16 @@ Responsabilidades v0:
 4. Enfileirar steps respeitando `depends_on` (MVP: executar em ordem topologica; falha em um step falha o run)
 5. Publicar eventos
 6. Coletar Results
+7. Resource Claims v0 nos steps mutadores da tabela (G-93..G-98; spec `24`) — depois da Policy, antes do Execute
 
-**Nao faz no v0:** replanejamento, policies avancadas, background players, blast radius.
+**Nao faz no Runner v0:** replanejamento, background players, auto-blast.
+Blast Radius on-demand (`BlastTask` / `runtgine blast`) esta em
+[25-blast-radius-v0.md](25-blast-radius-v0.md) — nao entra neste
+pipeline. Walk 1-hop `affected` esta em
+[27-blast-graph-walk-v0.md](27-blast-graph-walk-v0.md). Execution Policy v0 (allow/deny/HITL) esta em
+[22-execution-policy-v0.md](22-execution-policy-v0.md). Resource Claims
+v0 esta em [24-resource-claims-v0.md](24-resource-claims-v0.md) — nao e
+o Orchestrator completo HYPOTHESIS.
 
 Relacao: Orchestrator HYPOTHESIS futuro pode absorver Runner.
 
@@ -327,7 +356,9 @@ Relacao: Orchestrator HYPOTHESIS futuro pode absorver Runner.
 - **Multiplos runs concorrentes** permitidos no MVP (limites de paralelismo
   configuraveis depois; default razoavel no processo).
 - Steps de um mesmo run respeitam `depends_on` (ordem topologica);
-  runs distintos nao se bloqueiam entre si no v0.
+  runs distintos nao se bloqueiam na fila. Resource Claims v0 (spec `24`)
+  pode **falhar** um Run mutador se o recurso ja estiver tomado
+  (fail-fast; nao e wait na Queue).
 
 ---
 
@@ -359,6 +390,8 @@ SubmitTask(TaskIR) -> (run_id | ValidationError)
 GetRun(run_id) -> RunSnapshot
 Subscribe(filter) -> <-chan Event   // TUI/CLI status
 CancelRun(run_id) -> error          // pode ser stub no MVP
+ApproveRun(run_id, grant|deny) -> error  // G-84; spec `22`
+BlastTask(TaskIR) -> (ImpactReport | ValidationError)  // G-103; spec `25`; nao cria Run
 ```
 
 - Nao ha protocolo separado Board/CLI.
@@ -378,13 +411,15 @@ Capability: `shell.exec` (schema no Manifest §6).
 | Regra | Default MVP |
 |---|---|
 | Shell | sem shell string; so `command` argv (sem `sh -c` implicito) |
-| Workdir | deve estar dentro do workspace root configurado |
-| Env | allowlist ou herda minimo; sem injecao livre de secrets do host alem do necessario |
+| Workdir | path resolvido (`EvalSymlinks`) deve estar dentro do workspace root |
+| Env | se `input.env` presente: so essas chaves; se omitido: heranca minima (`PATH`, `HOME`, `USER`, `LANG`, `LC_*`, `TZ`, `TMPDIR`/`TMP`/`TEMP`) — nunca herda `*_TOKEN`, `*_API_KEY`, `RUNTGINE_*` |
 | Timeout | obrigatorio (default 60s) |
-| Rede | nao controlada no v0 (documentar risco); deny via OS fica P2 |
-| Binarios | allowlist opcional (`go`, `git`, …) — default permissivo + warning no log |
+| Rede | nao controlada no v0 (documentar risco); deny via OS fora do slice |
+| Binarios | allowlist opcional — default permissivo + `slog.Warn` |
 
 Falha de sandbox → `validation.invalid_input` ou `runtime.player_error` com code dedicado futuro `policy.denied`.
+
+Isolamento de OS (namespaces, Landlock, deny de rede) **nao** faz parte do sandbox v0.
 
 ---
 
@@ -412,11 +447,18 @@ internal/core/
   runner/              # Runner v0
   registry/            # Player registry
   result/              # Result/Error
+  graph/               # Runtime Graph v0 (G-60+)
+  claim/               # Resource Claims v0 (G-93+)
+  blast/               # Blast Radius v0 (G-99+; slice 13)
 internal/players/
   shell/
+  npm/                 # G-166 / spec 36; slice 29 feito
 internal/entrypoint/
   cli/
   tui/                 # depois do CLI
+  board/
+  httpapi/             # G-45 / spec 34; slice 25 feito
+  desktop/             # G-159 / spec 35; slices 27–28 feitas
 pkg/protocol/          # tipos/schemas publicos estaveis (opcional cedo)
 schemas/               # JSON Schema files
 docs/
@@ -428,13 +470,16 @@ Core nao importa `entrypoint`. Players nao importam UI.
 
 ## 17. Validator v0
 
-Checagens MVP:
+Checagens MVP (ordem):
 
-1. JSON Schema do Task IR
-2. `steps` nao vazio; `step_id` unicos; `depends_on` aciclico e referencias validas
-3. Cada `capability` existe no Registry
-4. `input` valida contra `input_schema` da capability
-5. Regras de sandbox estaticas do Shell (workdir, argv)
+1. JSON Schema do Task IR sobre os **bytes** (antes do `encoding/json` descartar extras)
+2. Identidade: `schema_version == "0.1.0"`; `task_id` UUID v7
+3. `steps` nao vazio; `step_id` unicos; `depends_on` aciclico e referencias validas
+4. Cada `capability` existe no Registry
+5. `input` valida contra `input_schema` da capability (compilado no `Register`)
+6. Regras de sandbox estaticas do Shell (argv, workdir resolvido)
+
+Falha em qualquer passo → `task.rejected` (sem `InsertRun`).
 
 ---
 

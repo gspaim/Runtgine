@@ -1,0 +1,9 @@
+schema: spec-driven
+created: 2026-09-04
+nnn: "044"
+slug: cloud-gcp-azure
+docs_canonical: docs/44-cloud-gcp-azure-players-v0.md
+gaps: [G-224, G-225, G-226, G-227, G-228, G-229, G-230]
+status: archived
+branch: feat/044-cloud-gcp-azure
+depends_on: ["043-aws-player"]

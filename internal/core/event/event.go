@@ -21,16 +21,22 @@ type Event struct {
 }
 
 const (
-	TypeTaskAccepted  = "task.accepted"
-	TypeTaskRejected  = "task.rejected"
-	TypeRunPlanned    = "run.planned"
-	TypeRunStarted    = "run.started"
-	TypeStepStarted   = "step.started"
-	TypeStepSucceeded = "step.succeeded"
-	TypeStepFailed    = "step.failed"
-	TypeRunSucceeded  = "run.succeeded"
-	TypeRunFailed     = "run.failed"
-	TypeRunCancelled  = "run.cancelled"
+	TypeTaskAccepted       = "task.accepted"
+	TypeTaskRejected       = "task.rejected"
+	TypeRunPlanned         = "run.planned"
+	TypeRunStarted         = "run.started"
+	TypeStepStarted        = "step.started"
+	TypeStepSucceeded      = "step.succeeded"
+	TypeStepFailed         = "step.failed"
+	TypeRunSucceeded       = "run.succeeded"
+	TypeRunFailed          = "run.failed"
+	TypeRunCancelled       = "run.cancelled"
+	TypeRunWaitingApproval = "run.waiting_approval"
+	TypeRunApprovalGranted = "run.approval_granted"
+	TypeRunApprovalDenied  = "run.approval_denied"
+	TypeClaimAcquired      = "claim.acquired"
+	TypeClaimConflict      = "claim.conflict"
+	TypeClaimReleased      = "claim.released"
 )
 
 func New(typ, runID, taskID string, stepID *string, payload map[string]any) (Event, error) {

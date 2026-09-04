@@ -21,15 +21,16 @@ Human Intent -> Intent Engine -> Task IR -> Validator -> Execution Plan -> Event
 | Queue | CONFIRMED | Trabalho aguardando processamento |
 | Event Bus | CONFIRMED | Transporte de eventos |
 | Capability | CONFIRMED | O que um Player sabe fazer |
-| Intent Engine | HYPOTHESIS | Traduz intencao em Task IR |
-| Task IR | CONFIRMED (v0) | Schema em 11-protocolo-v0; Intent Engine NL ainda HYPOTHESIS |
+| Intent Engine | CONFIRMED (v0) | Traduz intencao em Task IR; ver `17` |
+| Task IR | CONFIRMED (v0) | Schema em 11-protocolo-v0; NL via Intent Engine v0 |
 | Task Validator | HYPOTHESIS | Valida antes de executar |
-| Runtime Graph | HYPOTHESIS | Memoria estrutural do sistema |
-| Context Engine | HYPOTHESIS | Monta contexto para cada Player |
+| Runtime Graph | CONFIRMED (v0) | Memoria estrutural; ver `18` |
+| Context Engine | CONFIRMED (v0) | Semente `repo_hits`; ver `31` |
 | Orchestrator | HYPOTHESIS | Coordena fluxo de execucao |
-| Execution Policy | HYPOTHESIS | Regras de seguranca/permissao |
-| Resource Claim | HYPOTHESIS | Bloqueio concorrente de recurso |
-| Blast Radius | HYPOTHESIS | Impacto de uma mudanca |
+| Execution Policy | CONFIRMED (v0) | allow/deny/approval-required; ver `22` |
+| Resource Claim | CONFIRMED (v0) | Bloqueio concorrente; ver `24` |
+| Blast Radius | CONFIRMED (v0) | Relatorio de impacto da Task IR; ver `25` |
+| Blast Graph Walk | CONFIRMED (v0) | 1 hop mentions no Graph; ver `27` |
 | Entry Point | CONFIRMED | Interface externa; nao e Player |
 
 ---
@@ -74,7 +75,7 @@ Outra distincao importante:
 
 ## Intent Engine
 
-Status: HYPOTHESIS (fora do MVP Core; ver `09-mvp.md`)
+Status: CONFIRMED (v0) — ver `17-intent-engine-v0.md`
 
 O usuario pode escrever: Pega a ultima versao da API, roda os
 testes e coloca no staging. Em vez de executar diretamente,
@@ -84,14 +85,14 @@ Funciona como um compilador:
 
 Human Intent -> Intent Engine -> Task IR -> Validator -> Execution Plan
 
-No MVP, a entrada e Task IR v0 estruturado (JSON/YAML via CLI/Board) —
-schema CONFIRMED em `11-protocolo-v0.md`. Intent Engine de linguagem
-natural vem depois do Core estavel.
+No MVP inicial, a entrada tipica era Task IR v0 estruturado (JSON/YAML
+via CLI/Board). Intent Engine NL v0 (`runtgine intent`) compila texto
+para Task IR com heuristicas deterministicas e LLM opcional.
 
-O Intent Engine e uma LLM especializada em Runtgine Protocol,
-Players, Capabilities, Task Schemas, Policies e Runtime Graph.
-Ela NAO e autoridade — se inventar uma capability que nao existe,
-o Registry rejeita.
+O Intent Engine e especializado em Runtgine Protocol,
+Players, Capabilities e Task Schemas.
+Ele NAO e autoridade — se inventar uma capability que nao existe,
+o Registry/Validator rejeita.
 
 ---
 
@@ -116,17 +117,21 @@ Filosofia: deslocar erros de runtime error para compile/validation error.
 
 ## Runtime Graph
 
-Status: HYPOTHESIS
+Status: CONFIRMED (v0) — ver [18-runtime-graph-v0.md](18-runtime-graph-v0.md)
 
-Representa relacoes entre Players, Capabilities, Tasks, Workflows,
-Resources, Repositories, Symbols, Events, Runs, Artifacts e
-Dependencies.
+Representa relacoes entre Players, Capabilities, Tasks,
+Resources, Repositories, Symbols, Runs e artefatos de path.
 
 Enquanto o Event Bus responde O que esta acontecendo agora?,
 o Runtime Graph responde O que existe e como as coisas se relacionam?.
 
 Runtime Graph = memoria estrutural
 Event Store = memoria temporal
+
+O corte estrutural v0 (G-60..G-65) limita-se a nos/arestas minimos em SQLite
+por workspace, sync best-effort apos runs, e CLI read-only — sem Workflow
+Templates e sem tab TUI. Hits no ContextPack/Intent sao o slice Graph Hits
+v0 ([19-graph-hits-v0.md](19-graph-hits-v0.md), G-66..G-69).
 
 ---
 
@@ -143,6 +148,12 @@ Exemplos: Git Player, Filesystem Player, Shell Player, Docker Player,
 K8s Player, Terraform Player, PostgreSQL Player, Test Player,
 HTTP Player, Claude Player, GPT Player, Human Approval Player.
 
+HTTP Player v0 (`28`, G-117..G-122): cliente HTTPS `http.get` /
+`http.head`. Nao e a API HTTP do runtime (G-45 recorte v0 em `34`).
+
+Test Player v0 (`30`, G-129..G-134): `test.go` (`go test` no workspace).
+Nao e pytest. NPM Player v0 (`36`, G-166..G-171; slice 29): `npm.test`.
+
 Muitos Players deterministicos sao estrategicos — aumentam utilidade
 sem IA, reduzem custo, aumentam confiabilidade. A visao e ter uma
 biblioteca grande de Players deterministicos.
@@ -156,63 +167,82 @@ consegue fornece-la?
 
 ## Context Engine
 
-Status: HYPOTHESIS
+Status: CONFIRMED (v0) — ver [31-context-engine-v0.md](31-context-engine-v0.md).
 
-O LLM nao recebe todo o projeto. O Context Engine monta:
-- Task
-- Relevant Events
-- Relevant Symbols
-- Relevant Resources
-- Previous Decisions
-- Current State
+O LLM nao recebe todo o projeto. O assembler do ContextPack monta
+task/step, `prior_outputs`, `repo_hits`, `graph_hits`, `memory_hits`
+e budget. Se `repo_hits` estiver vazio (sem `pipeline.repo-search`
+neste Run), o v0 semeia paths/symbols a partir de `QueryHits`.
 
-Isso reduz tokens e melhora a qualidade da execucao.
+Fora do v0 (ainda o “completo” de `03`): stream global de events,
+current state rico, embeddings, dump do repositorio.
+
+Project Memory v0 (`29`) alimenta `memory_hits` (`active`). Graph Hits
+(`19`) alimenta `graph_hits`. Nao confundir os tres.
 
 ---
 
 ## Player Router
 
-Status: HYPOTHESIS
+Status: CONFIRMED (v0 spec) — ver [33-evolution-v0.md](33-evolution-v0.md) (G-147..G-152).
+Implementação: slices 22–24 feitas.
 
 Task -> Required Capability -> Player Candidates -> Router -> best Player
 
-Criterios de escolha: capability, complexidade, custo, latencia, contexto, policy.
+Criterios de escolha v0: capability, effort/difficulty (pipeline), regras
+`llm_routing`, provider/model configuravel. Criterios futuros: custo, latencia,
+benchmarks curados (input humano na config).
 
 ---
 
 ## Execution Policy
 
-Status: HYPOTHESIS
+Status: CONFIRMED (v0) — ver [22-execution-policy-v0.md](22-execution-policy-v0.md).
 
-Regras de seguranca/permissao por Player ou acao:
+Regras de seguranca/permissao por **capability** exata, no Core (nao e Player):
 
-filesystem: read
-shell: deny
-network: deny
-production.deploy: approval-required
+```text
+allow | deny | approval-required
+```
+
+Default global: `allow`. Manifest pode declarar o verbo; `config.json`
+sobrescreve. `deny` rejeita na admissao; `approval-required` pausa o Run
+(`waiting_approval`) ate `ApproveRun`.
+
+Fora do motor de policy: wildcards, Blast Radius como gate, Human Player.
+Resource Claims v0: ver [24-resource-claims-v0.md](24-resource-claims-v0.md).
+Blast Radius v0 (analise on-demand): ver [25-blast-radius-v0.md](25-blast-radius-v0.md).
 
 ---
 
 ## Resource Claim
 
-Status: HYPOTHESIS
+Status: CONFIRMED (v0) — ver [24-resource-claims-v0.md](24-resource-claims-v0.md).
 
-Bloqueio concorrente de recursos. Player A claims resource X.
-Recursos podem ser: file, repository, database, environment, deployment, workspace.
+Bloqueio concorrente exclusivo no Core (nao e Player). Kinds v0:
+`workspace` e `path`. O Runner deriva o claim de uma tabela automatica
+(`fs.write`, `git.add`/`commit`, `docker.build`, `docker.run` com
+mount). `shell.exec` nao claima. Conflito e fail-fast
+(`claim.conflict`); hold ate o Run terminal.
 
-Garante que dois Players nao modifiquem o mesmo recurso simultaneamente.
+Garante que dois Runs nao mutem o mesmo recurso simultaneamente.
+Blast Radius v0: ver [25-blast-radius-v0.md](25-blast-radius-v0.md).
 
 ---
 
 ## Blast Radius
 
-Status: HYPOTHESIS
+Status: CONFIRMED (v0) — ver [25-blast-radius-v0.md](25-blast-radius-v0.md).
 
-Antes de executar uma mudanca, analisa o impacto:
+Relatorio deterministico a partir da Task IR: o que a Task toca
+(inclui leituras) e o que claimaria (tabela G-95), mais overlay dos
+claims ativos. CLI `runtgine blast`; nao e gate de Execute e nao
+entra no Runner.
 
-Change -> Graph -> Affected Players, Workflows, Resources, Symbols
-
-Saida: Impact Analysis com workflows, recursos e risco afetados.
+Walk `Change -> Graph -> Affected` no v0 e **1 hop** inbound
+`mentions` a partir de `touches` path — ver
+[27-blast-graph-walk-v0.md](27-blast-graph-walk-v0.md). Players,
+Workflows e Symbols no walk permanecem fora.
 
 ---
 

@@ -6,22 +6,30 @@ import (
 )
 
 var validEntryPoints = map[string]bool{
-	"cli": true, "tui": true, "board": true, "api": true, "other": true,
+	"cli": true, "tui": true, "board": true, "api": true, "http": true, "wails": true, "other": true,
 }
 
-// StructuralValidate checks Task IR shape before registry/capability checks.
-func StructuralValidate(t Task) error {
-	if t.SchemaVersion == "" {
-		return fmt.Errorf("schema_version is required")
+// IdentityValidate checks schema_version and UUID v7 task_id after Parse.
+func IdentityValidate(t Task) error {
+	if t.SchemaVersion != SchemaVersion {
+		return fmt.Errorf("schema_version must be %q", SchemaVersion)
 	}
 	if t.TaskID == "" {
 		return fmt.Errorf("task_id is required")
 	}
+	if !IsUUIDv7(t.TaskID) {
+		return fmt.Errorf("task_id must be a UUID v7")
+	}
+	return nil
+}
+
+// StructuralValidate checks Task IR shape before registry/capability checks.
+func StructuralValidate(t Task) error {
 	if t.Intent.Summary == "" {
 		return fmt.Errorf("intent.summary is required")
 	}
 	if !validEntryPoints[t.Source.EntryPoint] {
-		return fmt.Errorf("source.entry_point must be one of cli|tui|board|api|other")
+		return fmt.Errorf("source.entry_point must be one of cli|tui|board|api|http|wails|other")
 	}
 	if len(t.Steps) == 0 {
 		return fmt.Errorf("steps must contain at least one step")

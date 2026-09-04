@@ -1,0 +1,21 @@
+{
+  "schema_version": "0.1.0",
+  "source": {
+    "entry_point": "cli",
+    "ref": "examples/aws-s3-objects.json"
+  },
+  "intent": {
+    "summary": "List objects under an S3 prefix"
+  },
+  "steps": [
+    {
+      "step_id": "s1",
+      "capability": "aws.s3-objects",
+      "input": {
+        "bucket": "data",
+        "prefix": "logs"
+      },
+      "depends_on": []
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "runtgine-memory": {
+      "command": "/caminho/para/runtgine",
+      "args": ["mcp", "--workspace", "/caminho/para/seu/workspace"]
+    }
+  }
+}

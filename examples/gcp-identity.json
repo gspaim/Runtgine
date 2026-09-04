@@ -1,0 +1,18 @@
+{
+  "schema_version": "0.1.0",
+  "source": {
+    "entry_point": "cli",
+    "ref": "examples/gcp-identity.json"
+  },
+  "intent": {
+    "summary": "Show credentialed GCP accounts"
+  },
+  "steps": [
+    {
+      "step_id": "s1",
+      "capability": "gcp.identity",
+      "input": {},
+      "depends_on": []
+    }
+  ]
+}

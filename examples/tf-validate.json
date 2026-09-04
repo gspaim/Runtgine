@@ -1,0 +1,20 @@
+{
+  "schema_version": "0.1.0",
+  "source": {
+    "entry_point": "cli",
+    "ref": "examples/tf-validate.json"
+  },
+  "intent": {
+    "summary": "Validate Terraform in workspace"
+  },
+  "steps": [
+    {
+      "step_id": "s1",
+      "capability": "tf.validate",
+      "input": {
+        "workdir": "."
+      },
+      "depends_on": []
+    }
+  ]
+}

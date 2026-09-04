@@ -1,0 +1,22 @@
+{
+  "schema_version": "0.1.0",
+  "source": {
+    "entry_point": "cli",
+    "ref": "examples/helm-template.json"
+  },
+  "intent": {
+    "summary": "Render a Helm chart locally"
+  },
+  "steps": [
+    {
+      "step_id": "s1",
+      "capability": "helm.template",
+      "input": {
+        "chart": "charts/demo",
+        "release": "web",
+        "namespace": "demo"
+      },
+      "depends_on": []
+    }
+  ]
+}

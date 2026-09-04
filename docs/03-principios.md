@@ -40,9 +40,10 @@ Symbols, Runs, Artifacts. Enquanto o Event Bus sabe o que esta
 acontecendo agora, o Graph sabe o que existe e como se relaciona.
 
 ## 9. Contexto relevante, nao todo o projeto
-Context Engine monta: Task + Relevant Events + Relevant Symbols +
-Relevant Resources + Previous Decisions + Current State. Reduz
-tokens e melhora qualidade.
+Context Engine v0 (`31`) semeia `repo_hits` a partir do Graph quando
+o pack nao tem repo-search neste Run. Sem dump do repositorio, sem
+embeddings. O desenho amplo (events globais, current state rico)
+permanece fora do 1.0.
 
 ## 10. LLM-agnostic
 Players LLM sao um tipo de Player entre outros. O Core nao conhece

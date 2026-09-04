@@ -1,0 +1,8 @@
+schema: spec-driven
+created: 2026-08-17
+nnn: "020"
+slug: git-player
+docs_canonical: docs/20-git-player-v0.md
+gaps: [G-70, G-71, G-72, G-73, G-74]
+status: archived
+branch: cursor/020-git-player-0ac1

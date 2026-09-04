@@ -1,0 +1,9 @@
+schema: spec-driven
+created: 2026-08-22
+nnn: "036"
+slug: npm-player
+docs_canonical: docs/36-npm-player-v0.md
+gaps: [G-166, G-167, G-168, G-169, G-170, G-171]
+status: active
+branch: cursor/036-npm-player-d46c
+depends_on: ["030-test-player", "035-wails-v0"]

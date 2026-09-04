@@ -1,113 +1,165 @@
-# 09 — MVP: Runtime Minimo
-
-MVP canônico do Runtgine: provar o **Core** (event-driven, Players,
-validação) com um Player determinístico real, superfícies mínimas
-(CLI/TUI) e um primeiro cenário vertical via Board.
+# 09 — MVP: execução verificável
 
 Fonte de verdade deste escopo. `05-prd.md` lista requisitos; este
-documento define o corte do MVP. Em conflito, prevalece este arquivo
-e `04-decisoes.md`.
+documento define o corte. Em conflito, prevalece este arquivo e
+`04-decisoes.md`.
+
+Dois andares:
+
+| Andar | Significado |
+|---|---|
+| **MVP realizado** | Já no código (slices 1–20, incluindo 1.0 magro) |
+| **MVP 1.0 magro** | Feito: NL → Player certo + semente `repo_hits` |
+
+A frase do produto é **intenção → execução verificável**. O runtime
+mínimo (Core + Shell + CLI/TUI + Board) já provou que o Core existe.
+O 1.0 magro prova o loop sem `shell.exec` livre quando já há Player.
+
+---
 
 ## Principio do corte
 
-1. Core antes de UI rica (CLI/TUI mínimas bastam)
-2. Shell Player no MVP — prova deterministic-first
-3. Entrada estruturada (Task IR v0 em JSON/YAML) antes de Intent Engine NL
-4. Board como primeiro Entry Point de produto, não como substituto do Core
+1. Core é o produto. CLI/TUI/Board são superfícies.
+2. Deterministic-first: Player com schema antes de argv livre.
+3. Validator / Registry continuam soberanos (Intent não inventa capability).
+4. Magro: **não** puxar API HTTP (G-45), NATS, Wails, MCP, templates.
 
-## Ciclo principal (cenario vertical)
+---
 
-Board (Entry Point) -> Import task -> Technical Review ->
-Spec Review -> Repo Search -> Effort Estimation ->
-Difficulty Classification -> Task Decomposition ->
-Task Router -> Context Assembly -> Players
+## MVP realizado (slices 1–20)
 
-O ciclo vertical roda **sobre** o Core (Event Bus, Registry, Validator),
-não no lugar dele.
+Já implementado. Não voltar a listar estes itens como “fora do MVP”.
 
-## Entry points no MVP
+### Core e superfícies
 
-| Entry Point | Incluido? | Notas |
-|---|---|---|
-| CLI | MVP | `runtgine run`, `status` — entrada estruturada |
-| TUI | MVP | Superfície mínima para observar execuções |
-| Board (Github Projects) | MVP | Polling inicial; Entry Point ≠ Player |
-| API | Pos-MVP | Serverless/CI |
-| Desktop (Wails) | Pos-MVP (Fase 3) | Após CLI/TUI validarem o Core |
-| Web | Futuro | Se houver demanda |
+- Task IR v0, Validator (JSON Schema), Event Bus in-process, Registry
+- Runner, SQLite, Execution Policy + HITL, Resource Claims, Blast Radius
+- CLI (`run`, `status`, `intent`, `graph`, `memory`, `blast`, …)
+- TUI Constellation (incluindo aba GRAPH)
+- Board GitHub Projects + pipeline vertical (`12`)
+- Intent Engine NL (`17`) — heuristics shell / pipeline / Players (slice 19)
+- Runtime Graph + Graph Hits + Project Memory (`memory_hits`)
 
-## Escopo do MVP
+### Players determinísticos
 
-### Incluido (Core)
+Shell, Git, Filesystem, Docker, HTTP (`http.get`/`head`), Test (`test.go`).
+Pipeline + LLM Players do cenário Board.
 
-- Task model + Task IR v0 (JSON/JSON Schema; entrada estruturada)
-- Task Validator básico (capabilities, inputs, schemas)
-- Event Bus in-process (canais Go)
-- Player Registry + Manifest
-- Shell Player (Player determinístico de referência)
-- CLI mínima
-- TUI mínima (observação de status/eventos)
+### Criterios de sucesso (já atendidos)
 
-### Incluido (cenario Board)
-
-- Board Integration (ler tasks do Github Projects)
-- Pipeline de analise: technical review, spec review
-- Repo Search
-- Effort Estimation + Difficulty Classification
-- Task Decomposition (regras + LLM)
-- Task Router básico
-- Context assembly básico
-- Pelo menos um LLM Player no pipeline
-
-### Nao incluido
-
-- Intent Engine de linguagem natural (permanece HYPOTHESIS; ver P1)
-- Workflow engine completo / Workflow Templates
-- Human-in-the-loop completo
-- Policies / Approvals / Resource Claims / Blast Radius
-- Plugin system
-- Wails (desktop)
-- MCP integration
-- Event sourcing
-- API HTTP
-- NATS / Event Bus distribuído
-- Biblioteca ampla de Players (Git, Docker, K8s…)
-
-## Ordem de implementacao
-
-Alinhada a `AGENTS.md`:
-
-1. Task model + Task IR v0 (schema)
-2. Player Registry + Manifest
-3. Event Bus
-4. Task Validator básico
-5. Shell Player
-6. CLI mínima
-7. TUI mínima
-8. Board Integration
-9. Context assembly
-10. LLM Player (Technical Review) + pipeline linear
-11. Repo Search
-12. Effort Estimation + Difficulty
-13. Task Decomposition
-14. Task Router
-15. Demais Players LLM do cenário
-
-## Criterios de sucesso
-
-- `runtgine run` executa Task IR v0 via Shell Player com eventos observáveis
-- Validator rejeita capability inexistente / input inválido antes de executar
-- Task do board passa pelo pipeline completo quando o cenário vertical estiver ligado
-- Subtasks distribuídas para Players corretos
-- Cada Player recebe contexto relevante (quando Context assembly existir)
+- `runtgine run examples/hello.json` → `run.succeeded`
+- Validator rejeita capability inexistente / input inválido na admissão
+- Task do board passa pelo pipeline quando o cenário vertical está ligado
 - Falha retorna erro claro na CLI/TUI
 
-## Criterio de “pronto para codar”
+---
 
-Pode iniciar implementacao do Core quando G-01..G-18 estiverem
-**CONFIRMED** (ou explicitamente REJECTED com alternativa) em `04-decisoes.md`.
-Ver propostas em [11-protocolo-v0.md](11-protocolo-v0.md).
+## MVP 1.0 magro (feito)
 
-Nota: o incluso “Board” em `09-mvp.md` permanece no MVP de produto, mas
-o **primeiro slice de codigo** e CLI + Shell sobre o protocolo v0; Board e P1
-de especificacao (G-20+).
+O que falta para o loop ser honesto:
+
+| Item | Gaps | Código |
+|---|---|---|
+| Heurísticas Intent → Players atuais | G-135..G-136 | slice 19 — feito |
+| Context Engine v0 (seed `repo_hits`) | G-137..G-139 | slice 20 — feito |
+
+Exclusões comuns: G-140.
+
+Doc canônico do Context Engine: [31-context-engine-v0.md](31-context-engine-v0.md).
+Intent: emenda em [17-intent-engine-v0.md](17-intent-engine-v0.md).
+OpenSpec: [`openspec/changes/archive/2026-08-19-031-mvp-1.0/`](../openspec/changes/archive/2026-08-19-031-mvp-1.0/).
+
+### 1. Heurísticas de Intent (slice 19)
+
+Antes do prefixo genérico `go ` / argv `git` → `shell.exec`, o Engine
+reconhece frases de alta confiança e emite Task IR com a capability
+já registrada:
+
+| NL (PT/EN, case-insensitive) | Capability |
+|---|---|
+| `go test`, `roda os testes`, `rodar testes`, `run tests` | `test.go` |
+| `git status` | `git.status` |
+| `git diff` | `git.diff` |
+| `git log` | `git.log` |
+| `docker ps` | `docker.ps` |
+
+Ordem: vazio → **player** → shell → pipeline → LLM.
+`go test` **não** pode virar `shell.exec`.
+Caminho LLM continua `route: shell|pipeline` (não inventa Players).
+Validator rejeita o que o Registry não conhece.
+
+### 2. Context Engine v0 (slice 20)
+
+Não é Player. É o nome do assembler do ContextPack (`AssembleContext`).
+
+Hoje `repo_hits` só existe se `pipeline.repo-search` rodou neste Run.
+No v0, se `repo_hits` estiver vazio, o Core **semeia** paths/symbols a
+partir de `QueryHits` (nós `path` / `symbol` do Graph), no budget
+`max_files` já existente. Falha → lista vazia; o Run não cai.
+Sem walk do workspace, sem embeddings, sem corpo de arquivo no pack.
+
+### Criterios extra do 1.0
+
+- `runtgine intent "roda os testes"` → um step `test.go` (não `shell.exec`)
+- `runtgine intent "git status"` → `git.status`
+- Step LLM **sem** `repo-search` neste Run ainda pode ter `repo_hits`
+  (semente do Graph) ou `[]` se o Graph estiver vazio
+- `go test ./...` / `go vet ./...` verdes
+
+---
+
+## Explicitamente fora do 1.0
+
+| Fica fora | Por quê |
+|---|---|
+| API HTTP / webhooks (G-45) | Superfície CI; não fecha o loop local |
+| NATS / bus distribuído (G-36) | DEFERRED; um processo basta |
+| Wails / desktop | Fase 3; spec `35`; TUI já é superfície |
+| MCP (G-44) | Runtgine não é alternativa a MCP |
+| Player Router completo | Fora do 1.0; spec v0 em `33` (slice 22) |
+| Playbooks / Lessons / multi-model LLM | Fora do 1.0; spec v0 em `33` (slices 23–24) |
+| Workflow Templates / TLC SDD (`08`) | Task ≠ Workflow; motor novo |
+| Plugin system / event sourcing | Plataforma, não prova |
+| Memory Player (G-47) | Provider já existe; Player OPEN |
+| `http.post`, `git.push` / `add` / `commit` via NL | Escrita / rede; heuristicas só leitura |
+| pytest / yarn / pnpm / `-race` / K8s / Terraform / PostgreSQL | Outros recortes G-41 |
+| Embeddings / RAG / dump do repositório no pack | Fora do Context Engine v0 |
+
+UC-02 (CI/CD via HTTP) é **pós-1.0**: spec [34-http-api-v0.md](34-http-api-v0.md)
+(G-153..G-158); slices 25–26 feitas (`runtgine serve`).
+
+---
+
+## Entry points
+
+| Entry Point | 1.0 magro | Notas |
+|---|---|---|
+| CLI | sim | Task IR + `runtgine intent` |
+| TUI | sim | Inclui aba **INTENT** (`32`, slice 21) |
+| Board (GitHub Projects) | sim | Entry Point ≠ Player |
+| API HTTP | sim (pós-1.0) | `runtgine serve` (`34`, slices 25–26) |
+| Desktop (Wails) | spec `35` | Fora do 1.0 magro; slices 27–28 |
+| Web | não | Futuro |
+
+---
+
+## Ordem de codigo (a partir daqui)
+
+1. Slice 19 — heurísticas Intent (G-135..G-136) — feito
+2. Slice 20 — Context Engine v0 (G-137..G-139) — feito
+3. OpenSpec `031` arquivado — feito
+4. Slice 21 — Intent Surface TUI (G-141..G-146; ver `32`) — feito
+5. Slices 22–24 — Evolution v0 (G-147..G-152; ver `33`) — feito
+6. Slices 25–26 — HTTP API v0 (G-153..G-158; ver `34`) — feito
+7. Desktop Wails v0 slice 27 (INTENT/LIVE) — feito (ver `35`)
+8. Slice 28 — demais views desktop + Lessons HITL — feito
+9. NPM Player v0 slice 29 (`npm.test`) — spec `36` (G-166..G-171) — feito
+10. Pytest + Yarn slice 30 — spec `37` — feito
+11. Memory Player slice 31 — spec `38` — feito
+12. MCP Memory Server slice 32 — spec `39` — feito
+13. Workflow Templates slice 33 — spec `40` (G-40) — feito
+14. Infra Players slice 34 — spec `41` (G-201..G-209) — feito
+15. Depois: só após nova promoção em `04`
+
+Histórico do runtime mínimo (Task IR → Shell → CLI → TUI → Board →
+pipeline) está nos slices 1–4 / `11` / `12`. Não reabrir.

@@ -1,0 +1,18 @@
+{
+  "schema_version": "0.1.0",
+  "source": {
+    "entry_point": "cli",
+    "ref": "examples/helm-list.json"
+  },
+  "intent": {
+    "summary": "List Helm releases in the cluster"
+  },
+  "steps": [
+    {
+      "step_id": "s1",
+      "capability": "helm.list",
+      "input": {},
+      "depends_on": []
+    }
+  ]
+}

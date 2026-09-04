@@ -1,0 +1,7 @@
+{
+  "name": "runtgine-npm-player-fixture",
+  "private": true,
+  "scripts": {
+    "test": "node -e \"process.exit(0)\""
+  }
+}

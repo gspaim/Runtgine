@@ -14,7 +14,8 @@ Necessario antes de implementar o Entry Point Board.
 **Status: CONFIRMED**
 
 - Board = Entry Point **adapter** (nao Player)
-- Transporte MVP: **polling** (webhook pos-MVP)
+- Transporte MVP: **polling** (webhook **inbound** GitHub permanece
+  pos-MVP; webhooks **outbound** de Run = spec `34` G-156, slice 26)
 - Auth: GitHub token via env/config (`GITHUB_TOKEN`)
 - Mapeamento minimo do card:
   - titulo → `intent.summary`
@@ -81,16 +82,21 @@ existirem). Fronteira regras vs LLM: G-23.
 
 **Status: CONFIRMED**
 
-ContextPack v0 (sem Runtime Graph / Genome):
+ContextPack v0 (G-24) + extensao Graph Hits (G-67, ver `19`):
 
 - `task` — intent.summary/notes + task_id
 - `step` — step_id + capability atual
 - `prior_outputs` — outputs das etapas anteriores do mesmo run
 - `repo_hits` — paths/symbols do `pipeline.repo-search` (capados)
-- `budget` — max_chars / max_files (defaults fixos)
+- `graph_hits` — hits estruturais do Runtime Graph (**slice 7**; `19`)
+- `memory_hits` — episódios `active` do Project Memory (**slice 17**; `29`)
+- `budget` — max_chars / max_files + graph_max_hits / graph_max_chars + memory_max_hits / memory_max_chars
 
 Regras: truncamento deterministico se exceder budget; montado pelo Core
 (`AssembleContext`) antes do LLM Player; nao e Intent Engine.
+`repo_hits` = intra-run (repo-search) **ou** semente do Graph quando
+vazio (Context Engine v0, `31`, slice 20 feito). `graph_hits` = entre runs
+(estrutural). `memory_hits` = entre runs (episódico).
 
 ---
 

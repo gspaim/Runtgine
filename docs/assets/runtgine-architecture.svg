@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1480 900" width="1480" height="900" role="img" aria-labelledby="title desc">
+  <title id="title">Arquitetura do Runtgine (MVP)</title>
+  <desc id="desc">CLI e Board submetem Task IR ao Core. O Validator rejeita o invalido. O Runner monta Plan e ContextPack e resolve o Player no Registry. Players executam e devolvem Result. SQLite persiste. O Event Bus so publica o lifecycle.</desc>
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#8FB8FF"/>
+    </marker>
+    <marker id="arrAmber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#FFB86B"/>
+    </marker>
+    <marker id="arrTeal" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#73E2C2"/>
+    </marker>
+    <marker id="arrViolet" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#9D8CFF"/>
+    </marker>
+  </defs>
+  <rect width="1480" height="900" fill="#070B14"/>
+  <text x="40" y="42" fill="#8FB8FF" font-family="DejaVu Sans, Liberation Sans, sans-serif" font-size="22" font-weight="700">Runtgine — execução verificável</text>
+  <text x="40" y="68" fill="#64748B" font-family="DejaVu Sans, Liberation Sans, sans-serif" font-size="14">Superfícies -&gt; Task IR -&gt; Validator -&gt; Runner -&gt; Player -&gt; Result. Event Bus não admite Task.</text>
+
+  <rect x="24" y="88" width="300" height="730" rx="16" fill="#101A2F" stroke="#1E2D4A"/>
+  <text x="174" y="116" text-anchor="middle" fill="#64748B" font-family="DejaVu Sans, Liberation Sans, sans-serif" font-size="12">1  SUPERFÍCIES</text>
+
+  <rect x="344" y="88" width="720" height="730" rx="16" fill="#0C1426" stroke="#8FB8FF" stroke-opacity="0.45"/>
+  <text x="704" y="116" text-anchor="middle" fill="#8FB8FF" font-family="DejaVu Sans, Liberation Sans, sans-serif" font-size="12">2  CORE  (o produto)</text>
+
+  <rect x="1084" y="88" width="372" height="430" rx="16" fill="#101A2F" stroke="#1E2D4A"/>
+  <text x="1270" y="116" text-anchor="middle" fill="#64748B" font-family="DejaVu Sans, Liberation Sans, sans-serif" font-size="12">3  PLAYERS</text>
+
+  <rect x="1084" y="534" width="372" height="284" rx="16" fill="#101A2F" stroke="#1E2D4A"/>
+  <text x="1270" y="562" text-anchor="middle" fill="#64748B" font-family="DejaVu Sans, Liberation Sans, sans-serif" font-size="12">4  STORE + TELEMETRIA</text>
+
+  <rect x="48" y="140" width="252" height="86" rx="10" fill="#16223B" stroke="#FFB86B"/>
+  <text x="174" y="174" text-anchor="middle" fill="#E8EEF8" font-family="DejaVu Sans, Liberation Sans, sans-serif" font-size="16" font-weight="700">CLI</text>
+  <text x="174" y="196" text-anchor="middle" fill="#FFB86B" font-family="DejaVu Sans, Liberation Sans, sans-serif" font-size="12">runtgine run  |  JSON / YAML</text>
+  <text x="174" y="214" text-anchor="middle" fill="#64748B" font-family="DejaVu Sans, Liberation Sans, sans-serif" font-size="11">submete Task IR</text>
+
+  <rect x="48" y="244" width="252" height="86" rx="10" fill="#16223B" stroke="#FFB86B"/>
+  <text x="174" y="278" text-anchor="middle" fill="#E8EEF8" font-family="DejaVu Sans, Liberation Sans, sans-serif" font-size="16" font-weight="700">Board</text>
+  <text x="174" y="300" text-anchor="middle" fill="#FFB86B" font-family="DejaVu Sans, Liberation Sans, sans-serif" font-size="12">GitHub Projects  |  adapter</text>
+  <text x="174" y="318" text-anchor="middle" fill="#64748B" font-family="DejaVu Sans, Liberation Sans, sans-serif" font-size="11">card -&gt; Task IR</text>
+
+  <rect x="48" y="560" width="252" height="130" rx="10" fill="#16223B" stroke="#9D8CFF"/>
+  <text x="174" y="594" text-anchor="middle" fill="#E8EEF8" font-family="DejaVu Sans, Liberation Sans, sans-serif" font-size="16" font-weight="700">TUI</text>
+  <text x="174" y="616" text-anchor="middle" fill="#9D8CFF" font-family="DejaVu Sans, Liberation Sans, sans-serif" font-size="12">Constellation Mission Control</text>
+  <text x="174" y="640" text-anchor="middle" fill="#64748B" font-family="DejaVu Sans, Liberation Sans, sans-serif" font-size="12">GetRun  |  CancelRun</text>
+  <text x="174" y="660" text-anchor="middle" fill="#73E2C2" font-family="DejaVu Sans, Liberation Sans, sans-serif" font-size="12">Subscribe no Event Bus</text>
+  <text x="174" y="678" text-anchor="middle" fill="#64748B" font-family="DejaVu Sans, Liberation Sans, sans-serif" font-size="11">não submete Task</text>
+
+  <rect x="372" y="136" width="664" height="70" rx="10" fill="#16223B" stroke="#8FB8FF"/>
+  <text x="704" y="164" text-anchor="middle" fill="#E8EEF8" font-family="DejaVu Sans, Liberation Sans, sans-serif" font-size="16" font-weight="700">Task IR v0</text>
+  <text x="704" y="186" text-anchor="middle" fill="#64748B" font-family="DejaVu Sans, Liberation Sans, sans-serif" font-size="12">schema_version 0.1.0  |  intent + steps[] com capability  |  UUID v7</text>
+
+  <rect x="372" y="226" width="664" height="70" rx="10" fill="#16223B" stroke="#8FB8FF"/>
+  <text x="704" y="254" text-anchor="middle" fill="#E8EEF8" font-family="DejaVu Sans, Liberation Sans, sans-serif" font-size="16" font-weight="700">Core API</text>
+  <text x="704" y="276" text-anchor="middle" fill="#64748B" font-family="DejaVu Sans, Liberation Sans, sans-serif" font-size="12">SubmitTask  |  GetRun  |  ListRuns  |  Subscribe  |  CancelRun</text>
+
+  <rect x="372" y="316" width="664" height="70" rx="10" fill="#16223B" stroke="#FF6B8A"/>
+  <text x="704" y="344" text-anchor="middle" fill="#E8EEF8" font-family="DejaVu Sans, Liberation Sans, sans-serif" font-size="16" font-weight="700">Validator</text>
+  <text x="704" y="366" text-anchor="middle" fill="#FF6B8A" font-family="DejaVu Sans, Liberation Sans, sans-serif" font-size="12">schema + capability registrada  |  rejeita antes de executar</text>
+
+  <rect x="372" y="406" width="664" height="228" rx="12" fill="#121C33" stroke="#9D8CFF"/>
+  <text x="704" y="434" text-anchor="middle" fill="#E8EEF8" font-family="DejaVu Sans, Liberation Sans, sans-serif" font-size="16" font-weight="700">Runner</text>
+  <text x="704" y="454" text-anchor="middle" fill="#64748B" font-family="DejaVu Sans, Liberation Sans, sans-serif" font-size="12">Run accepted -&gt; planned -&gt; running  |  concorrência (semáforo)  |  topo-order</text>
+
+  <rect x="396" y="474" width="196" height="72" rx="8" fill="#16223B" stroke="#9D8CFF" stroke-opacity="0.7"/>
+  <text x="494" y="504" text-anchor="middle" fill="#E8EEF8" font-family="DejaVu Sans, Liberation Sans, sans-serif" font-size="13" font-weight="700">Plan</text>
+  <text x="494" y="524" text-anchor="middle" fill="#9D8CFF" font-family="DejaVu Sans, Liberation Sans, sans-serif" font-size="11">capability -&gt; player</text>
+
+  <rect x="606" y="474" width="196" height="72" rx="8" fill="#16223B" stroke="#9D8CFF" stroke-opacity="0.7"/>
+  <text x="704" y="504" text-anchor="middle" fill="#E8EEF8" font-family="DejaVu Sans, Liberation Sans, sans-serif" font-size="13" font-weight="700">ContextPack</text>
+  <text x="704" y="524" text-anchor="middle" fill="#9D8CFF" font-family="DejaVu Sans, Liberation Sans, sans-serif" font-size="11">task + step + priors</text>
+
+  <rect x="816" y="474" width="196" height="72" rx="8" fill="#16223B" stroke="#9D8CFF" stroke-opacity="0.7"/>
+  <text x="914" y="504" text-anchor="middle" fill="#E8EEF8" font-family="DejaVu Sans, Liberation Sans, sans-serif" font-size="13" font-weight="700">Registry</text>
+  <text x="914" y="524" text-anchor="middle" fill="#9D8CFF" font-family="DejaVu Sans, Liberation Sans, sans-serif" font-size="11">deterministic-first</text>
+
+  <text x="704" y="614" text-anchor="middle" fill="#64748B" font-family="DejaVu Sans, Liberation Sans, sans-serif" font-size="12">por step: Plan -&gt; ContextPack -&gt; Registry.Resolve -&gt; Player.Execute -&gt; Result</text>
+
+  <rect x="372" y="654" width="320" height="68" rx="10" fill="#16223B" stroke="#73E2C2"/>
+  <text x="532" y="682" text-anchor="middle" fill="#E8EEF8" font-family="DejaVu Sans, Liberation Sans, sans-serif" font-size="15" font-weight="700">Result</text>
+  <text x="532" y="704" text-anchor="middle" fill="#73E2C2" font-family="DejaVu Sans, Liberation Sans, sans-serif" font-size="12">output JSON ou erro tipado</text>
+
+  <rect x="708" y="654" width="328" height="68" rx="10" fill="#16223B" stroke="#8FB8FF"/>
+  <text x="872" y="682" text-anchor="middle" fill="#E8EEF8" font-family="DejaVu Sans, Liberation Sans, sans-serif" font-size="15" font-weight="700">SQLite</text>
+  <text x="872" y="704" text-anchor="middle" fill="#8FB8FF" font-family="DejaVu Sans, Liberation Sans, sans-serif" font-size="12">runs | events | outputs | subtasks</text>
+
+  <rect x="372" y="742" width="664" height="56" rx="10" fill="#16223B" stroke="#73E2C2" stroke-dasharray="5 4"/>
+  <text x="704" y="766" text-anchor="middle" fill="#E8EEF8" font-family="DejaVu Sans, Liberation Sans, sans-serif" font-size="15" font-weight="700">Event Bus  (canais Go, in-process)</text>
+  <text x="704" y="784" text-anchor="middle" fill="#73E2C2" font-family="DejaVu Sans, Liberation Sans, sans-serif" font-size="12">task.* / run.* / step.*  |  pub/sub  |  Runner grava o SQLite</text>
+
+  <rect x="1108" y="140" width="324" height="96" rx="10" fill="#16223B" stroke="#73E2C2"/>
+  <text x="1270" y="174" text-anchor="middle" fill="#E8EEF8" font-family="DejaVu Sans, Liberation Sans, sans-serif" font-size="16" font-weight="700">Shell</text>
+  <text x="1270" y="196" text-anchor="middle" fill="#73E2C2" font-family="DejaVu Sans, Liberation Sans, sans-serif" font-size="12">kind deterministic</text>
+  <text x="1270" y="216" text-anchor="middle" fill="#64748B" font-family="DejaVu Sans, Liberation Sans, sans-serif" font-size="12">shell.exec</text>
+
+  <rect x="1108" y="252" width="324" height="112" rx="10" fill="#16223B" stroke="#73E2C2"/>
+  <text x="1270" y="286" text-anchor="middle" fill="#E8EEF8" font-family="DejaVu Sans, Liberation Sans, sans-serif" font-size="16" font-weight="700">Pipeline</text>
+  <text x="1270" y="308" text-anchor="middle" fill="#73E2C2" font-family="DejaVu Sans, Liberation Sans, sans-serif" font-size="12">kind deterministic</text>
+  <text x="1270" y="328" text-anchor="middle" fill="#64748B" font-family="DejaVu Sans, Liberation Sans, sans-serif" font-size="12">repo-search | effort | difficulty</text>
+  <text x="1270" y="346" text-anchor="middle" fill="#64748B" font-family="DejaVu Sans, Liberation Sans, sans-serif" font-size="12">decompose (refine LLM opcional)</text>
+
+  <rect x="1108" y="380" width="324" height="112" rx="10" fill="#16223B" stroke="#FFB86B"/>
+  <text x="1270" y="414" text-anchor="middle" fill="#E8EEF8" font-family="DejaVu Sans, Liberation Sans, sans-serif" font-size="16" font-weight="700">LLM</text>
+  <text x="1270" y="436" text-anchor="middle" fill="#FFB86B" font-family="DejaVu Sans, Liberation Sans, sans-serif" font-size="12">kind ai | só se não houver determinístico</text>
+  <text x="1270" y="456" text-anchor="middle" fill="#64748B" font-family="DejaVu Sans, Liberation Sans, sans-serif" font-size="12">pipeline.tech-review</text>
+  <text x="1270" y="474" text-anchor="middle" fill="#64748B" font-family="DejaVu Sans, Liberation Sans, sans-serif" font-size="12">pipeline.spec-review</text>
+
+  <text x="1270" y="600" text-anchor="middle" fill="#E8EEF8" font-family="DejaVu Sans, Liberation Sans, sans-serif" font-size="13">O Runner escreve o Store</text>
+  <text x="1270" y="622" text-anchor="middle" fill="#64748B" font-family="DejaVu Sans, Liberation Sans, sans-serif" font-size="12">e publica no Bus em paralelo.</text>
+  <text x="1270" y="656" text-anchor="middle" fill="#73E2C2" font-family="DejaVu Sans, Liberation Sans, sans-serif" font-size="12">Event Bus != fila de Tasks</text>
+  <text x="1270" y="678" text-anchor="middle" fill="#64748B" font-family="DejaVu Sans, Liberation Sans, sans-serif" font-size="12">fila = semáforo de runs concorrentes</text>
+  <text x="1270" y="710" text-anchor="middle" fill="#8FB8FF" font-family="DejaVu Sans, Liberation Sans, sans-serif" font-size="12">UI nunca chama Player.</text>
+  <text x="1270" y="732" text-anchor="middle" fill="#8FB8FF" font-family="DejaVu Sans, Liberation Sans, sans-serif" font-size="12">Entry Point != Player.</text>
+  <text x="1270" y="766" text-anchor="middle" fill="#64748B" font-family="DejaVu Sans, Liberation Sans, sans-serif" font-size="12">Intent Engine NL fora do MVP.</text>
+  <text x="1270" y="786" text-anchor="middle" fill="#64748B" font-family="DejaVu Sans, Liberation Sans, sans-serif" font-size="12">HTTP / Wails / NATS fora do Core atual.</text>
+
+  <path d="M300 183 H336 V171 H372" fill="none" stroke="#FFB86B" stroke-width="2" marker-end="url(#arrAmber)"/>
+  <path d="M300 287 H336 V171 H372" fill="none" stroke="#FFB86B" stroke-width="2" marker-end="url(#arrAmber)"/>
+  <text x="318" y="158" fill="#FFB86B" font-family="DejaVu Sans, Liberation Sans, sans-serif" font-size="11">submit</text>
+
+  <line x1="704" y1="206" x2="704" y2="226" stroke="#8FB8FF" stroke-width="2" marker-end="url(#arr)"/>
+  <line x1="704" y1="296" x2="704" y2="316" stroke="#8FB8FF" stroke-width="2" marker-end="url(#arr)"/>
+  <line x1="704" y1="386" x2="704" y2="406" stroke="#8FB8FF" stroke-width="2" marker-end="url(#arr)"/>
+
+  <path d="M1036 510 H1084" fill="none" stroke="#8FB8FF" stroke-width="2.4" marker-end="url(#arr)"/>
+  <text x="1048" y="498" fill="#8FB8FF" font-family="DejaVu Sans, Liberation Sans, sans-serif" font-size="11">Execute</text>
+
+  <path d="M1108 430 H1060 V688 H692" fill="none" stroke="#73E2C2" stroke-width="2" marker-end="url(#arrTeal)"/>
+  <text x="1066" y="448" fill="#73E2C2" font-family="DejaVu Sans, Liberation Sans, sans-serif" font-size="11">Result</text>
+
+  <line x1="692" y1="688" x2="708" y2="688" stroke="#8FB8FF" stroke-width="2" marker-end="url(#arr)"/>
+  <path d="M872 634 V654" fill="none" stroke="#8FB8FF" stroke-width="2" marker-end="url(#arr)"/>
+  <path d="M532 722 V742" fill="none" stroke="#73E2C2" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#arrTeal)"/>
+  <text x="548" y="736" fill="#73E2C2" font-family="DejaVu Sans, Liberation Sans, sans-serif" font-size="11">publish</text>
+
+  <path d="M372 770 H300 V690" fill="none" stroke="#73E2C2" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#arrTeal)"/>
+  <path d="M300 625 H336 V261 H372" fill="none" stroke="#9D8CFF" stroke-width="2" marker-end="url(#arrViolet)"/>
+  <text x="44" y="540" fill="#9D8CFF" font-family="DejaVu Sans, Liberation Sans, sans-serif" font-size="11">consulta / cancel</text>
+
+  <rect x="24" y="834" width="1432" height="48" rx="10" fill="#101A2F" stroke="#1E2D4A"/>
+  <line x1="56" y1="858" x2="96" y2="858" stroke="#FFB86B" stroke-width="3"/>
+  <text x="106" y="862" fill="#FFB86B" font-family="DejaVu Sans, Liberation Sans, sans-serif" font-size="12">submissão (Task IR)</text>
+  <line x1="320" y1="858" x2="360" y2="858" stroke="#8FB8FF" stroke-width="3"/>
+  <text x="370" y="862" fill="#8FB8FF" font-family="DejaVu Sans, Liberation Sans, sans-serif" font-size="12">execução no Core</text>
+  <line x1="560" y1="858" x2="600" y2="858" stroke="#73E2C2" stroke-width="3" stroke-dasharray="5 4"/>
+  <text x="610" y="862" fill="#73E2C2" font-family="DejaVu Sans, Liberation Sans, sans-serif" font-size="12">eventos ao vivo</text>
+  <line x1="790" y1="858" x2="830" y2="858" stroke="#9D8CFF" stroke-width="3"/>
+  <text x="840" y="862" fill="#9D8CFF" font-family="DejaVu Sans, Liberation Sans, sans-serif" font-size="12">TUI -&gt; Core API</text>
+  <text x="1100" y="862" fill="#64748B" font-family="DejaVu Sans, Liberation Sans, sans-serif" font-size="12">Core é o produto. Interface é superfície.</text>
+</svg>

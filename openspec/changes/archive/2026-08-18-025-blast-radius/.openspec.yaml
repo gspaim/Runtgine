@@ -1,0 +1,9 @@
+schema: spec-driven
+created: 2026-08-18
+nnn: "025"
+slug: blast-radius
+docs_canonical: docs/25-blast-radius-v0.md
+gaps: [G-99, G-100, G-101, G-102, G-103, G-104]
+status: archived
+branch: feat/025-blast-radius
+depends_on: ["024-resource-claims"]
