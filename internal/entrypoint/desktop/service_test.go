@@ -14,6 +14,7 @@ import (
 	"github.com/gspaim/Runtgine/internal/core/memory"
 	"github.com/gspaim/Runtgine/internal/core/result"
 	"github.com/gspaim/Runtgine/internal/core/task"
+	"github.com/gspaim/Runtgine/internal/entrypoint/liveout"
 )
 
 type fakeCore struct {
@@ -347,6 +348,30 @@ func TestEventsGraphLessonsWired(t *testing.T) {
 	}
 	if core.lessonRows[0].Status != lessons.StatusRejected {
 		t.Fatalf("status=%s", core.lessonRows[0].Status)
+	}
+}
+
+func TestGetRunSurfacesStepStdout(t *testing.T) {
+	step := "echo"
+	core := &fakeCore{snapshot: api.RunSnapshot{
+		RunID:  "run-wails-1",
+		Status: "succeeded",
+		Events: []event.Event{{
+			Type:   event.TypeStepSucceeded,
+			StepID: &step,
+			Payload: map[string]any{
+				"output": map[string]any{"stdout": "hello-runtgine", "exit_code": 0},
+			},
+		}},
+	}}
+	svc := NewService(core)
+	snap, err := svc.GetRun("run-wails-1")
+	if err != nil {
+		t.Fatal(err)
+	}
+	got := liveout.FromEvents(snap.Events)
+	if len(got) != 1 || got[0].Text != "hello-runtgine" {
+		t.Fatalf("results=%+v", got)
 	}
 }
 

@@ -402,7 +402,7 @@ func (m Model) handleKey(msg tea.KeyPressMsg) (tea.Model, tea.Cmd) {
 		return m, nil
 	}
 
-	if key == "q" || key == "ctrl+c" {
+	if key == "ctrl+c" || (key == "q" && m.tab != tabIntent) {
 		return m, tea.Quit
 	}
 	if key == "tab" {
@@ -942,6 +942,7 @@ func (m Model) renderLive() string {
 	}
 	title := fmt.Sprintf("LIVE  %s  %s  %s",
 		shortID(m.snapshot.RunID), m.theme.Symbol(m.snapshot.Status), m.snapshot.Status)
+	result := m.renderResult()
 	trajectory := m.renderTrajectory(t, state)
 	progressLine := fmt.Sprintf("progress %s %d/%d", m.progress.ViewAs(ratio), completed, len(t.Steps))
 	telemetry := latestTelemetry(m.snapshot.Events)
@@ -959,14 +960,16 @@ func (m Model) renderLive() string {
 		blast = m.theme.Muted().Render("BLAST  press b")
 	}
 	m.detailVP.SetContent(detail)
-	rightBody := "CURRENT RUN\n\n" + m.detailVP.View() + "\n\n" + hits + "\n\n" + blast
-
+	if m.width < 80 {
+		return m.theme.Panel(true).Render(title + "\n\n" + result + "\n\n" + progressLine + "\n\n" + trajectory + "\n\n" + hits + "\n\n" + blast)
+	}
+	rightBody := result + "\n\nCURRENT RUN\n\n" + m.detailVP.View() + "\n\n" + hits + "\n\n" + blast
 	if m.width >= 120 {
 		left := m.theme.Panel(true).Width(m.width/2 - 4).Render(title + "\n\n" + trajectory + "\n\n" + progressLine)
 		right := m.theme.Panel(false).Width(m.width/2 - 4).Render(rightBody)
 		return lipgloss.JoinHorizontal(lipgloss.Top, left, right)
 	}
-	return m.theme.Panel(true).Render(title + "\n\n" + trajectory + "\n\n" + progressLine + "\n\n" + rightBody)
+	return m.theme.Panel(true).Render(title + "\n\n" + result + "\n\n" + trajectory + "\n\n" + progressLine + "\n\n" + rightBody)
 }
 
 func (m Model) renderTrajectory(t task.Task, states map[string]string) string {
@@ -1110,9 +1113,9 @@ func (m Model) renderFooter() string {
 			hint = "?/esc close help | q quit"
 		}
 	} else if m.tab == tabIntent {
-		hint = "tab/shift+tab navigate · Ctrl+p preview · Ctrl+Enter submit · Ctrl+b blast · Ctrl+j JSON · ? help · q quit"
+		hint = "tab/shift+tab navigate · Ctrl+p preview · Ctrl+Enter submit · Ctrl+b blast · Ctrl+j JSON · ? help · ctrl+c quit"
 		if m.theme.ASCII {
-			hint = "tab navigate | Ctrl+p preview | Ctrl+Enter submit | Ctrl+b blast | Ctrl+j JSON | ? help | q quit"
+			hint = "tab navigate | Ctrl+p preview | Ctrl+Enter submit | Ctrl+b blast | Ctrl+j JSON | ? help | ctrl+c quit"
 		}
 	}
 	if m.tab == tabGraph && !m.helpOpen {

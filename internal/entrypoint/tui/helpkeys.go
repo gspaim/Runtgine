@@ -29,7 +29,7 @@ func newAppKeyMap() appKeyMap {
 		BlastIntent: key.NewBinding(key.WithKeys("ctrl+b"), key.WithHelp("ctrl+b", "blast draft")),
 		BlastLive:   key.NewBinding(key.WithKeys("b"), key.WithHelp("b", "blast run")),
 		Help:        key.NewBinding(key.WithKeys("?"), key.WithHelp("?", "help")),
-		Quit:        key.NewBinding(key.WithKeys("q"), key.WithHelp("q", "quit")),
+		Quit:        key.NewBinding(key.WithKeys("q", "ctrl+c"), key.WithHelp("q/ctrl+c", "quit")),
 	}
 }
 
