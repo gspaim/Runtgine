@@ -1113,9 +1113,9 @@ func (m Model) renderFooter() string {
 			hint = "?/esc close help | q quit"
 		}
 	} else if m.tab == tabIntent {
-		hint = "tab/shift+tab navigate · Ctrl+p preview · Ctrl+Enter submit · Ctrl+b blast · Ctrl+j JSON · ? help · ctrl+c quit"
+		hint = "tab · Ctrl+p preview · Ctrl+Enter submit · Ctrl+b blast · Ctrl+j JSON · ? help · ctrl+c quit"
 		if m.theme.ASCII {
-			hint = "tab navigate | Ctrl+p preview | Ctrl+Enter submit | Ctrl+b blast | Ctrl+j JSON | ? help | ctrl+c quit"
+			hint = "tab | Ctrl+p preview | Ctrl+Enter submit | Ctrl+b blast | Ctrl+j JSON | ? help | ctrl+c quit"
 		}
 	}
 	if m.tab == tabGraph && !m.helpOpen {

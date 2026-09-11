@@ -506,9 +506,10 @@ func TestIntentLetterQDoesNotQuit(t *testing.T) {
 	if model.intentDraft != "q" {
 		t.Fatalf("draft=%q", model.intentDraft)
 	}
-	content := model.View().Content
-	if !strings.Contains(content, "ctrl+c quit") && !strings.Contains(content, "ctrl+c") {
-		t.Fatalf("INTENT footer should say ctrl+c quit: %s", content)
+	model.width = 140
+	footer := model.renderFooter()
+	if !strings.Contains(footer, "ctrl+c") {
+		t.Fatalf("INTENT footer should say ctrl+c quit: %s", footer)
 	}
 
 	updated, cmd = model.Update(pressKey("ctrl+c"))
