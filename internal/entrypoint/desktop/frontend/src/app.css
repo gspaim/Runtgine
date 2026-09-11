@@ -96,6 +96,29 @@ textarea { resize: vertical; }
   border-radius: 8px;
   padding: 0.75rem;
 }
+.result {
+  margin: 0.6rem 0 1rem;
+  background: var(--space);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.7rem 0.8rem;
+}
+.result.fail { border-color: var(--anomaly); }
+.result-head {
+  color: var(--telemetry);
+  font-size: 0.8rem;
+  margin-bottom: 0.4rem;
+}
+.result.fail .result-head { color: var(--anomaly); }
+.result-body {
+  margin: 0;
+  white-space: pre-wrap;
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 0.9rem;
+  color: var(--text);
+  max-height: 360px;
+  overflow: auto;
+}
 .preview, .events {
   white-space: pre-wrap;
   font-family: "IBM Plex Mono", ui-monospace, monospace;

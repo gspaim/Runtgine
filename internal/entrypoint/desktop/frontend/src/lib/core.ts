@@ -96,6 +96,63 @@ export function shortID(id: string | undefined): string {
   return id.length > 12 ? id.slice(0, 8) : id;
 }
 
+export type StepResult = { stepId: string; ok: boolean; text: string };
+
+export function resultsFromEvents(events: RuntimeEvent[] | undefined): StepResult[] {
+  if (!events?.length) return [];
+  const out: StepResult[] = [];
+  for (const e of events) {
+    const stepId = e.step_id?.trim() || "-";
+    if (e.type === "step.succeeded") {
+      const text = formatStepOutput(e.payload?.output) || "(no output)";
+      out.push({ stepId, ok: true, text });
+    } else if (e.type === "step.failed") {
+      const err = typeof e.payload?.error === "string" ? e.payload.error : "";
+      const text = err || formatStepOutput(e.payload?.output) || "step failed";
+      out.push({ stepId, ok: false, text });
+    }
+  }
+  return out;
+}
+
+export function formatStepOutput(raw: unknown): string {
+  const value = unwrapJSON(raw);
+  if (value == null) return "";
+  if (typeof value === "string") return value.trim();
+  if (typeof value === "object" && !Array.isArray(value)) {
+    const obj = value as Record<string, unknown>;
+    const stdout = typeof obj.stdout === "string" ? obj.stdout.trim() : "";
+    const stderr = typeof obj.stderr === "string" ? obj.stderr.trim() : "";
+    const parts: string[] = [];
+    if (stdout) parts.push(stdout);
+    if (stderr) parts.push(`stderr:\n${stderr}`);
+    if (parts.length) return parts.join("\n");
+    try {
+      return JSON.stringify(obj, null, 2);
+    } catch {
+      return String(value);
+    }
+  }
+  try {
+    return JSON.stringify(value, null, 2);
+  } catch {
+    return String(value);
+  }
+}
+
+function unwrapJSON(raw: unknown): unknown {
+  if (typeof raw !== "string") return raw;
+  const trim = raw.trim();
+  if (trim.startsWith("{") || trim.startsWith("[")) {
+    try {
+      return JSON.parse(trim);
+    } catch {
+      return raw;
+    }
+  }
+  return raw;
+}
+
 export function boardLane(status: string): "INTAKE" | "IN FLIGHT" | "LANDED" {
   switch (status) {
     case "accepted":

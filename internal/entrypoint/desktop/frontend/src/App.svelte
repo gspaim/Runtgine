@@ -22,6 +22,7 @@
     errMessage,
     shortID,
     boardLane,
+    resultsFromEvents,
     type RunSnapshot,
     type RunSummary,
     type RuntimeEvent,
@@ -115,7 +116,9 @@
 
   async function refreshRun(id: string) {
     run = await getRun(id);
-    liveEvents = (run.events ?? []).map((e) => e.type ?? "").reverse();
+    liveEvents = (run.events ?? [])
+      .map((e) => [e.type, e.step_id].filter(Boolean).join(" · "))
+      .reverse();
   }
 
   async function openRun(id: string) {
@@ -208,6 +211,8 @@
     }),
   );
 
+  const liveResults = $derived(resultsFromEvents(run?.events));
+
   const lanes = $derived.by(() => {
     const out = {
       INTAKE: [] as RunSummary[],
@@ -294,6 +299,25 @@
             <code>{run.run_id}</code>
           </p>
           {#if run.error}<p class="err">{run.error}</p>{/if}
+          <h2>RESULT</h2>
+          {#if liveResults.length === 0}
+            <p class="muted">
+              {#if run.status === "succeeded"}
+                No step output.
+              {:else if run.status === "failed" || run.status === "cancelled"}
+                {run.status}
+              {:else}
+                waiting for step output…
+              {/if}
+            </p>
+          {:else}
+            {#each liveResults as item}
+              <div class="result" class:fail={!item.ok}>
+                <div class="result-head">{item.ok ? "✓" : "✕"} {item.stepId}</div>
+                <pre class="result-body">{item.text}</pre>
+              </div>
+            {/each}
+          {/if}
           <div class="row">
             <button class="btn warn" onclick={() => run && cancelRun(run.run_id)}>Cancel</button>
             {#if run.pending_approval}
@@ -451,6 +475,6 @@
   </main>
 
   <footer class="footer">
-    Ctrl/Cmd+P preview · Ctrl/Cmd+Enter submit · Ctrl/Cmd+J JSON · one window
+    Ctrl/Cmd+P preview · Submit button or Ctrl/Cmd+Enter · result on LIVE
   </footer>
 </div>

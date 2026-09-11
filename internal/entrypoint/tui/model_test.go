@@ -479,9 +479,48 @@ func pressKey(value string) tea.KeyPressMsg {
 		return tea.KeyPressMsg(tea.Key{Code: 'j', Mod: tea.ModCtrl})
 	case "ctrl+b":
 		return tea.KeyPressMsg(tea.Key{Code: 'b', Mod: tea.ModCtrl})
+	case "ctrl+c":
+		return tea.KeyPressMsg(tea.Key{Code: 'c', Mod: tea.ModCtrl})
 	default:
 		r := []rune(value)[0]
 		return tea.KeyPressMsg(tea.Key{Text: value, Code: r})
+	}
+}
+
+func isQuit(cmd tea.Cmd) bool {
+	if cmd == nil {
+		return false
+	}
+	_, ok := cmd().(tea.QuitMsg)
+	return ok
+}
+
+func TestIntentLetterQDoesNotQuit(t *testing.T) {
+	model, _ := loadedModel(t)
+	model.tab = tabIntent
+	updated, cmd := model.Update(pressKey("q"))
+	model = updated.(Model)
+	if isQuit(cmd) {
+		t.Fatal("q on INTENT must type, not quit")
+	}
+	if model.intentDraft != "q" {
+		t.Fatalf("draft=%q", model.intentDraft)
+	}
+	model.width = 140
+	footer := model.renderFooter()
+	if !strings.Contains(footer, "ctrl+c") {
+		t.Fatalf("INTENT footer should say ctrl+c quit: %s", footer)
+	}
+
+	updated, cmd = model.Update(pressKey("ctrl+c"))
+	if !isQuit(cmd) {
+		t.Fatal("ctrl+c on INTENT must quit")
+	}
+
+	model.tab = tabRuns
+	updated, cmd = model.Update(pressKey("q"))
+	if !isQuit(cmd) {
+		t.Fatal("q on RUNS must quit")
 	}
 }
 
@@ -593,6 +632,28 @@ func TestHelpOverlayToggle(t *testing.T) {
 	model = updated.(Model)
 	if model.helpOpen {
 		t.Fatal("esc should close help")
+	}
+}
+
+func TestLiveShowsStepStdout(t *testing.T) {
+	model, core := loadedModel(t)
+	step := "review"
+	core.snapshot.Status = "succeeded"
+	core.snapshot.Events = append(core.snapshot.Events, event.Event{
+		Type: event.TypeStepSucceeded, RunID: core.snapshot.RunID, StepID: &step,
+		Payload: map[string]any{"output": map[string]any{"stdout": "hello-runtgine", "stderr": "", "exit_code": 0}},
+	})
+	model.snapshot = core.snapshot
+	model.tab = tabLive
+	for _, width := range []int{60, 100, 140} {
+		model.width, model.height = width, 24
+		content := model.View().Content
+		if !strings.Contains(content, "RESULT") {
+			t.Fatalf("width %d missing RESULT: %s", width, content)
+		}
+		if !strings.Contains(content, "hello-runtgine") {
+			t.Fatalf("width %d missing stdout: %s", width, content)
+		}
 	}
 }
 
