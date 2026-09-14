@@ -119,6 +119,9 @@ Postgres EXPLAIN: `docs/45-pg-explain-v0.md` + archive
 TUI v1: `docs/46-tui-v1.md` + archive
 `openspec/changes/archive/2026-09-04-046-tui-v1/` — CONFIRMED
 (G-238..G-244); slice 39 feito (Charm v2 profissional + Hits/Blast).
+Desktop operator v1: `docs/47-wails-operator-v1.md` + change
+`openspec/changes/047-wails-operator/` — CONFIRMED spec
+(G-245..G-251); codigo = slice 40 (Hits/Blast/RESULT na janela).
 Skill obrigatoria para TUI: `.cursor/skills/runtgine-tui-design/SKILL.md`.
 
 ## Ordem de trabalho
@@ -163,7 +166,8 @@ Skill obrigatoria para TUI: `.cursor/skills/runtgine-tui-design/SKILL.md`.
 38. Cloud Players GCP + Azure — CONFIRMED v0 em `44` (G-224..G-230) — slice 37 feito
 39. Postgres EXPLAIN — CONFIRMED v0 em `45` (G-231..G-237) — slice 38 feito; fila G-41 fechada
 40. TUI v1 Charm Mission Control — CONFIRMED v0 em `46` (G-238..G-244) — slice 39 feito
-41. Depois — NATS G-36 DEFERRED; PTY/tuios e GRAPH canvas 2D exigem nova decisao em `04`
+41. Desktop Wails operator v1 — CONFIRMED spec em `47` (G-245..G-251) — codigo = slice 40
+42. Depois — NATS G-36 DEFERRED; PTY/tuios e GRAPH canvas 2D exigem nova decisao em `04`
 
 ## Conceitos chave (nao confundir)
 

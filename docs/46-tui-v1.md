@@ -184,7 +184,8 @@ Keymap v0 permanece. Acrescentos:
 - Blast a partir de nó GRAPH
 - Gate de Execute via Blast; persistir report
 - `huh` / dependências Charm além das já no `go.mod`
-- Edição de CONFIG; Wails Hits/Blast neste slice
+- Edição de CONFIG; Wails Hits/Blast neste slice (desktop = spec
+  [`47`](47-wails-operator-v1.md))
 - NATS (G-36)
 
 ---
