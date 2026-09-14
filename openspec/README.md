@@ -37,7 +37,9 @@ branch:              feat/<NNN>-<slug>   (ou docs/ fix/ chore/)
 
 Exemplos válidos: `001-shell-player`, `017-intent-engine`, `019-graph-hits`.
 
-**Próximo id livre:** `047`. Nenhuma mudança ativa.
+**Próximo id livre:** `048`. Mudança ativa:
+[`changes/047-wails-operator/`](changes/047-wails-operator/)
+(Desktop Wails operator v1; G-245..G-251; slice 40).
 Último archive:
 [`changes/archive/2026-09-04-046-tui-v1/`](changes/archive/2026-09-04-046-tui-v1/)
 (TUI v1 Charm Mission Control; G-238..G-244; slice 39).
@@ -108,3 +110,4 @@ Não codificar mudança cujo status em `04` não esteja **CONFIRMED**
 | `cloud-gcp-azure` | Players `gcp` / `azure` read-only (identity/config/list; spec 044) |
 | `pg-explain` | Capability `pg.explain` read-only no Player postgres (spec 045) |
 | `tui-v1` | TUI v1 Charm Mission Control + Hits/Blast inline (spec 046) |
+| `wails-operator` | Desktop Hits/Blast/RESULT (spec 047; slice 40) |

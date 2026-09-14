@@ -37,6 +37,7 @@ A TUI e uma superficie sobre o Core:
   `textarea`, `list` e `help`, não só spinner/progress.
 
 O desktop futuro continua Wails v3 + Svelte + shadcn-svelte (spec `35`).
+Hits/Blast/RESULT na janela = spec [`47`](47-wails-operator-v1.md).
 A TUI valida a linguagem de interacao antes do desktop. View **INTENT**
 no Wails espelha a aba INTENT (`32` / G-144). Hits/Blast na TUI = spec
 `46`; Wails não acompanha nesse slice.
