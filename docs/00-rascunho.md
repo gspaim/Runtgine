@@ -96,4 +96,4 @@ continuam **fora** — exigem nova decisao em `04`:
 
 Hits/Blast **no desktop** saíram do ciclo `46` (G-244) e estão
 CONFIRMADOS em [47-wails-operator-v1.md](47-wails-operator-v1.md)
-(G-245..G-251; slice 40).
+(G-245..G-251; slice 40 feito).

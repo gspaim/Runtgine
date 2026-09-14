@@ -65,7 +65,7 @@ Status: CONFIRMED | HYPOTHESIS | OPEN QUESTION | REJECTED
 | Runner v0 | CONFIRMED | Orchestrator minimo do MVP |
 | HTTP API v0 | CONFIRMED + implementado | Entry Point `runtgine serve`; ver `34`; slices 25–26 |
 | Desktop Wails v0 | CONFIRMED + implementado | Entry Point `runtgine desktop`; Wails **v3**; slices 27–28 |
-| Desktop operator v1 | CONFIRMED spec | Hits/Blast/RESULT na janela; ver `47`; slice 40 |
+| Desktop operator v1 | CONFIRMED + implementado | Hits/Blast/RESULT na janela; ver `47`; slice 40 |
 
 ## MVP (corte canônico)
 
@@ -139,7 +139,7 @@ Ver [09-mvp.md](09-mvp.md). Decisoes-chave:
 - Workflow Templates v0 (G-194..G-200; recorte G-40) — spec `40`; codigo = slice 33 — feito
 - Infra Players v0 (G-201..G-209; recorte G-41) — spec `41`; codigo = slice 34 — feito
 - TUI v1 Charm Mission Control (G-238..G-244) — spec `46`; codigo = slice 39 — feito
-- Desktop Wails operator v1 (G-245..G-251) — spec `47`; codigo = slice 40 (Hits/Blast/RESULT na janela)
+- Desktop Wails operator v1 (G-245..G-251) — spec `47`; slice 40 feito (Hits/Blast/RESULT na janela)
 
 ## Protocolo v0 — confirmado (sessao de fechamento)
 
@@ -716,7 +716,7 @@ Não é troca de stack. Não é PTY/tuios. Não é canvas 2D.
 
 Ver [47-wails-operator-v1.md](47-wails-operator-v1.md). Hits/Blast +
 RESULT na janela Wails (o recorte que G-244 tirou da TUI v1). Código =
-slice 40 (depois da spec). Não substitui a TUI. Não é PTY nem mobile.
+slice 40 (feito). Não substitui a TUI. Não é PTY nem mobile.
 
 | Item | Status | Notas |
 |---|---|---|

@@ -6,7 +6,16 @@ const svc = (method: string, ...args: unknown[]) =>
     ...args,
   );
 
-export type IntentPreview = { task: unknown; method: string };
+export type IntentPreview = { task: unknown; method: string; hits?: Hits };
+export type Hits = { items?: Hit[] };
+export type Hit = { kind?: string; id?: string; reason?: string; score?: number };
+export type BlastReport = {
+  risk?: string;
+  touches?: { kind?: string; key?: string; capability?: string; mode?: string }[];
+  predicted_claims?: { kind?: string; key?: string; capability?: string }[];
+  conflicts?: { kind?: string; key?: string; holder_run_id?: string }[];
+  affected?: { kind?: string; id?: string; reason?: string }[];
+};
 export type IntentSubmit = { run_id: string; method: string; task: unknown };
 export type RuntimeEvent = {
   type?: string;
@@ -75,6 +84,10 @@ export const rejectLesson = (id: string) => svc("RejectLesson", id) as Promise<v
 export const cancelRun = (id: string) => svc("CancelRun", id) as Promise<void>;
 export const approveRun = (id: string) => svc("ApproveRun", id) as Promise<void>;
 export const denyRun = (id: string) => svc("DenyRun", id) as Promise<void>;
+export const queryHits = (text: string) => svc("QueryHits", text) as Promise<Hits>;
+export const blastIntent = (text: string, jsonMode: boolean) =>
+  svc("BlastIntent", text, jsonMode) as Promise<BlastReport>;
+export const blastRun = (id: string) => svc("BlastRun", id) as Promise<BlastReport>;
 
 export function onRuntimeEvent(cb: (ev: RuntimeEvent) => void) {
   return Events.On("runtgine:event", (ev: { data?: unknown }) => {
@@ -94,6 +107,62 @@ export function errMessage(err: unknown): string {
 export function shortID(id: string | undefined): string {
   if (!id) return "-";
   return id.length > 12 ? id.slice(0, 8) : id;
+}
+
+export type HitRow = { source: string; kind: string; id: string; score: number };
+
+export function hitsFromGraph(hits: Hits | undefined): HitRow[] {
+  return (hits?.items ?? []).map((h) => ({
+    source: "graph",
+    kind: h.kind ?? "",
+    id: h.id ?? "",
+    score: h.score ?? 0,
+  }));
+}
+
+export function hitsFromEvents(events: RuntimeEvent[] | undefined): HitRow[] {
+  if (!events?.length) return [];
+  for (let i = events.length - 1; i >= 0; i--) {
+    const rows = hitsFromPayload(events[i].payload);
+    if (rows.length) return rows;
+  }
+  return [];
+}
+
+function hitsFromPayload(payload: Record<string, unknown> | undefined): HitRow[] {
+  if (!payload) return [];
+  const nested = payload.context_pack;
+  if (nested && typeof nested === "object") {
+    const inner = hitsFromPayload(nested as Record<string, unknown>);
+    if (inner.length) return inner;
+  }
+  return [
+    ...decodeHitList("graph", payload.graph_hits),
+    ...decodeHitList("memory", payload.memory_hits),
+    ...decodeHitList("playbook", payload.playbook_hits),
+  ];
+}
+
+function decodeHitList(source: string, raw: unknown): HitRow[] {
+  if (raw == null) return [];
+  let value: unknown = raw;
+  if (typeof raw === "object" && !Array.isArray(raw) && raw && "items" in raw) {
+    value = (raw as { items?: unknown }).items;
+  }
+  if (!Array.isArray(value)) return [];
+  const out: HitRow[] = [];
+  for (const item of value) {
+    if (!item || typeof item !== "object") continue;
+    const rec = item as Record<string, unknown>;
+    const kind = typeof rec.kind === "string" ? rec.kind : "";
+    let id = typeof rec.id === "string" ? rec.id : "";
+    if (!id && typeof rec.title === "string") id = rec.title;
+    if (!kind && !id) continue;
+    let score = 0;
+    if (typeof rec.score === "number") score = rec.score;
+    out.push({ source, kind, id, score });
+  }
+  return out;
 }
 
 export type StepResult = { stepId: string; ok: boolean; text: string };
@@ -151,6 +220,22 @@ function unwrapJSON(raw: unknown): unknown {
     }
   }
   return raw;
+}
+
+export function riskSymbol(risk: string | undefined): string {
+  switch ((risk ?? "none").toLowerCase()) {
+    case "path":
+      return "◐";
+    case "workspace":
+      return "×";
+    default:
+      return "○";
+  }
+}
+
+export function riskLabel(risk: string | undefined): string {
+  const value = (risk ?? "none").trim() || "none";
+  return value.toUpperCase();
 }
 
 export function boardLane(status: string): "INTAKE" | "IN FLIGHT" | "LANDED" {

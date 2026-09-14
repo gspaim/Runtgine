@@ -115,7 +115,7 @@ Visão enxuta do que já está em `main`. **Atualizar esta seção em todo PR
 | Feito | Slice 38 — Postgres EXPLAIN v0 (`45`, G-231..G-237; `pg.explain`; fila G-41 fechada) |
 | Feito | Release v0.1.0-rc.1 — primeiro corte do produto (binários multi-OS) |
 | Feito | Slice 39 — TUI v1 Charm Mission Control (`46`, G-238..G-244) |
-| Spec | Slice 40 — Desktop Wails operator v1 (`47`, G-245..G-251; Hits/Blast/RESULT) |
+| Feito | Slice 40 — Desktop Wails operator v1 (`47`, G-245..G-251; Hits/Blast/RESULT) |
 | Depois | NATS (G-36) DEFERRED; PTY/tuios e GRAPH canvas 2D exigem nova decisão em `04` |
 
 Detalhe do corte: [`docs/09-mvp.md`](docs/09-mvp.md). Limitações atuais abaixo.
@@ -459,7 +459,7 @@ vulnerabilidade.
 | [Evolution](docs/33-evolution-v0.md) | Router, Playbooks, Lessons (G-147..G-152; slices 22–24) |
 | [HTTP API](docs/34-http-api-v0.md) | `runtgine serve` + webhooks (G-153..G-158; slices 25–26) |
 | [Desktop Wails](docs/35-wails-v0.md) | `runtgine desktop` (G-159..G-165; slices 27–28) |
-| [Desktop operator v1](docs/47-wails-operator-v1.md) | Hits/Blast/RESULT na janela (G-245..G-251; slice 40) |
+| [Desktop operator v1](docs/47-wails-operator-v1.md) | Hits/Blast/RESULT na janela (G-245..G-251; slice 40 feito) |
 | [OpenSpec](openspec/README.md) | Pacotes de mudança `NNN-slug` |
 | [TUI Design](docs/14-tui-design.md) | Constellation Mission Control |
 | [TUI v1](docs/46-tui-v1.md) | Charm Bubbles + Hits/Blast inline (G-238..G-244; slice 39 feito) |

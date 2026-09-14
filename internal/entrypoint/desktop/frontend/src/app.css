@@ -140,6 +140,26 @@ textarea { resize: vertical; }
 .muted { color: var(--muted); }
 h1 { font-size: 1.15rem; margin: 0 0 0.4rem; }
 h2 { font-size: 0.95rem; color: var(--starlight); margin: 1rem 0 0.6rem; }
+h3 { font-size: 0.8rem; color: var(--muted); margin: 0.7rem 0 0.35rem; font-weight: 600; letter-spacing: 0.04em; }
+.blast-risk {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-weight: 650;
+  letter-spacing: 0.06em;
+  margin: 0.35rem 0 0.6rem;
+}
+.blast-risk.none { color: var(--telemetry); }
+.blast-risk.path { color: var(--amber); }
+.blast-risk.workspace { color: var(--anomaly); }
+.blast-symbol { font-size: 1.05rem; }
+.blast-list {
+  margin: 0;
+  padding-left: 1.1rem;
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 0.8rem;
+  color: var(--starlight);
+}
 table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
 th, td { text-align: left; padding: 0.4rem 0.5rem; border-bottom: 1px solid var(--border); }
 tr.click { cursor: pointer; }

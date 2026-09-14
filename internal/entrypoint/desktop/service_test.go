@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/gspaim/Runtgine/internal/core/api"
+	"github.com/gspaim/Runtgine/internal/core/blast"
 	"github.com/gspaim/Runtgine/internal/core/event"
 	"github.com/gspaim/Runtgine/internal/core/graph"
 	"github.com/gspaim/Runtgine/internal/core/lessons"
@@ -31,6 +32,11 @@ type fakeCore struct {
 	graph        graph.Snapshot
 	graphRefresh int
 	lessonRows   []lessons.Proposal
+	hits         graph.Hits
+	hitCalls     int
+	blastRep     blast.Report
+	blastErr     error
+	blastCalls   int
 }
 
 func (f *fakeCore) CompileIntent(_ context.Context, text, ep, _ string) (task.Task, string, error) {
@@ -153,6 +159,25 @@ func (f *fakeCore) RejectLesson(_ context.Context, id string) error {
 		}
 	}
 	return result.Runtime(result.CodeNotFound, "lesson not found", false, nil)
+}
+
+func (f *fakeCore) QueryHits(_ context.Context, q graph.Query) graph.Hits {
+	f.hitCalls++
+	if f.hits.Items == nil {
+		return graph.Hits{Items: []graph.Hit{}}
+	}
+	return f.hits
+}
+
+func (f *fakeCore) BlastTask(_ context.Context, _ task.Task) (blast.Report, error) {
+	f.blastCalls++
+	if f.blastErr != nil {
+		return blast.Report{}, f.blastErr
+	}
+	if f.blastRep.Risk == "" {
+		return blast.Report{Risk: blast.RiskNone, Touches: []blast.Touch{}, Conflicts: []blast.Conflict{}, Affected: []blast.Affected{}}, nil
+	}
+	return f.blastRep, nil
 }
 
 type recEmit struct {
@@ -372,6 +397,103 @@ func TestGetRunSurfacesStepStdout(t *testing.T) {
 	got := liveout.FromEvents(snap.Events)
 	if len(got) != 1 || got[0].Text != "hello-runtgine" {
 		t.Fatalf("results=%+v", got)
+	}
+}
+
+func TestPreviewQueriesHits(t *testing.T) {
+	core := &fakeCore{hits: graph.Hits{Items: []graph.Hit{{Kind: "capability", ID: "git.status", Score: 8}}}}
+	svc := NewService(core)
+	prev, err := svc.CompileIntent("git status")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if core.hitCalls == 0 {
+		t.Fatal("preview must QueryHits")
+	}
+	if core.submitted != 0 {
+		t.Fatal("preview must not submit")
+	}
+	if len(prev.Hits.Items) != 1 || prev.Hits.Items[0].ID != "git.status" {
+		t.Fatalf("hits=%+v", prev.Hits)
+	}
+}
+
+func TestPreviewEmptyHitsDoesNotFail(t *testing.T) {
+	core := &fakeCore{}
+	svc := NewService(core)
+	prev, err := svc.CompileIntent("git status")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if core.hitCalls == 0 {
+		t.Fatal("preview must QueryHits")
+	}
+	if prev.Hits.Items == nil {
+		t.Fatal("empty hits must be a list")
+	}
+	if len(prev.Hits.Items) != 0 {
+		t.Fatalf("hits=%+v", prev.Hits)
+	}
+	if len(prev.Task) == 0 {
+		t.Fatal("task IR must still be returned")
+	}
+}
+
+func TestQueryHitsBinding(t *testing.T) {
+	core := &fakeCore{hits: graph.Hits{Items: []graph.Hit{{Kind: "capability", ID: "git.status"}}}}
+	svc := NewService(core)
+	hits := svc.QueryHits("git status")
+	if core.hitCalls != 1 {
+		t.Fatalf("hitCalls=%d", core.hitCalls)
+	}
+	if core.submitted != 0 {
+		t.Fatal("QueryHits must not submit")
+	}
+	if len(hits.Items) != 1 || hits.Items[0].ID != "git.status" {
+		t.Fatalf("hits=%+v", hits)
+	}
+}
+
+func TestBlastIntentDoesNotSubmit(t *testing.T) {
+	core := &fakeCore{blastRep: blast.Report{Risk: blast.RiskPath}}
+	svc := NewService(core)
+	rep, err := svc.BlastIntent("git status", false)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if core.blastCalls != 1 {
+		t.Fatalf("blastCalls=%d", core.blastCalls)
+	}
+	if core.submitted != 0 {
+		t.Fatal("blast must not submit")
+	}
+	if rep.Risk != blast.RiskPath {
+		t.Fatalf("risk=%s", rep.Risk)
+	}
+}
+
+func TestBlastRunUsesSnapshotTask(t *testing.T) {
+	tk := task.Task{
+		SchemaVersion: "0.1.0",
+		Intent:        task.Intent{Summary: "git status"},
+		Source:        task.Source{EntryPoint: "wails"},
+		Steps:         []task.Step{{StepID: "s1", Capability: "git.status", Input: json.RawMessage(`{"workdir":"."}`)}},
+	}
+	raw, _ := json.Marshal(tk)
+	core := &fakeCore{
+		snapshot: api.RunSnapshot{RunID: "run-wails-1", Status: "succeeded", Task: raw},
+		blastRep: blast.Report{Risk: blast.RiskNone},
+	}
+	svc := NewService(core)
+	rep, err := svc.BlastRun("run-wails-1")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if core.blastCalls != 1 || core.submitted != 0 {
+		t.Fatalf("blast=%d submitted=%d", core.blastCalls, core.submitted)
+	}
+	if rep.Risk != blast.RiskNone {
+		t.Fatalf("risk=%s", rep.Risk)
 	}
 }
 
