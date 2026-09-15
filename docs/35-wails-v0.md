@@ -12,7 +12,7 @@ INTENT (semântica): [32-intent-surface-v0.md](32-intent-surface-v0.md) G-144.
 **Status deste doc: CONFIRMED (v0 spec).** Slices 27–28 **feitas**
 (app + sete views + Lessons HITL). Hits/Blast/RESULT na janela =
 spec [`47-wails-operator-v1.md`](47-wails-operator-v1.md) (G-245..G-251;
-slice 40).
+slice 40 feito).
 
 **Pacote OpenSpec:** [`openspec/specs/wails-v0/spec.md`](../openspec/specs/wails-v0/spec.md)
 (archive [`openspec/changes/archive/2026-08-21-035-wails-v0/`](../openspec/changes/archive/2026-08-21-035-wails-v0/)).
@@ -158,7 +158,7 @@ Atalhos v0 (espelho TUI, adaptados a desktop):
 | Server-mode Wails / plugins | Outro produto |
 | Assinatura de loja (App Store, etc.) | Distribuição depois |
 | Embed PTY / terminal multiplexer | Mesma regra da TUI |
-| Hits/Blast na janela | Spec `47` (G-245+); fora do v0 deste doc |
+| Hits/Blast na janela | Spec `47` (G-245+); slice 40 feito |
 | MCP, NATS, Memory Player | Outros tracks |
 | Webhook inbound GitHub | Board continua polling (G-20) |
 | Trocar a TUI por este app | TUI permanece |

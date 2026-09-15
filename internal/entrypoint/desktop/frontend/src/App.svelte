@@ -18,17 +18,25 @@
     cancelRun,
     approveRun,
     denyRun,
+    blastIntent,
+    blastRun,
     onRuntimeEvent,
     errMessage,
     shortID,
     boardLane,
     resultsFromEvents,
+    hitsFromGraph,
+    hitsFromEvents,
+    riskSymbol,
+    riskLabel,
     type RunSnapshot,
     type RunSummary,
     type RuntimeEvent,
     type ConfigSnapshot,
     type GraphSnapshot,
     type Lesson,
+    type HitRow,
+    type BlastReport,
   } from "./lib/core";
 
   const views = ["INTENT", "RUNS", "LIVE", "BOARD", "EVENTS", "GRAPH", "CONFIG"] as const;
@@ -53,6 +61,11 @@
   let config = $state<ConfigSnapshot | null>(null);
   let lessons = $state<Lesson[]>([]);
   let lessonFilter = $state("pending");
+  let intentHits = $state<HitRow[]>([]);
+  let intentBlast = $state<BlastReport | null>(null);
+  let intentBlastErr = $state("");
+  let liveBlast = $state<BlastReport | null>(null);
+  let liveBlastErr = $state("");
   let stopEvents: (() => void) | undefined;
 
   onMount(() => {
@@ -91,6 +104,9 @@
       const out = jsonMode ? await compileTaskJSON(draft) : await compileIntent(draft);
       method = out.method;
       preview = JSON.stringify(out.task, null, 2);
+      intentHits = hitsFromGraph(out.hits);
+      intentBlast = null;
+      intentBlastErr = "";
     } catch (e) {
       err = errMessage(e);
     } finally {
@@ -105,10 +121,41 @@
       const out = jsonMode ? await submitTaskJSON(draft) : await submitIntent(draft);
       method = out.method;
       preview = JSON.stringify(out.task, null, 2);
+      liveBlast = null;
+      liveBlastErr = "";
       await refreshRun(out.run_id);
       view = "LIVE";
     } catch (e) {
       err = errMessage(e);
+    } finally {
+      busy = false;
+    }
+  }
+
+  async function blastDraft() {
+    busy = true;
+    err = "";
+    intentBlastErr = "";
+    try {
+      intentBlast = await blastIntent(draft, jsonMode);
+    } catch (e) {
+      intentBlast = null;
+      intentBlastErr = errMessage(e);
+    } finally {
+      busy = false;
+    }
+  }
+
+  async function blastLive() {
+    if (!run?.run_id) return;
+    busy = true;
+    err = "";
+    liveBlastErr = "";
+    try {
+      liveBlast = await blastRun(run.run_id);
+    } catch (e) {
+      liveBlast = null;
+      liveBlastErr = errMessage(e);
     } finally {
       busy = false;
     }
@@ -123,6 +170,8 @@
 
   async function openRun(id: string) {
     err = "";
+    liveBlast = null;
+    liveBlastErr = "";
     try {
       await refreshRun(id);
       view = "LIVE";
@@ -174,6 +223,10 @@
     } else if (e.key.toLowerCase() === "j") {
       e.preventDefault();
       jsonMode = !jsonMode;
+    } else if (e.key.toLowerCase() === "b") {
+      e.preventDefault();
+      if (view === "INTENT") void blastDraft();
+      else if (view === "LIVE") void blastLive();
     }
   }
 
@@ -212,6 +265,7 @@
   );
 
   const liveResults = $derived(resultsFromEvents(run?.events));
+  const liveHits = $derived(hitsFromEvents(run?.events));
 
   const lanes = $derived.by(() => {
     const out = {
@@ -252,13 +306,16 @@
         <div class="row">
           <button class="btn" onclick={previewIntent} disabled={busy}>Preview</button>
           <button class="btn primary" onclick={submit} disabled={busy}>Submit</button>
+          <button class="btn" onclick={blastDraft} disabled={busy}>Blast</button>
           {#if method}<span class="badge">{method}</span>{/if}
         </div>
         {#if err}<p class="err">{err}</p>{/if}
         {#if preview}
           <h2>Task IR</h2>
           <pre class="preview">{preview}</pre>
+          {@render hitsBlock(intentHits)}
         {/if}
+        {@render blastBlock(intentBlast, intentBlastErr, "Ctrl/Cmd+B blast draft — does not submit")}
       </section>
     {:else if view === "RUNS"}
       <section class="card">
@@ -318,7 +375,10 @@
               </div>
             {/each}
           {/if}
+          {@render hitsBlock(liveHits)}
+          {@render blastBlock(liveBlast, liveBlastErr, "Ctrl/Cmd+B blast this run")}
           <div class="row">
+            <button class="btn" onclick={blastLive} disabled={busy}>Blast</button>
             <button class="btn warn" onclick={() => run && cancelRun(run.run_id)}>Cancel</button>
             {#if run.pending_approval}
               <button class="btn primary" onclick={() => run && approveRun(run.run_id)}>Approve</button>
@@ -387,7 +447,7 @@
     {:else if view === "GRAPH"}
       <section class="card">
         <h1>GRAPH</h1>
-        <p class="muted">Read-only Runtime Graph snapshot.</p>
+        <p class="muted">Read-only Runtime Graph snapshot. Hits and Blast stay on INTENT and LIVE.</p>
         <div class="row">
           <input class="filter" bind:value={graphFilter} placeholder="filter kind / id" />
           <button class="btn" onclick={onRefreshGraph} disabled={busy}>Refresh graph</button>
@@ -475,6 +535,82 @@
   </main>
 
   <footer class="footer">
-    Ctrl/Cmd+P preview · Submit button or Ctrl/Cmd+Enter · result on LIVE
+    Ctrl/Cmd+P preview · Ctrl/Cmd+Enter submit · Ctrl/Cmd+B blast · RESULT on LIVE
   </footer>
 </div>
+
+{#snippet hitsBlock(rows: HitRow[])}
+  <h2>HITS</h2>
+  {#if rows.length === 0}
+    <p class="muted">No hits.</p>
+  {:else}
+    <table>
+      <thead>
+        <tr><th>Source</th><th>Kind</th><th>ID</th><th>Score</th></tr>
+      </thead>
+      <tbody>
+        {#each rows.slice(0, 12) as row}
+          <tr>
+            <td>{row.source}</td>
+            <td>{row.kind || "-"}</td>
+            <td><code>{row.id || "-"}</code></td>
+            <td>{row.score || ""}</td>
+          </tr>
+        {/each}
+      </tbody>
+    </table>
+  {/if}
+{/snippet}
+
+{#snippet blastBlock(rep: BlastReport | null, error: string, hint: string)}
+  <h2>BLAST</h2>
+  {#if error}
+    <p class="err">{error}</p>
+  {:else if !rep}
+    <p class="muted">{hint}</p>
+  {:else}
+    {@const risk = (rep.risk ?? "none").toLowerCase() || "none"}
+    <p class="blast-risk {risk}">
+      <span class="blast-symbol">{riskSymbol(rep.risk)}</span>
+      {riskLabel(rep.risk)}
+    </p>
+    <h3>touches</h3>
+    {#if !rep.touches?.length}
+      <p class="muted">(none)</p>
+    {:else}
+      <ul class="blast-list">
+        {#each rep.touches.slice(0, 8) as tch}
+          <li>{tch.mode ?? "-"} · {tch.kind ?? "-"} · {tch.key ?? "-"} · {tch.capability ?? "-"}</li>
+        {/each}
+      </ul>
+    {/if}
+    {#if rep.predicted_claims?.length}
+      <h3>predicted claims</h3>
+      <ul class="blast-list">
+        {#each rep.predicted_claims.slice(0, 8) as claim}
+          <li>{claim.kind ?? "-"} · {claim.key ?? "-"} · {claim.capability ?? "-"}</li>
+        {/each}
+      </ul>
+    {/if}
+    <h3>conflicts</h3>
+    {#if !rep.conflicts?.length}
+      <p class="muted">(none)</p>
+    {:else}
+      <ul class="blast-list">
+        {#each rep.conflicts as c}
+          <li>{c.kind ?? "-"} · {c.key ?? "-"} · holder {shortID(c.holder_run_id)}</li>
+        {/each}
+      </ul>
+    {/if}
+    <h3>affected</h3>
+    {#if !rep.affected?.length}
+      <p class="muted">(none)</p>
+    {:else}
+      <ul class="blast-list">
+        {#each rep.affected.slice(0, 8) as a}
+          <li>{a.kind ?? "-"} · {a.id ?? "-"} · {a.reason ?? ""}</li>
+        {/each}
+      </ul>
+    {/if}
+  {/if}
+{/snippet}

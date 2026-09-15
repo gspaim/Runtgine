@@ -448,7 +448,7 @@ Ate la, o Core deve rodar so com CLI + Shell.
 
 | ID | Gap | Notas |
 |---|---|---|
-| G-245 | Papel / stack | **CONFIRMED** — mesmo `runtgine desktop`; Wails v3; ver `47` |
+| G-245 | Papel / stack | **CONFIRMED** — mesmo `runtgine desktop`; Wails v3; slice 40 feito |
 | G-246 | LIVE RESULT | **CONFIRMED** — stdout via `liveout`; não regressar `#68` |
 | G-247 | Hits inline | **CONFIRMED** — LIVE ContextPack + INTENT `QueryHits`; GRAPH sem Hits |
 | G-248 | Blast painel | **CONFIRMED** — INTENT sem submit; LIVE do Task; GRAPH não dispara |
@@ -494,7 +494,7 @@ Ate la, o Core deve rodar so com CLI + Shell.
 32. Cloud Players GCP + Azure — spec em `44` — G-224..G-230 CONFIRMED; codigo = slice 37 — feito
 33. Postgres EXPLAIN (SQL) — spec em `45` — G-231..G-237 CONFIRMED; codigo = slice 38 — feito
 34. TUI v1 Charm Mission Control — spec em `46` — G-238..G-244 CONFIRMED; codigo = slice 39 — feito
-35. Desktop Wails operator v1 — spec em `47` — G-245..G-251 CONFIRMED; codigo = slice 40
+35. Desktop Wails operator v1 — spec em `47` — G-245..G-251 CONFIRMED; slice 40 feito
 
 ## Criterio de “pronto para codar”
 
@@ -524,7 +524,7 @@ Ate la, o Core deve rodar so com CLI + Shell.
 **Cloud Players GCP + Azure (G-224..G-230): CONFIRMADO** — spec `44`; slice 37 feito.
 **Postgres EXPLAIN (G-231..G-237): CONFIRMADO** — spec `45`; slice 38 feito.
 **TUI v1 (G-238..G-244): CONFIRMADO** — spec `46`; slice 39 feito.
-**Desktop operator v1 (G-245..G-251): CONFIRMADO spec** — spec `47`; codigo = slice 40.
+**Desktop operator v1 (G-245..G-251): CONFIRMADO** — spec `47`; slice 40 feito.
 
 Ordem pratica de codigo:
 1. Core CLI + Shell (+ SQLite) — slice 1 — feito
@@ -562,10 +562,10 @@ Ordem pratica de codigo:
 33. Cloud Players GCP + Azure v0 — spec `44` (G-224..G-230); slice 37 feito
 34. Postgres EXPLAIN v0 — spec `45` (G-231..G-237); slice 38 feito
 35. TUI v1 Charm Mission Control — spec `46` (G-238..G-244); slice 39 feito
-36. Desktop Wails operator v1 — spec `47` (G-245..G-251); codigo = slice 40
+36. Desktop Wails operator v1 — spec `47` (G-245..G-251); slice 40 feito
 
 P3 restante: NATS (G-36, DEFERRED — so com nova decisao em `04`).
-Desktop operator v1: spec `47` (G-245..G-251); slice 40 apos a spec.
+Desktop operator v1: spec `47` (G-245..G-251); slice 40 feito.
 A fila nomeada de recortes de G-41 esta fechada (slices 34–38).
 TUI v1: spec `46` (G-238..G-244); slice 39 feito.
 MVP 1.0 magro: spec `09`/`31` (G-135..G-140); slices 19–20 feitos.

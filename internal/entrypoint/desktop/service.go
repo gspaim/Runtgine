@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/gspaim/Runtgine/internal/core/api"
+	"github.com/gspaim/Runtgine/internal/core/blast"
 	"github.com/gspaim/Runtgine/internal/core/event"
 	"github.com/gspaim/Runtgine/internal/core/graph"
 	"github.com/gspaim/Runtgine/internal/core/lessons"
@@ -43,6 +44,8 @@ type CoreAPI interface {
 	Subscribe(int) (<-chan event.Event, func())
 	CancelRun(string) error
 	ApproveRun(string, string) error
+	QueryHits(context.Context, graph.Query) graph.Hits
+	BlastTask(context.Context, task.Task) (blast.Report, error)
 }
 
 // Emitter sends Core events to the Wails frontend.
@@ -120,6 +123,7 @@ func (s *Service) forward(ctx context.Context, ch <-chan event.Event) {
 type IntentPreview struct {
 	Task   json.RawMessage `json:"task"`
 	Method string          `json:"method"`
+	Hits   graph.Hits      `json:"hits"`
 }
 
 type IntentSubmit struct {
@@ -139,10 +143,12 @@ func (s *Service) CompileIntent(text string) (IntentPreview, error) {
 	if err != nil {
 		return IntentPreview{}, mapErr(err)
 	}
-	return IntentPreview{Task: raw, Method: method}, nil
+	return IntentPreview{Task: raw, Method: method, Hits: s.queryHits(ctx, text)}, nil
 }
 
 func (s *Service) CompileTaskJSON(raw string) (IntentPreview, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), callTimeout)
+	defer cancel()
 	trimmed := strings.TrimSpace(raw)
 	if err := task.ValidateDocument([]byte(trimmed)); err != nil {
 		return IntentPreview{}, mapErr(err)
@@ -158,7 +164,7 @@ func (s *Service) CompileTaskJSON(raw string) (IntentPreview, error) {
 	if err != nil {
 		return IntentPreview{}, mapErr(err)
 	}
-	return IntentPreview{Task: pretty, Method: "json"}, nil
+	return IntentPreview{Task: pretty, Method: "json", Hits: s.queryHits(ctx, trimmed)}, nil
 }
 
 func (s *Service) SubmitIntent(text string) (IntentSubmit, error) {
@@ -314,6 +320,71 @@ func (s *Service) ApproveRun(runID string) error {
 
 func (s *Service) DenyRun(runID string) error {
 	return mapErr(s.core.ApproveRun(runID, runner.DecisionDeny))
+}
+
+func (s *Service) QueryHits(text string) graph.Hits {
+	ctx, cancel := context.WithTimeout(context.Background(), callTimeout)
+	defer cancel()
+	return s.queryHits(ctx, text)
+}
+
+func (s *Service) queryHits(ctx context.Context, text string) graph.Hits {
+	hits := s.core.QueryHits(ctx, graph.Query{Text: text})
+	if hits.Items == nil {
+		hits.Items = []graph.Hit{}
+	}
+	return hits
+}
+
+func (s *Service) BlastIntent(text string, jsonMode bool) (blast.Report, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), callTimeout)
+	defer cancel()
+	var tk task.Task
+	var err error
+	if jsonMode {
+		trimmed := strings.TrimSpace(text)
+		if err = task.ValidateDocument([]byte(trimmed)); err != nil {
+			return blast.Report{}, mapErr(err)
+		}
+		tk, err = task.Parse([]byte(trimmed))
+		if err != nil {
+			return blast.Report{}, mapErr(err)
+		}
+		if strings.TrimSpace(tk.Source.EntryPoint) == "" {
+			tk.Source.EntryPoint = entryPoint
+		}
+	} else {
+		tk, _, err = s.core.CompileIntent(ctx, text, entryPoint, sourceRef)
+		if err != nil {
+			return blast.Report{}, mapErr(err)
+		}
+	}
+	rep, err := s.core.BlastTask(ctx, tk)
+	if err != nil {
+		return blast.Report{}, mapErr(err)
+	}
+	return rep, nil
+}
+
+func (s *Service) BlastRun(runID string) (blast.Report, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), callTimeout)
+	defer cancel()
+	snap, err := s.core.GetRun(ctx, runID)
+	if err != nil {
+		return blast.Report{}, mapErr(err)
+	}
+	if len(snap.Task) == 0 {
+		return blast.Report{}, mapErr(result.Validation(result.CodeInvalidInput, "run has no task", nil))
+	}
+	tk, err := task.Parse(snap.Task)
+	if err != nil {
+		return blast.Report{}, mapErr(err)
+	}
+	rep, err := s.core.BlastTask(ctx, tk)
+	if err != nil {
+		return blast.Report{}, mapErr(err)
+	}
+	return rep, nil
 }
 
 func mapErr(err error) error {

@@ -52,7 +52,7 @@ Autoridade de decisoes: [04-decisoes.md](04-decisoes.md).
 | 44 | 44-cloud-gcp-azure-players-v0.md | Cloud Players GCP + Azure read-only (**CONFIRMED**; G-224..G-230; recorte de G-41; slice 37 feito) |
 | 45 | 45-pg-explain-v0.md | Postgres EXPLAIN read-only (**CONFIRMED**; G-231..G-237; recorte de G-41; slice 38 feito; fecha a fila G-41) |
 | 46 | 46-tui-v1.md | TUI v1 Charm Mission Control (**CONFIRMED**; G-238..G-244; slice 39 feito) |
-| 47 | 47-wails-operator-v1.md | Desktop Wails operator v1 (**CONFIRMED spec**; G-245..G-251; slice 40) |
+| 47 | 47-wails-operator-v1.md | Desktop Wails operator v1 (**CONFIRMED**; G-245..G-251; slice 40 feito) |
 | — | [openspec/](../openspec/README.md) | Pacotes de mudança OpenSpec (`NNN-slug`) |
 
 ## Fontes historicas (raiz do repo)
@@ -93,5 +93,4 @@ GCP + Azure (`44`, G-224..G-230) esta **CONFIRMED v0** (slice 37
 feito). Postgres EXPLAIN (`45`, G-231..G-237) esta **CONFIRMED v0**
 (slice 38 feito; fecha a fila nomeada de G-41). TUI v1 (`46`,
 G-238..G-244) esta **CONFIRMED v0** (slice 39 feito). Desktop
-operator v1 (`47`, G-245..G-251) esta **CONFIRMED spec** (codigo =
-slice 40). P3 restante: NATS (G-36, DEFERRED).
+operator v1 (`47`, G-245..G-251) esta **CONFIRMED** (slice 40 feito). P3 restante: NATS (G-36, DEFERRED).

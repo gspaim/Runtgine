@@ -12,11 +12,12 @@ Pré-requisitos: Desktop v0 ([35](35-wails-v0.md)), TUI v1 Hits/Blast
 ([25](25-blast-radius-v0.md) + walk [27](27-blast-graph-walk-v0.md)),
 INTENT ([32](32-intent-surface-v0.md) G-144).
 
-**Status deste doc: CONFIRMED v0 spec.** Código = **slice 40** (depois
-deste pacote). PTY/tuios, canvas 2D e mobile **permanecem fora**.
+**Status deste doc: CONFIRMED v0 spec.** Código = **slice 40 feito**.
+PTY/tuios, canvas 2D e mobile **permanecem fora**.
 
 **Pacote OpenSpec:**
-[`openspec/changes/047-wails-operator/`](../openspec/changes/047-wails-operator/).
+[`openspec/changes/archive/2026-09-14-047-wails-operator/`](../openspec/changes/archive/2026-09-14-047-wails-operator/)
+(spec publicada em [`openspec/specs/wails-operator/spec.md`](../openspec/specs/wails-operator/spec.md)).
 
 ---
 

@@ -4,6 +4,6 @@ nnn: "047"
 slug: wails-operator
 docs_canonical: docs/47-wails-operator-v1.md
 gaps: [G-245, G-246, G-247, G-248, G-249, G-250, G-251]
-status: active
-branch: docs/047-wails-operator
+status: archived
+branch: feat/047-wails-operator
 depends_on: ["035-wails-v0", "046-tui-v1", "019-graph-hits", "025-blast-radius", "027-blast-graph-walk", "032-intent-surface"]
